@@ -1,0 +1,251 @@
+<Project>
+  <Name>simplic-blueprints</Name>
+  <ProjectItem type="NClass.DiagramEditor.ClassDiagram.Diagram" assembly="NClass.DiagramEditor, Version=2.4.1823.0, Culture=neutral, PublicKeyToken=null">
+    <Name>core</Name>
+    <Language>CSharp</Language>
+    <Entities>
+      <Entity type="Class">
+        <Name>Node</Name>
+        <Access>Public</Access>
+        <Location left="1178" top="25" />
+        <Size width="370" height="357" />
+        <Collapsed>False</Collapsed>
+        <Member type="Property">public Guid Id { get; set; }</Member>
+        <Member type="Property">public string Name { get; set; }</Member>
+        <Member type="Property">public abstract string TypeFriendlyName { get; }</Member>
+        <Member type="Property">public IList&lt;Pin&gt; Pins { get; set; }</Member>
+        <Modifier>Abstract</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>Pin</Name>
+        <Access>Public</Access>
+        <Location left="293" top="55" />
+        <Size width="316" height="161" />
+        <Collapsed>False</Collapsed>
+        <Member type="Property">public Guid Id { get; set; }</Member>
+        <Member type="Property">public string Description { get; set; }</Member>
+        <Member type="Property">public PinDirection Direction { get; set; }</Member>
+        <Modifier>Abstract</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>DataPin</Name>
+        <Access>Public</Access>
+        <Location left="103" top="322" />
+        <Size width="273" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Property">public virtual Type DataType { get; set; }</Member>
+        <Member type="Property">public virtual DataPinStructure Structure { get; set; }</Member>
+        <Member type="Property">public virtual bool IsNullable { get; set; }</Member>
+        <Member type="Property">public virtual object DefaultValue { get; set; }</Member>
+        <Modifier>Abstract</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>FlowPin</Name>
+        <Access>Public</Access>
+        <Location left="510" top="322" />
+        <Size width="280" height="216" />
+        <Collapsed>False</Collapsed>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>Link</Name>
+        <Access>Public</Access>
+        <Location left="845" top="25" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Property">public Pin Source { get; set; }</Member>
+        <Member type="Property">public Pin Target { get; set; }</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Enum">
+        <Name>DataPinStructure</Name>
+        <Access>Public</Access>
+        <Location left="153" top="614" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Value>Single</Value>
+        <Value>List</Value>
+      </Entity>
+      <Entity type="Class">
+        <Name>ReadDirectoryFiles</Name>
+        <Access>Public</Access>
+        <Location left="1295" top="774" />
+        <Size width="329" height="216" />
+        <Collapsed>False</Collapsed>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Enum">
+        <Name>PinDirection</Name>
+        <Access>Public</Access>
+        <Location left="48" top="49" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Value>In</Value>
+        <Value>Out</Value>
+      </Entity>
+      <Entity type="Class">
+        <Name>ActionNode</Name>
+        <Access>Public</Access>
+        <Location left="1295" top="484" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">public abstract bool Execute()</Member>
+        <Modifier>Abstract</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>Workflow</Name>
+        <Access>Public</Access>
+        <Location left="907" top="428" />
+        <Size width="319" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Property">public Guid Id { get; set; }</Member>
+        <Member type="Property">public string Name { get; set; }</Member>
+        <Member type="Property">public IList&lt;Node&gt; Nodes { get; set; }</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>WorkflowEngineService</Name>
+        <Access>Public</Access>
+        <Location left="563" top="702" />
+        <Size width="354" height="297" />
+        <Collapsed>False</Collapsed>
+        <Member type="Property">public IList&lt;WorkflowEventDescription&gt; Events { get; set; }</Member>
+        <Member type="Method">public bool CallEvent(string name, object data)</Member>
+        <Member type="Method">public void Execute()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>WorkflowEventDescription</Name>
+        <Access>Public</Access>
+        <Location left="977" top="958" />
+        <Size width="223" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Property">public Guid NodeId { get; set; }</Member>
+        <Member type="Property">public string EventName { get; set; }</Member>
+        <Member type="Property">public Guid WorkflowId { get; set; }</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Interface">
+        <Name>IWorkflowEngineService</Name>
+        <Access>Public</Access>
+        <Location left="204" top="883" />
+        <Size width="238" height="216" />
+        <Collapsed>False</Collapsed>
+      </Entity>
+    </Entities>
+    <Relationships>
+      <Relationship type="Generalization" first="3" second="1">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Generalization" first="2" second="1">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Association" first="4" second="1">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="2" second="5">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="1" second="7">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Generalization" first="8" second="0">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Generalization" first="6" second="8">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>1265</X>
+          <Y>901</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Association" first="9" second="0">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>1065</X>
+          <Y>403</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>1153</X>
+          <Y>344</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Dependency" first="10" second="11">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+      </Relationship>
+      <Relationship type="Dependency" first="10" second="9">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>1070</X>
+          <Y>669</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Realization" first="10" second="12">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+      </Relationship>
+    </Relationships>
+  </ProjectItem>
+  <ProjectItem type="NClass.DiagramEditor.ClassDiagram.Diagram" assembly="NClass.DiagramEditor, Version=2.4.1823.0, Culture=neutral, PublicKeyToken=null">
+    <Name>core-event</Name>
+    <Language>CSharp</Language>
+    <Entities>
+      <Entity type="Class">
+        <Name>WorkflowEventArgs</Name>
+        <Access>Public</Access>
+        <Location left="214" top="154" />
+        <Size width="201" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Constructor">public WorkflowEventArgs(string eventName, object obj)</Member>
+        <Member type="Property">public string EventName { get; set; }</Member>
+        <Member type="Property">public object ObjectId { get; set; }</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Interface">
+        <Name>IWorkflowEventService</Name>
+        <Access>Public</Access>
+        <Location left="545" top="154" />
+        <Size width="309" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">void Call(object sender, WorkflowEventArgs args)</Member>
+      </Entity>
+      <Entity type="Class">
+        <Name>WorkflowEventService</Name>
+        <Access>Public</Access>
+        <Location left="998" top="172" />
+        <Size width="300" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">public void Call(object sender, WorkflowEventArgs args)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+    </Entities>
+    <Relationships>
+      <Relationship type="Realization" first="2" second="1">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+      </Relationship>
+      <Relationship type="Dependency" first="1" second="0">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+      </Relationship>
+    </Relationships>
+  </ProjectItem>
+</Project>
