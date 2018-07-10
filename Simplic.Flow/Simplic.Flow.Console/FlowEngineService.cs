@@ -4,33 +4,52 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Simplic.Flow.Event;
+using Simplic.Collections.Generic;
 
 namespace Simplic.Flow.Console
 {
     public class FlowEngineService : IFLowEngineService
     {
         private IList<Flow> flows;
-        private IList<Flow> activeFlows;
+        private IList<FlowInstance> activeFlows;
         private IDictionary<string, IList<EventDelegate>> eventDelegates;
+        private Dequeue<EventQueue> eventQueue;
 
         public FlowEngineService()
         {
             flows = new List<Flow>();
-            activeFlows = new List<Flow>();
+            activeFlows = new List<FlowInstance>();
+            eventQueue = new Dequeue<EventQueue>();
         }
 
+        /// <summary>
+        /// Run a single cycle
+        /// </summary>
         public void Run()
         {
             // Run a single cycle
+
+            // pop event entries from queue first
+            while (eventQueue.Count > 0)
+            {
+                var queueEntry = eventQueue.PopFirst();
+            }
         }
 
+        /// <summary>
+        /// Enqueue event
+        /// </summary>
+        /// <param name="args"></param>
         public void EnqueueEvent(FlowEventArgs args)
         {
             // Find workflow
             var delegates = eventDelegates.FirstOrDefault(x => x.Key == args.EventName).Value;
             if (delegates != null && delegates.Count > 0)
             {
-                
+                foreach (var del in delegates)
+                {
+                    eventQueue.PushBack(new EventQueue { Args = args, Delegate = del });
+                }
             }
         }
 
@@ -59,13 +78,13 @@ namespace Simplic.Flow.Console
                     }
                     else
                         eventDelegateList = eventDelegates[eventNode.EventName];
-                    
+
                     eventDelegateList.Add(new EventDelegate { FlowId = flow.Id, EventName = eventNode.EventName });
                 }
             }
         }
 
-        public IList<Flow> ActiveFlows
+        public IList<FlowInstance> ActiveFlows
         {
             get
             {
