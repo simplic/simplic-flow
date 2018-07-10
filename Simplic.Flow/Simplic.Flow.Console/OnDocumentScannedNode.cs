@@ -7,6 +7,8 @@ namespace Simplic.Flow.Console
     {
         public OnDocumentScannedNode()
         {
+            EventName = nameof(OnDocumentScannedNode);
+
             DocumentOut = new DataPin
             {
                 ContainerType = DataPinContainerType.Single,

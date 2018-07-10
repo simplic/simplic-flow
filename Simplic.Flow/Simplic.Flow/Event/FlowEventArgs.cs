@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Simplic.Flow.Event
 {
-    public class WorkflowEventArgs
+    public class FlowEventArgs
     {
         public string EventName { get; set; }
         public object ObjectId { get; set; }

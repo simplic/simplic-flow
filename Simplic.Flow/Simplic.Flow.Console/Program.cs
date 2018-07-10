@@ -10,10 +10,22 @@ namespace Simplic.Flow.Console
     {
         static void Main(string[] args)
         {
-            var evt = new OnDocumentScannedNode();
-            var seq = new SequenceNode();
+            var flow = new Flow();
+
+            var evt = flow.CreateNode<OnDocumentScannedNode>();
+            var seq = flow.CreateNode<SequenceNode>();
 
             evt.FlowOut = seq;
+
+            var engine = new FlowEngineService();
+            engine.Flows.Add(flow);
+
+            engine.EnqueueEvent(new Event.FlowEventArgs { EventName = nameof(OnDocumentScannedNode), ObjectId = Guid.Empty });
+
+            engine.Run();
+            engine.Run();
+            engine.Run();
+            engine.Run();
         }
     }
 }
