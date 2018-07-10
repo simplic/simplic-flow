@@ -50,7 +50,7 @@ namespace Simplic.Flow.Console
             {
                 foreach (var eventNode in flow.Nodes.OfType<EventNode>())
                 {
-                    IList< EventDelegate> eventDelegateList = null;
+                    IList<EventDelegate> eventDelegateList = null;
 
                     if (eventDelegates.ContainsKey(eventNode.EventName))
                     {
