@@ -45,7 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IFlowRuntimeService.cs" />
-    <Compile Include="NodeScope.cs" />
+    <Compile Include="Node\NodeScope.cs" />
     <Compile Include="Node\ActionNode.cs" />
     <Compile Include="Node\ConditionNode.cs" />
     <Compile Include="Pin\DataPin.cs" />
