@@ -56,10 +56,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StartWithConditionNode.cs" />
-    <Compile Include="UE\Pin.cs" />
-    <Compile Include="UE\PinContainerType.cs" />
-    <Compile Include="UE\PinDirection.cs" />
-    <Compile Include="UE\PinType.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
