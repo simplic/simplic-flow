@@ -22,14 +22,14 @@ namespace Simplic.Flow.Console
             };
         }
 
-        public override bool Execute(IFlowRuntimeService runtime)
+        public override bool Execute(IFlowRuntimeService runtime, ValueScope scope)
         {
-            System.Console.WriteLine(runtime.GetValue<object>(ToPrint));
+            System.Console.WriteLine(scope.GetValue<object>(ToPrint));
 
             System.Console.WriteLine($"> {GetType().Name} {DateTime.Now} :: {DateTime.Now.Millisecond}");
 
             if (FlowOut != null)
-                runtime.EnqueueNode(FlowOut);
+                runtime.EnqueueNode(FlowOut, scope);
 
             return true;
         }

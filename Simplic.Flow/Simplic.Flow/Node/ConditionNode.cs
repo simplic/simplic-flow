@@ -10,12 +10,11 @@ namespace Simplic.Flow
     {
         public override string FriendlyName { get; }
         
-        public override bool Execute(IFlowRuntimeService runtime)
+        public override bool Execute(IFlowRuntimeService runtime, ValueScope scope)
         {
             System.Console.WriteLine($"Execute: {GetType().Name}");
 
-            var result = Compare(runtime);
-            var scope = new PinScope { Value = result, Pin = BooleanDataOut };
+            var result = Compare(runtime, scope);
 
             if (result)
                 runtime.EnqueueNode(TrueFlowOut, scope);
@@ -27,7 +26,7 @@ namespace Simplic.Flow
             return true;
         }
 
-        protected abstract bool Compare(IFlowRuntimeService runtime);
+        protected abstract bool Compare(IFlowRuntimeService runtime, ValueScope scope);
 
         public ActionNode TrueFlowOut { get; set; }
         public ActionNode FalseFlowOut { get; set; }

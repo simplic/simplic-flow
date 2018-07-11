@@ -10,8 +10,8 @@ namespace Simplic.Flow.Console
 {
     public class FlowRuntimeService : IFlowRuntimeService
     {
-        private Dequeue<ActionNode> nextNodes = new Dequeue<ActionNode>();
-        private IList<ActionNode> tempNextNodes = new List<ActionNode>();
+        private Dequeue<NodeScope<ActionNode>> nextNodes = new Dequeue<NodeScope<ActionNode>>();
+        private IList<NodeScope<ActionNode>> tempNextNodes = new List<NodeScope<ActionNode>>();
         private FlowInstance instance;
 
         public void Run(FlowInstance instance, EventCall call)
@@ -27,15 +27,15 @@ namespace Simplic.Flow.Console
                     startNode.Arguments = call.Args;
 
                     // Execute event
-                    Execute(startNode);
+                    Execute(new NodeScope<EventNode> { Node = startNode, Scope = new ValueScope() });
                 }
             }
             else
             {
-                var executedEvents = new List<EventNode>();
-                foreach (var eventNode in instance.CurrentNodes.Where(x => x.EventName == call.Delegate.EventName))
+                var executedEvents = new List<NodeScope<EventNode>>();
+                foreach (var eventNode in instance.CurrentNodes.Where(x => x.Node.EventName == call.Delegate.EventName))
                 {
-                    eventNode.Arguments = call.Args;
+                    eventNode.Node.Arguments = call.Args;
 
                     if (Execute(eventNode))
                         executedEvents.Add(eventNode);
@@ -52,18 +52,26 @@ namespace Simplic.Flow.Console
             {
                 var nextNode = nextNodes.PopFirst();
 
-                if (nextNode is EventNode)
-                    instance.CurrentNodes.Add(nextNode as EventNode);
+                if (nextNode.Node is EventNode)
+                {
+                    instance.CurrentNodes.Add(new NodeScope<EventNode>
+                    {
+                        Node = nextNode.Node as EventNode,
+                        Scope = nextNode.Scope
+                    });
+                }
                 else
+                {
                     Execute(nextNode);
+                }
             }
         }
 
-        public bool Execute(ActionNode node)
+        public bool Execute<T>(NodeScope<T> nodeScope) where T : ActionNode
         {
-            tempNextNodes = new List<ActionNode>();
+            tempNextNodes = new List<NodeScope<ActionNode>>();
 
-            if (node.Execute(this))
+            if (nodeScope.Node.Execute(this, nodeScope.Scope))
             {
                 foreach (var nextNode in tempNextNodes)
                     if (nextNode != null)
@@ -75,32 +83,9 @@ namespace Simplic.Flow.Console
             return false;
         }
 
-        public void EnqueueNode(ActionNode node, params PinScope[] scope)
+        public void EnqueueNode(ActionNode node, ValueScope scope)
         {
-            tempNextNodes.Add(node);
-        }
-
-        public T GetValue<T>(DataPin inPin)
-        {
-            var value = (T)instance.PinValues.FirstOrDefault(x => x.Key == inPin.Id).Value;
-
-            // Check
-
-            return value;
-        }
-
-        public IList<T> GetListValue<T>(DataPin inPin)
-        {
-            var value = (IList<T>)instance.PinValues.FirstOrDefault(x => x.Key == inPin.Id).Value;
-
-            // Check
-
-            return value;
-        }
-
-        public void SetValue(DataPin outPin, object value)
-        {
-            instance.PinValues[outPin.Id] = value;
+            tempNextNodes.Add(new NodeScope<ActionNode> { Node = node, Scope = scope });
         }
     }
 }

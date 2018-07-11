@@ -23,7 +23,7 @@ namespace Simplic.Flow.Console
             };
         }
 
-        public override bool Execute(IFlowRuntimeService runtime)
+        public override bool Execute(IFlowRuntimeService runtime, ValueScope scope)
         {
             System.Console.WriteLine($"Execute: {GetType().Name}");
 
@@ -33,15 +33,9 @@ namespace Simplic.Flow.Console
                 
             };
 
-            var sope = new PinScope
-            {
-                Pin = DocumentOut,
-                Value = value
-            };
+            scope.SetValue(DocumentOut, value);
 
-            runtime.SetValue(DocumentOut, value);
-
-            runtime.EnqueueNode(FlowOut, sope);
+            runtime.EnqueueNode(FlowOut, scope);
 
             return true;
         }
