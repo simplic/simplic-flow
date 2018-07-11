@@ -8,7 +8,7 @@ namespace Simplic.Flow.Console
 {
     public class ForeachNode : ActionNode
     {
-        public override string FriendlyName => throw new NotImplementedException();
+        public override string FriendlyName { get; }
 
 
         public override bool Execute()

@@ -32,6 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Simplic.CoreLib, Version=6.1.118.621, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.CoreLib.6.1.118.621\lib\net451\Simplic.CoreLib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -42,7 +46,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConsoleWriteLineNode.cs" />
     <Compile Include="DocumentWithBarcode.cs" />
+    <Compile Include="FlowEngineService.cs" />
     <Compile Include="SequenceNode.cs" />
     <Compile Include="ForeachNode.cs" />
     <Compile Include="OnDocumentScannedNode.cs" />
@@ -56,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Simplic.Flow\Simplic.Flow.csproj">

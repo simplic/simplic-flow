@@ -8,7 +8,7 @@ namespace Simplic.Flow.Console
 {
     public class SequenceNode : ActionNode
     {
-        public override string FriendlyName => throw new NotImplementedException();
+        public override string FriendlyName { get; }
         
         public override bool Execute()
         {
@@ -20,6 +20,6 @@ namespace Simplic.Flow.Console
             return true;
         }
 
-        public IList<ActionNode> FlowOutNodes { get; set; }
+        public IList<ActionNode> FlowOutNodes { get; set; } = new List<ActionNode>();
     }
 }

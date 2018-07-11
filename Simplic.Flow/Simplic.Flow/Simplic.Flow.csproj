@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Simplic.CoreLib, Version=6.1.118.621, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.CoreLib.6.1.118.621\lib\net451\Simplic.CoreLib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,23 +44,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActionNode.cs" />
-    <Compile Include="ConditionNode.cs" />
-    <Compile Include="DataPin.cs" />
-    <Compile Include="DataPinContainerType.cs" />
-    <Compile Include="EventNode.cs" />
+    <Compile Include="Node\ActionNode.cs" />
+    <Compile Include="Node\ConditionNode.cs" />
+    <Compile Include="Pin\DataPin.cs" />
+    <Compile Include="Pin\DataPinContainerType.cs" />
+    <Compile Include="Node\EventNode.cs" />
+    <Compile Include="Event\EventCall.cs" />
+    <Compile Include="Event\EventDelegate.cs" />
     <Compile Include="Flow.cs" />
-    <Compile Include="Node.cs" />
-    <Compile Include="Pin.cs" />
-    <Compile Include="PinDirection.cs" />
-    <Compile Include="PinScope.cs" />
+    <Compile Include="FlowInstance.cs" />
+    <Compile Include="IFlowEngineService.cs" />
+    <Compile Include="Event\Node.cs" />
+    <Compile Include="Pin\IPin.cs" />
+    <Compile Include="Pin\PinDirection.cs" />
+    <Compile Include="Pin\PinScope.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Event\FlowEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Simplic.Flow.Event\Simplic.Flow.Event.csproj">
       <Project>{EFCC8359-4ED2-421F-B9BE-4E25CDD5CF40}</Project>
       <Name>Simplic.Flow.Event</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -23,6 +23,10 @@ namespace Simplic.Flow.Console
             eventDelegates = new Dictionary<string, IList<EventDelegate>>();
         }
 
+        // on document saved
+        // flow event service -> call event (engine.Run(eventName))
+        // 
+
         /// <summary>
         /// Run a single cycle
         /// </summary>
@@ -34,6 +38,24 @@ namespace Simplic.Flow.Console
             while (eventQueue.Count > 0)
             {
                 var queueEntry = eventQueue.PopFirst();
+
+                if (!queueEntry.Delegate.IsStartEvent)
+                {
+                    // Notify ALL instances, which MIGHT BE continued
+                    foreach (var flow in activeFlows.Where(x => x.Flow.Id == queueEntry.Delegate.FlowId))
+                    {
+                        
+                    }
+                }
+                else
+                {
+                    // Create new flow instance
+                    activeFlows.Add(new FlowInstance
+                    {
+                        Id = Guid.NewGuid(),
+                        Flow = flows.FirstOrDefault(x => x.Id == queueEntry.Delegate.FlowId)
+                    });
+                }
             }
         }
 
@@ -54,12 +76,6 @@ namespace Simplic.Flow.Console
             }
         }
 
-        public IEnumerable<FlowEventArgs> ReadPersistantEvents()
-        {
-            // Return WorkflowEventArgs from database
-            return new List<FlowEventArgs>();
-        }
-
         /// <summary>
         /// Cash event delegates
         /// </summary>
@@ -72,7 +88,7 @@ namespace Simplic.Flow.Console
                 {
                     IList<EventDelegate> eventDelegateList = null;
 
-                    if (eventDelegates.ContainsKey(eventNode.EventName))
+                    if (!eventDelegates.ContainsKey(eventNode.EventName))
                     {
                         eventDelegateList = new List<EventDelegate>();
                         eventDelegates[eventNode.EventName] = eventDelegateList;
@@ -80,7 +96,13 @@ namespace Simplic.Flow.Console
                     else
                         eventDelegateList = eventDelegates[eventNode.EventName];
 
-                    eventDelegateList.Add(new EventDelegate { FlowId = flow.Id, EventName = eventNode.EventName });
+                    eventDelegateList.Add(new EventDelegate
+                    {
+                        FlowId = flow.Id,
+                        EventName = eventNode.EventName,
+                        EventNodeId = eventNode.Id,
+                        IsStartEvent = eventNode.IsStartEvent
+                    });
                 }
             }
         }

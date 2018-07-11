@@ -9,5 +9,6 @@ namespace Simplic.Flow
         public string EventName { get; set; }
         public Guid FlowId { get; set; }        
         public abstract bool NeedsState { get; set; }
+        public bool IsStartEvent { get; set; }
     }
 }

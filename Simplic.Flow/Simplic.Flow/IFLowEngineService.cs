@@ -11,6 +11,5 @@ namespace Simplic.Flow
     {
         void Run();
         void EnqueueEvent(FlowEventArgs args);
-        IEnumerable<FlowEventArgs> ReadPersistantEvents();
     }
 }

@@ -28,7 +28,7 @@ namespace Simplic.Flow.Console
             // Load by .Arguments...
             var value = new DocumentWithBarcode
             {
-
+                
             };
 
             var sope = new PinScope
