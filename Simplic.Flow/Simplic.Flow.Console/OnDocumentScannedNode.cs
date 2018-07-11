@@ -23,7 +23,7 @@ namespace Simplic.Flow.Console
             };
         }
 
-        public override bool Execute(IFlowRuntimeService runtime, ValueScope scope)
+        public override bool Execute(IFlowRuntimeService runtime, DataPinScope scope)
         {
             System.Console.WriteLine($"Execute: {GetType().Name}");
 

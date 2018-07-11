@@ -23,7 +23,7 @@ namespace Simplic.Flow.Console
             };
         }
 
-        public override bool Execute(IFlowRuntimeService runtime, ValueScope scope)
+        public override bool Execute(IFlowRuntimeService runtime, DataPinScope scope)
         {
             var sampleList = new List<string>();
             for (int i = 0; i < 10; i++)

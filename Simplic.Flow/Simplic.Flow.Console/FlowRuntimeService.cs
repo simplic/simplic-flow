@@ -27,7 +27,7 @@ namespace Simplic.Flow.Console
                     startNode.Arguments = call.Args;
 
                     // Execute event
-                    Execute(new NodeScope<EventNode> { Node = startNode, Scope = new ValueScope() });
+                    Execute(new NodeScope<EventNode> { Node = startNode, Scope = new DataPinScope() });
                 }
             }
             else
@@ -83,7 +83,7 @@ namespace Simplic.Flow.Console
             return false;
         }
 
-        public bool EnqueueNode(ActionNode node, ValueScope scope)
+        public bool EnqueueNode(ActionNode node, DataPinScope scope)
         {
             // Ensure the node is set
             if (node != null)

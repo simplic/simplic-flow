@@ -2,6 +2,6 @@
 {
     public abstract class ActionNode : Node
     {
-        public abstract bool Execute(IFlowRuntimeService runtime, ValueScope scope);
+        public abstract bool Execute(IFlowRuntimeService runtime, DataPinScope scope);
     }
 }

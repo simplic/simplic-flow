@@ -8,7 +8,7 @@ namespace Simplic.Flow.Console
 {
     public class StartWithConditionNode : ConditionNode
     {
-        protected override bool Compare(IFlowRuntimeService runtime, ValueScope scope)
+        protected override bool Compare(IFlowRuntimeService runtime, DataPinScope scope)
         {
             var val1 = scope.GetValue<string>(ConditionPinIn1);
             var val2 = scope.GetValue<string>(ConditionPinIn2);

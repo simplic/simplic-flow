@@ -4,6 +4,6 @@ namespace Simplic.Flow
 {
     public interface IFlowRuntimeService
     {
-        bool EnqueueNode(ActionNode node, ValueScope scope);
+        bool EnqueueNode(ActionNode node, DataPinScope scope);
     }
 }

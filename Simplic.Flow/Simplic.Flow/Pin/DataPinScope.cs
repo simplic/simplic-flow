@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 
 namespace Simplic.Flow
 {
-    public class ValueScope
+    public class DataPinScope
     {
-        public ValueScope CreateChild()
+        public DataPinScope CreateChild()
         {
-            var scope = new ValueScope();
+            var scope = new DataPinScope();
             scope.Parent = this;
 
             return scope;
         }
 
         public IDictionary<Guid, object> PinValues = new Dictionary<Guid, object>();
-        public ValueScope Parent { get; set; }
+        public DataPinScope Parent { get; set; }
         public T GetValue<T>(DataPin inPin)
         {
             var value = (T)PinValues.FirstOrDefault(x => x.Key == inPin.Id).Value;

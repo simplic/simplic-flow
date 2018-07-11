@@ -11,6 +11,6 @@ namespace Simplic.Flow
         public Guid Id { get; set; }
         public Flow Flow { get; set; }
         public IList<NodeScope<EventNode>> CurrentNodes { get; set; } = new List<NodeScope<EventNode>>();
-        public ValueScope Scope = new ValueScope();
+        public DataPinScope Scope = new DataPinScope();
     }
 }
