@@ -10,5 +10,7 @@ namespace Simplic.Flow
     {
         public Guid Id { get; set; }
         public Flow Flow { get; set; }
+        public IList<EventNode> CurrentNodes { get; set; } = new List<EventNode>();
+        public IDictionary<Guid, object> PinValues = new Dictionary<Guid, object>();
     }
 }

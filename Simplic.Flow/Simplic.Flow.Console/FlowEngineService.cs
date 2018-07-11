@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Simplic.Flow.Event;
 using Simplic.Collections.Generic;
 
@@ -13,13 +11,13 @@ namespace Simplic.Flow.Console
         private IList<Flow> flows;
         private IList<FlowInstance> activeFlows;
         private IDictionary<string, IList<EventDelegate>> eventDelegates;
-        private Dequeue<EventQueue> eventQueue;
+        private Dequeue<EventCall> eventQueue;
 
         public FlowEngineService()
         {
             flows = new List<Flow>();
             activeFlows = new List<FlowInstance>();
-            eventQueue = new Dequeue<EventQueue>();
+            eventQueue = new Dequeue<EventCall>();
             eventDelegates = new Dictionary<string, IList<EventDelegate>>();
         }
 
@@ -35,6 +33,8 @@ namespace Simplic.Flow.Console
             // Run a single cycle
 
             // pop event entries from queue first
+            var newActiveFlows = new List<FlowInstance>();
+
             while (eventQueue.Count > 0)
             {
                 var queueEntry = eventQueue.PopFirst();
@@ -42,21 +42,31 @@ namespace Simplic.Flow.Console
                 if (!queueEntry.Delegate.IsStartEvent)
                 {
                     // Notify ALL instances, which MIGHT BE continued
-                    foreach (var flow in activeFlows.Where(x => x.Flow.Id == queueEntry.Delegate.FlowId))
+                    foreach (var activeFlow in activeFlows.Where(x => x.Flow.Id == queueEntry.Delegate.FlowId))
                     {
-                        
+                        System.Console.WriteLine("---- CONTINUE FLOW ----");
+
+                        var runtime = new FlowRuntimeService();
+                        runtime.Run(activeFlow, queueEntry);
                     }
                 }
                 else
                 {
-                    // Create new flow instance
-                    activeFlows.Add(new FlowInstance
+                    System.Console.WriteLine("---- NEW FLOW----");
+                    var runtime = new FlowRuntimeService();
+                    var newFlow = new FlowInstance
                     {
-                        Id = Guid.NewGuid(),
-                        Flow = flows.FirstOrDefault(x => x.Id == queueEntry.Delegate.FlowId)
-                    });
+                        Flow = flows.FirstOrDefault(x => x.Id == queueEntry.Delegate.FlowId),
+                        Id = Guid.NewGuid()
+                    };
+
+                    runtime.Run(newFlow, queueEntry);
+                    newActiveFlows.Add(newFlow);                    
                 }
             }
+
+            foreach (var newFlow in newActiveFlows)
+                activeFlows.Add(newFlow);
         }
 
         /// <summary>
@@ -71,7 +81,7 @@ namespace Simplic.Flow.Console
             {
                 foreach (var del in delegates)
                 {
-                    eventQueue.PushBack(new EventQueue { Args = args, Delegate = del });
+                    eventQueue.PushBack(new EventCall { Args = args, Delegate = del });
                 }
             }
         }

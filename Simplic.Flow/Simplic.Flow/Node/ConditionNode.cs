@@ -10,22 +10,24 @@ namespace Simplic.Flow
     {
         public override string FriendlyName { get; }
         
-        public override bool Execute()
+        public override bool Execute(IFlowRuntimeService runtime)
         {
-            var result = Compare();
+            System.Console.WriteLine($"Execute: {GetType().Name}");
+
+            var result = Compare(runtime);
             var scope = new PinScope { Value = result, Pin = BooleanDataOut };
 
             if (result)
-                EnqueueNode(TrueFlowOut, scope);
+                runtime.EnqueueNode(TrueFlowOut, scope);
             else
-                EnqueueNode(FalseFlowOut, scope);
+                runtime.EnqueueNode(FalseFlowOut, scope);
 
-            EnqueueNode(AnyFlowOut, scope);
+            runtime.EnqueueNode(AnyFlowOut, scope);
 
             return true;
         }
 
-        protected abstract bool Compare();
+        protected abstract bool Compare(IFlowRuntimeService runtime);
 
         public ActionNode TrueFlowOut { get; set; }
         public ActionNode FalseFlowOut { get; set; }

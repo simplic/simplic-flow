@@ -16,15 +16,17 @@ namespace Simplic.Flow.Console
                 Direction = PinDirection.Out,
                 IsNullable = false,
                 Name = "DocumentWithBarcode",
-                PinFriendlyName = "Document with barcode",
-                ParentNode = this,
+                FriendlyName = "Document with barcode",
+                Owner = this,
                 Id = Guid.NewGuid(),
                 Description = "Document with barcode from twain interface"
             };
         }
 
-        public override bool Execute()
+        public override bool Execute(IFlowRuntimeService runtime)
         {
+            System.Console.WriteLine($"Execute: {GetType().Name}");
+
             // Load by .Arguments...
             var value = new DocumentWithBarcode
             {
@@ -37,14 +39,16 @@ namespace Simplic.Flow.Console
                 Value = value
             };
 
-            EnqueueNode(FlowOut, sope);
+            runtime.SetValue(DocumentOut, value);
+
+            runtime.EnqueueNode(FlowOut, sope);
 
             return true;
         }
 
         public override string FriendlyName { get { return "New Contact Added Event"; } }
         public override bool NeedsState { get; set; }
-        public Node FlowOut { get; set; }
+        public ActionNode FlowOut { get; set; }
         public DataPin DocumentOut { get; set; }
     }
 }

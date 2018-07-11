@@ -10,11 +10,13 @@ namespace Simplic.Flow.Console
     {
         public override string FriendlyName { get; }
         
-        public override bool Execute()
+        public override bool Execute(IFlowRuntimeService runtime)
         {
+            System.Console.WriteLine($"Execute: {GetType().Name}");
+
             foreach (var node in FlowOutNodes)
             {
-                EnqueueNode(node);
+                runtime.EnqueueNode(node);
             }
             
             return true;

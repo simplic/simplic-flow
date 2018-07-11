@@ -49,6 +49,7 @@
     <Compile Include="ConsoleWriteLineNode.cs" />
     <Compile Include="DocumentWithBarcode.cs" />
     <Compile Include="FlowEngineService.cs" />
+    <Compile Include="FlowRuntimeService.cs" />
     <Compile Include="SequenceNode.cs" />
     <Compile Include="ForeachNode.cs" />
     <Compile Include="OnDocumentScannedNode.cs" />

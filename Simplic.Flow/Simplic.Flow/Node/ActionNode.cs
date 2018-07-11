@@ -2,6 +2,6 @@
 {
     public abstract class ActionNode : Node
     {
-        public abstract bool Execute();
+        public abstract bool Execute(IFlowRuntimeService runtime);
     }
 }

@@ -8,10 +8,10 @@ namespace Simplic.Flow.Console
 {
     public class StartWithConditionNode : ConditionNode
     {
-        protected override bool Compare()
+        protected override bool Compare(IFlowRuntimeService runtime)
         {
-            var val1 = GetValue<string>(ConditionPinIn1);
-            var val2 = GetValue<string>(ConditionPinIn2);
+            var val1 = runtime.GetValue<string>(ConditionPinIn1);
+            var val2 = runtime.GetValue<string>(ConditionPinIn2);
 
             return val1.StartsWith(val2);
         }

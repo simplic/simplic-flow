@@ -11,9 +11,11 @@ namespace Simplic.Flow.Console
         public override string FriendlyName { get; }
 
 
-        public override bool Execute()
+        public override bool Execute(IFlowRuntimeService runtime)
         {
-            var values = GetListValue<object>(InList);
+            System.Console.WriteLine($"Execute: {GetType().Name}");
+
+            var values = runtime.GetListValue<object>(InList);
             foreach (var value in values)
             {
                 var sope = new PinScope
@@ -22,10 +24,10 @@ namespace Simplic.Flow.Console
                     Value = value
                 };
 
-                EnqueueNode(EachItemFlowOut, sope);
+                runtime.EnqueueNode(EachItemFlowOut, sope);
             }
 
-            EnqueueNode(CompletedFlowOut);
+            runtime.EnqueueNode(CompletedFlowOut);
 
             return true;
         }

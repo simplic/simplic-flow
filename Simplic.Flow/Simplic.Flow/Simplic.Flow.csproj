@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IFlowRuntimeService.cs" />
     <Compile Include="Node\ActionNode.cs" />
     <Compile Include="Node\ConditionNode.cs" />
     <Compile Include="Pin\DataPin.cs" />
@@ -54,7 +55,7 @@
     <Compile Include="Flow.cs" />
     <Compile Include="FlowInstance.cs" />
     <Compile Include="IFlowEngineService.cs" />
-    <Compile Include="Event\Node.cs" />
+    <Compile Include="Node\Node.cs" />
     <Compile Include="Pin\IPin.cs" />
     <Compile Include="Pin\PinDirection.cs" />
     <Compile Include="Pin\PinScope.cs" />
