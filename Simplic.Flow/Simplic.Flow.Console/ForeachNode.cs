@@ -18,13 +18,13 @@ namespace Simplic.Flow.Console
             var values = runtime.GetListValue<object>(InList);
             foreach (var value in values)
             {
-                var sope = new PinScope
+                var scope = new PinScope
                 {
                     Pin = Output,
                     Value = value
                 };
 
-                runtime.EnqueueNode(EachItemFlowOut, sope);
+                runtime.EnqueueNode(EachItemFlowOut, scope);
             }
 
             runtime.EnqueueNode(CompletedFlowOut);
