@@ -83,9 +83,16 @@ namespace Simplic.Flow.Console
             return false;
         }
 
-        public void EnqueueNode(ActionNode node, ValueScope scope)
+        public bool EnqueueNode(ActionNode node, ValueScope scope)
         {
-            tempNextNodes.Add(new NodeScope<ActionNode> { Node = node, Scope = scope });
+            // Ensure the node is set
+            if (node != null)
+            {
+                tempNextNodes.Add(new NodeScope<ActionNode> { Node = node, Scope = scope });
+                return true;
+            }
+
+            return false;
         }
     }
 }

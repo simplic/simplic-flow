@@ -22,6 +22,9 @@ namespace Simplic.Flow.Console
             var print1 = flow.CreateNode<ConsoleWriteLineNode>();
             var print2 = flow.CreateNode<ConsoleWriteLineNode>();
             var print3 = flow.CreateNode<ConsoleWriteLineNode>();
+            var array = flow.CreateNode<CreateStringArraySampleNode>();
+            var fenode = flow.CreateNode<ForeachNode>();
+            var print4 = flow.CreateNode<ConsoleWriteLineNode>();
 
             // Flow direction
             evt.FlowOut = seq;
@@ -31,10 +34,18 @@ namespace Simplic.Flow.Console
             print2.FlowOut = evt2;
             evt2.FlowOut = print3;
 
+            // Add foreach part
+            print1.FlowOut = array;
+            array.FlowOut = fenode;
+            fenode.EachItemFlowOut = print4;
+
             // Data flow
             print1.ToPrint = evt.DocumentOut;
             print2.ToPrint = evt.DocumentOut;
             print3.ToPrint = evt.DocumentOut;
+
+            fenode.InList = array.StringArrayOut;
+            print4.ToPrint = fenode.Output;
             // ==================================================================
 
             // ==================================================================

@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConsoleWriteLineNode.cs" />
+    <Compile Include="CreateStringArraySampleNode.cs" />
     <Compile Include="DocumentWithBarcode.cs" />
     <Compile Include="FlowEngineService.cs" />
     <Compile Include="FlowRuntimeService.cs" />

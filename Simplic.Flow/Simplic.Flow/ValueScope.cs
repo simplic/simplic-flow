@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,11 +30,12 @@ namespace Simplic.Flow
 
         public IList<T> GetListValue<T>(DataPin inPin)
         {
-            var value = (IList<T>)PinValues.FirstOrDefault(x => x.Key == inPin.Id).Value;
+            var value = (PinValues.FirstOrDefault(x => x.Key == inPin.Id).Value as IList);
+            var list = value.Cast<T>().ToList();
 
             // Check
 
-            return value;
+            return list;
         }
 
         public void SetValue(DataPin outPin, object value)

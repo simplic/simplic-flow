@@ -10,6 +10,19 @@ namespace Simplic.Flow.Console
     {
         public override string FriendlyName { get; }
 
+        public ForeachNode()
+        {
+            Output = new DataPin
+            {
+                DataType = typeof(object),
+                ContainerType = DataPinContainerType.Single,
+                Owner = this,
+                Id = Guid.NewGuid(),
+                Name = "Each item out",
+                Direction = PinDirection.Out,
+                Description = "Each item out"
+            };
+        }
 
         public override bool Execute(IFlowRuntimeService runtime, ValueScope scope)
         {
