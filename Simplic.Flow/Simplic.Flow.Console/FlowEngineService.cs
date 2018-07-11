@@ -8,7 +8,7 @@ using Simplic.Collections.Generic;
 
 namespace Simplic.Flow.Console
 {
-    public class FlowEngineService : IFLowEngineService
+    public class FlowEngineService : IFlowEngineService
     {
         private IList<Flow> flows;
         private IList<FlowInstance> activeFlows;
@@ -20,6 +20,7 @@ namespace Simplic.Flow.Console
             flows = new List<Flow>();
             activeFlows = new List<FlowInstance>();
             eventQueue = new Dequeue<EventQueue>();
+            eventDelegates = new Dictionary<string, IList<EventDelegate>>();
         }
 
         /// <summary>

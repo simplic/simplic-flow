@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Simplic.Flow
 {
-    public interface IFLowEngineService
+    public interface IFlowEngineService
     {
         void Run();
         void EnqueueEvent(FlowEventArgs args);
