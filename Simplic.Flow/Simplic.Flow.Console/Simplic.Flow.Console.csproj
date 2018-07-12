@@ -46,23 +46,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConsoleWriteLineNode.cs" />
-    <Compile Include="CreateStringArraySampleNode.cs" />
-    <Compile Include="DocumentWithBarcode.cs" />
-    <Compile Include="FlowEngineService.cs" />
-    <Compile Include="FlowRuntimeService.cs" />
-    <Compile Include="SequenceNode.cs" />
-    <Compile Include="ForeachNode.cs" />
-    <Compile Include="OnDocumentScannedNode.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StartWithConditionNode.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Simplic.Flow.Event.Service\Simplic.Flow.Event.Service.csproj">
+      <Project>{1b67ba29-a318-4432-807e-84a67936cf34}</Project>
+      <Name>Simplic.Flow.Event.Service</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.Flow.Event\Simplic.Flow.Event.csproj">
+      <Project>{efcc8359-4ed2-421f-b9be-4e25cdd5cf40}</Project>
+      <Name>Simplic.Flow.Event</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.Flow.Service\Simplic.Flow.Service.csproj">
+      <Project>{43b68136-7ec1-48d5-8ddc-a10c7f904455}</Project>
+      <Name>Simplic.Flow.Service</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Simplic.Flow\Simplic.Flow.csproj">
       <Project>{1f540a26-62fb-45cb-abc6-b4b2d8f7005e}</Project>
       <Name>Simplic.Flow</Name>

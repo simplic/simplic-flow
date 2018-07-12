@@ -44,24 +44,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IFlowRuntimeService.cs" />
-    <Compile Include="Node\NodeScope.cs" />
-    <Compile Include="Node\ActionNode.cs" />
-    <Compile Include="Node\ConditionNode.cs" />
-    <Compile Include="Pin\DataPin.cs" />
-    <Compile Include="Pin\DataPinContainerType.cs" />
-    <Compile Include="Node\EventNode.cs" />
-    <Compile Include="Event\EventCall.cs" />
-    <Compile Include="Event\EventDelegate.cs" />
-    <Compile Include="Flow.cs" />
-    <Compile Include="FlowInstance.cs" />
-    <Compile Include="IFlowEngineService.cs" />
-    <Compile Include="Node\Node.cs" />
-    <Compile Include="Pin\IPin.cs" />
-    <Compile Include="Pin\PinDirection.cs" />
+    <Compile Include="Interface\IFlowInstanceRepository.cs" />
+    <Compile Include="Interface\IFlowRuntimeService.cs" />
+    <Compile Include="Model\DocumentWithBarcode.cs" />
+    <Compile Include="Model\Node\ConsoleWriteLineNode.cs" />
+    <Compile Include="Model\Node\CreateStringArraySampleNode.cs" />
+    <Compile Include="Model\Node\ForeachNode.cs" />
+    <Compile Include="Model\Node\NodeScope.cs" />
+    <Compile Include="Model\Node\ActionNode.cs" />
+    <Compile Include="Model\Node\ConditionNode.cs" />
+    <Compile Include="Model\Node\OnDocumentScannedNode.cs" />
+    <Compile Include="Model\Node\SequenceNode.cs" />
+    <Compile Include="Model\Node\StartWithConditionNode.cs" />
+    <Compile Include="Model\Pin\DataPin.cs" />
+    <Compile Include="Model\Pin\DataPinContainerType.cs" />
+    <Compile Include="Model\Node\EventNode.cs" />
+    <Compile Include="Model\Flow\Flow.cs" />
+    <Compile Include="Model\Flow\FlowInstance.cs" />
+    <Compile Include="Interface\IFlowEngineService.cs" />
+    <Compile Include="Model\Node\Node.cs" />
+    <Compile Include="Interface\IPin.cs" />
+    <Compile Include="Model\Pin\PinDirection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Event\FlowEventArgs.cs" />
-    <Compile Include="Pin\DataPinScope.cs" />
+    <Compile Include="Model\Pin\DataPinScope.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Simplic.Flow.Event\Simplic.Flow.Event.csproj">

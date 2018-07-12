@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.Flow.Event", "Simpl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.Flow.Event.Service", "Simplic.Flow.Event.Service\Simplic.Flow.Event.Service.csproj", "{1B67BA29-A318-4432-807E-84A67936CF34}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.Flow.Service", "Simplic.Flow.Service\Simplic.Flow.Service.csproj", "{43B68136-7EC1-48D5-8DDC-A10C7F904455}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{1B67BA29-A318-4432-807E-84A67936CF34}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B67BA29-A318-4432-807E-84A67936CF34}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B67BA29-A318-4432-807E-84A67936CF34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43B68136-7EC1-48D5-8DDC-A10C7F904455}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43B68136-7EC1-48D5-8DDC-A10C7F904455}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43B68136-7EC1-48D5-8DDC-A10C7F904455}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43B68136-7EC1-48D5-8DDC-A10C7F904455}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

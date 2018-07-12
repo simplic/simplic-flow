@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Simplic.Flow.Event;
+using Simplic.Flow.Service;
+using System;
 
 namespace Simplic.Flow.Console
 {
@@ -49,16 +47,19 @@ namespace Simplic.Flow.Console
             // ==================================================================
 
             // ==================================================================
-            var engine = new FlowEngineService();
+
+            IFlowInstanceRepository repo = null;
+
+            var engine = new FlowEngineService(repo);
             engine.Flows.Add(flow);
 
             engine.RefreshEventDelegates();
 
-            engine.EnqueueEvent(new Event.FlowEventArgs { EventName = nameof(OnDocumentScannedNode), ObjectId = Guid.Empty });
+            engine.EnqueueEvent(new FlowEventArgs { EventName = nameof(OnDocumentScannedNode), ObjectId = Guid.Empty });
 
             engine.Run();
 
-            engine.EnqueueEvent(new Event.FlowEventArgs { EventName = nameof(OnDocumentScannedNode), ObjectId = Guid.Empty });
+            engine.EnqueueEvent(new FlowEventArgs { EventName = nameof(OnDocumentScannedNode), ObjectId = Guid.Empty });
             engine.Run();
             // ==================================================================
 

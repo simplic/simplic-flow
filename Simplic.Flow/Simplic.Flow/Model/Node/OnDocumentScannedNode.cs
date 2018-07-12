@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 
-namespace Simplic.Flow.Console
+namespace Simplic.Flow
 {
     public class OnDocumentScannedNode : EventNode
     {
