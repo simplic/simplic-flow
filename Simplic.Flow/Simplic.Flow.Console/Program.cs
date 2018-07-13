@@ -1,4 +1,7 @@
-﻿using Simplic.Flow.Data.Memory;
+﻿using Simplic.Flow.Configuration;
+using Simplic.Flow.Configuration.Data.Memory;
+using Simplic.Flow.Configuration.Service;
+using Simplic.Flow.Data.Memory;
 using Simplic.Flow.Event;
 using Simplic.Flow.Service;
 using System;
@@ -9,6 +12,8 @@ namespace Simplic.Flow.Console
     {
         static void Main(string[] args)
         {
+            CreateConfiguration();
+
             // ==================================================================
             var flow = new Flow();
             flow.Id = Guid.NewGuid();
@@ -65,6 +70,122 @@ namespace Simplic.Flow.Console
             // ==================================================================
 
             System.Console.ReadLine();
+        }
+
+        private static void CreateConfiguration()
+        {
+            IFlowConfigurationRepository repo = new FlowConfigurationMemoryRepository();
+            var service = new FlowConfigurationService(repo);
+
+            var flowConfiguration = new FlowConfiguration
+            {
+                Id = Guid.NewGuid(),
+                Name = "Document scan and process"                
+            };
+
+            var onDocumentScannedNode = new NodeConfiguration
+            {
+                Id = Guid.NewGuid(),
+                NodeType = "EventNode",
+                ClassName = "OnDocumentScannedNode",
+                IsStartEvent = true
+            };
+            flowConfiguration.Nodes.Add(onDocumentScannedNode);
+
+            var sequenceNode = new NodeConfiguration
+            {
+                Id = Guid.NewGuid(),
+                NodeType = "ActionNode",
+                ClassName = "SequenceNode"
+            };
+            flowConfiguration.Nodes.Add(sequenceNode);
+
+            var consoleWriteLineNode = new NodeConfiguration
+            {
+                Id = Guid.NewGuid(),
+                NodeType = "ActionNode",
+                ClassName = "ConsoleWriteLineNode"
+            };
+            flowConfiguration.Nodes.Add(consoleWriteLineNode);
+
+            var consoleWriteLineNode2 = new NodeConfiguration
+            {
+                Id = Guid.NewGuid(),
+                NodeType = "ActionNode",
+                ClassName = "ConsoleWriteLineNode"
+            };
+            flowConfiguration.Nodes.Add(consoleWriteLineNode2);
+
+            flowConfiguration.Links = new System.Collections.Generic.List<LinkConfiguration> {
+                new LinkConfiguration
+                {
+                    From = new Link
+                    {
+                        NodeId = onDocumentScannedNode.Id,
+                        PinName = "FlowOut"
+                    },
+                    To = new Link
+                    {
+                        NodeId = sequenceNode.Id
+                    }
+                },
+                new LinkConfiguration
+                {
+                    From = new Link
+                    {
+                        NodeId = sequenceNode.Id,
+                        PinName = "FlowOutNodes"
+                    },
+                    To = new Link
+                    {
+                        NodeId = consoleWriteLineNode.Id
+                    }
+                },
+                new LinkConfiguration
+                {
+                    From = new Link
+                    {
+                        NodeId = sequenceNode.Id,
+                        PinName = "FlowOutNodes"
+                    },
+                    To = new Link
+                    {
+                        NodeId = consoleWriteLineNode2.Id
+                    }
+                }
+            };
+
+            flowConfiguration.Pins = new System.Collections.Generic.List<PinConfiguration>
+            {
+                new PinConfiguration
+                {
+                    From = new Link
+                    {
+                        NodeId = onDocumentScannedNode.Id,
+                        PinName = "DocumentOut"
+                    },
+                    To = new Link
+                    {
+                        NodeId = consoleWriteLineNode.Id,
+                        PinName = "ToPrint"
+                    }
+                },
+                new PinConfiguration
+                {
+                    From = new Link
+                    {
+                        NodeId = onDocumentScannedNode.Id,
+                        PinName = "DocumentOut"
+                    },
+                    To = new Link
+                    {
+                        NodeId = consoleWriteLineNode2.Id,
+                        PinName = "ToPrint"
+                    }
+                }
+            };
+
+            var jsonStr = service.Save(flowConfiguration);
         }
     }
 }

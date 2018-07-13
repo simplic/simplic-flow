@@ -54,6 +54,18 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Simplic.Flow.Configuration.Data.Memory\Simplic.Flow.Configuration.Data.Memory.csproj">
+      <Project>{3FA1E55F-5B91-4D6B-B9E3-15CC280C97BE}</Project>
+      <Name>Simplic.Flow.Configuration.Data.Memory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.Flow.Configuration.Service\Simplic.Flow.Configuration.Service.csproj">
+      <Project>{BEB6592D-DDA6-4375-AAE4-A6CC58357E1F}</Project>
+      <Name>Simplic.Flow.Configuration.Service</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.Flow.Configuration\Simplic.Flow.Configuration.csproj">
+      <Project>{A2F33950-81AF-4D02-856F-5B2C69E78CAC}</Project>
+      <Name>Simplic.Flow.Configuration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Simplic.Flow.Data.Memory\Simplic.Flow.Data.Memory.csproj">
       <Project>{DEBE9782-694B-49F1-96FC-7E481A47D03D}</Project>
       <Name>Simplic.Flow.Data.Memory</Name>
