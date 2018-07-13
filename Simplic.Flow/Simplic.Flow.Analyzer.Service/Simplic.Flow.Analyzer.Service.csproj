@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1B67BA29-A318-4432-807E-84A67936CF34}</ProjectGuid>
+    <ProjectGuid>{B9C8B630-5993-41F7-B584-283947E6B3CA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Simplic.Flow.Event.Service</RootNamespace>
-    <AssemblyName>Simplic.Flow.Event.Service</AssemblyName>
+    <RootNamespace>Simplic.Flow.Analyzer.Service</RootNamespace>
+    <AssemblyName>Simplic.Flow.Analyzer.Service</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -38,16 +38,31 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="Unity.Abstractions, Version=3.3.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.Abstractions.3.3.0\lib\net45\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Container, Version=5.8.6.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.Container.5.8.6\lib\net45\Unity.Container.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EventService.cs" />
+    <Compile Include="Analyzer\FlowAnalyzer.cs" />
+    <Compile Include="Analyzer\FlowNodeAnalyzer.cs" />
+    <Compile Include="FlowAnalyzerService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Simplic.Flow.Event\Simplic.Flow.Event.csproj">
-      <Project>{efcc8359-4ed2-421f-b9be-4e25cdd5cf40}</Project>
-      <Name>Simplic.Flow.Event</Name>
+    <ProjectReference Include="..\Simplic.Flow.Analyzer\Simplic.Flow.Analyzer.csproj">
+      <Project>{28cb89b1-5979-4fab-aed5-463162f76b05}</Project>
+      <Name>Simplic.Flow.Analyzer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Simplic.Flow\Simplic.Flow.csproj">
+      <Project>{1F540A26-62FB-45CB-ABC6-B4B2D8F7005E}</Project>
+      <Name>Simplic.Flow</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
