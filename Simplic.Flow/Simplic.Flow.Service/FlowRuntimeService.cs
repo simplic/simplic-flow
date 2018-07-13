@@ -18,19 +18,19 @@ namespace Simplic.Flow.Service
             if (!instance.CurrentNodes.Any())
             {
                 // Start new
-                foreach (var startNode in instance.Flow.Nodes.OfType<EventNode>().Where(x => x.IsStartEvent && x.EventName == call.Delegate.EventName))
+                foreach (var startNode in instance.Flow.Nodes.OfType<EventNode>().Where(x => x.IsStartEvent && x.Id == call.Delegate.EventNodeId))
                 {
                     // Pass arguments to event
                     startNode.Arguments = call.Args;
 
                     // Execute event
-                    Execute(new NodeScope<EventNode> { Node = startNode, Scope = new DataPinScope() });
+                    Execute(new NodeScope<EventNode> { Node = startNode, NodeId = startNode.Id, Scope = new DataPinScope() });
                 }
             }
             else
             {
                 var executedEvents = new List<NodeScope<EventNode>>();
-                foreach (var eventNode in instance.CurrentNodes.Where(x => x.Node.EventName == call.Delegate.EventName))
+                foreach (var eventNode in instance.CurrentNodes.Where(x => x.NodeId == call.Delegate.EventNodeId))
                 {
                     eventNode.Node.Arguments = call.Args;
 
@@ -54,7 +54,8 @@ namespace Simplic.Flow.Service
                     instance.CurrentNodes.Add(new NodeScope<EventNode>
                     {
                         Node = nextNode.Node as EventNode,
-                        Scope = nextNode.Scope
+                        Scope = nextNode.Scope,
+                        NodeId = nextNode.NodeId
                     });
                 }
                 else
@@ -85,7 +86,7 @@ namespace Simplic.Flow.Service
             // Ensure the node is set
             if (node != null)
             {
-                tempNextNodes.Add(new NodeScope<ActionNode> { Node = node, Scope = scope });
+                tempNextNodes.Add(new NodeScope<ActionNode> { Node = node, NodeId = node.Id, Scope = scope });
                 return true;
             }
 

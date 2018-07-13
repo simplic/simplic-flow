@@ -1,4 +1,5 @@
-﻿using Simplic.Flow.Event;
+﻿using Simplic.Flow.Data.Memory;
+using Simplic.Flow.Event;
 using Simplic.Flow.Service;
 using System;
 
@@ -48,7 +49,7 @@ namespace Simplic.Flow.Console
 
             // ==================================================================
 
-            IFlowInstanceRepository repo = null;
+            IFlowInstanceRepository repo = new FlowInstanceMemoryRepository();
 
             var engine = new FlowEngineService(repo);
             engine.Flows.Add(flow);

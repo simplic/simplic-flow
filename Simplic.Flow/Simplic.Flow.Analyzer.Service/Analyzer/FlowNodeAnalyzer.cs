@@ -4,7 +4,7 @@
     {
         public bool Analyze(Node node)
         {
-            return true; // analyzer the node somehow
+            return true; // analyze the node somehow
         }
     }
 }

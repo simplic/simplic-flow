@@ -24,11 +24,7 @@ namespace Simplic.Flow.Service
 
             activeFlows = flowInstanceRepository.GetAll().ToList();
         }
-
-        // on document saved
-        // flow event service -> call event (engine.Run(eventName))
-        // 
-
+        
         /// <summary>
         /// Run a single cycle
         /// </summary>
@@ -45,6 +41,8 @@ namespace Simplic.Flow.Service
 
                 if (!queueEntry.Delegate.IsStartEvent)
                 {
+                    var finishedInstances = new List<FlowInstance>();
+
                     // Notify ALL instances, which MIGHT BE continued
                     foreach (var activeFlow in activeFlows.Where(x => x.Flow.Id == queueEntry.Delegate.FlowId))
                     {
@@ -52,6 +50,17 @@ namespace Simplic.Flow.Service
 
                         var runtime = new FlowRuntimeService();
                         runtime.Run(activeFlow, queueEntry);
+
+                        if (!activeFlow.IsAlive)
+                            finishedInstances.Add(activeFlow);
+                    }
+
+                    foreach(var flowInstance in finishedInstances)
+                    {
+                        // we call save instead of set as finished, as the IsAlive property already set to false
+                        // flowInstanceRepository.SetAsFinished(flowInstance);
+                        flowInstanceRepository.Save(flowInstance);
+                        activeFlows.Remove(flowInstance);
                     }
                 }
                 else
@@ -71,9 +80,11 @@ namespace Simplic.Flow.Service
 
             foreach (var newFlowInstance in newActiveFlows)
             {
-                activeFlows.Add(newFlowInstance);
+                if (newFlowInstance.IsAlive)
+                    activeFlows.Add(newFlowInstance);
+
                 flowInstanceRepository.Save(newFlowInstance);
-            }                
+            }
         }
 
         /// <summary>

@@ -39,8 +39,7 @@ namespace Simplic.Flow
             return true;
         }
 
-        public override string FriendlyName { get { return "New Contact Added Event"; } }
-        public override bool NeedsState { get; set; }
+        public override string FriendlyName { get { return "New Contact Added Event"; } }        
         public ActionNode FlowOut { get; set; }
         public DataPin DocumentOut { get; set; }
     }

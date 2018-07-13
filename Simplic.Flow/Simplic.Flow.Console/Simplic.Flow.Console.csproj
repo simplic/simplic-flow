@@ -54,6 +54,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Simplic.Flow.Data.Memory\Simplic.Flow.Data.Memory.csproj">
+      <Project>{DEBE9782-694B-49F1-96FC-7E481A47D03D}</Project>
+      <Name>Simplic.Flow.Data.Memory</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Simplic.Flow.Event.Service\Simplic.Flow.Event.Service.csproj">
       <Project>{1b67ba29-a318-4432-807e-84a67936cf34}</Project>
       <Name>Simplic.Flow.Event.Service</Name>
