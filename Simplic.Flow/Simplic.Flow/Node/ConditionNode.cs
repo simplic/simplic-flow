@@ -1,0 +1,39 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Simplic.Flow
+{
+    public abstract class ConditionNode : ActionNode
+    {
+        public override string FriendlyName { get; }
+        
+        public override bool Execute(IFlowRuntimeService runtime)
+        {
+            System.Console.WriteLine($"Execute: {GetType().Name}");
+
+            var result = Compare(runtime);
+            var scope = new PinScope { Value = result, Pin = BooleanDataOut };
+
+            if (result)
+                runtime.EnqueueNode(TrueFlowOut, scope);
+            else
+                runtime.EnqueueNode(FalseFlowOut, scope);
+
+            runtime.EnqueueNode(AnyFlowOut, scope);
+
+            return true;
+        }
+
+        protected abstract bool Compare(IFlowRuntimeService runtime);
+
+        public ActionNode TrueFlowOut { get; set; }
+        public ActionNode FalseFlowOut { get; set; }
+        public ActionNode AnyFlowOut { get; set; }
+        public DataPin ConditionPinIn1 { get; set; }
+        public DataPin ConditionPinIn2 { get; set; }
+        public DataPin BooleanDataOut { get; set; }
+    }
+}

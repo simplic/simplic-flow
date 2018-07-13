@@ -13,7 +13,7 @@
         <Member type="Property">public Guid Id { get; set; }</Member>
         <Member type="Property">public string Name { get; set; }</Member>
         <Member type="Property">public abstract string TypeFriendlyName { get; }</Member>
-        <Member type="Property">public IList&lt;Pin&gt; Pins { get; set; }</Member>
+        <Member type="Property">public IList&lt;Link&gt; Pins { get; set; }</Member>
         <Modifier>Abstract</Modifier>
       </Entity>
       <Entity type="Class">
@@ -50,11 +50,12 @@
       <Entity type="Class">
         <Name>Link</Name>
         <Access>Public</Access>
-        <Location left="845" top="25" />
+        <Location left="760" top="138" />
         <Size width="162" height="216" />
         <Collapsed>False</Collapsed>
         <Member type="Property">public Pin Source { get; set; }</Member>
         <Member type="Property">public Pin Target { get; set; }</Member>
+        <Member type="Property">public LinkType Type { get; set; }</Member>
         <Modifier>None</Modifier>
       </Entity>
       <Entity type="Enum">
@@ -132,6 +133,15 @@
         <Size width="238" height="216" />
         <Collapsed>False</Collapsed>
       </Entity>
+      <Entity type="Enum">
+        <Name>LinkType</Name>
+        <Access>Public</Access>
+        <Location left="988" top="10" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Value>Flow</Value>
+        <Value>Data</Value>
+      </Entity>
     </Entities>
     <Relationships>
       <Relationship type="Generalization" first="3" second="1">
@@ -199,6 +209,18 @@
         </BendPoint>
       </Relationship>
       <Relationship type="Realization" first="10" second="12">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+      </Relationship>
+      <Relationship type="Dependency" first="0" second="4">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+      </Relationship>
+      <Relationship type="Dependency" first="4" second="13">
+        <Label>
+        </Label>
         <StartOrientation>Horizontal</StartOrientation>
         <EndOrientation>Horizontal</EndOrientation>
       </Relationship>
