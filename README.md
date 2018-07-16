@@ -19,11 +19,11 @@ __Args:__ `ScannedDocument`
 - *Barcode*: `string`
 
 
-__FlowOut__ 
+#### FlowOut
 
 FlowOut: `ActionNode`
 
-__DataPin - Out__
+#### DataPin out
 
 *Document:* ScannedDocument
 *Blob:* `byte[]`
