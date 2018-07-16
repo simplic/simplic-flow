@@ -5,6 +5,7 @@ using Simplic.Flow.Data.Memory;
 using Simplic.Flow.Event;
 using Simplic.Flow.Service;
 using System;
+using System.Collections.Generic;
 
 namespace Simplic.Flow.Console
 {
@@ -15,49 +16,52 @@ namespace Simplic.Flow.Console
             CreateConfiguration();
 
             // ==================================================================
-            var flow = new Flow();
-            flow.Id = Guid.NewGuid();
+            #region Manuel configuration
+            //var flow = new Flow();
+            //flow.Id = Guid.NewGuid();
 
-            var evt = flow.CreateNode<OnDocumentScannedNode>();
-            var evt2 = flow.CreateNode<OnDocumentScannedNode>();
-            evt.IsStartEvent = true;
+            //var evt = flow.CreateNode<OnDocumentScannedNode>();
+            //var evt2 = flow.CreateNode<OnDocumentScannedNode>();
+            //evt.IsStartEvent = true;
 
-            var seq = flow.CreateNode<SequenceNode>();
-            var print1 = flow.CreateNode<ConsoleWriteLineNode>();
-            var print2 = flow.CreateNode<ConsoleWriteLineNode>();
-            var print3 = flow.CreateNode<ConsoleWriteLineNode>();
-            var array = flow.CreateNode<CreateStringArraySampleNode>();
-            var fenode = flow.CreateNode<ForeachNode>();
-            var print4 = flow.CreateNode<ConsoleWriteLineNode>();
+            //var seq = flow.CreateNode<SequenceNode>();
+            //var print1 = flow.CreateNode<ConsoleWriteLineNode>();
+            //var print2 = flow.CreateNode<ConsoleWriteLineNode>();
+            //var print3 = flow.CreateNode<ConsoleWriteLineNode>();
+            //var array = flow.CreateNode<CreateStringArraySampleNode>();
+            //var fenode = flow.CreateNode<ForeachNode>();
+            //var print4 = flow.CreateNode<ConsoleWriteLineNode>();
 
-            // Flow direction
-            evt.FlowOut = seq;
-            seq.FlowOutNodes.Add(print1);
-            seq.FlowOutNodes.Add(print2);
+            //// Flow direction
+            //evt.FlowOut = seq;
+            //seq.FlowOutNodes.Add(print1);
+            //seq.FlowOutNodes.Add(print2);
 
-            print2.FlowOut = evt2;
-            evt2.FlowOut = print3;
+            //print2.FlowOut = evt2;
+            //evt2.FlowOut = print3;
 
-            // Add foreach part
-            print1.FlowOut = array;
-            array.FlowOut = fenode;
-            fenode.EachItemFlowOut = print4;
+            //// Add foreach part
+            //print1.FlowOut = array;
+            //array.FlowOut = fenode;
+            //fenode.EachItemFlowOut = print4;
 
-            // Data flow
-            print1.ToPrint = evt.DocumentOut;
-            print2.ToPrint = evt.DocumentOut;
-            print3.ToPrint = evt.DocumentOut;
+            //// Data flow
+            //print1.ToPrint = evt.DocumentOut;
+            //print2.ToPrint = evt.DocumentOut;
+            //print3.ToPrint = evt.DocumentOut;
 
-            fenode.InList = array.StringArrayOut;
-            print4.ToPrint = fenode.Output;
+            //fenode.InList = array.StringArrayOut;
+            //print4.ToPrint = fenode.Output; 
+            #endregion
             // ==================================================================
 
             // ==================================================================
 
-            IFlowInstanceRepository repo = new FlowInstanceMemoryRepository();
+            IFlowInstanceRepository flowInstanceRepository = new FlowInstanceMemoryRepository();
+            IFlowConfigurationRepository flowConfigurationRepository = new FlowConfigurationMemoryRepository();
+            IFlowConfigurationService flowConfigurationService = new FlowConfigurationService(flowConfigurationRepository);
 
-            var engine = new FlowEngineService(repo);
-            engine.Flows.Add(flow);
+            var engine = new FlowEngineService(flowInstanceRepository, flowConfigurationService);            
 
             engine.RefreshEventDelegates();
 
@@ -74,13 +78,15 @@ namespace Simplic.Flow.Console
 
         private static void CreateConfiguration()
         {
+            return;
+
             IFlowConfigurationRepository repo = new FlowConfigurationMemoryRepository();
             var service = new FlowConfigurationService(repo);
 
             var flowConfiguration = new FlowConfiguration
             {
                 Id = Guid.NewGuid(),
-                Name = "Document scan and process"                
+                Name = "Document scan and process2"                
             };
 
             var onDocumentScannedNode = new NodeConfiguration
@@ -184,7 +190,7 @@ namespace Simplic.Flow.Console
                     }
                 }
             };
-
+            
             var jsonStr = service.Save(flowConfiguration);
         }
     }

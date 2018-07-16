@@ -29,7 +29,7 @@ namespace Simplic.Flow
             // Load by .Arguments...
             var value = new DocumentWithBarcode
             {
-                
+
             };
 
             scope.SetValue(DocumentOut, value);

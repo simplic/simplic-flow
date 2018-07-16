@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Simplic.Flow.Configuration.Data.Memory
@@ -12,6 +13,17 @@ namespace Simplic.Flow.Configuration.Data.Memory
         public FlowConfigurationMemoryRepository()
         {
             flowConfigurations = new List<FlowConfiguration>();
+
+            var jsonFileContent = File.ReadAllText("c:\\users\\yavuz\\desktop\\flow.json");
+            var jsonObj = JsonConvert.DeserializeObject<List<FlowConfiguration>>(jsonFileContent,
+                new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.All,
+                    PreserveReferencesHandling = PreserveReferencesHandling.Objects
+                });
+
+            if (jsonObj != null)            
+                flowConfigurations = jsonObj;                
         }
 
         public FlowConfiguration Get(Guid id)
@@ -26,12 +38,17 @@ namespace Simplic.Flow.Configuration.Data.Memory
 
         public bool Save(FlowConfiguration flowConfiguration)
         {
-            string serializedConfiguration = JsonConvert.SerializeObject(flowConfiguration, Formatting.Indented,
-                new JsonSerializerSettings
-                {
-                    TypeNameHandling = TypeNameHandling.All,
-                    PreserveReferencesHandling = PreserveReferencesHandling.Objects
-                });            
+            //var list = new List<FlowConfiguration>();
+            //list.Add(flowConfiguration);
+            //list.Add(flowConfiguration);
+            //list.Add(flowConfiguration);
+
+            //string serializedConfiguration = JsonConvert.SerializeObject(list, Formatting.Indented,
+            //    new JsonSerializerSettings
+            //    {
+            //        TypeNameHandling = TypeNameHandling.All,
+            //        PreserveReferencesHandling = PreserveReferencesHandling.Objects
+            //    });            
 
             flowConfigurations.Add(flowConfiguration);
             return true;

@@ -1,8 +1,10 @@
 ﻿using Simplic.Collections.Generic;
+using Simplic.Flow.Configuration;
 using Simplic.Flow.Event;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity;
 
 namespace Simplic.Flow.Service
 {
@@ -10,21 +12,104 @@ namespace Simplic.Flow.Service
     {
         private IList<Flow> flows;
         private IList<FlowInstance> activeFlows;
+        private IList<FlowConfiguration> flowConfigurations;
         private IDictionary<string, IList<EventDelegate>> eventDelegates;
         private Dequeue<EventCall> eventQueue;
         private readonly IFlowInstanceRepository flowInstanceRepository;
+        private readonly IFlowConfigurationService flowConfigurationService;
+        private readonly IUnityContainer unityContainer;
 
-        public FlowEngineService(IFlowInstanceRepository flowInstanceRepository)
+        public FlowEngineService(IFlowInstanceRepository flowInstanceRepository, IFlowConfigurationService flowConfigurationService)
         {
             flows = new List<Flow>();
             activeFlows = new List<FlowInstance>();
             eventQueue = new Dequeue<EventCall>();
             eventDelegates = new Dictionary<string, IList<EventDelegate>>();
             this.flowInstanceRepository = flowInstanceRepository;
+            this.flowConfigurationService = flowConfigurationService;
 
             activeFlows = flowInstanceRepository.GetAll().ToList();
+            flowConfigurations = flowConfigurationService.GetAll().ToList();
+
+            unityContainer = new UnityContainer();            
+            unityContainer.RegisterType<INodeResolver, ConsoleWriteLineNodeResolver>("ConsoleWriteLineNode");
+            unityContainer.RegisterType<INodeResolver, ForeachNodeResolver>("ForeachNode");
+            unityContainer.RegisterType<INodeResolver, OnDocumentScannedNodeResolver>("OnDocumentScannedNode");
+            unityContainer.RegisterType<INodeResolver, SequenceNodeResolver>("SequenceNode");
+            unityContainer.RegisterType<INodeResolver, StartWithConditionNodeResolver>("StartWithConditionNode");
+
+            flows = CreateFlowsFromConfiguration();
         }
-        
+
+        private IList<Flow> CreateFlowsFromConfiguration()
+        {
+            var list = new List<Flow>();
+            foreach (var flowConfiguration in flowConfigurations)
+            {
+                var nodes = new List<Node>();
+                foreach (var node in flowConfiguration.Nodes)
+                {
+                    var resolver = unityContainer.Resolve<INodeResolver>($"{node.ClassName}");
+                    nodes.Add(resolver.Create(node.Id, node.IsStartEvent));
+                }
+
+                foreach (var pin in flowConfiguration.Pins)
+                {
+                    // Find from to pin
+                    var fromNode = nodes.FirstOrDefault(x => x.Id == pin.From.NodeId);
+                    var toNode = nodes.FirstOrDefault(x => x.Id == pin.To.NodeId);
+
+                    // Find from member
+                    var fromProperty = fromNode.GetType().GetProperty(pin.From.PinName,
+                        System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+                        
+                    var toProperty = toNode.GetType().GetProperty(pin.To.PinName,
+                        System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+
+                    // Set properpty
+                    toProperty.SetValue(toNode, fromProperty.GetValue(fromNode));
+                }
+                
+                foreach (var link in flowConfiguration.Links)
+                {
+                    // Find from to pin
+                    var fromNode = nodes.FirstOrDefault(x => x.Id == link.From.NodeId);
+                    var toNode = nodes.FirstOrDefault(x => x.Id == link.To.NodeId);
+
+                    // Find from property
+                    var property = fromNode.GetType().GetProperty(link.From.PinName, System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+
+                    /* this one is tricky.
+                     * here we check if the property is a list.
+                     * if so, we get the value of the property (which is type of IList)
+                     * and find the Add method and invoke it.
+                     */
+                    if (property.PropertyType.Name == "IList`1")
+                    {                        
+                        // retrieves current List value to call Add method
+                        var customList = property.GetValue(fromNode);
+                        
+                        // gets metadata of the List.Add method
+                        var addMethod = customList.GetType().GetMethod("Add");
+                        addMethod.Invoke(customList, new object[] { toNode });                       
+                    }
+                    else
+                    {
+                        property.SetValue(fromNode, toNode);
+                    }                                                
+                }
+
+                list.Add(new Flow
+                {
+                    Id = flowConfiguration.Id,
+                    Name = flowConfiguration.Name,
+                    Nodes = nodes
+                });
+            }
+
+            return list;
+        }
+
         /// <summary>
         /// Run a single cycle
         /// </summary>
