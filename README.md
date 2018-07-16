@@ -10,14 +10,13 @@ Contains the simplic flow system
 
 ### OnDocumentScanned
 
-__Type:__ Event node
+__Type:__ EventNode
 
-__Args__ 
+__Args:__ `ScannedDocument`
 
-*Type*: ScannedDocument
 *Properties*:
-- *Blob*: byte[]
-- *Barcode*: string
+- *Blob*: `byte[]`
+- *Barcode*: `string`
 
 
 __FlowOut__ 
@@ -27,7 +26,7 @@ FlowOut: `ActionNode`
 __DataPin - Out__
 
 *Document:* ScannedDocument
-*Blob:* byte[]
-*Barcode*: string
+*Blob:* `byte[]`
+*Barcode*: `string`
 
 ## Action nodes
