@@ -25,8 +25,8 @@ FlowOut: `ActionNode`
 
 #### DataPin out
 
-*Document:* ScannedDocument
-*Blob:* `byte[]`
-*Barcode*: `string`
+- *Document:* ScannedDocument
+- *Blob:* `byte[]`
+- *Barcode*: `string`
 
 ## Action nodes
