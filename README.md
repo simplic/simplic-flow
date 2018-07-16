@@ -11,7 +11,9 @@ Contains the simplic flow system
 ### OnDocumentScanned
 
 __Type:__ Event node
+
 __Args__ 
+
 *Type*: ScannedDocument
 *Properties*:
 - *Blob*: byte[]
