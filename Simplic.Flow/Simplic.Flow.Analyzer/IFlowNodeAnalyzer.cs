@@ -2,6 +2,6 @@
 {
     public interface IFlowNodeAnalyzer
     {
-        bool Analyze(Node node);
+        bool Analyze(BaseNode node);
     }
 }

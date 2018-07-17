@@ -4,6 +4,6 @@ namespace Simplic.Flow
 {
     public interface INodeResolver
     {
-        Node Create(Guid id, bool isStartNode);
+        BaseNode Create(Guid id, bool isStartNode);
     }
 }

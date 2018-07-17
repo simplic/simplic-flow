@@ -1,17 +1,19 @@
 ﻿using Simplic.Collections.Generic;
 using Simplic.Flow.Configuration;
 using Simplic.Flow.Event;
+using Simplic.Flow.Node;
+using Simplic.FlowInstance;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity;
 
 namespace Simplic.Flow.Service
-{
+{    
     public class FlowEngineService : IFlowEngineService
     {
         private IList<Flow> flows;
-        private IList<FlowInstance> activeFlows;
+        private IList<Simplic.ActiveFlow.ActiveFlow> activeFlows;
         private IList<FlowConfiguration> flowConfigurations;
         private IDictionary<string, IList<EventDelegate>> eventDelegates;
         private Dequeue<EventCall> eventQueue;
@@ -22,13 +24,13 @@ namespace Simplic.Flow.Service
         public FlowEngineService(IFlowInstanceRepository flowInstanceRepository, IFlowConfigurationService flowConfigurationService)
         {
             flows = new List<Flow>();
-            activeFlows = new List<FlowInstance>();
+            activeFlows = new List<Simplic.ActiveFlow.ActiveFlow>();
             eventQueue = new Dequeue<EventCall>();
             eventDelegates = new Dictionary<string, IList<EventDelegate>>();
             this.flowInstanceRepository = flowInstanceRepository;
             this.flowConfigurationService = flowConfigurationService;
 
-            activeFlows = flowInstanceRepository.GetAll().ToList();
+            // activeFlows = flowInstanceRepository.GetAll().ToList();
             flowConfigurations = flowConfigurationService.GetAll().ToList();
 
             unityContainer = new UnityContainer();            
@@ -46,7 +48,7 @@ namespace Simplic.Flow.Service
             var list = new List<Flow>();
             foreach (var flowConfiguration in flowConfigurations)
             {
-                var nodes = new List<Node>();
+                var nodes = new List<BaseNode>();
                 foreach (var node in flowConfiguration.Nodes)
                 {
                     var resolver = unityContainer.Resolve<INodeResolver>($"{node.ClassName}");
@@ -118,7 +120,7 @@ namespace Simplic.Flow.Service
             // Run a single cycle
 
             // pop event entries from queue first
-            var newActiveFlows = new List<FlowInstance>();
+            var newActiveFlows = new List<FlowInstance.FlowInstance>();
 
             while (eventQueue.Count > 0)
             {
@@ -126,39 +128,43 @@ namespace Simplic.Flow.Service
 
                 if (!queueEntry.Delegate.IsStartEvent)
                 {
-                    var finishedInstances = new List<FlowInstance>();
+                    var finishedInstances = new List<ActiveFlow.ActiveFlow>();
 
                     // Notify ALL instances, which MIGHT BE continued
-                    foreach (var activeFlow in activeFlows.Where(x => x.Flow.Id == queueEntry.Delegate.FlowId))
+                    foreach (var activeFlow in activeFlows.Where(x => x.FlowId == queueEntry.Delegate.FlowId))
                     {
                         System.Console.WriteLine("---- CONTINUE FLOW ----");
 
-                        var runtime = new FlowRuntimeService();
-                        runtime.Run(activeFlow, queueEntry);
+                        var flowInstance = flowInstanceRepository.GetById(activeFlow.FlowInstanceId);
 
-                        if (!activeFlow.IsAlive)
+                        var runtime = new FlowRuntimeService();
+                        runtime.Run(flowInstance, queueEntry);
+
+                        if (!flowInstance.IsAlive)                                                    
                             finishedInstances.Add(activeFlow);
+
+                        // we call save instead of set as finished, as the IsAlive property already set to false
+                        // flowInstanceRepository.SetAsFinished(flowInstance);                        
+                        flowInstanceRepository.Save(flowInstance);
                     }
 
-                    foreach(var flowInstance in finishedInstances)
+                    foreach(var activeFlow in finishedInstances)
                     {
-                        // we call save instead of set as finished, as the IsAlive property already set to false
-                        // flowInstanceRepository.SetAsFinished(flowInstance);
-                        flowInstanceRepository.Save(flowInstance);
-                        activeFlows.Remove(flowInstance);
+                        activeFlows.Remove(activeFlow);
                     }
                 }
                 else
                 {
                     System.Console.WriteLine("---- NEW FLOW----");
                     var runtime = new FlowRuntimeService();
-                    var newFlow = new FlowInstance
+                    var newFlow = new FlowInstance.FlowInstance
                     {
                         Flow = flows.FirstOrDefault(x => x.Id == queueEntry.Delegate.FlowId),
                         Id = Guid.NewGuid()
                     };
 
                     runtime.Run(newFlow, queueEntry);
+
                     newActiveFlows.Add(newFlow);
                 }
             }
@@ -166,7 +172,16 @@ namespace Simplic.Flow.Service
             foreach (var newFlowInstance in newActiveFlows)
             {
                 if (newFlowInstance.IsAlive)
-                    activeFlows.Add(newFlowInstance);
+                {
+                    var activeFlow = new ActiveFlow.ActiveFlow
+                    {
+                        FlowInstanceId = newFlowInstance.Id,
+                        CurrentEventNodes = newFlowInstance.CurrentNodes,
+                        FlowId = newFlowInstance.Flow.Id
+
+                    };
+                    activeFlows.Add(activeFlow);
+                }
 
                 flowInstanceRepository.Save(newFlowInstance);
             }
@@ -220,7 +235,7 @@ namespace Simplic.Flow.Service
             }
         }
 
-        public IList<FlowInstance> ActiveFlows
+        public IList<ActiveFlow.ActiveFlow> ActiveFlows
         {
             get
             {

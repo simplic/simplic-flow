@@ -47,31 +47,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interface\IFlowInstanceRepository.cs" />
     <Compile Include="Interface\IFlowRuntimeService.cs" />
     <Compile Include="Interface\INodeResolver.cs" />
     <Compile Include="Model\DocumentWithBarcode.cs" />
-    <Compile Include="Model\Node\ConsoleWriteLineNode.cs" />
-    <Compile Include="Model\Node\CreateStringArraySampleNode.cs" />
-    <Compile Include="Model\Node\ForeachNode.cs" />
     <Compile Include="Model\Node\NodeScope.cs" />
     <Compile Include="Model\Node\Base\ActionNode.cs" />
     <Compile Include="Model\Node\Base\ConditionNode.cs" />
     <Compile Include="Model\Node\OnDocumentScannedNode.cs" />
-    <Compile Include="Model\Node\Resolver\ConsoleWriteLineNodeResolver.cs" />
-    <Compile Include="Model\Node\Resolver\ForeachNodeResolver.cs" />
     <Compile Include="Model\Node\Resolver\OnDocumentScannedNodeResolver.cs" />
-    <Compile Include="Model\Node\Resolver\SequenceNodeResolver.cs" />
-    <Compile Include="Model\Node\Resolver\StartWithConditionNodeResolver.cs" />
-    <Compile Include="Model\Node\SequenceNode.cs" />
-    <Compile Include="Model\Node\StartWithConditionNode.cs" />
     <Compile Include="Model\Pin\DataPin.cs" />
     <Compile Include="Model\Pin\DataPinContainerType.cs" />
     <Compile Include="Model\Node\Base\EventNode.cs" />
     <Compile Include="Model\Flow\Flow.cs" />
-    <Compile Include="Model\Flow\FlowInstance.cs" />
     <Compile Include="Interface\IFlowEngineService.cs" />
-    <Compile Include="Model\Node\Base\Node.cs" />
+    <Compile Include="Model\Node\Base\BaseNode.cs" />
     <Compile Include="Interface\IPin.cs" />
     <Compile Include="Model\Pin\PinDirection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -14,16 +14,15 @@ namespace Simplic.Flow.Configuration.Data.Memory
         {
             flowConfigurations = new List<FlowConfiguration>();
 
-            var jsonFileContent = File.ReadAllText("c:\\users\\yavuz\\desktop\\flow.json");
-            var jsonObj = JsonConvert.DeserializeObject<List<FlowConfiguration>>(jsonFileContent,
-                new JsonSerializerSettings
-                {
-                    TypeNameHandling = TypeNameHandling.All,
-                    PreserveReferencesHandling = PreserveReferencesHandling.Objects
-                });
+            var filePath = "C:\\dev\\simplic-flow\\Simplic.Flow\\Simplic.Flow.Console\\SampleFlow.json";
+            if (File.Exists(filePath))
+            {
+                var jsonFileContent = File.ReadAllText(filePath);
+                var jsonObj = JsonConvert.DeserializeObject<List<FlowConfiguration>>(jsonFileContent);
 
-            if (jsonObj != null)            
-                flowConfigurations = jsonObj;                
+                if (jsonObj != null)
+                    flowConfigurations = jsonObj;
+            }            
         }
 
         public FlowConfiguration Get(Guid id)
@@ -38,17 +37,7 @@ namespace Simplic.Flow.Configuration.Data.Memory
 
         public bool Save(FlowConfiguration flowConfiguration)
         {
-            //var list = new List<FlowConfiguration>();
-            //list.Add(flowConfiguration);
-            //list.Add(flowConfiguration);
-            //list.Add(flowConfiguration);
-
-            //string serializedConfiguration = JsonConvert.SerializeObject(list, Formatting.Indented,
-            //    new JsonSerializerSettings
-            //    {
-            //        TypeNameHandling = TypeNameHandling.All,
-            //        PreserveReferencesHandling = PreserveReferencesHandling.Objects
-            //    });            
+            string serializedConfiguration = JsonConvert.SerializeObject(flowConfiguration, Formatting.Indented);
 
             flowConfigurations.Add(flowConfiguration);
             return true;

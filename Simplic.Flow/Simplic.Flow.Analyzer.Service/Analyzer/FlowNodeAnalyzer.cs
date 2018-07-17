@@ -2,7 +2,7 @@
 {
     public class FlowNodeAnalyzer : IFlowNodeAnalyzer
     {
-        public bool Analyze(Node node)
+        public bool Analyze(BaseNode node)
         {
             return true; // analyze the node somehow
         }

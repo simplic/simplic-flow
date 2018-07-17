@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Simplic.Flow
+namespace Simplic.Flow.Node
 {
     public class SequenceNode : ActionNode
     {

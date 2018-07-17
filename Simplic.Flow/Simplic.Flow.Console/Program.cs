@@ -71,6 +71,9 @@ namespace Simplic.Flow.Console
 
             engine.EnqueueEvent(new FlowEventArgs { EventName = nameof(OnDocumentScannedNode), ObjectId = Guid.Empty });
             engine.Run();
+
+            engine.EnqueueEvent(new FlowEventArgs { EventName = nameof(OnDocumentScannedNode), ObjectId = Guid.Empty });
+            engine.Run();
             // ==================================================================
 
             System.Console.ReadLine();
@@ -79,7 +82,6 @@ namespace Simplic.Flow.Console
         private static void CreateConfiguration()
         {
             return;
-
             IFlowConfigurationRepository repo = new FlowConfigurationMemoryRepository();
             var service = new FlowConfigurationService(repo);
 
@@ -96,6 +98,7 @@ namespace Simplic.Flow.Console
                 ClassName = "OnDocumentScannedNode",
                 IsStartEvent = true
             };
+
             flowConfiguration.Nodes.Add(onDocumentScannedNode);
 
             var sequenceNode = new NodeConfiguration
@@ -121,6 +124,25 @@ namespace Simplic.Flow.Console
                 ClassName = "ConsoleWriteLineNode"
             };
             flowConfiguration.Nodes.Add(consoleWriteLineNode2);
+
+
+            var onDocumentScannedNode2 = new NodeConfiguration
+            {
+                Id = Guid.NewGuid(),
+                NodeType = "EventNode",
+                ClassName = "OnDocumentScannedNode",
+                IsStartEvent = false
+            };
+            flowConfiguration.Nodes.Add(onDocumentScannedNode2);
+
+            var consoleWriteLineNode3 = new NodeConfiguration
+            {
+                Id = Guid.NewGuid(),
+                NodeType = "ActionNode",
+                ClassName = "ConsoleWriteLineNode"
+            };
+            flowConfiguration.Nodes.Add(consoleWriteLineNode3);
+
 
             flowConfiguration.Links = new System.Collections.Generic.List<LinkConfiguration> {
                 new LinkConfiguration
@@ -158,6 +180,30 @@ namespace Simplic.Flow.Console
                     {
                         NodeId = consoleWriteLineNode2.Id
                     }
+                },                
+                new LinkConfiguration
+                {
+                    From = new Link
+                    {
+                        NodeId = consoleWriteLineNode2.Id,
+                        PinName = "FlowOut"
+                    },
+                    To = new Link
+                    {
+                        NodeId = onDocumentScannedNode2.Id
+                    }
+                },
+                new LinkConfiguration
+                {
+                    From = new Link
+                    {
+                        NodeId = onDocumentScannedNode2.Id,
+                        PinName = "FlowOut"
+                    },
+                    To = new Link
+                    {
+                        NodeId = consoleWriteLineNode3.Id                        
+                    }
                 }
             };
 
@@ -186,6 +232,20 @@ namespace Simplic.Flow.Console
                     To = new Link
                     {
                         NodeId = consoleWriteLineNode2.Id,
+                        PinName = "ToPrint"
+                    }
+                },
+                new PinConfiguration
+                {
+                    From = new Link
+                    {
+                        NodeId = onDocumentScannedNode2.Id,
+                        PinName = "DocumentOut"
+                    }
+                    ,
+                    To = new Link
+                    {
+                        NodeId = consoleWriteLineNode3.Id,
                         PinName = "ToPrint"
                     }
                 }

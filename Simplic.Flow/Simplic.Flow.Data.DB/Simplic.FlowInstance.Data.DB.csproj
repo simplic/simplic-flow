@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{43B68136-7EC1-48D5-8DDC-A10C7F904455}</ProjectGuid>
+    <ProjectGuid>{77F6A86D-E3B4-4FD5-B918-5228BAC82855}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Simplic.Flow.Service</RootNamespace>
-    <AssemblyName>Simplic.Flow.Service</AssemblyName>
+    <RootNamespace>Simplic.Flow.Data.DB</RootNamespace>
+    <AssemblyName>Simplic.Flow.Data.DB</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,9 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Simplic.CoreLib, Version=6.1.118.621, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simplic.CoreLib.6.1.118.621\lib\net451\Simplic.CoreLib.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -41,46 +38,16 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="Unity.Abstractions, Version=3.3.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.Abstractions.3.3.0\lib\net45\Unity.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Container, Version=5.8.6.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.Container.5.8.6\lib\net45\Unity.Container.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FlowEngineService.cs" />
-    <Compile Include="FlowRuntimeService.cs" />
+    <Compile Include="FlowInstanceRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Simplic.ActiveFlow\Simplic.ActiveFlow.csproj">
-      <Project>{a486c73f-1c0e-43b0-8dec-2c583c4f18d7}</Project>
-      <Name>Simplic.ActiveFlow</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Simplic.Flow.Configuration\Simplic.Flow.Configuration.csproj">
-      <Project>{A2F33950-81AF-4D02-856F-5B2C69E78CAC}</Project>
-      <Name>Simplic.Flow.Configuration</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Simplic.Flow.Event\Simplic.Flow.Event.csproj">
-      <Project>{EFCC8359-4ED2-421F-B9BE-4E25CDD5CF40}</Project>
-      <Name>Simplic.Flow.Event</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Simplic.Flow.Node\Simplic.Flow.Node.csproj">
-      <Project>{A88421D5-6B43-4B8D-8865-79A33F935112}</Project>
-      <Name>Simplic.Flow.Node</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Simplic.FlowInstance\Simplic.FlowInstance.csproj">
-      <Project>{7206AF52-60CB-46B1-9FE7-CF172752B0E9}</Project>
-      <Name>Simplic.FlowInstance</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Simplic.Flow\Simplic.Flow.csproj">
       <Project>{1f540a26-62fb-45cb-abc6-b4b2d8f7005e}</Project>
       <Name>Simplic.Flow</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

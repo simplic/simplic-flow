@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.Flow.Analyzer", "Si
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.Flow.Analyzer.Service", "Simplic.Flow.Analyzer.Service\Simplic.Flow.Analyzer.Service.csproj", "{B9C8B630-5993-41F7-B584-283947E6B3CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.Flow.Data.Memory", "Simplic.Flow.Data.Memory\Simplic.Flow.Data.Memory.csproj", "{DEBE9782-694B-49F1-96FC-7E481A47D03D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.FlowInstance.Data.Memory", "Simplic.Flow.Data.Memory\Simplic.FlowInstance.Data.Memory.csproj", "{DEBE9782-694B-49F1-96FC-7E481A47D03D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration", "Configuration", "{F2B6C2B1-4EBC-4EC5-96D4-6FCE0276520E}"
 EndProject
@@ -26,6 +26,22 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.Flow.Configuration.Service", "Simplic.Flow.Configuration.Service\Simplic.Flow.Configuration.Service.csproj", "{BEB6592D-DDA6-4375-AAE4-A6CC58357E1F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.Flow.Configuration.Data.Memory", "Simplic.Flow.Configuration.Data.Memory\Simplic.Flow.Configuration.Data.Memory.csproj", "{3FA1E55F-5B91-4D6B-B9E3-15CC280C97BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.Flow.Node", "Simplic.Flow.Node\Simplic.Flow.Node.csproj", "{A88421D5-6B43-4B8D-8865-79A33F935112}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Analyzer", "Analyzer", "{89E1BE86-3223-4543-B22C-18D142A6D4FA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FlowInstance", "FlowInstance", "{18EF6E53-DE0B-44A1-BF0E-D23E731B4406}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.FlowInstance.Data.DB", "Simplic.FlowInstance.Data.DB\Simplic.FlowInstance.Data.DB.csproj", "{31F8BAE6-18F3-4060-87BB-E2404D043A74}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.FlowInstance", "Simplic.FlowInstance\Simplic.FlowInstance.csproj", "{7206AF52-60CB-46B1-9FE7-CF172752B0E9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ActiveFlow", "ActiveFlow", "{76DB3787-8A6A-46D5-96ED-1AF1F7A2F3FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.ActiveFlow", "Simplic.ActiveFlow\Simplic.ActiveFlow.csproj", "{A486C73F-1C0E-43B0-8DEC-2C583C4F18D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.ActiveFlow.Data.DB", "Simplic.ActiveFlow.Data.DB\Simplic.ActiveFlow.Data.DB.csproj", "{114750CD-E809-45C4-90E0-7DD905DDB710}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -77,14 +93,41 @@ Global
 		{3FA1E55F-5B91-4D6B-B9E3-15CC280C97BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3FA1E55F-5B91-4D6B-B9E3-15CC280C97BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3FA1E55F-5B91-4D6B-B9E3-15CC280C97BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A88421D5-6B43-4B8D-8865-79A33F935112}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A88421D5-6B43-4B8D-8865-79A33F935112}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A88421D5-6B43-4B8D-8865-79A33F935112}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A88421D5-6B43-4B8D-8865-79A33F935112}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31F8BAE6-18F3-4060-87BB-E2404D043A74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31F8BAE6-18F3-4060-87BB-E2404D043A74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31F8BAE6-18F3-4060-87BB-E2404D043A74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31F8BAE6-18F3-4060-87BB-E2404D043A74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7206AF52-60CB-46B1-9FE7-CF172752B0E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7206AF52-60CB-46B1-9FE7-CF172752B0E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7206AF52-60CB-46B1-9FE7-CF172752B0E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7206AF52-60CB-46B1-9FE7-CF172752B0E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A486C73F-1C0E-43B0-8DEC-2C583C4F18D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A486C73F-1C0E-43B0-8DEC-2C583C4F18D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A486C73F-1C0E-43B0-8DEC-2C583C4F18D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A486C73F-1C0E-43B0-8DEC-2C583C4F18D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{114750CD-E809-45C4-90E0-7DD905DDB710}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{114750CD-E809-45C4-90E0-7DD905DDB710}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{114750CD-E809-45C4-90E0-7DD905DDB710}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{114750CD-E809-45C4-90E0-7DD905DDB710}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{28CB89B1-5979-4FAB-AED5-463162F76B05} = {89E1BE86-3223-4543-B22C-18D142A6D4FA}
+		{B9C8B630-5993-41F7-B584-283947E6B3CA} = {89E1BE86-3223-4543-B22C-18D142A6D4FA}
+		{DEBE9782-694B-49F1-96FC-7E481A47D03D} = {18EF6E53-DE0B-44A1-BF0E-D23E731B4406}
 		{A2F33950-81AF-4D02-856F-5B2C69E78CAC} = {F2B6C2B1-4EBC-4EC5-96D4-6FCE0276520E}
 		{BEB6592D-DDA6-4375-AAE4-A6CC58357E1F} = {F2B6C2B1-4EBC-4EC5-96D4-6FCE0276520E}
 		{3FA1E55F-5B91-4D6B-B9E3-15CC280C97BE} = {F2B6C2B1-4EBC-4EC5-96D4-6FCE0276520E}
+		{31F8BAE6-18F3-4060-87BB-E2404D043A74} = {18EF6E53-DE0B-44A1-BF0E-D23E731B4406}
+		{7206AF52-60CB-46B1-9FE7-CF172752B0E9} = {18EF6E53-DE0B-44A1-BF0E-D23E731B4406}
+		{A486C73F-1C0E-43B0-8DEC-2C583C4F18D7} = {76DB3787-8A6A-46D5-96ED-1AF1F7A2F3FB}
+		{114750CD-E809-45C4-90E0-7DD905DDB710} = {76DB3787-8A6A-46D5-96ED-1AF1F7A2F3FB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DFCA28AB-EBED-44F4-9B03-F609AEA4F137}

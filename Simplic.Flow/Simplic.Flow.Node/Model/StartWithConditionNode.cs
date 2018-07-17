@@ -1,4 +1,4 @@
-﻿namespace Simplic.Flow
+﻿namespace Simplic.Flow.Node
 {
     public class StartWithConditionNode : ConditionNode
     {

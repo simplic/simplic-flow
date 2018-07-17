@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace Simplic.Flow
+namespace Simplic.Flow.Node
 {
     public class ConsoleWriteLineNodeResolver : INodeResolver
     {
-        public Node Create(Guid id, bool isStartNode)
+        public BaseNode Create(Guid id, bool isStartNode)
         {
             return new ConsoleWriteLineNode { Id = id };
         }
