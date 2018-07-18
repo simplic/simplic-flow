@@ -32,9 +32,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dapper, Version=1.50.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.50.5\lib\net451\Dapper.dll</HintPath>
+    </Reference>
     <Reference Include="Simplic.CoreLib, Version=6.1.118.621, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Simplic.CoreLib.6.1.118.621\lib\net451\Simplic.CoreLib.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="Simplic.Sql, Version=6.1.18.625, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.Sql.6.1.18.625\lib\net451\Simplic.Sql.dll</HintPath>
+    </Reference>
+    <Reference Include="Simplic.Sql.SqlAnywhere.Service, Version=5.95.18.529, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.Sql.SqlAnywhere.Service.5.95.18.529\lib\net451\Simplic.Sql.SqlAnywhere.Service.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -82,6 +91,14 @@
     <ProjectReference Include="..\Simplic.Flow.Service\Simplic.Flow.Service.csproj">
       <Project>{43b68136-7ec1-48d5-8ddc-a10c7f904455}</Project>
       <Name>Simplic.Flow.Service</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.FlowInstance.Data.DB\Simplic.FlowInstance.Data.DB.csproj">
+      <Project>{31F8BAE6-18F3-4060-87BB-E2404D043A74}</Project>
+      <Name>Simplic.FlowInstance.Data.DB</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.FlowInstance\Simplic.FlowInstance.csproj">
+      <Project>{7206AF52-60CB-46B1-9FE7-CF172752B0E9}</Project>
+      <Name>Simplic.FlowInstance</Name>
     </ProjectReference>
     <ProjectReference Include="..\Simplic.Flow\Simplic.Flow.csproj">
       <Project>{1f540a26-62fb-45cb-abc6-b4b2d8f7005e}</Project>

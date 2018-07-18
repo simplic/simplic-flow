@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Simplic.Flow.Data.Memory
+namespace Simplic.FlowInstance.Data.Memory
 {
     public class FlowInstanceMemoryRepository : IFlowInstanceRepository
     {

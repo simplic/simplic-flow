@@ -9,5 +9,9 @@ namespace Simplic.Flow
         public string EventName { get; set; }
         public Guid FlowId { get; set; }                
         public bool IsStartEvent { get; set; }
+        public virtual bool ShouldExecute(DataPinScope scope)
+        {
+            return true;
+        }
     }
 }

@@ -1,11 +1,12 @@
 ﻿using Simplic.Flow.Configuration;
 using Simplic.Flow.Configuration.Data.Memory;
 using Simplic.Flow.Configuration.Service;
-using Simplic.Flow.Data.Memory;
 using Simplic.Flow.Event;
 using Simplic.Flow.Service;
+using Simplic.FlowInstance;
+using Simplic.FlowInstance.Data.DB;
+using Simplic.Sql;
 using System;
-using System.Collections.Generic;
 
 namespace Simplic.Flow.Console
 {
@@ -57,11 +58,12 @@ namespace Simplic.Flow.Console
 
             // ==================================================================
 
-            IFlowInstanceRepository flowInstanceRepository = new FlowInstanceMemoryRepository();
+            ISqlService sqlService = new Sql.SqlAnywhere.Service.SqlService();
+            IFlowInstanceRepository flowInstanceRepository = new FlowInstanceRepository(sqlService);
             IFlowConfigurationRepository flowConfigurationRepository = new FlowConfigurationMemoryRepository();
             IFlowConfigurationService flowConfigurationService = new FlowConfigurationService(flowConfigurationRepository);
 
-            var engine = new FlowEngineService(flowInstanceRepository, flowConfigurationService);            
+            var engine = new FlowService(flowInstanceRepository, flowConfigurationService);            
 
             engine.RefreshEventDelegates();
 

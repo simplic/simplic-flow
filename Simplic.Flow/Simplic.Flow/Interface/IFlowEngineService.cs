@@ -2,7 +2,7 @@
 
 namespace Simplic.Flow
 {
-    public interface IFlowEngineService
+    public interface IFlowService
     {
         void Run();
         void EnqueueEvent(FlowEventArgs args);

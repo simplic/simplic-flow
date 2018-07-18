@@ -1,5 +1,4 @@
 ﻿using Simplic.Collections.Generic;
-using Simplic.Flow.Event;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -24,6 +23,9 @@ namespace Simplic.Flow.Service
                     // Pass arguments to event
                     startNode.Arguments = call.Args;
 
+                    if (!startNode.ShouldExecute(instance.DataScope))
+                        continue;
+
                     // Execute event
                     Execute(new NodeScope<EventNode> { Node = startNode, NodeId = startNode.Id, Scope = instance.DataScope });
                 }
@@ -34,6 +36,9 @@ namespace Simplic.Flow.Service
                 foreach (var eventNode in instance.CurrentNodes.Where(x => x.NodeId == call.Delegate.EventNodeId))
                 {
                     eventNode.Node.Arguments = call.Args;
+
+                    if (!eventNode.Node.ShouldExecute(eventNode.Scope))
+                        continue;
 
                     if (Execute(eventNode))
                         executedEvents.Add(eventNode);

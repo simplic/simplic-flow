@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1B67BA29-A318-4432-807E-84A67936CF34}</ProjectGuid>
+    <ProjectGuid>{BBEA1BE9-D55C-4242-9F56-6640EFD36194}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Simplic.Flow.Event.Service</RootNamespace>
-    <AssemblyName>Simplic.Flow.Event.Service</AssemblyName>
+    <RootNamespace>Simplic.Flow.EventQueue</RootNamespace>
+    <AssemblyName>Simplic.Flow.EventQueue</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -40,18 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EventService.cs" />
+    <Compile Include="Interface\IFlowEventQueueRepository.cs" />
+    <Compile Include="Interface\IFlowEventQueueService.cs" />
+    <Compile Include="Model\EventQueueModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Simplic.Flow.EventQueue\Simplic.Flow.EventQueue.csproj">
-      <Project>{BBEA1BE9-D55C-4242-9F56-6640EFD36194}</Project>
-      <Name>Simplic.Flow.EventQueue</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Simplic.Flow.Event\Simplic.Flow.Event.csproj">
-      <Project>{efcc8359-4ed2-421f-b9be-4e25cdd5cf40}</Project>
-      <Name>Simplic.Flow.Event</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
