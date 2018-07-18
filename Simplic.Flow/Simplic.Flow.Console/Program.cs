@@ -7,6 +7,7 @@ using Simplic.FlowInstance;
 using Simplic.FlowInstance.Data.DB;
 using Simplic.Sql;
 using System;
+using Unity;
 
 namespace Simplic.Flow.Console
 {
@@ -58,12 +59,13 @@ namespace Simplic.Flow.Console
 
             // ==================================================================
 
-            ISqlService sqlService = new Sql.SqlAnywhere.Service.SqlService();
-            IFlowInstanceRepository flowInstanceRepository = new FlowInstanceRepository(sqlService);
-            IFlowConfigurationRepository flowConfigurationRepository = new FlowConfigurationMemoryRepository();
-            IFlowConfigurationService flowConfigurationService = new FlowConfigurationService(flowConfigurationRepository);
+            IUnityContainer unityContainer = new UnityContainer();
+            unityContainer.RegisterType<ISqlService, Sql.SqlAnywhere.Service.SqlService>();
+            unityContainer.RegisterType<IFlowInstanceRepository, FlowInstanceRepository>();
+            unityContainer.RegisterType<IFlowConfigurationRepository, FlowConfigurationMemoryRepository>();
+            unityContainer.RegisterType<IFlowConfigurationService, FlowConfigurationService>();            
 
-            var engine = new FlowService(flowInstanceRepository, flowConfigurationService);            
+            var engine = new FlowService(unityContainer);
 
             engine.RefreshEventDelegates();
 

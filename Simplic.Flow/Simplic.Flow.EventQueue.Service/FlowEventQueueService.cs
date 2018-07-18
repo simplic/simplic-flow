@@ -31,5 +31,10 @@ namespace Simplic.Flow.EventQueue.Service
         {
             return flowEventQueueRepository.Save(model);
         }
+
+        public bool SetHandled(Guid id, bool isHandled)
+        {
+            return flowEventQueueRepository.SetHandled(id, isHandled);
+        }
     }
 }

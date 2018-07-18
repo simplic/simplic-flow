@@ -66,6 +66,7 @@ namespace Simplic.Flow.Service
         /// <param name="flowInstances">Objects to create from</param>
         private void CreateActiveFlowsFrom(List<FlowInstance.FlowInstance> flowInstances)
         {
+            flowLogService.Info($"Running CreateActiveFlowsFrom with {string.Join(",", flowInstances)}");
             foreach (var flowInstance in flowInstances)
             {
                 if (flowInstance.IsAlive)
@@ -75,8 +76,8 @@ namespace Simplic.Flow.Service
                         FlowInstanceId = flowInstance.Id,
                         CurrentEventNodes = flowInstance.CurrentNodes,
                         FlowId = flowInstance.Flow.Id
-
                     };
+                    
                     activeFlows.Add(activeFlow);
                 }
 
@@ -92,6 +93,7 @@ namespace Simplic.Flow.Service
         /// <returns>A list <see cref="Flow"/> objects</returns>
         private IList<Flow> CreateFlowsFromConfiguration()
         {
+            flowLogService.Info($"Running CreateFlowsFromConfiguration with {string.Join(",", flowConfigurations)}");
             var list = new List<Flow>();
             foreach (var flowConfiguration in flowConfigurations)
             {
@@ -165,8 +167,12 @@ namespace Simplic.Flow.Service
         /// Loads the event queue from the repository
         /// </summary>
         private void LoadEventQueue()
-        {
-            foreach (var flowEventQueue in flowEventQueueService.GetAllUnhandled())
+        {            
+            var unhandledEvents = flowEventQueueService.GetAllUnhandled();
+
+            flowLogService.Info($"Loaded unhandledEvents with {string.Join(",", unhandledEvents)}");
+
+            foreach (var flowEventQueue in unhandledEvents)
             {
                 var eventArgs = JsonConvert.DeserializeObject<FlowEventArgs>(
                     Encoding.UTF8.GetString(flowEventQueue.Args),
@@ -191,6 +197,7 @@ namespace Simplic.Flow.Service
         /// <param name="eventQueueId">Event queue to update</param>
         private bool SetEventQueueHandled(Guid eventQueueId)
         {
+            flowLogService.Info($"Running SetEventQueueHandled with {eventQueueId}");
             return flowEventQueueService.SetHandled(eventQueueId, true);
         }
         #endregion
@@ -207,8 +214,9 @@ namespace Simplic.Flow.Service
         {
             try
             {
+                flowLogService.Info($"Running Run");
                 // load event queue from db            
-                LoadEventQueue();
+                LoadEventQueue();                
 
                 // pop event entries from queue first
                 var newFlowInstances = new List<FlowInstance.FlowInstance>();
@@ -217,6 +225,8 @@ namespace Simplic.Flow.Service
                 {
                     var queueEntry = eventQueue.PopFirst();
 
+                    flowLogService.Info($"Processing {queueEntry}");
+
                     if (!queueEntry.Delegate.IsStartEvent)
                     {
                         var finishedInstances = new List<ActiveFlow.ActiveFlow>();
@@ -224,6 +234,7 @@ namespace Simplic.Flow.Service
                         // Notify ALL instances, which MIGHT BE continued
                         foreach (var activeFlow in activeFlows.Where(x => x.FlowId == queueEntry.Delegate.FlowId))
                         {
+                            flowLogService.Info($"Continuing flow instance: {activeFlow.FlowInstanceId}");
                             System.Console.WriteLine("---- CONTINUE FLOW ----");
 
                             var flowInstance = flowInstanceService.GetById(activeFlow.FlowInstanceId);
@@ -234,7 +245,11 @@ namespace Simplic.Flow.Service
                                 runtime.Run(flowInstance, queueEntry);
 
                                 if (!flowInstance.IsAlive)
+                                {
                                     finishedInstances.Add(activeFlow);
+                                    flowLogService.Info($"Flow instance {activeFlow.FlowInstanceId} is not alive anymore.");
+                                }
+                                    
                                                        
                                 flowInstanceService.Save(flowInstance);
                             }
@@ -246,6 +261,7 @@ namespace Simplic.Flow.Service
                                 finishedInstances.Add(activeFlow);
 
                                 // log the exception
+                                flowLogService.Error($"Continue flow instance failed.", ex, activeFlow.FlowInstanceId, queueEntry.QueueId);
 
                                 flowInstanceService.Save(flowInstance);
                                 throw;
@@ -261,7 +277,7 @@ namespace Simplic.Flow.Service
                     {
                         System.Console.WriteLine("---- NEW FLOW----");
                         var runtime = new FlowRuntimeService();
-                        var newFlow = new FlowInstance.FlowInstance
+                        var newFlowInstance = new FlowInstance.FlowInstance
                         {
                             Flow = flows.FirstOrDefault(x => x.Id == queueEntry.Delegate.FlowId),
                             Id = Guid.NewGuid()
@@ -269,13 +285,15 @@ namespace Simplic.Flow.Service
 
                         try
                         {
-                            runtime.Run(newFlow, queueEntry);
-                            newFlowInstances.Add(newFlow);
+                            runtime.Run(newFlowInstance, queueEntry);
+                            newFlowInstances.Add(newFlowInstance);
                         }
                         catch (Exception ex)
                         {
-                            newFlow.IsFailed = true;
-                            flowInstanceService.Save(newFlow);
+                            newFlowInstance.IsFailed = true;
+                            flowInstanceService.Save(newFlowInstance);
+
+                            flowLogService.Error($"NewFlowInstace could not be run", ex, newFlowInstance.Id, queueEntry.QueueId);
                             throw;
                         }
                     }
@@ -288,7 +306,7 @@ namespace Simplic.Flow.Service
             }
             catch (Exception ex)
             {
-
+                flowLogService.Error($"FlowService.Run could not be run", ex);
                 throw;
             }
         }
