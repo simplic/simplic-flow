@@ -62,7 +62,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="package.bat" />
     <None Include="packages.config" />
+    <None Include="Simplic.FlowInstance.Data.DB.nuspec" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -49,5 +49,9 @@
       <Name>Simplic.Flow.Configuration</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="package.bat" />
+    <None Include="Simplic.Flow.Configuration.Service.nuspec" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

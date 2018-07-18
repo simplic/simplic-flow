@@ -1,4 +1,5 @@
 ﻿using Simplic.Collections.Generic;
+using Simplic.Flow.Log;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,7 +9,17 @@ namespace Simplic.Flow.Service
     {
         private Dequeue<NodeScope<ActionNode>> nextNodes = new Dequeue<NodeScope<ActionNode>>();
         private IList<NodeScope<ActionNode>> tempNextNodes = new List<NodeScope<ActionNode>>();
+        private readonly IFlowLogService flowLogService;
         private FlowInstance.FlowInstance instance;
+
+        /// <summary>
+        /// Initialize new runtime instance
+        /// </summary>
+        /// <param name="flowLogService">Log service</param>
+        public FlowRuntimeService(IFlowLogService flowLogService)
+        {
+            this.flowLogService = flowLogService;
+        }
 
         public void Run(FlowInstance.FlowInstance instance, EventCall call)
         {

@@ -44,5 +44,9 @@
     <Compile Include="Model\FlowEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="package.bat" />
+    <None Include="Simplic.Flow.Event.nuspec" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
