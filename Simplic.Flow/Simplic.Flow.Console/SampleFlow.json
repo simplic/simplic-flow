@@ -1,0 +1,128 @@
+﻿[
+  {
+    "Id": "0a5e1f32-4808-4494-bc7e-f44180bbb70a",
+    "Name": "Document scan and process2",
+    "Nodes": [
+      {
+        "Id": "e92091a9-cdf3-4c7b-8c74-ecd79c3e6cc2",
+        "NodeType": "EventNode",
+        "ClassName": "OnDocumentScannedNode",
+        "IsStartEvent": true
+      },
+      {
+        "Id": "a47345e2-5ec3-404b-851b-3f3f5ebc4dac",
+        "NodeType": "ActionNode",
+        "ClassName": "SequenceNode",
+        "IsStartEvent": false
+      },
+      {
+        "Id": "b33b0491-440c-4e6b-80f2-e0b58fa880c7",
+        "NodeType": "ActionNode",
+        "ClassName": "ConsoleWriteLineNode",
+        "IsStartEvent": false
+      },
+      {
+        "Id": "f80589ec-7306-4e5c-b5ae-c1db4ef797b2",
+        "NodeType": "ActionNode",
+        "ClassName": "ConsoleWriteLineNode",
+        "IsStartEvent": false
+      },
+      {
+        "Id": "95448f5f-9845-4028-bf83-6877069dd9b0",
+        "NodeType": "EventNode",
+        "ClassName": "OnDocumentScannedNode",
+        "IsStartEvent": false
+      },
+      {
+        "Id": "32a314c0-940a-45cc-9e75-636b869649e4",
+        "NodeType": "ActionNode",
+        "ClassName": "ConsoleWriteLineNode",
+        "IsStartEvent": false
+      }
+    ],
+    "Links": [
+      {
+        "From": {
+          "NodeId": "e92091a9-cdf3-4c7b-8c74-ecd79c3e6cc2",
+          "PinName": "FlowOut"
+        },
+        "To": {
+          "NodeId": "a47345e2-5ec3-404b-851b-3f3f5ebc4dac",
+          "PinName": null
+        }
+      },
+      {
+        "From": {
+          "NodeId": "a47345e2-5ec3-404b-851b-3f3f5ebc4dac",
+          "PinName": "FlowOutNodes"
+        },
+        "To": {
+          "NodeId": "b33b0491-440c-4e6b-80f2-e0b58fa880c7",
+          "PinName": null
+        }
+      },
+      {
+        "From": {
+          "NodeId": "a47345e2-5ec3-404b-851b-3f3f5ebc4dac",
+          "PinName": "FlowOutNodes"
+        },
+        "To": {
+          "NodeId": "f80589ec-7306-4e5c-b5ae-c1db4ef797b2",
+          "PinName": null
+        }
+      },
+      {
+        "From": {
+          "NodeId": "f80589ec-7306-4e5c-b5ae-c1db4ef797b2",
+          "PinName": "FlowOut"
+        },
+        "To": {
+          "NodeId": "95448f5f-9845-4028-bf83-6877069dd9b0",
+          "PinName": null
+        }
+      },
+      {
+        "From": {
+          "NodeId": "95448f5f-9845-4028-bf83-6877069dd9b0",
+          "PinName": "FlowOut"
+        },
+        "To": {
+          "NodeId": "32a314c0-940a-45cc-9e75-636b869649e4",
+          "PinName": null
+        }
+      }
+    ],
+    "Pins": [
+      {
+        "From": {
+          "NodeId": "e92091a9-cdf3-4c7b-8c74-ecd79c3e6cc2",
+          "PinName": "DocumentOut"
+        },
+        "To": {
+          "NodeId": "b33b0491-440c-4e6b-80f2-e0b58fa880c7",
+          "PinName": "ToPrint"
+        }
+      },
+      {
+        "From": {
+          "NodeId": "e92091a9-cdf3-4c7b-8c74-ecd79c3e6cc2",
+          "PinName": "DocumentOut"
+        },
+        "To": {
+          "NodeId": "f80589ec-7306-4e5c-b5ae-c1db4ef797b2",
+          "PinName": "ToPrint"
+        }
+      },
+      {
+        "From": {
+          "NodeId": "95448f5f-9845-4028-bf83-6877069dd9b0",
+          "PinName": "DocumentOut"
+        },
+        "To": {
+          "NodeId": "32a314c0-940a-45cc-9e75-636b869649e4",
+          "PinName": "ToPrint"
+        }
+      }
+    ]
+  }
+]
