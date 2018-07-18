@@ -9,6 +9,6 @@ namespace Simplic.Flow.Configuration
         public string NodeType { get; set; }
         public string ClassName { get; set; }
         public bool IsStartEvent { get; set; }
-        public List<PinConfiguration> Pins { get; set; } = new List<PinConfiguration>();
+        //public List<PinConfiguration> Pins { get; set; } = new List<PinConfiguration>();
     }
 }

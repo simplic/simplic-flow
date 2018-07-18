@@ -44,6 +44,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Simplic.Flow.EventQueue\Simplic.Flow.EventQueue.csproj">
+      <Project>{BBEA1BE9-D55C-4242-9F56-6640EFD36194}</Project>
+      <Name>Simplic.Flow.EventQueue</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Simplic.Flow.Event\Simplic.Flow.Event.csproj">
       <Project>{efcc8359-4ed2-421f-b9be-4e25cdd5cf40}</Project>
       <Name>Simplic.Flow.Event</Name>

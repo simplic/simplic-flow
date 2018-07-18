@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Simplic.Flow.Data.Memory
+namespace Simplic.FlowInstance.Data.Memory
 {
     public class FlowInstanceMemoryRepository : IFlowInstanceRepository
     {
@@ -25,11 +26,25 @@ namespace Simplic.Flow.Data.Memory
         public bool Save(FlowInstance flowInstance)
         {
             var index = flowInstances.IndexOf(flowInstance);            
-            if (index > 0)                                    
+            if (index > -1)                                    
                 flowInstances[index] = flowInstance;
             else
                 flowInstances.Add(flowInstance);
-            
+
+
+            string serializedConfiguration = JsonConvert.SerializeObject(flowInstance, Formatting.Indented,
+                new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.All,
+                    PreserveReferencesHandling = PreserveReferencesHandling.Objects
+                });
+
+            var obj = JsonConvert.DeserializeObject<FlowInstance>(serializedConfiguration, new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.All,
+                    PreserveReferencesHandling = PreserveReferencesHandling.Objects
+                });
+
             return true;
         }
 

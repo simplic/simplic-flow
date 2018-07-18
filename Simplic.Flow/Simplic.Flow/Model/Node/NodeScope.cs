@@ -3,7 +3,7 @@ using System;
 
 namespace Simplic.Flow
 {
-    public class NodeScope<T> where T : Node
+    public class NodeScope<T> where T : BaseNode
     {
         [JsonIgnore]
         public T Node { get; set; }

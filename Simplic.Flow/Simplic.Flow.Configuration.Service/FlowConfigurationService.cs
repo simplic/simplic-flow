@@ -13,12 +13,12 @@ namespace Simplic.Flow.Configuration.Service
 
         public FlowConfiguration Get(Guid id)
         {
-            throw new NotImplementedException();
+            return this.flowConfigurationRepository.Get(id);
         }
 
         public IEnumerable<FlowConfiguration> GetAll()
         {
-            throw new NotImplementedException();
+            return this.flowConfigurationRepository.GetAll();
         }
 
         public bool Save(FlowConfiguration flowConfiguration)

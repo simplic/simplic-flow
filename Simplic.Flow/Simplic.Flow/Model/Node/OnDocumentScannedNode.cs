@@ -22,6 +22,7 @@ namespace Simplic.Flow
             };
         }
 
+
         public override bool Execute(IFlowRuntimeService runtime, DataPinScope scope)
         {
             System.Console.WriteLine($"Execute: {GetType().Name}");
@@ -29,7 +30,7 @@ namespace Simplic.Flow
             // Load by .Arguments...
             var value = new DocumentWithBarcode
             {
-                
+
             };
 
             scope.SetValue(DocumentOut, value);

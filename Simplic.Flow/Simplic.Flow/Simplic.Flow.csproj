@@ -47,31 +47,32 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interface\IFlowInstanceRepository.cs" />
     <Compile Include="Interface\IFlowRuntimeService.cs" />
+    <Compile Include="Interface\INodeResolver.cs" />
     <Compile Include="Model\DocumentWithBarcode.cs" />
-    <Compile Include="Model\Node\ConsoleWriteLineNode.cs" />
-    <Compile Include="Model\Node\CreateStringArraySampleNode.cs" />
-    <Compile Include="Model\Node\ForeachNode.cs" />
+    <Compile Include="Model\Event\EventCall.cs" />
+    <Compile Include="Model\Event\EventDelegate.cs" />
     <Compile Include="Model\Node\NodeScope.cs" />
-    <Compile Include="Model\Node\ActionNode.cs" />
-    <Compile Include="Model\Node\ConditionNode.cs" />
+    <Compile Include="Model\Node\Base\ActionNode.cs" />
+    <Compile Include="Model\Node\Base\ConditionNode.cs" />
     <Compile Include="Model\Node\OnDocumentScannedNode.cs" />
-    <Compile Include="Model\Node\SequenceNode.cs" />
-    <Compile Include="Model\Node\StartWithConditionNode.cs" />
+    <Compile Include="Model\Node\Resolver\OnDocumentScannedNodeResolver.cs" />
     <Compile Include="Model\Pin\DataPin.cs" />
     <Compile Include="Model\Pin\DataPinContainerType.cs" />
-    <Compile Include="Model\Node\EventNode.cs" />
+    <Compile Include="Model\Node\Base\EventNode.cs" />
     <Compile Include="Model\Flow\Flow.cs" />
-    <Compile Include="Model\Flow\FlowInstance.cs" />
     <Compile Include="Interface\IFlowEngineService.cs" />
-    <Compile Include="Model\Node\Node.cs" />
+    <Compile Include="Model\Node\Base\BaseNode.cs" />
     <Compile Include="Interface\IPin.cs" />
     <Compile Include="Model\Pin\PinDirection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\Pin\DataPinScope.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Simplic.Flow.Configuration\Simplic.Flow.Configuration.csproj">
+      <Project>{A2F33950-81AF-4D02-856F-5B2C69E78CAC}</Project>
+      <Name>Simplic.Flow.Configuration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Simplic.Flow.Event\Simplic.Flow.Event.csproj">
       <Project>{EFCC8359-4ED2-421F-B9BE-4E25CDD5CF40}</Project>
       <Name>Simplic.Flow.Event</Name>

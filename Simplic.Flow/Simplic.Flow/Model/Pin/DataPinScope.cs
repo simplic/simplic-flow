@@ -2,8 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Simplic.Flow
 {
@@ -17,7 +15,7 @@ namespace Simplic.Flow
             return scope;
         }
 
-        public IDictionary<Guid, object> PinValues = new Dictionary<Guid, object>();
+        public IDictionary<Guid, object> PinValues { get; set; } = new Dictionary<Guid, object>();
         public DataPinScope Parent { get; set; }
         public T GetValue<T>(DataPin inPin)
         {
