@@ -120,7 +120,11 @@ namespace Simplic.Flow.Service
                             var pinProperty = newNode.GetType().GetProperty(pin.Name,
                                 System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
 
-                            pinProperty.SetValue(newNode, pin.DefaultValue);
+                            var defaultValueProperty = typeof(DataPin).GetProperty("DefaultValue",
+                                System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+
+                            if (pin.DefaultValue != null)
+                                defaultValueProperty.SetValue(pinProperty, pin.DefaultValue);
                         }
                     }
 
