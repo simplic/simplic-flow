@@ -21,7 +21,7 @@ namespace Simplic.Flow
         {
             var value = (T)PinValues.FirstOrDefault(x => x.Key == inPin.Id).Value;
 
-            if (value == null)
+            if (value == null && inPin.DefaultValue != null)
                 value = (T)Convert.ChangeType(inPin.DefaultValue, typeof(T));
 
             // Check

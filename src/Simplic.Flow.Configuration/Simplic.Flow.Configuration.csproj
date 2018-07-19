@@ -47,6 +47,7 @@
     <Compile Include="Model\LinkConfiguration.cs" />
     <Compile Include="Model\Link.cs" />
     <Compile Include="Model\NodeConfiguration.cs" />
+    <Compile Include="Model\NodePinConfiguration.cs" />
     <Compile Include="Model\PinConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
