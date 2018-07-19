@@ -129,12 +129,12 @@ namespace Simplic.FlowInstance.Data.DB
             return sqlService.OpenConnection((conn) =>
             {
                 var affectedRows = conn.Execute($"Insert Into {Flow_InstanceTableName} " +
-                   $" (Id, Data, IsAlive, CreateTime) On Existing Update Values " +
-                   $" (:Id, :Data, :IsAlive, :CreateTime);", new
+                   $" (Id, Data, IsAlive) On Existing Update Values " +
+                   $" (:Id, :Data, :IsAlive);", new
                    {
                        Id = flowInstance.Id,
                        Data = ConvertFromJson(flowInstance),
-                       IsAlive = flowInstance.IsAlive
+                       IsAlive = flowInstance.IsAlive                       
                    });
 
                 return affectedRows > 0;

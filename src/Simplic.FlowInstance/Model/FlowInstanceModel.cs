@@ -8,6 +8,6 @@ namespace Simplic.FlowInstance
         public Guid Id { get; set; }
         public byte[] Data { get; set; }
         public bool IsAlive { get; set; }
-        public DateTime CreateTime { get; set; }
+        public DateTime CreateDateTime { get; set; }
     }
 }
