@@ -74,7 +74,7 @@
       <Name>Simplic.Flow.Event</Name>
     </ProjectReference>
     <ProjectReference Include="..\Simplic.Flow.Log\Simplic.Flow.Log.csproj">
-      <Project>{7B75BC0D-25A3-4B15-B9E9-EBF61CD55FEE}</Project>
+      <Project>{EEDF5DE9-3E21-427C-8788-799D4D8E35B7}</Project>
       <Name>Simplic.Flow.Log</Name>
     </ProjectReference>
     <ProjectReference Include="..\Simplic.Flow.Node\Simplic.Flow.Node.csproj">
