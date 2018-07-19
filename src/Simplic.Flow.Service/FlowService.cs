@@ -51,7 +51,7 @@ namespace Simplic.Flow.Service
             unityContainer.RegisterType<INodeResolver, ForeachNodeResolver>("ForeachNode");
             unityContainer.RegisterType<INodeResolver, SequenceNodeResolver>("SequenceNode");
             unityContainer.RegisterType<INodeResolver, StartWithConditionNodeResolver>("StartWithConditionNode");
-            
+
             flowConfigurations = flowConfigurationService.GetAll().ToList();
 
             foreach (var configuration in flowConfigurations)
@@ -85,7 +85,7 @@ namespace Simplic.Flow.Service
                         CurrentEventNodes = flowInstance.CurrentNodes,
                         FlowId = flowInstance.Flow.Id
                     };
-                    
+
                     activeFlows.Add(activeFlow);
                 }
 
@@ -109,7 +109,21 @@ namespace Simplic.Flow.Service
                 foreach (var node in flowConfiguration.Nodes)
                 {
                     var resolver = unityContainer.Resolve<INodeResolver>($"{node.ClassName}");
-                    nodes.Add(resolver.Create(node.Id, node.IsStartEvent));
+                    var newNode = resolver.Create(node.Id, node.IsStartEvent);
+                    nodes.Add(newNode);
+
+                    // Set default values
+                    if (node?.Pins != null)
+                    {
+                        foreach (var pin in node.Pins)
+                        {
+                            var pinProperty = newNode.GetType().GetProperty(pin.Name,
+                                System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+
+                            pinProperty.SetValue(newNode, pin.DefaultValue);
+                        }
+                    }
+
                 }
 
                 foreach (var pin in flowConfiguration.Pins)
@@ -175,7 +189,7 @@ namespace Simplic.Flow.Service
         /// Loads the event queue from the repository
         /// </summary>
         private void LoadEventQueue()
-        {            
+        {
             var unhandledEvents = flowEventQueueService.GetAllUnhandled();
 
             flowLogService.Info($"Unhandled events found: {unhandledEvents.Count()}");
@@ -223,7 +237,7 @@ namespace Simplic.Flow.Service
             try
             {
                 // load event queue from db            
-                LoadEventQueue();                
+                LoadEventQueue();
 
                 // pop event entries from queue first
                 var newFlowInstances = new List<FlowInstance.FlowInstance>();
@@ -256,8 +270,8 @@ namespace Simplic.Flow.Service
                                     finishedInstances.Add(activeFlow);
                                     flowLogService.Info($"Flow instance {activeFlow.FlowInstanceId} is not alive anymore.");
                                 }
-                                    
-                                                       
+
+
                                 flowInstanceService.Save(flowInstance);
                             }
                             catch (Exception ex)
