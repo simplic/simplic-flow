@@ -29,6 +29,9 @@ namespace Simplic.Flow.EventQueue.Service
 
         public bool Save(EventQueueModel model)
         {
+            if (model.CreateDateTime == default(DateTime))
+                model.CreateDateTime = DateTime.Now;
+
             return flowEventQueueRepository.Save(model);
         }
 

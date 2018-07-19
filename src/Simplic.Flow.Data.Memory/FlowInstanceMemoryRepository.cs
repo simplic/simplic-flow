@@ -18,6 +18,11 @@ namespace Simplic.FlowInstance.Data.Memory
             return flowInstances;
         }
 
+        public IEnumerable<FlowInstance> GetAllAlive()
+        {
+            throw new NotImplementedException();
+        }
+
         public FlowInstance GetById(Guid instanceId)
         {
             return flowInstances.Where(x => x.Id == instanceId).FirstOrDefault();

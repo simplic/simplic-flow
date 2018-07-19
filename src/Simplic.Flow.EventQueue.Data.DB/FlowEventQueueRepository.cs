@@ -52,7 +52,7 @@ namespace Simplic.Flow.EventQueue.Data.DB
                 var affectedRows = conn.Execute($"INSERT INTO {FlowEventQueueTableName} " +
                    $" (Id, EventName, Args, CreateDateTime, CreateUserId, Handled) " +
                    $" ON EXISTING UPDATE VALUES (:Id, :EventName, :Args, :CreateDateTime, " +
-                   $" :CreateUserId, :Handled)");
+                   $" :CreateUserId, :Handled)", model);
 
                 return affectedRows > 0;
             });

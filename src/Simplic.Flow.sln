@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2035
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.Flow", "Simplic.Flow\Simplic.Flow.csproj", "{1F540A26-62FB-45CB-ABC6-B4B2D8F7005E}"
 EndProject
@@ -56,6 +56,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Logging", "Logging", "{2C1717DD-F27C-4A70-8185-C56202135A2B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.Flow.Log", "Simplic.Flow.Log\Simplic.Flow.Log.csproj", "{EEDF5DE9-3E21-427C-8788-799D4D8E35B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.Flow.Configuration.Data.DB", "Simplic.Flow.Configuration.Data.DB\Simplic.Flow.Configuration.Data.DB.csproj", "{95D744C7-C977-4696-96C7-093FD5D3F58A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.FlowInstance.Service", "Simplic.FlowInstance.Service\Simplic.FlowInstance.Service.csproj", "{FDEFE8E4-EA2B-4E30-8854-A6C35B081306}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -143,6 +147,14 @@ Global
 		{EEDF5DE9-3E21-427C-8788-799D4D8E35B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EEDF5DE9-3E21-427C-8788-799D4D8E35B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EEDF5DE9-3E21-427C-8788-799D4D8E35B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95D744C7-C977-4696-96C7-093FD5D3F58A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95D744C7-C977-4696-96C7-093FD5D3F58A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95D744C7-C977-4696-96C7-093FD5D3F58A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95D744C7-C977-4696-96C7-093FD5D3F58A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDEFE8E4-EA2B-4E30-8854-A6C35B081306}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDEFE8E4-EA2B-4E30-8854-A6C35B081306}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDEFE8E4-EA2B-4E30-8854-A6C35B081306}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDEFE8E4-EA2B-4E30-8854-A6C35B081306}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -164,6 +176,8 @@ Global
 		{DC04F104-8E01-40D9-880C-A31A94866190} = {F61861C1-D8D4-48BD-B3E4-103AFFA9E587}
 		{F0C67047-7D57-4E4D-AAFC-38911EB742B3} = {F61861C1-D8D4-48BD-B3E4-103AFFA9E587}
 		{EEDF5DE9-3E21-427C-8788-799D4D8E35B7} = {2C1717DD-F27C-4A70-8185-C56202135A2B}
+		{95D744C7-C977-4696-96C7-093FD5D3F58A} = {F2B6C2B1-4EBC-4EC5-96D4-6FCE0276520E}
+		{FDEFE8E4-EA2B-4E30-8854-A6C35B081306} = {18EF6E53-DE0B-44A1-BF0E-D23E731B4406}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DFCA28AB-EBED-44F4-9B03-F609AEA4F137}

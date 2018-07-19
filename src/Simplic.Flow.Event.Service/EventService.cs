@@ -1,4 +1,6 @@
-﻿using Simplic.Flow.EventQueue;
+﻿using Newtonsoft.Json;
+using Simplic.Flow.EventQueue;
+using System.Text;
 
 namespace Simplic.Flow.Event.Service
 {
@@ -13,7 +15,11 @@ namespace Simplic.Flow.Event.Service
 
         public void InvokeEvent(FlowEventArgs args)
         {
-            var argsByte = new byte[] { };
+            var argsByte = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(args, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.All,
+                PreserveReferencesHandling = PreserveReferencesHandling.Objects
+            }));
 
             flowEventQueueService.Save(new EventQueueModel
             {

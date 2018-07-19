@@ -69,15 +69,15 @@ namespace Simplic.Flow.Console
 
             engine.RefreshEventDelegates();
 
-            engine.EnqueueEvent(new FlowEventArgs { EventName = nameof(OnDocumentScannedNode), ObjectId = Guid.Empty });
-
-            engine.Run();
-
-            engine.EnqueueEvent(new FlowEventArgs { EventName = nameof(OnDocumentScannedNode), ObjectId = Guid.Empty });
-            engine.Run();
-
-            engine.EnqueueEvent(new FlowEventArgs { EventName = nameof(OnDocumentScannedNode), ObjectId = Guid.Empty });
-            engine.Run();
+            // engine.EnqueueEvent(new FlowEventArgs { EventName = nameof(OnDocumentScannedNode), ObjectId = Guid.Empty });
+            // 
+            // engine.Run();
+            // 
+            // engine.EnqueueEvent(new FlowEventArgs { EventName = nameof(OnDocumentScannedNode), ObjectId = Guid.Empty });
+            // engine.Run();
+            // 
+            // engine.EnqueueEvent(new FlowEventArgs { EventName = nameof(OnDocumentScannedNode), ObjectId = Guid.Empty });
+            // engine.Run();
             // ==================================================================
 
             System.Console.ReadLine();

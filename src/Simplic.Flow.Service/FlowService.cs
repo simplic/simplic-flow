@@ -34,6 +34,8 @@ namespace Simplic.Flow.Service
         #region Constructor
         public FlowService(IUnityContainer unityContainer)
         {
+            this.unityContainer = unityContainer;
+
             flows = new List<Flow>();
             activeFlows = new List<Simplic.ActiveFlow.ActiveFlow>();
             eventQueue = new Dequeue<EventCall>();
@@ -47,13 +49,19 @@ namespace Simplic.Flow.Service
 
             unityContainer.RegisterType<INodeResolver, ConsoleWriteLineNodeResolver>("ConsoleWriteLineNode");
             unityContainer.RegisterType<INodeResolver, ForeachNodeResolver>("ForeachNode");
-            unityContainer.RegisterType<INodeResolver, OnDocumentScannedNodeResolver>("OnDocumentScannedNode");
             unityContainer.RegisterType<INodeResolver, SequenceNodeResolver>("SequenceNode");
             unityContainer.RegisterType<INodeResolver, StartWithConditionNodeResolver>("StartWithConditionNode");
             
             flowConfigurations = flowConfigurationService.GetAll().ToList();
+
+            foreach (var configuration in flowConfigurations)
+                flowLogService.Info($"Load flow configuration: {configuration.Name}");
+
+
             flows = CreateFlowsFromConfiguration();
             CreateActiveFlowsFrom(flowInstanceService.GetAll().ToList());
+
+            RefreshEventDelegates();
         }
         #endregion
 
@@ -170,7 +178,7 @@ namespace Simplic.Flow.Service
         {            
             var unhandledEvents = flowEventQueueService.GetAllUnhandled();
 
-            flowLogService.Info($"Loaded unhandledEvents with {string.Join(",", unhandledEvents)}");
+            flowLogService.Info($"Unhandled events found: {unhandledEvents.Count()}");
 
             foreach (var flowEventQueue in unhandledEvents)
             {
@@ -214,7 +222,6 @@ namespace Simplic.Flow.Service
         {
             try
             {
-                flowLogService.Info($"Running Run");
                 // load event queue from db            
                 LoadEventQueue();                
 
@@ -324,6 +331,8 @@ namespace Simplic.Flow.Service
         {
             flowLogService.Info($"Enqueue event: {args.EventName} / object id {args.ObjectId ?? "<unset>"}");
 
+            bool isEnqueued = false;
+
             // Find workflow
             var delegates = eventDelegates.FirstOrDefault(x => x.Key == args.EventName).Value;
             if (delegates != null && delegates.Count > 0)
@@ -333,7 +342,14 @@ namespace Simplic.Flow.Service
                     flowLogService.Info($"Create event call: {args.EventName} / Flow: {del.FlowId} / Is start event {del.IsStartEvent}");
 
                     eventQueue.PushBack(new EventCall { QueueId = args.QueueId, Args = args, Delegate = del });
+                    isEnqueued = true;
                 }
+            }
+
+            if (!isEnqueued)
+            {
+                flowLogService.Info($"No delegate was found for {args.EventName}, changing status to handled.");
+                flowEventQueueService.SetHandled(args.QueueId, true);
             }
         }
         #endregion
@@ -344,11 +360,15 @@ namespace Simplic.Flow.Service
         /// </summary>
         public void RefreshEventDelegates()
         {
+            flowLogService.Info("Create event delegate list");
+
             eventDelegates = new Dictionary<string, IList<EventDelegate>>();
             foreach (var flow in flows)
             {
                 foreach (var eventNode in flow.Nodes.OfType<EventNode>())
                 {
+                    flowLogService.Info($"> Add {flow.Name}/{eventNode.Name}");
+
                     IList<EventDelegate> eventDelegateList = null;
 
                     if (!eventDelegates.ContainsKey(eventNode.EventName))
@@ -368,6 +388,8 @@ namespace Simplic.Flow.Service
                     });
                 }
             }
+
+            flowLogService.Info($"Created delegates: {eventDelegates.Count}");
         }
         #endregion 
 

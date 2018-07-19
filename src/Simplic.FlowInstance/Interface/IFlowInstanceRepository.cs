@@ -7,6 +7,7 @@ namespace Simplic.FlowInstance
     {
         FlowInstance GetById(Guid flowInstanceId);
         IEnumerable<FlowInstance> GetAll();
+        IEnumerable<FlowInstance> GetAllAlive();
         bool Save(FlowInstance flowInstance);        
     }
 }
