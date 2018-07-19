@@ -1,32 +1,34 @@
-﻿namespace Simplic.Flow
+﻿using Simplic.Flow.Event;
+
+namespace Simplic.Flow
 {
     public abstract class ConditionNode : ActionNode
     {
         public override string FriendlyName { get; }
         
-        public override bool Execute(IFlowRuntimeService runtime, DataPinScope scope)
+        public override bool Execute(IFlowRuntimeService runtime, FlowEventArgs args, DataPinScope scope)
         {
             System.Console.WriteLine($"Execute: {GetType().Name}");
 
-            var result = Compare(runtime, scope);
+            var result = Compare(runtime, args, scope);
 
             if (result)
-                runtime.EnqueueNode(TrueFlowOut, scope);
+                runtime.EnqueueNode(OutNodeTrue, scope);
             else
-                runtime.EnqueueNode(FalseFlowOut, scope);
+                runtime.EnqueueNode(OutNodeFalse, scope);
 
-            runtime.EnqueueNode(AnyFlowOut, scope);
+            runtime.EnqueueNode(OutNodeAny, scope);
 
             return true;
         }
 
-        protected abstract bool Compare(IFlowRuntimeService runtime, DataPinScope scope);
+        protected abstract bool Compare(IFlowRuntimeService runtime, FlowEventArgs args, DataPinScope scope);
 
-        public ActionNode TrueFlowOut { get; set; }
-        public ActionNode FalseFlowOut { get; set; }
-        public ActionNode AnyFlowOut { get; set; }
-        public DataPin ConditionPinIn1 { get; set; }
-        public DataPin ConditionPinIn2 { get; set; }
-        public DataPin BooleanDataOut { get; set; }
+        public ActionNode OutNodeTrue { get; set; }
+        public ActionNode OutNodeFalse { get; set; }
+        public ActionNode OutNodeAny { get; set; }
+        public DataPin InPinCondition1 { get; set; }
+        public DataPin InPinCondition { get; set; }
+        public DataPin OutPinBoolean { get; set; }
     }
 }

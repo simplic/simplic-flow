@@ -1,14 +1,13 @@
-﻿using System;
+﻿using Simplic.Flow.Event;
+using System;
 
 namespace Simplic.Flow.Node
 {
     public class ForeachNode : ActionNode
     {
-        public override string FriendlyName { get; }
-
         public ForeachNode()
         {
-            Output = new DataPin
+            OutPin = new DataPin
             {
                 DataType = typeof(object),
                 ContainerType = DataPinContainerType.Single,
@@ -20,27 +19,38 @@ namespace Simplic.Flow.Node
             };
         }
 
-        public override bool Execute(IFlowRuntimeService runtime, DataPinScope scope)
+        public override bool Execute(IFlowRuntimeService runtime, FlowEventArgs args, DataPinScope scope)
         {
             System.Console.WriteLine($"Execute: {GetType().Name}");
 
-            var values = scope.GetListValue<object>(InList);
+            var values = scope.GetListValue<object>(InPinList);
             foreach (var value in values)
             {
                 var newScope = scope.CreateChild();
-                newScope.SetValue(Output, value);
+                newScope.SetValue(OutPin, value);
 
-                runtime.EnqueueNode(EachItemFlowOut, newScope);
+                runtime.EnqueueNode(OutNodeEachItem, newScope);
             }
 
-            runtime.EnqueueNode(CompletedFlowOut, scope);
+            runtime.EnqueueNode(OutNodeCompleted, scope);
 
             return true;
         }
 
-        public ActionNode EachItemFlowOut { get; set; }
-        public ActionNode CompletedFlowOut { get; set; }
-        public DataPin InList { get; set; }
-        public DataPin Output { get; set; }
+        public ActionNode OutNodeEachItem { get; set; }
+        public ActionNode OutNodeCompleted { get; set; }
+        public DataPin InPinList { get; set; }
+        public DataPin OutPin { get; set; }
+
+        public override string Name
+        {
+            get
+            {
+                return nameof(ForeachNode);
+            }
+        }
+
+
+        public override string FriendlyName { get { return nameof(ForeachNode); } }
     }
 }
