@@ -51,6 +51,10 @@
     <Compile Include="Model\StartWithConditionNode.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Simplic.Flow.Event\Simplic.Flow.Event.csproj">
+      <Project>{EFCC8359-4ED2-421F-B9BE-4E25CDD5CF40}</Project>
+      <Name>Simplic.Flow.Event</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Simplic.Flow\Simplic.Flow.csproj">
       <Project>{1f540a26-62fb-45cb-abc6-b4b2d8f7005e}</Project>
       <Name>Simplic.Flow</Name>
