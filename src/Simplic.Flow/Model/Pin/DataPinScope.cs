@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 namespace Simplic.Flow
@@ -19,6 +20,9 @@ namespace Simplic.Flow
         public DataPinScope Parent { get; set; }
         public T GetValue<T>(DataPin inPin)
         {
+            if (inPin == null)
+                return default(T);
+
             var value = default(T);
 
             if (PinValues.Any(x => x.Key == inPin.Id))
@@ -30,13 +34,13 @@ namespace Simplic.Flow
             // Log if inPin is null
             if (value?.Equals(default(T)) == true && inPin.DefaultValue != null)
             {
-                if (typeof(T) == typeof(Guid))
+                if (typeof(T) == inPin.DefaultValue?.GetType())
                 {
-                    value = (T)Convert.ChangeType(Guid.Parse(inPin.DefaultValue?.ToString()), typeof(T));
+                    value = (T)inPin.DefaultValue;
                 }
-                else
+                else if (inPin?.DefaultValue?.ToString() != null)
                 {
-                    value = (T)Convert.ChangeType(inPin.DefaultValue, typeof(T));
+                    value = (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromInvariantString(inPin?.DefaultValue?.ToString());
                 }
             }
 
