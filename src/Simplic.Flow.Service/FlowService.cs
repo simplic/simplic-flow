@@ -271,7 +271,7 @@ namespace Simplic.Flow.Service
 
                             try
                             {
-                                var runtime = new FlowRuntimeService(flowLogService);
+                                var runtime = new FlowRuntimeService(flowLogService, queueEntry.Args);
                                 runtime.Run(flowInstance, queueEntry);
 
                                 if (!flowInstance.IsAlive)
@@ -307,7 +307,7 @@ namespace Simplic.Flow.Service
                     {
                         flowLogService.Info($"Create new flow instance {queueEntry.Args.EventName} : {queueEntry.Delegate.FlowId}");
 
-                        var runtime = new FlowRuntimeService(flowLogService);
+                        var runtime = new FlowRuntimeService(flowLogService, queueEntry.Args);
                         var newFlowInstance = new FlowInstance.FlowInstance
                         {
                             Flow = flows.FirstOrDefault(x => x.Id == queueEntry.Delegate.FlowId),

@@ -14,13 +14,16 @@ namespace Simplic.Flow.Service
         private FlowInstance.FlowInstance instance;
         private EventCall eventCall;
 
+        public FlowEventArgs FlowEventArgs { get; private set; }
+
         /// <summary>
         /// Initialize new runtime instance
         /// </summary>
         /// <param name="flowLogService">Log service</param>
-        public FlowRuntimeService(IFlowLogService flowLogService)
+        public FlowRuntimeService(IFlowLogService flowLogService, FlowEventArgs flowEventArgs)
         {
             this.flowLogService = flowLogService;
+            this.FlowEventArgs = flowEventArgs;
         }
 
         public void Run(FlowInstance.FlowInstance instance, EventCall call)
@@ -72,9 +75,7 @@ namespace Simplic.Flow.Service
                         Node = nextNode.Node as EventNode,
                         Scope = nextNode.Scope,
                         NodeId = nextNode.NodeId
-                    });
-
-                    //TODO: should we save the state here ?
+                    });                    
                 }
                 else
                 {
@@ -87,7 +88,7 @@ namespace Simplic.Flow.Service
         {
             tempNextNodes = new List<NodeScope<ActionNode>>();
 
-            if (nodeScope.Node.Execute(this, eventCall.Args, nodeScope.Scope))
+            if (nodeScope.Node.Execute(this, nodeScope.Scope))
             {
                 foreach (var nextNode in tempNextNodes)
                     if (nextNode != null)

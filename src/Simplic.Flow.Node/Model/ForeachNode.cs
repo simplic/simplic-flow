@@ -1,5 +1,4 @@
-﻿using Simplic.Flow.Event;
-using System;
+﻿using System;
 
 namespace Simplic.Flow.Node
 {
@@ -19,7 +18,7 @@ namespace Simplic.Flow.Node
             };
         }
 
-        public override bool Execute(IFlowRuntimeService runtime, FlowEventArgs args, DataPinScope scope)
+        public override bool Execute(IFlowRuntimeService runtime, DataPinScope scope)
         {
             System.Console.WriteLine($"Execute: {GetType().Name}");
 
@@ -41,16 +40,7 @@ namespace Simplic.Flow.Node
         public ActionNode OutNodeCompleted { get; set; }
         public DataPin InPinList { get; set; }
         public DataPin OutPin { get; set; }
-
-        public override string Name
-        {
-            get
-            {
-                return nameof(ForeachNode);
-            }
-        }
-
-
         public override string FriendlyName { get { return nameof(ForeachNode); } }
+        public override string Name { get { return nameof(ForeachNode); } }
     }
 }
