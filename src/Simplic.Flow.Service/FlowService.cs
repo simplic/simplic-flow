@@ -8,6 +8,7 @@ using Simplic.Flow.Node;
 using Simplic.FlowInstance;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Unity;
@@ -124,7 +125,11 @@ namespace Simplic.Flow.Service
                                 System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
 
                             if (pin.DefaultValue != null)
-                                defaultValueProperty.SetValue(pinProperty, pin.DefaultValue);
+                            {
+                                var pinInstance = pinProperty.GetValue(newNode);
+
+                                defaultValueProperty.SetValue(pinInstance, pin.DefaultValue);
+                            }
                         }
                     }
 
