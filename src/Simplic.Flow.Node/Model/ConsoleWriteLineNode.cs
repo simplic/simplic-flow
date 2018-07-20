@@ -1,5 +1,4 @@
-﻿using Simplic.Flow.Event;
-using System;
+﻿using System;
 
 namespace Simplic.Flow.Node
 {
@@ -17,7 +16,7 @@ namespace Simplic.Flow.Node
             };
         }
 
-        public override bool Execute(IFlowRuntimeService runtime, FlowEventArgs args, DataPinScope scope)
+        public override bool Execute(IFlowRuntimeService runtime, DataPinScope scope)
         {
             System.Console.WriteLine(scope.GetValue<object>(InPinToPrint));
 
@@ -31,7 +30,8 @@ namespace Simplic.Flow.Node
 
         public ActionNode OutNode { get; set; }
         public DataPin InPinToPrint { get; set; }
+
         public override string FriendlyName { get { return nameof(ConsoleWriteLineNode); } }
-        public override string Name { get { return nameof(ConsoleWriteLineNode); } }
+        public override string Name { get { return nameof(ConsoleWriteLineNode); } }        
     }
 }

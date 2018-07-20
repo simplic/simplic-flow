@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Simplic.Flow
 {
     public class DataPin : IPin
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid Id { get; set; }
         public BaseNode Owner { get; set; }
         public string Name { get; set; }
         public string FriendlyName { get; set; }

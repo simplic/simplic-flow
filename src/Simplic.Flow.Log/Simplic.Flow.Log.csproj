@@ -43,5 +43,9 @@
     <Compile Include="Interface\IFlowLogService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="package.bat" />
+    <None Include="Simplic.Flow.Log.nuspec" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

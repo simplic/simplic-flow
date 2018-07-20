@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using Simplic.Flow.Event;
 using System;
 
 namespace Simplic.Flow
