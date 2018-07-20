@@ -19,24 +19,43 @@ namespace Simplic.Flow
         public DataPinScope Parent { get; set; }
         public T GetValue<T>(DataPin inPin)
         {
-            var value = (T)PinValues.FirstOrDefault(x => x.Key == inPin.Id).Value;
+            var value = default(T);
 
-            if (value == null && inPin.DefaultValue != null)
-                value = (T)Convert.ChangeType(inPin.DefaultValue, typeof(T));
+            if (PinValues.Any(x => x.Key == inPin.Id))
+            {
+                var rawValue = PinValues.FirstOrDefault(x => x.Key == inPin.Id);
+                value = (T)rawValue.Value;
+            }
 
-            // Check
+            // Log if inPin is null
+            if (value?.Equals(default(T)) == true && inPin.DefaultValue != null)
+            {
+                if (typeof(T) == typeof(Guid))
+                {
+                    value = (T)Convert.ChangeType(Guid.Parse(inPin.DefaultValue?.ToString()), typeof(T));
+                }
+                else
+                {
+                    value = (T)Convert.ChangeType(inPin.DefaultValue, typeof(T));
+                }
+            }
 
             return value;
         }
 
         public IList<T> GetListValue<T>(DataPin inPin)
         {
-            var value = (PinValues.FirstOrDefault(x => x.Key == inPin.Id).Value as IList);
-            var list = value.Cast<T>().ToList();
+            if (PinValues.Any(x => x.Key == inPin.Id))
+            {
+                var value = (PinValues.FirstOrDefault(x => x.Key == inPin.Id).Value as IList);
+                var list = value.Cast<T>().ToList();
 
-            // Check
+                // Check
 
-            return list;
+                return list;
+            }
+            else
+                return new List<T>();
         }
 
         public void SetValue(DataPin outPin, object value)
