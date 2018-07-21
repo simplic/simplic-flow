@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D17BBB2C-9AD8-414E-9BAD-EAD9BA5C4B8B}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Simplic.Flow.Console</RootNamespace>
+    <AssemblyName>Simplic.Flow.Console</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Dapper, Version=1.50.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.50.5\lib\net451\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Simplic.CoreLib, Version=6.1.118.621, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.CoreLib.6.1.118.621\lib\net451\Simplic.CoreLib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Simplic.Sql, Version=6.1.18.625, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.Sql.6.1.18.625\lib\net451\Simplic.Sql.dll</HintPath>
+    </Reference>
+    <Reference Include="Simplic.Sql.SqlAnywhere.Service, Version=5.95.18.529, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.Sql.SqlAnywhere.Service.5.95.18.529\lib\net451\Simplic.Sql.SqlAnywhere.Service.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Unity.Abstractions, Version=3.3.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.Abstractions.3.3.0\lib\net45\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Container, Version=5.8.6.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.Container.5.8.6\lib\net45\Unity.Container.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+    <None Include="SampleFlow.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Simplic.Flow.Configuration.Data.Memory\Simplic.Flow.Configuration.Data.Memory.csproj">
+      <Project>{3FA1E55F-5B91-4D6B-B9E3-15CC280C97BE}</Project>
+      <Name>Simplic.Flow.Configuration.Data.Memory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.Flow.Configuration.Service\Simplic.Flow.Configuration.Service.csproj">
+      <Project>{BEB6592D-DDA6-4375-AAE4-A6CC58357E1F}</Project>
+      <Name>Simplic.Flow.Configuration.Service</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.Flow.Configuration\Simplic.Flow.Configuration.csproj">
+      <Project>{A2F33950-81AF-4D02-856F-5B2C69E78CAC}</Project>
+      <Name>Simplic.Flow.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.Flow.Data.Memory\Simplic.FlowInstance.Data.Memory.csproj">
+      <Project>{DEBE9782-694B-49F1-96FC-7E481A47D03D}</Project>
+      <Name>Simplic.FlowInstance.Data.Memory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.Flow.Event.Service\Simplic.Flow.Event.Service.csproj">
+      <Project>{1b67ba29-a318-4432-807e-84a67936cf34}</Project>
+      <Name>Simplic.Flow.Event.Service</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.Flow.Event\Simplic.Flow.Event.csproj">
+      <Project>{efcc8359-4ed2-421f-b9be-4e25cdd5cf40}</Project>
+      <Name>Simplic.Flow.Event</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.Flow.Service\Simplic.Flow.Service.csproj">
+      <Project>{43b68136-7ec1-48d5-8ddc-a10c7f904455}</Project>
+      <Name>Simplic.Flow.Service</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.FlowInstance.Data.DB\Simplic.FlowInstance.Data.DB.csproj">
+      <Project>{31F8BAE6-18F3-4060-87BB-E2404D043A74}</Project>
+      <Name>Simplic.FlowInstance.Data.DB</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.FlowInstance\Simplic.FlowInstance.csproj">
+      <Project>{7206AF52-60CB-46B1-9FE7-CF172752B0E9}</Project>
+      <Name>Simplic.FlowInstance</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.Flow\Simplic.Flow.csproj">
+      <Project>{1f540a26-62fb-45cb-abc6-b4b2d8f7005e}</Project>
+      <Name>Simplic.Flow</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
