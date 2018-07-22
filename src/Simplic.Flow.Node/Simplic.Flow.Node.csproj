@@ -40,15 +40,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\ConsoleWriteLineNode.cs" />
-    <Compile Include="Model\ForeachNode.cs" />
+    <Compile Include="ActionNode\ConsoleWriteLineNode.cs" />
+    <Compile Include="ActionNode\ForeachNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resolver\ConsoleWriteLineNodeResolver.cs" />
     <Compile Include="Resolver\ForeachNodeResolver.cs" />
     <Compile Include="Resolver\SequenceNodeResolver.cs" />
     <Compile Include="Resolver\StartWithConditionNodeResolver.cs" />
-    <Compile Include="Model\SequenceNode.cs" />
-    <Compile Include="Model\StartWithConditionNode.cs" />
+    <Compile Include="ActionNode\SequenceNode.cs" />
+    <Compile Include="ActionNode\StartWithConditionNode.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Simplic.Flow.Event\Simplic.Flow.Event.csproj">

@@ -134,7 +134,8 @@ namespace Simplic.FlowInstance.Data.DB
                    {
                        Id = flowInstance.Id,
                        Data = ConvertFromJson(flowInstance),
-                       IsAlive = flowInstance.IsAlive                       
+                       IsAlive = flowInstance.IsAlive,
+                       FlowConfigurationId = flowInstance.Flow.Id
                    });
 
                 return affectedRows > 0;
