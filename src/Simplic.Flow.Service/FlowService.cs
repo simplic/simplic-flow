@@ -73,7 +73,7 @@ namespace Simplic.Flow.Service
         /// Creates <see cref="ActiveFlow.ActiveFlow"/> objects from a list of <see cref="FlowInstance.FlowInstance"/> objects
         /// </summary>
         /// <param name="flowInstances">Objects to create from</param>
-        private void CreateActiveFlowsFrom(List<FlowInstance.FlowInstance> flowInstances)
+        private void CreateActiveFlowsFrom(List<FlowInstance> flowInstances)
         {
             flowLogService.Info($"Running CreateActiveFlowsFrom with {string.Join(",", flowInstances)}");
             foreach (var flowInstance in flowInstances)
@@ -250,7 +250,7 @@ namespace Simplic.Flow.Service
                 LoadEventQueue();
 
                 // pop event entries from queue first
-                var newFlowInstances = new List<FlowInstance.FlowInstance>();
+                var newFlowInstances = new List<FlowInstance>();
 
                 while (eventQueue.Count > 0)
                 {
@@ -309,7 +309,7 @@ namespace Simplic.Flow.Service
                         flowLogService.Info($"Create new flow instance {queueEntry.Args.EventName} : {queueEntry.Delegate.FlowId}");
 
                         var runtime = new FlowRuntimeService(flowLogService, queueEntry.Args);
-                        var newFlowInstance = new FlowInstance.FlowInstance
+                        var newFlowInstance = new FlowInstance
                         {
                             Flow = flows.FirstOrDefault(x => x.Id == queueEntry.Delegate.FlowId),
                             Id = Guid.NewGuid()

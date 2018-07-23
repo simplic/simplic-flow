@@ -11,10 +11,11 @@ namespace Simplic.Flow.Service
         private Dequeue<NodeScope<ActionNode>> nextNodes = new Dequeue<NodeScope<ActionNode>>();
         private IList<NodeScope<ActionNode>> tempNextNodes = new List<NodeScope<ActionNode>>();
         private readonly IFlowLogService flowLogService;
-        private FlowInstance.FlowInstance instance;
+        private FlowInstance instance;
         private EventCall eventCall;
 
         public FlowEventArgs FlowEventArgs { get; private set; }
+        public FlowInstance Instance { get { return instance; } }
 
         /// <summary>
         /// Initialize new runtime instance
@@ -26,7 +27,7 @@ namespace Simplic.Flow.Service
             this.FlowEventArgs = flowEventArgs;
         }
 
-        public void Run(FlowInstance.FlowInstance instance, EventCall call)
+        public void Run(FlowInstance instance, EventCall call)
         {
             this.instance = instance;
             this.eventCall = call;

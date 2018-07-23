@@ -26,9 +26,9 @@ namespace Simplic.FlowInstance.Data.DB
         /// </summary>
         /// <param name="data">Serialized data</param>
         /// <returns><see cref="FlowInstance"/> object</returns>
-        private FlowInstance ConvertToJson(byte[] data)
+        private Flow.FlowInstance ConvertToJson(byte[] data)
         {
-            return JsonConvert.DeserializeObject<FlowInstance>(Encoding.UTF8.GetString(data), new JsonSerializerSettings
+            return JsonConvert.DeserializeObject<Flow.FlowInstance>(Encoding.UTF8.GetString(data), new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.All,
                 PreserveReferencesHandling = PreserveReferencesHandling.Objects
@@ -42,7 +42,7 @@ namespace Simplic.FlowInstance.Data.DB
         /// </summary>
         /// <param name="flowInstance">object to convert</param>
         /// <returns>A byte array containing json object of the given <see cref="FlowInstance"/></returns>
-        private byte[] ConvertFromJson(FlowInstance flowInstance)
+        private byte[] ConvertFromJson(Flow.FlowInstance flowInstance)
         {
             return Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(flowInstance, new JsonSerializerSettings
             {
@@ -61,7 +61,7 @@ namespace Simplic.FlowInstance.Data.DB
         /// Gets a list of <see cref="FlowInstance"/> from the database
         /// </summary>
         /// <returns>A list of <see cref="FlowInstance"/> from the database</returns>
-        public IEnumerable<FlowInstance> GetAll()
+        public IEnumerable<Flow.FlowInstance> GetAll()
         {
             var flow_Instances = sqlService.OpenConnection((conn) =>
             {
@@ -81,7 +81,7 @@ namespace Simplic.FlowInstance.Data.DB
         /// Gets a list of <see cref="FlowInstance"/> which are alive from the database 
         /// </summary>
         /// <returns>A list of <see cref="FlowInstance"/> which are alive from the database</returns>
-        public IEnumerable<FlowInstance> GetAllAlive()
+        public IEnumerable<Flow.FlowInstance> GetAllAlive()
         {
             var flow_Instances = sqlService.OpenConnection((conn) =>
             {
@@ -103,7 +103,7 @@ namespace Simplic.FlowInstance.Data.DB
         /// </summary>
         /// <param name="flowInstanceId">Id to get</param>
         /// <returns><see cref="FlowInstance"/></returns>
-        public FlowInstance GetById(Guid flowInstanceId)
+        public Flow.FlowInstance GetById(Guid flowInstanceId)
         {
             var flow_Instance = sqlService.OpenConnection((conn) =>
             {
@@ -124,7 +124,7 @@ namespace Simplic.FlowInstance.Data.DB
         /// </summary>
         /// <param name="flowInstance">Object to save</param>
         /// <returns>True if successfull</returns>
-        public bool Save(FlowInstance flowInstance)
+        public bool Save(Flow.FlowInstance flowInstance)
         {
             return sqlService.OpenConnection((conn) =>
             {
