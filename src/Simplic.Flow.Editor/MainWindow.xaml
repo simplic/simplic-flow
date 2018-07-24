@@ -1,0 +1,50 @@
+﻿<Window x:Class="Simplic.Flow.Editor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Simplic.Flow.Editor"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800" WindowState="Maximized">
+    <Grid>
+        <telerik:RadDiagram x:Name="MyDiagram" >
+
+            <local:EventNode x:Name="eventShape" Position="650 320">
+                <StackPanel Orientation="Vertical" Height="150" Width="200" Margin="0">
+                    <Border Width="200" VerticalAlignment="Top" Height="26" 
+                            Padding="0" Margin="0">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#771111" Offset="0"/>
+                                <GradientStop Color="#331919" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+
+                        <Label Margin="5 0 0 0" Width="auto" VerticalAlignment="Top" Content="OnDocumentScanned" Foreground="White" />
+                    </Border>
+                </StackPanel>
+            </local:EventNode>
+
+            <local:FunctionNode x:Name="functionShape" Position="950 320">
+                <StackPanel Orientation="Vertical" Height="150" Width="200" Margin="0">
+                    <Border Width="200" VerticalAlignment="Top" Height="26" 
+                            Padding="0" Margin="0">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#416177" Offset="0.1"/>
+                                <GradientStop Color="#252e33" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <Label VerticalAlignment="Top" Margin="0" Content="Scan Document" Foreground="White" />
+                    </Border>
+                </StackPanel>
+            </local:FunctionNode>
+
+            
+
+          
+
+        </telerik:RadDiagram>
+    </Grid>
+</Window>
