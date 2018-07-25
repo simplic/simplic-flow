@@ -29,7 +29,7 @@ namespace Simplic.Flow.Editor
             this.StrokeThickness = 2;
 
             CreateHeader();
-            CreateConnectors();
+            CreateConnectors();            
         }
 
         private void CreateHeader()
@@ -40,16 +40,18 @@ namespace Simplic.Flow.Editor
 
         private void CreateConnectors()
         {
-            var flowOut = new RadDiagramConnector()
+            var flowOut = new FlowConnector()
             {
-                Offset = new Point(1, 0.23),
-                Name = "flowOut"                
+                Offset = new Point(0.96, 0.24),
+                FlowConnectorDirection = FlowConnectorDirection.Out,
+                Name = "FlowOut"                
             };
 
-            var dataOut = new RadDiagramConnector()
+            var dataOut = new DataConnector()
             {
-                Offset = new Point(1, 0.75),
-                Name = "DataOut"
+                Offset = new Point(0.96, 0.75),
+                FlowConnectorDirection = FlowConnectorDirection.Out,
+                Name = "DataOut"                
             };
 
             this.Connectors.Add(flowOut);

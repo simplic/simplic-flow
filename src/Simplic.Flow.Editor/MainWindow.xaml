@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" WindowState="Maximized">
     <Grid>
-        <telerik:RadDiagram x:Name="MyDiagram" >
+        <telerik:RadDiagram CommandExecuted="MyDiagram_CommandExecuted" x:Name="MyDiagram" >
 
             <local:EventNode x:Name="eventShape" Position="650 320">
                 <StackPanel Orientation="Vertical" Height="150" Width="200" Margin="0">

@@ -41,20 +41,27 @@ namespace Simplic.Flow.Editor
         private void CreateConnectors()
         {
             var flowIn = new FlowConnector()
-            {
-                Offset = new Point(0, 0.23),
+            {                
+                Offset = new Point(0.04, 0.24),
                 Name = "flowIn",
                 FlowConnectorDirection = FlowConnectorDirection.In                
             };
 
             var flowOut = new FlowConnector()
             {
-                Offset = new Point(1, 0.23),
+                Offset = new Point(0.96, 0.24),
                 Name = "flowOut",
                 FlowConnectorDirection = FlowConnectorDirection.Out
             };
 
+            var dataIn = new DataConnector()
+            {
+                Offset = new Point(0.04, 0.75),
+                Name = "dataIn",
+                FlowConnectorDirection = FlowConnectorDirection.In
+            };
 
+            this.Connectors.Add(dataIn);
             this.Connectors.Add(flowIn);
             this.Connectors.Add(flowOut);
         }

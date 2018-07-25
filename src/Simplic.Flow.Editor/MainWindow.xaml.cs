@@ -32,14 +32,21 @@ namespace Simplic.Flow.Editor
             this.Loaded += MainWindow_Loaded;
             this.MyDiagram.ConnectionManipulationStarted += MyDiagram_ConnectionManipulationStarted;
             this.MyDiagram.ConnectionManipulationCompleted += MyDiagram_ConnectionManipulationCompleted;
-
-            EventManager.RegisterClassHandler(typeof(MainWindow), 
+            
+            EventManager.RegisterClassHandler(typeof(MainWindow),
                 RadDiagramConnector.ActivationChangedEvent, new RadRoutedEventHandler(OnConnectorActivationChanged));
         }
 
         private void MyDiagram_ConnectionManipulationCompleted(object sender, ManipulationRoutedEventArgs e)
         {
             this.isManipulating = false;
+
+            // Check whether the connection was not attached
+            if (e.ManipulationStatus != ManipulationStatus.Attaching)
+            {
+                e.Handled = true;
+                return;
+            }
 
             var connector = e.Connector as FlowConnector;
             if (connector != null && e.ManipulationStatus == ManipulationStatus.Attaching)
@@ -55,18 +62,28 @@ namespace Simplic.Flow.Editor
                 }
             }
 
-            connector = e.Connection.SourceConnectorResult as FlowConnector;
-            if (connector != null)
+            var flowConnector = e.Connection.SourceConnectorResult as FlowConnector;
+            var dataConnector = e.Connection.SourceConnectorResult as DataConnector;
+            if (flowConnector != null)
             {
-                connector.Connection = e.Connection;
+                flowConnector.Connection = e.Connection;
+            }
+            else if (dataConnector != null)
+            {
+                dataConnector.Connection = e.Connection;
+            }
+            else
+            {
+                e.Handled = true;
             }
         }
 
         private void MyDiagram_ConnectionManipulationStarted(object sender, ManipulationRoutedEventArgs e)
         {
-            var connector = e.Connector as FlowConnector;
-            if (connector != null)
+            if (e.Connector is FlowConnector)
             {
+                var connector = e.Connector as FlowConnector;
+
                 if (e.ManipulationStatus == ManipulationStatus.Attaching)
                 {
                     if (connector.Connection != null || connector.FlowConnectorDirection == FlowConnectorDirection.In)
@@ -79,24 +96,60 @@ namespace Simplic.Flow.Editor
                         connector.Connection = null;
                     }
                 }
+
+                this.isManipulating = true;
             }
-            this.isManipulating = true;
+            else if (e.Connector is DataConnector)
+            {
+                var connector = e.Connector as DataConnector;
+
+                if (e.ManipulationStatus == ManipulationStatus.Attaching)
+                {
+                    if (connector.Connection != null
+                        || connector.FlowConnectorDirection == FlowConnectorDirection.In)
+                    {
+                        e.Handled = true;
+                        return;
+                    }
+                    else if (e.ManipulationStatus == ManipulationStatus.Detaching)
+                    {
+                        connector.Connection = null;
+                    }
+                }
+
+                this.isManipulating = true;
+            }
         }
 
         private void OnConnectorActivationChanged(object sender, RadRoutedEventArgs e)
         {
-            var connector = e.OriginalSource as FlowConnector;
-            if (connector == null) return;
-            if ((connector as IConnector).IsActive)
+            if ((e.OriginalSource as IConnector).IsActive)
             {
-                if (this.isManipulating && (connector.FlowConnectorDirection == FlowConnectorDirection.Out 
-                    || connector.Connection != null))
+                if (e.OriginalSource is FlowConnector)
                 {
-                    Mouse.OverrideCursor = Cursors.No;
+                    var connector = e.OriginalSource as FlowConnector;
+                    if (this.isManipulating && (connector.FlowConnectorDirection == FlowConnectorDirection.Out
+                        || connector.Connection != null))
+                    {
+                        Mouse.OverrideCursor = Cursors.No;
+                    }
+                    else
+                    {
+                        Mouse.OverrideCursor = Cursors.Pen;
+                    }
                 }
-                else
+                else if (e.OriginalSource is DataConnector)
                 {
-                    Mouse.OverrideCursor = Cursors.Pen;
+                    var connector = e.OriginalSource as DataConnector;
+                    if (this.isManipulating && (connector.FlowConnectorDirection == FlowConnectorDirection.Out
+                        || connector.Connection != null))
+                    {
+                        Mouse.OverrideCursor = Cursors.No;
+                    }
+                    else
+                    {
+                        Mouse.OverrideCursor = Cursors.Pen;
+                    }
                 }
             }
             else
@@ -107,6 +160,7 @@ namespace Simplic.Flow.Editor
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            this.MyDiagram.ConnectionBridge = BridgeType.Bow;
             //BrushConverter bc = new BrushConverter();
 
             //var flowIn = new RadDiagramConnector()
@@ -120,7 +174,7 @@ namespace Simplic.Flow.Editor
             //    Offset = new Point(1, 0.23),
             //    Name = "flowOut"                
             //};
-            
+
             //eventShape.Connectors.Add(flowOut);
 
             //functionShape.Connectors.Add(flowIn);
@@ -133,6 +187,19 @@ namespace Simplic.Flow.Editor
 
             //#416177
             //            header.Background = (Brush)bc.ConvertFrom("#252e33"); 
+        }
+
+        private void MyDiagram_CommandExecuted(object sender, CommandRoutedEventArgs e)
+        {
+            if (e.Command.Name == "Delete Items")
+            {
+                var compositeCommand = ((e.Command as CompositeCommand).Commands.FirstOrDefault() as CompositeCommand).Commands.Where(x => x.Name == "Remove Connection").FirstOrDefault();
+                if (compositeCommand != null)
+                {
+                    
+                    
+                }
+            }            
         }
     }
 }
