@@ -39,7 +39,7 @@ namespace Simplic.Flow.Service
                     x => x.IsStartEvent && x.Id == call.Delegate.EventNodeId))
                 {
                     // Pass arguments to event
-                    if (!startNode.ShouldExecute(instance.DataScope))
+                    if (!startNode.ShouldExecute(this, instance.DataScope))
                         continue;
 
                     // Execute event
@@ -51,7 +51,7 @@ namespace Simplic.Flow.Service
                 var executedEvents = new List<NodeScope<EventNode>>();
                 foreach (var eventNode in instance.CurrentNodes.Where(x => x.NodeId == call.Delegate.EventNodeId))
                 {
-                    if (!eventNode.Node.ShouldExecute(eventNode.Scope))
+                    if (!eventNode.Node.ShouldExecute(this, eventNode.Scope))
                         continue;
 
                     if (Execute(eventNode))

@@ -7,7 +7,7 @@ namespace Simplic.Flow
         public abstract string EventName { get; }
         public Guid FlowId { get; set; }                
         public virtual bool IsStartEvent { get; set; }
-        public virtual bool ShouldExecute(DataPinScope scope)
+        public virtual bool ShouldExecute(IFlowRuntimeService runtime, DataPinScope scope)
         {
             return true;
         }

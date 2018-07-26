@@ -5,6 +5,7 @@ using Simplic.Flow.Event;
 using Simplic.Flow.EventQueue;
 using Simplic.Flow.Log;
 using Simplic.Flow.Node;
+using Simplic.Flow.Node.IO;
 using Simplic.FlowInstance;
 using System;
 using System.Collections.Generic;
@@ -48,10 +49,13 @@ namespace Simplic.Flow.Service
             this.flowEventService = unityContainer.Resolve<IFlowEventService>();
             this.flowLogService = unityContainer.Resolve<IFlowLogService>();
 
-            unityContainer.RegisterType<INodeResolver, ConsoleWriteLineNodeResolver>("ConsoleWriteLineNode");
-            unityContainer.RegisterType<INodeResolver, ForeachNodeResolver>("ForeachNode");
-            unityContainer.RegisterType<INodeResolver, SequenceNodeResolver>("SequenceNode");
-            unityContainer.RegisterType<INodeResolver, StartWithConditionNodeResolver>("StartWithConditionNode");
+            unityContainer.RegisterType<INodeResolver, GenericNodeResolver<ConsoleWriteLineNode>>("ConsoleWriteLineNode");
+            unityContainer.RegisterType<INodeResolver, GenericNodeResolver<ForeachNode>>("ForeachNode");
+            unityContainer.RegisterType<INodeResolver, GenericNodeResolver<SequenceNode>>("SequenceNode");
+            unityContainer.RegisterType<INodeResolver, GenericNodeResolver<StartWithConditionNode>>("StartWithConditionNode");
+            unityContainer.RegisterType<INodeResolver, GenericNodeResolver<DeleteFileNode>>("DeleteFileNode");
+            unityContainer.RegisterType<INodeResolver, GenericNodeResolver<GetDirectoryContentNode>>("GetDirectoryContentNode");
+            unityContainer.RegisterType<INodeResolver, GenericNodeResolver<OnCheckDirectoryContentNode>>("OnCheckDirectoryContentNode");
 
             flowConfigurations = flowConfigurationService.GetAll().ToList();
 

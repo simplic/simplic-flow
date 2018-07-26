@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GenericNodeResolver.cs" />
     <Compile Include="Interface\IFlowRuntimeService.cs" />
     <Compile Include="Interface\INodeResolver.cs" />
     <Compile Include="Model\Event\EventCall.cs" />
