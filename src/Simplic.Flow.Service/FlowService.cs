@@ -64,7 +64,7 @@ namespace Simplic.Flow.Service
 
 
             flows = CreateFlowsFromConfiguration();
-            CreateActiveFlowsFrom(flowInstanceService.GetAll().ToList());
+            CreateActiveFlowsFrom(flowInstanceService.GetAllAlive().ToList());
 
             RefreshEventDelegates();
         }
@@ -82,15 +82,18 @@ namespace Simplic.Flow.Service
             flowLogService.Info($"Running CreateActiveFlowsFrom with {string.Join(",", flowInstances)}");
             foreach (var flowInstance in flowInstances)
             {
+                if (flowInstance.Flow == null)
+                    flowInstance.Flow = flows.FirstOrDefault(x => x.Id == flowInstance.FlowId);
+
                 if (flowInstance.IsAlive)
                 {
                     var activeFlow = new ActiveFlow.ActiveFlow
                     {
                         FlowInstanceId = flowInstance.Id,
                         CurrentEventNodes = flowInstance.CurrentNodes,
-                        FlowId = flowInstance.Flow.Id
+                        FlowId = flowInstance?.Flow?.Id ?? flowInstance.FlowId
                     };
-
+                    
                     activeFlows.Add(activeFlow);
                 }
 
@@ -119,8 +122,6 @@ namespace Simplic.Flow.Service
                     // Set default values
                     if (node?.Pins != null)
                     {
-                        Debugger.Launch();
-
                         foreach (var pin in node.Pins)
                         {
                             var pinProperty = newNode.GetType().GetProperty(pin.Name,
@@ -272,7 +273,9 @@ namespace Simplic.Flow.Service
                             flowLogService.Info($"Continuing flow instance: {activeFlow.FlowInstanceId}");
                             System.Console.WriteLine("---- CONTINUE FLOW ----");
 
+                            // Get from database
                             var flowInstance = flowInstanceService.GetById(activeFlow.FlowInstanceId);
+                            flowInstance.Flow = flows.FirstOrDefault(x => x.Id == flowInstance.FlowId);
 
                             try
                             {

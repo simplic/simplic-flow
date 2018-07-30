@@ -51,6 +51,8 @@ namespace Simplic.Flow.Service
                 var executedEvents = new List<NodeScope<EventNode>>();
                 foreach (var eventNode in instance.CurrentNodes.Where(x => x.NodeId == call.Delegate.EventNodeId))
                 {
+                    eventNode.Node = instance.Flow.Nodes.OfType<EventNode>().FirstOrDefault(x => x.Id == eventNode.NodeId);
+
                     if (!eventNode.Node.ShouldExecute(this, eventNode.Scope))
                         continue;
 

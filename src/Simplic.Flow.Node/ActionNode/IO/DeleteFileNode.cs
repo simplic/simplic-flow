@@ -20,22 +20,22 @@ namespace Simplic.Flow.Node.IO
             {
                 File.Delete(scope.GetValue<string>(InPinFilePath));
 
-                if (OutNodeRemoved != null)
-                    runtime.EnqueueNode(OutNodeRemoved, scope);
+                if (OutNode != null)
+                    runtime.EnqueueNode(OutNode, scope);
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Removing file failed {ex}");
 
-                if (OutNodeRemoveFailed != null)
-                    runtime.EnqueueNode(OutNodeRemoveFailed, scope);
+                if (OutNodeFailed != null)
+                    runtime.EnqueueNode(OutNodeFailed, scope);
             }
 
             return true;
         }
 
-        public ActionNode OutNodeRemoved { get; set; }
-        public ActionNode OutNodeRemoveFailed { get; set; }
+        public ActionNode OutNode { get; set; }
+        public ActionNode OutNodeFailed { get; set; }
         public DataPin InPinFilePath { get; set; }
 
         public override string FriendlyName

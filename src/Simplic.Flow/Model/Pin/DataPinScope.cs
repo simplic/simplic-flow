@@ -28,11 +28,20 @@ namespace Simplic.Flow
             if (PinValues.Any(x => x.Key == inPin.Id))
             {
                 var rawValue = PinValues.FirstOrDefault(x => x.Key == inPin.Id);
-                value = (T)rawValue.Value;
+
+                try
+                {
+                    value = (T)rawValue.Value;
+                }
+                catch (InvalidCastException)
+                {
+                    if (rawValue.Value != null)
+                        value = (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromInvariantString(rawValue.Value?.ToString());
+                }
             }
 
             // Log if inPin is null
-            if (value?.Equals(default(T)) == true && inPin.DefaultValue != null)
+            if ((value == null || value.Equals(default(T))) && inPin.DefaultValue != null)
             {
                 if (typeof(T) == inPin.DefaultValue?.GetType())
                 {

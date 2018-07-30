@@ -71,6 +71,7 @@ namespace Simplic.FlowInstance.Data.DB
             foreach (var item in flow_Instances)
             {
                 var flowInstance = ConvertToJson(item.Data);
+                flowInstance.FlowId = item.FlowConfigurationId;
                 yield return flowInstance;
             }
         }
@@ -92,6 +93,8 @@ namespace Simplic.FlowInstance.Data.DB
             foreach (var item in flow_Instances)
             {
                 var flowInstance = ConvertToJson(item.Data);
+                flowInstance.FlowId = item.FlowConfigurationId;
+
                 yield return flowInstance;
             }
         }
@@ -112,7 +115,12 @@ namespace Simplic.FlowInstance.Data.DB
             });
 
             if (flow_Instance != null)
-                return ConvertToJson(flow_Instance.Data);
+            {
+                var flowInstance = ConvertToJson(flow_Instance.Data);
+                flowInstance.FlowId = flow_Instance.FlowConfigurationId;
+
+                return flowInstance;
+            }
             else
                 return null;
         }
@@ -129,8 +137,8 @@ namespace Simplic.FlowInstance.Data.DB
             return sqlService.OpenConnection((conn) =>
             {
                 var affectedRows = conn.Execute($"Insert Into {Flow_InstanceTableName} " +
-                   $" (Id, Data, IsAlive) On Existing Update Values " +
-                   $" (:Id, :Data, :IsAlive);", new
+                   $" (Id, Data, IsAlive, FlowConfigurationId) On Existing Update Values " +
+                   $" (:Id, :Data, :IsAlive, :FlowConfigurationId);", new
                    {
                        Id = flowInstance.Id,
                        Data = ConvertFromJson(flowInstance),
