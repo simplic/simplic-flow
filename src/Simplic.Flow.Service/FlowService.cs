@@ -96,8 +96,6 @@ namespace Simplic.Flow.Service
                     
                     activeFlows.Add(activeFlow);
                 }
-
-                flowInstanceService.Save(flowInstance);
             }
         }
         #endregion
@@ -328,6 +326,9 @@ namespace Simplic.Flow.Service
                             newFlowInstances.Add(newFlowInstance);
 
                             flowLogService.Info("Flow instance successfull", newFlowInstance?.Id);
+
+                            // Save active flow instance after run
+                            flowInstanceService.Save(newFlowInstance);
                         }
                         catch (Exception ex)
                         {
