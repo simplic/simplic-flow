@@ -44,7 +44,8 @@ namespace Simplic.Flow.Editor
             {
                 Offset = new Point(0.96, 0.24),
                 FlowConnectorDirection = FlowConnectorDirection.Out,
-                Name = "FlowOut"                
+                Name = "FlowOut",
+                
             };
 
             var dataOut = new DataConnector()

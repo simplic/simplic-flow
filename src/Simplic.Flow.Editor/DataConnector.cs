@@ -23,7 +23,7 @@ namespace Simplic.Flow.Editor
         }
 
         protected override void OnMouseLeave(MouseEventArgs e)
-        {
+        {            
             base.OnMouseLeave(e);
         }
 

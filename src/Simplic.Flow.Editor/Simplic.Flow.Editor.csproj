@@ -91,6 +91,7 @@
     <Compile Include="FlowConnector.cs" />
     <Compile Include="FlowConnectorDirection.cs" />
     <Compile Include="FlowConnectorType.cs" />
+    <Compile Include="HierarchicalDataTemplate.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

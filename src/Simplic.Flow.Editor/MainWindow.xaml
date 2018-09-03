@@ -6,10 +6,71 @@
         xmlns:local="clr-namespace:Simplic.Flow.Editor"
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" WindowState="Maximized">
+        Title="MainWindow" Height="450" Width="800" WindowState="Maximized"
+        xmlns:primitives="clr-namespace:Telerik.Windows.Controls.Diagrams.Primitives;assembly=Telerik.Windows.Controls.Diagrams"
+        xmlns:declaratives="clr-namespace:Telerik.Windows.Diagrams.Core;assembly=Telerik.Windows.Diagrams.Core">
+    <Window.Resources>
+        <telerik:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </Window.Resources>
     <Grid>
-        <telerik:RadDiagram CommandExecuted="MyDiagram_CommandExecuted" x:Name="MyDiagram" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
 
+        <telerik:RadDiagram x:Name="MyDiagram" Grid.Row="1" BorderThickness="1">
+            <primitives:ItemInformationAdorner.AdditionalContent>
+                <telerik:SettingsPane Diagram="{Binding ElementName=MyDiagram}" />
+            </primitives:ItemInformationAdorner.AdditionalContent>
+        </telerik:RadDiagram>
+
+        <StackPanel Grid.Column="1">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Search a Node by Keyword: " FontSize="14" Margin="5" FontWeight="Bold"/>
+            </StackPanel>
+            
+            <telerik:RadAutoCompleteBox x:Name="autoComplete" Margin="10 0 10 10" SelectionMode="Single" TextSearchPath="GlyphName"
+                                        TextSearchMode="Contains"/>
+        </StackPanel>
+
+        <telerik:RadDiagramNavigationPane Diagram="{Binding ElementName=MyDiagram}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Row="1" IsExpanded="True"/>
+        
+        <telerik:RadDiagramToolbox x:Name="toolbox" Grid.Column="1" Grid.Row="1"
+                               Title="Available Nodes" 
+                               SelectedIndex="6"
+                               HorizontalAlignment="Right"
+                               Header="{Binding SelectedItem.Header, RelativeSource={RelativeSource Self}}"                              
+                               ItemTemplate="{StaticResource ToolboxTemplate}"
+                               Visibility="{Binding IsChecked, ElementName=toolboxButton, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+        <StackPanel VerticalAlignment="Top" HorizontalAlignment="Center" Orientation="Horizontal">
+            <telerik:RadButton Content="Save" FontSize="18" Width="260" FontWeight="Bold" Margin="5 10"/>
+        </StackPanel>
+    </Grid>
+    <!--<Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="60"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+                        
+        <Border Grid.Row="0" BorderThickness="1" BorderBrush="LightBlue" Margin="5" Padding="5">
+            <telerik:RadDiagramToolbox />
+        </Border>
+        
+        <telerik:RadDiagram MinWidth="500" MouseRightButtonUp="MyDiagram_MouseRightButtonUp" Margin="5" BorderThickness="1" Grid.Row="1" Grid.Column="0" x:Name="MyDiagram" >
+            <primitives:ItemInformationAdorner.AdditionalContent>
+                <telerik:SettingsPane Diagram="{Binding ElementName=diagram}" />
+            </primitives:ItemInformationAdorner.AdditionalContent>
+            
             <local:EventNode x:Name="eventShape" Position="650 320">
                 <StackPanel Orientation="Vertical" Height="150" Width="200" Margin="0">
                     <Border Width="200" VerticalAlignment="Top" Height="26" 
@@ -46,5 +107,8 @@
           
 
         </telerik:RadDiagram>
-    </Grid>
+        
+        <telerik:RadDiagramNavigationPane Diagram="{Binding ElementName=MyDiagram}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Row="1" IsExpanded="True"/>
+        
+    </Grid>-->
 </Window>
