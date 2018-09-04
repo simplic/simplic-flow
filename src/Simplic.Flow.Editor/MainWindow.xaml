@@ -17,12 +17,18 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <telerik:RadDiagram x:Name="MyDiagram" Grid.Row="1" BorderThickness="1">
+        <telerik:RadDiagram x:Name="MyDiagram"                             
+                            ShapeStyleSelector="{StaticResource CustomShapeStyleSelector}"
+                            ConnectionStyleSelector="{StaticResource CustomConnectionStyleSelector}"
+                            Grid.Row="1" BorderThickness="1" Background="#252525" 
+                            primitives:BackgroundGrid.LineStroke="#333333" 
+                            primitives:BackgroundPageGrid.LineStroke="#151515">
             <primitives:ItemInformationAdorner.AdditionalContent>
                 <telerik:SettingsPane Diagram="{Binding ElementName=MyDiagram}" />
             </primitives:ItemInformationAdorner.AdditionalContent>
@@ -37,7 +43,7 @@
                                         TextSearchMode="Contains"/>
         </StackPanel>
 
-        <telerik:RadDiagramNavigationPane Diagram="{Binding ElementName=MyDiagram}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Row="1" IsExpanded="True"/>
+        <telerik:RadDiagramNavigationPane Background="#252525" Diagram="{Binding ElementName=MyDiagram}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Row="1" IsExpanded="True"/>
         
         <telerik:RadDiagramToolbox x:Name="toolbox" Grid.Column="1" Grid.Row="1"
                                Title="Available Nodes" 

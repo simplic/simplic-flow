@@ -1,6 +1,6 @@
 ﻿namespace Simplic.Flow.Editor
 {
-    public enum FlowConnectorDirection
+    public enum ConnectorDirection
     {
         In = 0,
         Out

@@ -32,11 +32,40 @@ namespace Simplic.Flow.Editor
         public MainWindow()
         {
             InitializeComponent();
-
             this.Loaded += MainWindow_Loaded;
             
             this.MyDiagram.ConnectionManipulationStarted += MyDiagram_ConnectionManipulationStarted;            
-            this.MyDiagram.ConnectionManipulationCompleted += MyDiagram_ConnectionManipulationCompleted;                        
+            this.MyDiagram.ConnectionManipulationCompleted += MyDiagram_ConnectionManipulationCompleted;
+
+            CreateTempNodes();
+        }
+
+        private void CreateTempNodes()
+        {
+            var flowConnectors = new List<FlowConnector>();
+            flowConnectors.Add(new FlowConnector("FlowIn", "Flow In", ConnectorDirection.In));
+            flowConnectors.Add(new FlowConnector("FlowOut", "Flow Out", ConnectorDirection.Out));
+
+            var dataConnectors = new List<DataConnector>();
+            dataConnectors.Add(new DataConnector("DataIn", "Variable In", ConnectorDirection.In, typeof(string)));
+            dataConnectors.Add(new DataConnector("DataOut", "Variable Out", ConnectorDirection.Out, typeof(string)));            
+
+            var an = new ActionNode("Temp Action Node 1", flowConnectors, dataConnectors);
+            an.Position = new Point(650, 320);
+
+            var flowConnectors2 = new List<FlowConnector>();
+            flowConnectors2.Add(new FlowConnector("FlowIn", "Flow In", ConnectorDirection.In));
+            flowConnectors2.Add(new FlowConnector("FlowOut", "Flow Out", ConnectorDirection.Out));
+
+            var dataConnectors2 = new List<DataConnector>();
+            dataConnectors2.Add(new DataConnector("DataIn", "Variable In", ConnectorDirection.In, typeof(string)));
+            dataConnectors2.Add(new DataConnector("DataOut", "Variable Out", ConnectorDirection.Out, typeof(string)));
+
+            var ab = new EventNode("Event Node 1", flowConnectors2, dataConnectors2);
+            ab.Position = new Point(950, 320);
+
+            this.MyDiagram.Items.Add(an);
+            this.MyDiagram.Items.Add(ab);
         }
 
         private void MyDiagram_ConnectionManipulationCompleted(object sender, ManipulationRoutedEventArgs e)
@@ -162,11 +191,6 @@ namespace Simplic.Flow.Editor
             //}            
         }
 
-        private void MyDiagram_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
         private void InitializeToolBox()
         {
             var autoCompleteNodes = new ObservableCollection<string>();
@@ -181,7 +205,7 @@ namespace Simplic.Flow.Editor
             {
                 var galleryItem = new GalleryItem() { ItemType = "Events" };
                 galleryItem.Header = "EVENT-" + i;
-                galleryItem.Shape = new EventNode();
+                galleryItem.Shape = new FunctionNode();
 
                 autoCompleteNodes.Add("EVENT-" + i);
                 eventGallery.Items.Add(galleryItem);

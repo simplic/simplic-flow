@@ -6,6 +6,148 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         
+        
+        
+        <Style x:Key="ActionNodeStyle" TargetType="telerik:RadDiagramShape">
+            <Setter Property="Background" Value="#0f0f0f" />
+            <Setter Property="ContentTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <Grid Width="350" Height="26" Margin="-4, -75, -4, 0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                                
+                            <Border Grid.Row="0" Grid.Column="0" Height="26" Padding="0" Margin="0">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="#516C4D" Offset="0"/>
+                                        <GradientStop Color="#252C24" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                            </Border>
+                        </Grid>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+       
+
+        <Style x:Key="EventNodeStyle" TargetType="telerik:RadDiagramShape">
+            <Setter Property="ContentTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <Grid Width="350" Height="26" Margin="-4, -75, -4, 0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.Row="0" Grid.Column="0" Height="26" Padding="0" Margin="0">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="#771111" Offset="0"/>
+                                        <GradientStop Color="#331919" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                            </Border>
+                        </Grid>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ForEachNodeStyle" TargetType="telerik:RadDiagramShape">
+            <Setter Property="ContentTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <StackPanel Orientation="Vertical" Height="150" Width="200" Margin="0">
+                            <Border Width="200" VerticalAlignment="Top" Height="26" 
+                            Padding="0" Margin="0">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="#771111" Offset="0"/>
+                                        <GradientStop Color="#331919" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Border.Background>
+
+                                <Label Margin="5 0 0 0" Width="auto" VerticalAlignment="Top" Content="{Binding HeaderText}" Foreground="White" />
+                            </Border>
+                        </StackPanel>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="IfNodeStyle" TargetType="telerik:RadDiagramShape">
+            <Setter Property="ContentTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <StackPanel Orientation="Vertical" Height="150" Width="200" Margin="0">
+                            <Border Width="200" VerticalAlignment="Top" Height="26" 
+                            Padding="0" Margin="0">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="#771111" Offset="0"/>
+                                        <GradientStop Color="#331919" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Border.Background>
+
+                                <Label Margin="5 0 0 0" Width="auto" VerticalAlignment="Top" Content="{Binding HeaderText}" Foreground="White" />
+                            </Border>
+                        </StackPanel>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <local:NodeStyleSelector x:Key="CustomShapeStyleSelector"
+                    ActionNodeStyle="{StaticResource ActionNodeStyle}"
+                    EventNodeStyle="{StaticResource EventNodeStyle}"
+                    ForEachNodeStyle="{StaticResource ForEachNodeStyle}"
+                    IfNodeStyle="{StaticResource IfNodeStyle}" />
+
+        <Style TargetType="telerik:RadDiagramConnection" x:Key="FlowLinkStyle">
+            <Setter Property="Stroke" Value="White" />
+            <Setter Property="StrokeThickness" Value="2" />
+            <Setter Property="ContentTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <Grid />
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="telerik:RadDiagramConnection" x:Key="StringDataTypeLinkStyle">
+            <Setter Property="ContentTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <Grid />
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="telerik:RadDiagramConnection" x:Key="IntDataTypeLinkStyle">
+            <Setter Property="Stroke" Value="Red" />
+            <Setter Property="ContentTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <Grid />
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <local:LinkStyleSelector x:Key="CustomConnectionStyleSelector"
+				IntDataTypeLinkStyle="{StaticResource IntDataTypeLinkStyle}"
+				StringDataTypeLinkStyle="{StaticResource StringDataTypeLinkStyle}"
+				FlowLinkStyle="{StaticResource FlowLinkStyle}" />
+
         <Style x:Key="FlowConnectorTemplate" TargetType="telerik:RadDiagramConnector">
             <Setter Property="Width" Value="12" />
             <Setter Property="Height" Value="16" />
@@ -18,21 +160,30 @@
             </Setter>
         </Style>
 
-        <Style x:Key="DataConnectorTemplate" TargetType="telerik:RadDiagramConnector">
-            <Setter Property="Template" >
+        <Style x:Key="DataConnectorLeftTemplate" TargetType="telerik:RadDiagramConnector">
+            <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate >
-                        <Rectangle Width="24" Height="24" Fill="Yellow"/>
+                    <ControlTemplate>
+                        <StackPanel>
+                            <Ellipse Width="24" Height="24" Fill="{Binding FillColor}"/>
+                        </StackPanel>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
 
-        <Style TargetType="telerik:RadDiagramConnection">
-            <Setter Property="ConnectionType" Value="Bezier" />
-            <Setter Property="Stroke" Value="Red" />
-            <Setter Property="StrokeThickness" Value="3" />
+        <Style x:Key="DataConnectorRightTemplate" TargetType="telerik:RadDiagramConnector">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <StackPanel>
+                            <Ellipse Width="24" Height="24" Fill="{Binding FillColor}"/>
+                        </StackPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
+        
 
         <DataTemplate x:Key="ToolboxItemTemplate">
             <Grid Margin="0 1 1 0" Width="76" Height="100">

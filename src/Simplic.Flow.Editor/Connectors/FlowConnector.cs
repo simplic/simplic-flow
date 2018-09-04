@@ -1,20 +1,21 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Input;
-using Telerik.Windows.Controls.Diagrams;
 using Telerik.Windows.Diagrams.Core;
 
 namespace Simplic.Flow.Editor
 {
-    public class FlowConnector : RadDiagramConnector
+    public class FlowConnector : BaseConnector
     {
-        public FlowConnector()
-        {            
+        public FlowConnector(string name, string text, ConnectorDirection connectorDirection)
+            : base(name, text, connectorDirection)
+        {
             this.Style = Application.Current.Resources["FlowConnectorTemplate"] as Style;
         }
 
         protected override void OnMouseEnter(MouseEventArgs e)
         {            
-            if (this.Connection != null || this.FlowConnectorDirection == FlowConnectorDirection.In)
+            if (this.Connection != null || this.ConnectorDirection == ConnectorDirection.In)
                 this.Cursor = Cursors.No;
             else
                 this.Cursor = Cursors.Arrow;
@@ -27,7 +28,8 @@ namespace Simplic.Flow.Editor
             base.OnMouseLeave(e);
         }
 
-        public FlowConnectorDirection FlowConnectorDirection { get; set; }        
+        
         public IConnection Connection { get; set; }
+        
     }
 }
