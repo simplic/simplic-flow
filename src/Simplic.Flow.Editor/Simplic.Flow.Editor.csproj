@@ -34,6 +34,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Simplic.Flow.Configuration, Version=1.0.218.719, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.Flow.Configuration.1.0.218.719\lib\net451\Simplic.Flow.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Simplic.Framework.Base">
+      <HintPath>..\..\..\simplic-framework\src\Simplic.Main\bin\Debug\Simplic.Framework.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="Simplic.UI">
+      <HintPath>..\..\..\simplic-framework\src\Simplic.Main\bin\Debug\Simplic.UI.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -78,22 +87,37 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="FlowRadDiagram.cs" />
+    <Compile Include="Model\ActionNodeDefinition.cs" />
+    <Compile Include="Model\DataPinDefinition.cs" />
+    <Compile Include="Model\EventNodeDefinition.cs" />
+    <Compile Include="Model\FlowPinDefinition.cs" />
+    <Compile Include="Model\NodeDefinition.cs" />
+    <Compile Include="Model\PinDirectionDefinition.cs" />
+    <Compile Include="ViewModel\ActionNodeViewModel.cs" />
+    <Compile Include="ViewModel\ConnectorViewModel.cs" />
+    <Compile Include="ViewModel\FlowConnectorViewModel.cs" />
+    <Compile Include="ViewModel\DataConnectorViewModel.cs" />
+    <Compile Include="ViewModel\EventNodeViewModel.cs" />
+    <Compile Include="ViewModel\NodeConnectionViewModel.cs" />
+    <Compile Include="ViewModel\NodeViewModel.cs" />
+    <Compile Include="ViewModel\WorkflowEditorViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="HierarchicalDataTemplate.cs" />
-    <Compile Include="Nodes\ActionNode.cs" />
+    <Compile Include="Shapes\ActionNodeShape.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Connectors\BaseConnector.cs" />
     <Compile Include="Connectors\DataConnector.cs" />
-    <Compile Include="Nodes\EventNode.cs" />
+    <Compile Include="Shapes\EventNodeShape.cs" />
     <Compile Include="Connectors\FlowConnector.cs" />
     <Compile Include="Connectors\ConnectorDirection.cs" />
-    <Compile Include="Nodes\BaseNode.cs" />
+    <Compile Include="Shapes\BaseNodeShape.cs" />
     <Compile Include="StyleSelectors\LinkStyleSelector.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -101,7 +125,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Nodes\FunctionNode.cs" />
     <Compile Include="StyleSelectors\NodeStyleSelector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -120,6 +143,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

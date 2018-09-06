@@ -21,18 +21,20 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
             <RowDefinition />
-        </Grid.RowDefinitions>
+        </Grid.RowDefinitions> 
 
-        <telerik:RadDiagram x:Name="MyDiagram"                             
+        <local:FlowRadDiagram x:Name="MyDiagram"                          
                             ShapeStyleSelector="{StaticResource CustomShapeStyleSelector}"
-                            ConnectionStyleSelector="{StaticResource CustomConnectionStyleSelector}"
+                            ConnectionStyleSelector="{StaticResource CustomConnectionStyleSelector}"                              
+                            GraphSource="{Binding}"
+                            SelectedItem="{Binding SelectedItem, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                             Grid.Row="1" BorderThickness="1" Background="#252525" 
                             primitives:BackgroundGrid.LineStroke="#333333" 
                             primitives:BackgroundPageGrid.LineStroke="#151515">
             <primitives:ItemInformationAdorner.AdditionalContent>
                 <telerik:SettingsPane Diagram="{Binding ElementName=MyDiagram}" />
             </primitives:ItemInformationAdorner.AdditionalContent>
-        </telerik:RadDiagram>
+        </local:FlowRadDiagram>
 
         <StackPanel Grid.Column="1">
             <StackPanel Orientation="Horizontal">

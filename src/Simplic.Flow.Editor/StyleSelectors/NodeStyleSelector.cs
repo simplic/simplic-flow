@@ -11,24 +11,13 @@ namespace Simplic.Flow.Editor
         public Style ForEachNodeStyle { get; set; }
 
         public override Style SelectStyle(object item, DependencyObject container)
-        {
-            if (item is ActionNode)
+        {            
+            if (item is ActionNodeViewModel)
                 return ActionNodeStyle;
-            else if (item is EventNode)
-                return EventNodeStyle;
-            //else if (item is EllipseNode)
-            //{
-            //    switch (((EllipseNode)item).Type)
-            //    {
-            //        case EllipseNodeType.Start:
-            //            return StartNodeStyle;
-            //        case EllipseNodeType.End:
-            //            return EndNodeStyle;
-            //        default:
-            //            return base.SelectStyle(item, container);
-            //    }
-            //}
-            else return base.SelectStyle(item, container);
+            else if (item is EventNodeViewModel)
+                return EventNodeStyle;            
+            else
+                return base.SelectStyle(item, container);
         }
     }
 }

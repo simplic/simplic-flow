@@ -9,59 +9,93 @@
         
         
         <Style x:Key="ActionNodeStyle" TargetType="telerik:RadDiagramShape">
-            <Setter Property="Background" Value="#0f0f0f" />
+            <Setter Property="Position" Value="{Binding Position, Mode=TwoWay}" />
+            <Setter Property="Height" Value="{Binding Height, Mode=TwoWay}" />
+            <Setter Property="Width" Value="{Binding Width, Mode=TwoWay}" />
+            <Setter Property="Content" Value="{Binding}" />
+            <Setter Property="MinWidth" Value="450" />
+            <Setter Property="MinHeight" Value="150" />
+            
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="VerticalContentAlignment" Value="Stretch" />
             <Setter Property="ContentTemplate">
                 <Setter.Value>
                     <DataTemplate>
-                        <Grid Width="350" Height="26" Margin="-4, -75, -4, 0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="20" />
+                                <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                                
-                            <Border Grid.Row="0" Grid.Column="0" Height="26" Padding="0" Margin="0">
+
+                            <Canvas Name="textCanvas" Grid.RowSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
+
+                            <Border Grid.Row="0" Margin="-3, -3, -3,0" Padding="0">
                                 <Border.Background>
                                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                        <GradientStop Color="#516C4D" Offset="0"/>
-                                        <GradientStop Color="#252C24" Offset="1"/>
+                                        <GradientStop Color="#3E5E73" Offset="0"/>
+                                        <GradientStop Color="#20282E"  Offset="1"/>
                                     </LinearGradientBrush>
                                 </Border.Background>
+
+                                <StackPanel Orientation="Horizontal">
+                                    <Canvas Width="12" Margin="5,0,0,0" Height="14" Clip="F1 M 0,0L 14,0L 14,14L 0,14L 0,0">
+                                        <Path Width="12" Height="14" Stretch="Fill" Fill="#6eb6e6" 
+                                              Data="M 23.6574,34.7638L 23.6292,30.9445L 29.2725,30.9445L 29.6205,28.4192C 29.9066,25.5769 30.8688,22.9503 32.5069,20.5393C 34.1451,18.1284 36.8672,16.8468 40.6732,16.6945C 42.4213,16.7776 43.7134,17.0544 44.5494,17.5248L 43.6374,21.0628C 42.7918,20.7151 41.8038,20.5321 40.6732,20.5138C 38.7541,20.5778 37.3195,21.3418 36.3694,22.8058C 35.4194,24.2698 34.8398,26.0494 34.6308,28.1447L 34.2825,30.9445L 40.7882,30.9445L 40.7882,34.7638L 33.5752,34.7638L 32.2228,46.6707C 31.8318,50.5168 30.9091,53.5705 29.4545,55.832C 28,58.0935 25.6543,59.2502 22.4177,59.3023C 20.5017,59.2643 19.0366,58.9413 18.0223,58.3332L 18.9239,54.784C 19.8631,55.2315 20.915,55.4455 22.0796,55.426C 23.7936,55.4163 25.0568,54.6332 25.8692,53.0767C 26.6816,51.5202 27.2404,49.2487 27.5456,46.2621L 28.8417,34.7638L 23.6574,34.7638 Z M 44.7776,47.5043L 44.2337,44.8182L 43.6561,42.4126L 43.1655,40.9518L 42.6163,40.4426L 42.3253,40.52L 41.6748,41.1312L 40.7467,42.4967L 38.8167,41.7453C 39.5532,40.5527 40.2607,39.662 40.9392,39.0732C 41.6177,38.4844 42.4168,38.19 44.1282,38.19L 45.8133,38.6947L 46.8451,40.4667L 47.274,42.2051L 47.5183,43.6708L 51.033,39.177C 51.4311,38.8143 51.8134,38.5592 52.1797,38.4115C 52.5461,38.2638 53.034,38.19 53.6433,38.19C 53.7776,38.19 55.435,38.2573 55.7864,38.3919L 55.0855,41.42L 54.2938,41.42L 53.8574,41.42L 53.0657,41.42C 53.0236,41.136 52.934,40.9363 52.7971,40.8209L 52.4807,40.9966L 51.7349,41.7088L 48.1769,46.1809L 48.7769,49.1165L 49.276,51.1745L 49.6601,52.4727L 50.019,53.1876L 50.5064,53.5435C 50.6751,53.4792 50.8413,53.3755 51.0049,53.2325C 51.3021,52.9727 51.7311,52.3848 52.2919,51.4689L 54.2219,52.2203C 53.4069,53.525 52.6695,54.4437 52.0097,54.9765C 51.3499,55.5092 50.5639,55.7756 49.6517,55.7756C 49.5195,55.7756 47.9282,55.684 47.5787,55.5008C 47.2291,55.3176 46.9254,55.0251 46.6674,54.6232C 46.4095,54.2213 46.1814,53.5961 45.9833,52.7474C 45.717,51.6384 45.5273,50.7198 45.4142,49.9918L 41.686,54.7802C 41.2954,55.1484 40.9159,55.4064 40.5477,55.5541C 40.1794,55.7017 39.6906,55.7756 39.0813,55.7756C 38.9475,55.7756 37.2952,55.7083 36.9438,55.5737L 37.6447,52.5456L 39.6645,52.5456C 39.7045,52.8301 39.7928,53.0301 39.9293,53.1454L 40.0027,53.1259L 40.7822,52.4699L 44.7776,47.5043 Z"/>
+                                    </Canvas>
+
+                                    <TextBlock Foreground="White" Margin="5,5,0,0" Text="{Binding DisplayName}"/>
+                                </StackPanel>
                             </Border>
                         </Grid>
                     </DataTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
-       
 
         <Style x:Key="EventNodeStyle" TargetType="telerik:RadDiagramShape">
+            <Setter Property="Position" Value="{Binding Position, Mode=TwoWay}" />
+            <Setter Property="Height" Value="{Binding Height, Mode=TwoWay}" />
+            <Setter Property="Width" Value="{Binding Width, Mode=TwoWay}" />
+            <Setter Property="Content" Value="{Binding}" />
+            <Setter Property="MinWidth" Value="450" />
+            <Setter Property="MinHeight" Value="150" />
+
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="VerticalContentAlignment" Value="Stretch" />
             <Setter Property="ContentTemplate">
                 <Setter.Value>
                     <DataTemplate>
-                        <Grid Width="350" Height="26" Margin="-4, -75, -4, 0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="20" />
+                                <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
 
-                            <Border Grid.Row="0" Grid.Column="0" Height="26" Padding="0" Margin="0">
+                            <Canvas Name="textCanvas" Grid.RowSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
+
+                            <Border Grid.Row="0" Margin="-4, -4, -4,0" Padding="0">
                                 <Border.Background>
                                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                                         <GradientStop Color="#771111" Offset="0"/>
-                                        <GradientStop Color="#331919" Offset="1"/>
+                                        <GradientStop Color="#331919"  Offset="1"/>
                                     </LinearGradientBrush>
                                 </Border.Background>
+
+                                <StackPanel Orientation="Horizontal">
+                                    <Canvas Width="12" Margin="5,0,0,0" Height="14" Clip="F1 M 0,0L 14,0L 14,14L 0,14L 0,0">
+                                        <Path Width="12" Height="14" Stretch="Fill" Fill="#6eb6e6" 
+                                              Data="M 52.252,18.9974L 38,34.8333L 50.6667,34.8333L 25.3316,60.1667L 34.8333,39.5833L 23.75,39.5833L 36.4164,18.9974L 52.252,18.9974 Z"/>
+                                    </Canvas>
+
+                                    <TextBlock Foreground="White" Margin="5,5,0,0" Text="{Binding DisplayName}"/>
+                                </StackPanel>
                             </Border>
                         </Grid>
                     </DataTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
-
+        
         <Style x:Key="ForEachNodeStyle" TargetType="telerik:RadDiagramShape">
             <Setter Property="ContentTemplate">
                 <Setter.Value>
@@ -115,6 +149,7 @@
         <Style TargetType="telerik:RadDiagramConnection" x:Key="FlowLinkStyle">
             <Setter Property="Stroke" Value="White" />
             <Setter Property="StrokeThickness" Value="2" />
+            <Setter Property="ConnectionType" Value="Bezier" />
             <Setter Property="ContentTemplate">
                 <Setter.Value>
                     <DataTemplate>
@@ -125,6 +160,9 @@
         </Style>
 
         <Style TargetType="telerik:RadDiagramConnection" x:Key="StringDataTypeLinkStyle">
+            <Setter Property="Stroke" Value="#00aaf5" />
+            <Setter Property="StrokeThickness" Value="2" />
+            <Setter Property="ConnectionType" Value="Bezier" />
             <Setter Property="ContentTemplate">
                 <Setter.Value>
                     <DataTemplate>
@@ -133,8 +171,11 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        
         <Style TargetType="telerik:RadDiagramConnection" x:Key="IntDataTypeLinkStyle">
-            <Setter Property="Stroke" Value="Red" />
+            <Setter Property="Stroke" Value="White" />
+            <Setter Property="StrokeThickness" Value="2" />
+            <Setter Property="ConnectionType" Value="Bezier" />
             <Setter Property="ContentTemplate">
                 <Setter.Value>
                     <DataTemplate>
@@ -143,10 +184,25 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <Style TargetType="telerik:RadDiagramConnection" x:Key="BooleanDataTypeLinkStyle">
+            <Setter Property="Stroke" Value="#950000" />
+            <Setter Property="StrokeThickness" Value="2" />
+            <Setter Property="ConnectionType" Value="Bezier" />
+            <Setter Property="ContentTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <Grid />
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <local:LinkStyleSelector x:Key="CustomConnectionStyleSelector"
 				IntDataTypeLinkStyle="{StaticResource IntDataTypeLinkStyle}"
 				StringDataTypeLinkStyle="{StaticResource StringDataTypeLinkStyle}"
-				FlowLinkStyle="{StaticResource FlowLinkStyle}" />
+				FlowLinkStyle="{StaticResource FlowLinkStyle}" 
+                BooleanDataTypeLinkStyle="{StaticResource BooleanDataTypeLinkStyle}"/>
 
         <Style x:Key="FlowConnectorTemplate" TargetType="telerik:RadDiagramConnector">
             <Setter Property="Width" Value="12" />
@@ -154,31 +210,66 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate>
-                        <Image Stretch="UniformToFill" Source="/Simplic.Flow.Editor;component/Images/pin_exec.png" />
+                        <Polygon Name="poly" Width="12" Height="16" Fill="Transparent" Stroke="White" StrokeThickness="1">
+                            <Polygon.Points>
+                                <Point X="0" Y="0" />
+                                <Point X="6" Y="0" />
+                                <Point X="11" Y="5" />
+                                <Point X="11" Y="10" />
+                                <Point X="6" Y="15" />
+                                <Point X="0" Y="15" />
+                            </Polygon.Points>
+                        </Polygon>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" SourceName="poly" Value="True">
+                                <Setter Property="Fill" TargetName="poly" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
 
-        <Style x:Key="DataConnectorLeftTemplate" TargetType="telerik:RadDiagramConnector">
+        <Style x:Key="DataConnectorStringTemplate" TargetType="telerik:RadDiagramConnector">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate>
-                        <StackPanel>
-                            <Ellipse Width="24" Height="24" Fill="{Binding FillColor}"/>
-                        </StackPanel>
+                        <Rectangle Name="connectorRectangle" Width="7" Height="7" Stroke="#00aaf5" Fill="Transparent"/>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" SourceName="connectorRectangle" Value="True">
+                                <Setter Property="Fill" TargetName="connectorRectangle" Value="#00aaf5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
 
-        <Style x:Key="DataConnectorRightTemplate" TargetType="telerik:RadDiagramConnector">
+        <Style x:Key="DataConnectorBooleanTemplate" TargetType="telerik:RadDiagramConnector">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate>
-                        <StackPanel>
-                            <Ellipse Width="24" Height="24" Fill="{Binding FillColor}"/>
-                        </StackPanel>
+                        <Rectangle Name="connectorRectangle" Width="7" Height="7" Stroke="#950000" Fill="Transparent"/>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" SourceName="connectorRectangle" Value="True">
+                                <Setter Property="Fill" TargetName="connectorRectangle" Value="#950000"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style> 
+
+        <Style x:Key="DataConnectorTemplate" TargetType="telerik:RadDiagramConnector">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Name="connectorRectangle" Width="7" Height="7" Stroke="White" Fill="Transparent"/>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" SourceName="connectorRectangle" Value="True">
+                                <Setter Property="Fill" TargetName="connectorRectangle" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>

@@ -13,39 +13,30 @@ namespace Simplic.Flow.Editor
     {
         public Style FlowLinkStyle { get; set; }
         public Style StringDataTypeLinkStyle { get; set; }
+        public Style BooleanDataTypeLinkStyle { get; set; }
         public Style IntDataTypeLinkStyle { get; set; }
 
         public override Style SelectStyle(object item, DependencyObject container)
-        {
-            var link = item as RadDiagramConnection;
-            if (link == null || link.SourceConnectorResult == null)
+        {                        
+            var link = item as NodeConnectionViewModel;
+            if (link == null || link.SourceConnectorViewModel == null)
                 return base.SelectStyle(item, container);
 
-            if (link.SourceConnectorResult is FlowConnector)
+            if (link.SourceConnectorViewModel is FlowConnectorViewModel)
                 return FlowLinkStyle;
-            else if (link.SourceConnectorResult is DataConnector)
+            else if (link.SourceConnectorViewModel is DataConnectorViewModel)
             {
-                var sourceDataType = link.SourceConnectorResult as DataConnector;
+                var sourceDataType = link.SourceConnectorViewModel as DataConnectorViewModel;
 
-                if (sourceDataType.ConnectorDataType == typeof(string))
+                if (sourceDataType.Type == typeof(string))
                     return StringDataTypeLinkStyle;
-                else if (sourceDataType.ConnectorDataType == typeof(int))
-                    return IntDataTypeLinkStyle;            
+                else if (sourceDataType.Type == typeof(int))
+                    return IntDataTypeLinkStyle;
+                else if (sourceDataType.Type == typeof(bool))
+                    return BooleanDataTypeLinkStyle;
             }
             
             return base.SelectStyle(item, container);
-
-            //else switch (link.Type)
-            //    {
-            //        case LinkType.RightToLeft:
-            //            return LeftCapLinkStyle;
-            //        case LinkType.LeftToRight:
-            //            return RightCapLinkStyle;
-            //        case LinkType.Normal:
-            //            return NormalLinkStyle;
-            //        default:
-            //            return base.SelectStyle(item, container);
-            //    }
         }
     }
 }

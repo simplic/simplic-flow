@@ -11,6 +11,7 @@ namespace Simplic.Flow.Editor
             : base(name, text, connectorDirection)
         {
             this.Style = Application.Current.Resources["FlowConnectorTemplate"] as Style;
+            ToolTip = Text;
         }
 
         protected override void OnMouseEnter(MouseEventArgs e)
