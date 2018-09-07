@@ -51,40 +51,91 @@ namespace Simplic.Flow.Editor
         {
             var vm = new WorkflowEditorViewModel();
 
-            var inFlowPins = new List<FlowPinDefinition>();
-            inFlowPins.Add(new FlowPinDefinition { Id = Guid.NewGuid(), Name = "FlowIn", PinDirection = PinDirectionDefinition.In });
-
-            var inDataPins = new List<DataPinDefinition>();
-            inDataPins.Add(new DataPinDefinition { Id = Guid.NewGuid(), Name = "EmailAdressIn", Type = typeof(string), PinDirection = PinDirectionDefinition.In });
-            inDataPins.Add(new DataPinDefinition { Id = Guid.NewGuid(), Name = "SubjectIn", Type = typeof(string), PinDirection = PinDirectionDefinition.In });
-
-            var outFlowPins = new List<FlowPinDefinition>();
-            outFlowPins.Add(new FlowPinDefinition { Id = Guid.NewGuid(), Name = "FlowOut", PinDirection = PinDirectionDefinition.Out });
-
-            var outDataPins = new List<DataPinDefinition>();
-            outDataPins.Add(new DataPinDefinition { Id = Guid.NewGuid(), Name = "ResultOut", Type = typeof(bool), PinDirection = PinDirectionDefinition.Out });
-
-            var emailNodeDefinition = new ActionNodeDefinition {
-                Name = "Send Email",
-                InFlowPins = inFlowPins,
-                InDataPins = inDataPins,
-                OutFlowPins = outFlowPins,
-                OutDataPins = outDataPins
-            };
-
-            var emailNodeDefinition2 = new ActionNodeDefinition
+            for (int i = 0; i < 10; i++)
             {
-                Name = "Send Fax",
-                InFlowPins = inFlowPins,
-                InDataPins = inDataPins,
-                OutFlowPins = outFlowPins,
-                OutDataPins = outDataPins
-            };
+                var inFlowPins = new List<FlowPinDefinition>();
+                inFlowPins.Add(new FlowPinDefinition { Id = Guid.NewGuid(), Name = "FlowIn", PinDirection = PinDirectionDefinition.In });
 
-            vm.Nodes.Add(new ActionNodeViewModel(emailNodeDefinition, null) { Position = new Point(650, 320) });
-            vm.Nodes.Add(new ActionNodeViewModel(emailNodeDefinition2, null) { Position = new Point(950, 320) });
+                var inDataPins = new List<DataPinDefinition>();
+                inDataPins.Add(new DataPinDefinition { Id = Guid.NewGuid(), Name = "EmailAdressIn", Type = typeof(string), PinDirection = PinDirectionDefinition.In });
+                inDataPins.Add(new DataPinDefinition { Id = Guid.NewGuid(), Name = "SubjectIn", Type = typeof(string), PinDirection = PinDirectionDefinition.In });
+                inDataPins.Add(new DataPinDefinition { Id = Guid.NewGuid(), Name = "DoSend", Type = typeof(bool), PinDirection = PinDirectionDefinition.In });
+
+                var outFlowPins = new List<FlowPinDefinition>();
+                outFlowPins.Add(new FlowPinDefinition { Id = Guid.NewGuid(), Name = "FlowOut", PinDirection = PinDirectionDefinition.Out });
+
+                var outDataPins = new List<DataPinDefinition>();
+                outDataPins.Add(new DataPinDefinition { Id = Guid.NewGuid(), Name = "ResultOut", Type = typeof(bool), PinDirection = PinDirectionDefinition.Out });
+
+                outDataPins.Add(new DataPinDefinition { Id = Guid.NewGuid(), Name = "ResultStrOut", Type = typeof(string), PinDirection = PinDirectionDefinition.Out });
+
+
+                var emailNodeDefinition = new ActionNodeDefinition
+                {
+                    Name = "Send Email",
+                    InFlowPins = inFlowPins,
+                    InDataPins = inDataPins,
+                    OutFlowPins = outFlowPins,
+                    OutDataPins = outDataPins
+                };
+
+                var emailNodeDefinition2 = new EventNodeDefinition
+                {
+                    Name = "Send Fax",
+                    InFlowPins = inFlowPins,
+                    InDataPins = inDataPins,
+                    OutFlowPins = outFlowPins,
+                    OutDataPins = outDataPins
+                };
+
+                vm.Nodes.Add(new ActionNodeViewModel(emailNodeDefinition, null) { Position = new Point(650, 320) });
+                vm.Nodes.Add(new EventNodeViewModel(emailNodeDefinition2, null) { Position = new Point(950, 320) });
+            }
 
             this.DataContext = vm;
+        }       
+
+        private void MyDiagram_ConnectionManipulationStarted(object sender, ManipulationRoutedEventArgs e)
+        {
+            // only accept connections from out nodes
+            if (e.ManipulationStatus == ManipulationStatus.Attaching
+                    && (e.Connector as BaseConnector).ConnectorDirection == ConnectorDirection.Out)
+            {                
+                /* 
+                 *  add source connector to the diagram's view model, so it can use the connector information
+                    when linking the connectors we need this information.
+                */
+
+                if (e.Connector is FlowConnector)
+                {
+                    sourceConnector = e.Connector as FlowConnector;
+                    var flowConnector = sourceConnector as FlowConnector;
+                    var flowConnectorViewModel = sourceConnector.DataContext as FlowConnectorViewModel;
+                   
+                    var d = DiagramViewModel.Connections.Any(x => x.SourceConnectorViewModel == sourceConnector.DataContext);
+                    if (d && !flowConnectorViewModel.IsList)
+                    {
+                        e.Handled = true;
+                        DiagramViewModel.SourceConnector = null;
+                        DiagramViewModel.TargetConnector = null;
+                        return;
+                    }
+
+                    DiagramViewModel.SourceConnector = flowConnectorViewModel;
+                }
+                else if (e.Connector is DataConnector)
+                {
+                    sourceConnector = e.Connector as DataConnector;
+                    var dataConnector = sourceConnector as DataConnector;
+                    var dataConnectorViewModel = sourceConnector.DataContext as DataConnectorViewModel;
+                    DiagramViewModel.SourceConnector = dataConnectorViewModel;
+                }
+            }
+            else
+            {
+                sourceConnector = null;
+                e.Handled = true;
+            }                
         }
 
         private void MyDiagram_ConnectionManipulationCompleted(object sender, ManipulationRoutedEventArgs e)
@@ -98,19 +149,19 @@ namespace Simplic.Flow.Editor
                 e.Handled = true;
                 return;
             }
-                        
+
             if (e.ManipulationStatus == ManipulationStatus.Attaching)
-            {                
+            {
                 /*
                     ignore any connection attempt on wrong connection and data types.
                     e.Connector is the target
                  */
                 if (sourceConnector == null
-                    || sourceConnector.GetType() != e.Connector.GetType()                    
-                    || e.Connector.Name.EndsWith("Out")                    
+                    || sourceConnector.GetType() != e.Connector.GetType()
+                    || (e.Connector as BaseConnector).ConnectorDirection == ConnectorDirection.Out
                     || (
-                        sourceConnector is DataConnector && e.Connector is DataConnector 
-                        && (sourceConnector as DataConnector).ConnectorDataType 
+                        sourceConnector is DataConnector && e.Connector is DataConnector
+                        && (sourceConnector as DataConnector).ConnectorDataType
                                 != (e.Connector as DataConnector).ConnectorDataType
                         ))
                 {
@@ -129,69 +180,28 @@ namespace Simplic.Flow.Editor
                     if (e.Connector is FlowConnector)
                     {
                         var flowConnector = e.Connector as FlowConnector;
-                        DiagramViewModel.TargetConnector = new FlowConnectorViewModel(new FlowPinDefinition
-                        {
-                            Id = Guid.NewGuid(),
-                            Name = flowConnector.Name,
-                            PinDirection = flowConnector.ConnectorDirection == ConnectorDirection.In ? PinDirectionDefinition.In : PinDirectionDefinition.Out
-                        });
+                        var flowConnectorViewModel = flowConnector.DataContext as FlowConnectorViewModel;
+                        DiagramViewModel.TargetConnector = flowConnectorViewModel;
                     }
                     else if (e.Connector is DataConnector)
                     {
                         var dataConnector = e.Connector as DataConnector;
-                        DiagramViewModel.TargetConnector = new DataConnectorViewModel(new DataPinDefinition
+                        var dataConnectorViewModel = dataConnector.DataContext as DataConnectorViewModel;
+
+                        var d = DiagramViewModel.Connections.Any(x => x.TargetConnectorViewModel == dataConnector.DataContext);
+
+                        if (d)
                         {
-                            Id = Guid.NewGuid(),
-                            Name = dataConnector.Name,
-                            PinDirection = dataConnector.ConnectorDirection == ConnectorDirection.In ? PinDirectionDefinition.In : PinDirectionDefinition.Out,
-                            Type = dataConnector.ConnectorDataType
-                        });
+                            e.Handled = true;
+                            DiagramViewModel.SourceConnector = null;
+                            DiagramViewModel.TargetConnector = null;
+                            return;
+                        }
+
+                        DiagramViewModel.TargetConnector = dataConnectorViewModel;
                     }
                 }
             }
-        }
-
-        private void MyDiagram_ConnectionManipulationStarted(object sender, ManipulationRoutedEventArgs e)
-        {
-            // only accept connections from out nodes
-            if (e.ManipulationStatus == ManipulationStatus.Attaching
-                    && e.Connector.Name.EndsWith("Out"))
-            {                
-                /* 
-                 *  add source connector to the diagram's view model, so it can use the connector information
-                    when linking the connectors we need this information.
-                */
-
-                if (e.Connector is FlowConnector)
-                {
-                    sourceConnector = e.Connector as FlowConnector;
-                    var flowConnector = sourceConnector as FlowConnector;
-                    DiagramViewModel.SourceConnector = new FlowConnectorViewModel(new FlowPinDefinition
-                    {
-                        Id = Guid.NewGuid(),
-                        Name = flowConnector.Name,
-                        PinDirection = flowConnector.ConnectorDirection == ConnectorDirection.In ? PinDirectionDefinition.In : PinDirectionDefinition.Out
-                    });
-                }
-                else if (e.Connector is DataConnector)
-                {
-                    sourceConnector = e.Connector as DataConnector;
-                    var dataConnector = sourceConnector as DataConnector;
-                    DiagramViewModel.SourceConnector = new DataConnectorViewModel(new DataPinDefinition
-                    {
-                        Id = Guid.NewGuid(),
-                        Name = dataConnector.Name,
-                        PinDirection = dataConnector.ConnectorDirection == ConnectorDirection.In ? PinDirectionDefinition.In : PinDirectionDefinition.Out,
-                        Type = dataConnector.ConnectorDataType
-                    });
-                }
-            }
-            else
-            {
-                sourceConnector = null;
-                e.Handled = true;
-            }
-                
         }
 
         private void InitializeToolBox()
@@ -199,12 +209,14 @@ namespace Simplic.Flow.Editor
             galleryItems = new ObservableCollection<Gallery>();
             this.toolbox.ItemsSource = galleryItems;
 
+            NodeDefinitionResolver.Resolve();
+
             // Workflow gallery
             var actionGallery = new Gallery();
             actionGallery.Header = "Aktion";
 
             // Add items to workflow gallery
-            actionGallery.Items.Add(new GalleryItem("SendEmail", new RadDiagramShape()));
+            actionGallery.Items.Add(new GalleryItem("SendEmail", new ActionNodeShape()));
             actionGallery.Items.Add(new GalleryItem("Gateway", new RadDiagramShape()
             {
                 Geometry = ShapeFactory.GetShapeGeometry(CommonShapeType.RectangleShape),

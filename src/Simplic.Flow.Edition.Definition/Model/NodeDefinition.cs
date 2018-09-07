@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Simplic.Flow.Editor
+namespace Simplic.Flow.Editor.Definition
 {
     public abstract class NodeDefinition
     {

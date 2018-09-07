@@ -116,6 +116,10 @@ namespace Simplic.Flow.Service
                 {
                     var resolver = unityContainer.Resolve<INodeResolver>($"{node.ClassName}");
                     var newNode = resolver.Create(node.Id, node.IsStartEvent);
+
+                    // Create data pin instances inside node
+                    newNode.CreateDataPins();
+
                     nodes.Add(newNode);
                     // Set default values
                     if (node?.Pins != null)

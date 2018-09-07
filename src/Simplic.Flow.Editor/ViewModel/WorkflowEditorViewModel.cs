@@ -136,8 +136,15 @@ namespace Simplic.Flow.Editor
                     OutDataPins = outDataPins
                 };
 
-                return new ActionNodeViewModel(emailNodeDefinition2, null);
+                var nodeViewModel = new ActionNodeViewModel(emailNodeDefinition2, null);
+                
+                var actionShape = (shape as ActionNodeShape);
+                actionShape.DataContext = nodeViewModel;
+
+                actionShape.CreateConnectors();
+                actionShape.LoadConnectorText();
                 //return new NodeViewModel() { DisplayName = "<<Neu>>" };
+                return nodeViewModel;
             }
 
             return null;

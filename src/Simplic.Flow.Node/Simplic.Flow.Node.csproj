@@ -51,6 +51,10 @@
     <Compile Include="ActionNode\Base\StartWithConditionNode.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Simplic.Flow.Edition.Definition\Simplic.Flow.Editor.Definition.csproj">
+      <Project>{75EF378A-23DD-4B14-B9F8-30747A8347FF}</Project>
+      <Name>Simplic.Flow.Editor.Definition</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Simplic.Flow.Event\Simplic.Flow.Event.csproj">
       <Project>{EFCC8359-4ED2-421F-B9BE-4E25CDD5CF40}</Project>
       <Name>Simplic.Flow.Event</Name>

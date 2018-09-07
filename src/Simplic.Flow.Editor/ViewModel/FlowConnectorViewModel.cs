@@ -15,6 +15,8 @@ namespace Simplic.Flow.Editor
 
         public string Name => pinDefinition.Name;
 
+        public bool IsList { get { return pinDefinition.AllowMultiple; } }
+
         public PinDirectionDefinition PinDirection
         {
             get { return pinDefinition.PinDirection; }

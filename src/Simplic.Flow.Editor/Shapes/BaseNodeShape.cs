@@ -11,7 +11,7 @@ namespace Simplic.Flow.Editor
 {
     public abstract class BaseNodeShape : RadDiagramShape
     {
-        public BaseNodeShape(string headerText, IList<FlowConnector> flowConnectors, IList<DataConnector> dataConnectors)
+        public BaseNodeShape()
         {
             //DataContext = this;
             BrushConverter bc = new BrushConverter();
@@ -27,19 +27,18 @@ namespace Simplic.Flow.Editor
             this.BorderThickness = new Thickness(1);
             this.IsEditable = false;
 
-            this.HeaderText = headerText;
-            this.FlowConnectors = flowConnectors;
-            this.DataConnectors = dataConnectors;
-
-            //CreateHeader();
-            CreateConnectors();
-            
             Loaded += BaseNodeShape_Loaded;
         }
 
         private IDictionary<TextBlock, Point> outPinTexts = new Dictionary<TextBlock, Point>();
 
         private void BaseNodeShape_Loaded(object sender, RoutedEventArgs e)
+        {
+            LoadConnectorText();
+            Loaded -= BaseNodeShape_Loaded;
+        }
+
+        public void LoadConnectorText()
         {
             var leftOffset = 6;
             var topOffset = 8.5d;
@@ -63,9 +62,7 @@ namespace Simplic.Flow.Editor
 
                     text.Loaded += Text_Loaded;
                 }
-            }            
-
-            Loaded -= BaseNodeShape_Loaded;
+            }
         }
 
         private void Text_Loaded(object sender, RoutedEventArgs e)
@@ -79,8 +76,25 @@ namespace Simplic.Flow.Editor
             outPinTexts.Remove(textBlock);
         }
 
-        protected virtual void CreateConnectors()
+        public virtual void CreateConnectors()
         {
+            if (ViewModel?.DataPins == null || ViewModel?.FlowPins == null)
+                return;
+
+            // Fill connector list
+            foreach (var pin in ViewModel.DataPins)
+                DataConnectors.Add(new DataConnector(pin.Name, pin.Name, pin.PinDirection == PinDirectionDefinition.In ? ConnectorDirection.In : ConnectorDirection.Out, pin.Type)
+                {
+                    DataContext = pin
+                });
+
+
+            foreach (var pin in ViewModel.FlowPins)
+                FlowConnectors.Add(new FlowConnector(pin.Name, pin.Name, pin.PinDirection == PinDirectionDefinition.In ? ConnectorDirection.In : ConnectorDirection.Out)
+                {
+                    DataContext = pin
+                });
+
             double heightOffset = 0.28;
             double xLeft = 0.04;
             double xRight = 0.96;
@@ -130,7 +144,8 @@ namespace Simplic.Flow.Editor
 
         public string HeaderText { get; set; }
         public string TooltipText { get; set; }
-        public IList<FlowConnector> FlowConnectors { get; set; }
-        public IList<DataConnector> DataConnectors { get; set; }
+        public IList<FlowConnector> FlowConnectors { get; set; } = new List<FlowConnector>();
+        public IList<DataConnector> DataConnectors { get; set; } = new List<DataConnector>();
+        public NodeViewModel ViewModel { get { return DataContext as NodeViewModel; } }
     }
 }

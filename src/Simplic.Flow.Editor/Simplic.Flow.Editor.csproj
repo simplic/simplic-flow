@@ -34,8 +34,23 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Simplic.CoreLib, Version=6.14.318.906, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.CoreLib.6.14.318.906\lib\net451\Simplic.CoreLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Simplic.Flow, Version=1.0.1618.730, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.Flow.1.0.1618.730\lib\net451\Simplic.Flow.dll</HintPath>
+    </Reference>
     <Reference Include="Simplic.Flow.Configuration, Version=1.0.218.719, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Simplic.Flow.Configuration.1.0.218.719\lib\net451\Simplic.Flow.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Simplic.Flow.Event, Version=1.0.218.719, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.Flow.Event.1.0.218.719\lib\net451\Simplic.Flow.Event.dll</HintPath>
+    </Reference>
+    <Reference Include="Simplic.Flow.Node, Version=1.0.718.730, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.Flow.Node.1.0.718.730\lib\net451\Simplic.Flow.Node.dll</HintPath>
     </Reference>
     <Reference Include="Simplic.Framework.Base">
       <HintPath>..\..\..\simplic-framework\src\Simplic.Main\bin\Debug\Simplic.Framework.Base.dll</HintPath>
@@ -87,6 +102,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Class1.cs" />
     <Compile Include="FlowRadDiagram.cs" />
     <Compile Include="Model\ActionNodeDefinition.cs" />
     <Compile Include="Model\DataPinDefinition.cs" />
@@ -102,6 +118,9 @@
     <Compile Include="ViewModel\NodeConnectionViewModel.cs" />
     <Compile Include="ViewModel\NodeViewModel.cs" />
     <Compile Include="ViewModel\WorkflowEditorViewModel.cs" />
+    <Compile Include="Window1.xaml.cs">
+      <DependentUpon>Window1.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -123,6 +142,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Window1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="StyleSelectors\NodeStyleSelector.cs" />
@@ -143,7 +166,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

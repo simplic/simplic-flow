@@ -83,7 +83,7 @@
 
                                 <StackPanel Orientation="Horizontal">
                                     <Canvas Width="12" Margin="5,0,0,0" Height="14" Clip="F1 M 0,0L 14,0L 14,14L 0,14L 0,0">
-                                        <Path Width="12" Height="14" Stretch="Fill" Fill="#6eb6e6" 
+                                        <Path Width="12" Height="14" Stretch="Fill" Fill="Yellow" 
                                               Data="M 52.252,18.9974L 38,34.8333L 50.6667,34.8333L 25.3316,60.1667L 34.8333,39.5833L 23.75,39.5833L 36.4164,18.9974L 52.252,18.9974 Z"/>
                                     </Canvas>
 

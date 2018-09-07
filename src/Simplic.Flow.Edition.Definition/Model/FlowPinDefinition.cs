@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Simplic.Flow.Editor
+namespace Simplic.Flow.Editor.Definition
 {
     public class FlowPinDefinition
     {

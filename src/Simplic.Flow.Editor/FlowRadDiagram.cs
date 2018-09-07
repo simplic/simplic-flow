@@ -23,45 +23,29 @@ namespace Simplic.Flow.Editor
             {
                 var actionNodeViewModel = item as ActionNodeViewModel;
 
-                var flowConnectors = new List<FlowConnector>();
-                foreach (var flowPin in actionNodeViewModel.FlowPins)
+                var shape = new ActionNodeShape()
                 {
-                    flowConnectors.Add(new FlowConnector(flowPin.Name, "", flowPin.PinDirection == 
-                        PinDirectionDefinition.In ? ConnectorDirection.In : ConnectorDirection.Out));
-                }
+                    HeaderText = actionNodeViewModel.DisplayName
+                };
 
-                var dataConnectors = new List<DataConnector>();
-                foreach (var dataPin in actionNodeViewModel.DataPins)
-                {
-                    dataConnectors.Add(new DataConnector(dataPin.Name, dataPin.Name, dataPin.PinDirection ==
-                        PinDirectionDefinition.In ? ConnectorDirection.In : ConnectorDirection.Out, 
-                        dataPin.Type));
-                }
-                
-                return new ActionNodeShape(actionNodeViewModel.DisplayName, flowConnectors, dataConnectors);
+                shape.DataContext = item;
+                shape.CreateConnectors();
+
+                return shape;
             }
             else if (item is EventNodeViewModel)
             {
                 var eventNodeViewModel = item as EventNodeViewModel;
-
-                var flowConnectors = new List<FlowConnector>();
-                foreach (var flowPin in eventNodeViewModel.FlowPins)
+                    
+                var shape = new EventNodeShape
                 {
-                    flowConnectors.Add(new FlowConnector(flowPin.Name, "", flowPin.PinDirection ==
-                        PinDirectionDefinition.In ? ConnectorDirection.In : ConnectorDirection.Out));
-                }
+                    HeaderText = eventNodeViewModel.DisplayName
+                };
 
-                var dataConnectors = new List<DataConnector>();
-                foreach (var dataPin in eventNodeViewModel.DataPins)
-                {
-                    dataConnectors.Add(new DataConnector(dataPin.Name, dataPin.Name, dataPin.PinDirection ==
-                        PinDirectionDefinition.In ? ConnectorDirection.In : ConnectorDirection.Out,
-                        dataPin.Type));
-                }
+                shape.DataContext = item;
+                shape.CreateConnectors();
 
-                //return new ActionNodeShape(actionNodeViewModel.DisplayName, flowConnectors, dataConnectors);
-                
-                return new EventNodeShape(eventNodeViewModel.DisplayName, flowConnectors, dataConnectors);
+                return shape;
             }
             else
                 return null;
