@@ -47,10 +47,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GenericNodeResolver.cs" />
     <Compile Include="Interface\IFlowRuntimeService.cs" />
     <Compile Include="Interface\INodeResolver.cs" />
     <Compile Include="Model\Event\EventCall.cs" />
     <Compile Include="Model\Event\EventDelegate.cs" />
+    <Compile Include="Model\Flow\FlowInstance.cs" />
     <Compile Include="Model\Node\NodeScope.cs" />
     <Compile Include="Model\Node\Base\ActionNode.cs" />
     <Compile Include="Model\Node\Base\ConditionNode.cs" />

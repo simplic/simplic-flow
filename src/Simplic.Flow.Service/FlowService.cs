@@ -5,9 +5,11 @@ using Simplic.Flow.Event;
 using Simplic.Flow.EventQueue;
 using Simplic.Flow.Log;
 using Simplic.Flow.Node;
+using Simplic.Flow.Node.IO;
 using Simplic.FlowInstance;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Unity;
@@ -47,10 +49,13 @@ namespace Simplic.Flow.Service
             this.flowEventService = unityContainer.Resolve<IFlowEventService>();
             this.flowLogService = unityContainer.Resolve<IFlowLogService>();
 
-            unityContainer.RegisterType<INodeResolver, ConsoleWriteLineNodeResolver>("ConsoleWriteLineNode");
-            unityContainer.RegisterType<INodeResolver, ForeachNodeResolver>("ForeachNode");
-            unityContainer.RegisterType<INodeResolver, SequenceNodeResolver>("SequenceNode");
-            unityContainer.RegisterType<INodeResolver, StartWithConditionNodeResolver>("StartWithConditionNode");
+            unityContainer.RegisterType<INodeResolver, GenericNodeResolver<ConsoleWriteLineNode>>("ConsoleWriteLineNode");
+            unityContainer.RegisterType<INodeResolver, GenericNodeResolver<ForeachNode>>("ForeachNode");
+            unityContainer.RegisterType<INodeResolver, GenericNodeResolver<SequenceNode>>("SequenceNode");
+            unityContainer.RegisterType<INodeResolver, GenericNodeResolver<StartWithConditionNode>>("StartWithConditionNode");
+            unityContainer.RegisterType<INodeResolver, GenericNodeResolver<DeleteFileNode>>("DeleteFileNode");
+            unityContainer.RegisterType<INodeResolver, GenericNodeResolver<GetDirectoryContentNode>>("GetDirectoryContentNode");
+            unityContainer.RegisterType<INodeResolver, GenericNodeResolver<OnCheckDirectoryContentNode>>("OnCheckDirectoryContentNode");
 
             flowConfigurations = flowConfigurationService.GetAll().ToList();
 
@@ -59,7 +64,7 @@ namespace Simplic.Flow.Service
 
 
             flows = CreateFlowsFromConfiguration();
-            CreateActiveFlowsFrom(flowInstanceService.GetAll().ToList());
+            CreateActiveFlowsFrom(flowInstanceService.GetAllAlive().ToList());
 
             RefreshEventDelegates();
         }
@@ -72,24 +77,25 @@ namespace Simplic.Flow.Service
         /// Creates <see cref="ActiveFlow.ActiveFlow"/> objects from a list of <see cref="FlowInstance.FlowInstance"/> objects
         /// </summary>
         /// <param name="flowInstances">Objects to create from</param>
-        private void CreateActiveFlowsFrom(List<FlowInstance.FlowInstance> flowInstances)
+        private void CreateActiveFlowsFrom(List<FlowInstance> flowInstances)
         {
             flowLogService.Info($"Running CreateActiveFlowsFrom with {string.Join(",", flowInstances)}");
             foreach (var flowInstance in flowInstances)
             {
+                if (flowInstance.Flow == null)
+                    flowInstance.Flow = flows.FirstOrDefault(x => x.Id == flowInstance.FlowId);
+
                 if (flowInstance.IsAlive)
                 {
                     var activeFlow = new ActiveFlow.ActiveFlow
                     {
                         FlowInstanceId = flowInstance.Id,
                         CurrentEventNodes = flowInstance.CurrentNodes,
-                        FlowId = flowInstance.Flow.Id
+                        FlowId = flowInstance?.Flow?.Id ?? flowInstance.FlowId
                     };
-
+                    
                     activeFlows.Add(activeFlow);
                 }
-
-                flowInstanceService.Save(flowInstance);
             }
         }
         #endregion
@@ -111,7 +117,6 @@ namespace Simplic.Flow.Service
                     var resolver = unityContainer.Resolve<INodeResolver>($"{node.ClassName}");
                     var newNode = resolver.Create(node.Id, node.IsStartEvent);
                     nodes.Add(newNode);
-
                     // Set default values
                     if (node?.Pins != null)
                     {
@@ -124,7 +129,11 @@ namespace Simplic.Flow.Service
                                 System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
 
                             if (pin.DefaultValue != null)
-                                defaultValueProperty.SetValue(pinProperty, pin.DefaultValue);
+                            {
+                                var pinInstance = pinProperty.GetValue(newNode);
+
+                                defaultValueProperty.SetValue(pinInstance, pin.DefaultValue);
+                            }
                         }
                     }
 
@@ -244,7 +253,7 @@ namespace Simplic.Flow.Service
                 LoadEventQueue();
 
                 // pop event entries from queue first
-                var newFlowInstances = new List<FlowInstance.FlowInstance>();
+                var newFlowInstances = new List<FlowInstance>();
 
                 while (eventQueue.Count > 0)
                 {
@@ -262,11 +271,13 @@ namespace Simplic.Flow.Service
                             flowLogService.Info($"Continuing flow instance: {activeFlow.FlowInstanceId}");
                             System.Console.WriteLine("---- CONTINUE FLOW ----");
 
+                            // Get from database
                             var flowInstance = flowInstanceService.GetById(activeFlow.FlowInstanceId);
+                            flowInstance.Flow = flows.FirstOrDefault(x => x.Id == flowInstance.FlowId);
 
                             try
                             {
-                                var runtime = new FlowRuntimeService(flowLogService);
+                                var runtime = new FlowRuntimeService(flowLogService, queueEntry.Args);
                                 runtime.Run(flowInstance, queueEntry);
 
                                 if (!flowInstance.IsAlive)
@@ -302,8 +313,8 @@ namespace Simplic.Flow.Service
                     {
                         flowLogService.Info($"Create new flow instance {queueEntry.Args.EventName} : {queueEntry.Delegate.FlowId}");
 
-                        var runtime = new FlowRuntimeService(flowLogService);
-                        var newFlowInstance = new FlowInstance.FlowInstance
+                        var runtime = new FlowRuntimeService(flowLogService, queueEntry.Args);
+                        var newFlowInstance = new FlowInstance
                         {
                             Flow = flows.FirstOrDefault(x => x.Id == queueEntry.Delegate.FlowId),
                             Id = Guid.NewGuid()
@@ -315,6 +326,9 @@ namespace Simplic.Flow.Service
                             newFlowInstances.Add(newFlowInstance);
 
                             flowLogService.Info("Flow instance successfull", newFlowInstance?.Id);
+
+                            // Save active flow instance after run
+                            flowInstanceService.Save(newFlowInstance);
                         }
                         catch (Exception ex)
                         {

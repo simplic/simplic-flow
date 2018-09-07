@@ -1,15 +1,13 @@
-﻿using Simplic.Flow.Event;
-using System;
+﻿using System;
 
 namespace Simplic.Flow
-{    
+{
     public abstract class EventNode : ActionNode
     {
-        public FlowEventArgs Arguments { get; set; }
-        public string EventName { get; set; }
+        public abstract string EventName { get; }
         public Guid FlowId { get; set; }                
-        public bool IsStartEvent { get; set; }
-        public virtual bool ShouldExecute(DataPinScope scope)
+        public virtual bool IsStartEvent { get; set; }
+        public virtual bool ShouldExecute(IFlowRuntimeService runtime, DataPinScope scope)
         {
             return true;
         }

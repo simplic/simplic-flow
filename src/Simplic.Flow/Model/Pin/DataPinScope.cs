@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 namespace Simplic.Flow
@@ -19,24 +20,55 @@ namespace Simplic.Flow
         public DataPinScope Parent { get; set; }
         public T GetValue<T>(DataPin inPin)
         {
-            var value = (T)PinValues.FirstOrDefault(x => x.Key == inPin.Id).Value;
+            if (inPin == null)
+                return default(T);
 
-            if (value == null && inPin.DefaultValue != null)
-                value = (T)Convert.ChangeType(inPin.DefaultValue, typeof(T));
+            var value = default(T);
 
-            // Check
+            if (PinValues.Any(x => x.Key == inPin.Id))
+            {
+                var rawValue = PinValues.FirstOrDefault(x => x.Key == inPin.Id);
+
+                try
+                {
+                    value = (T)rawValue.Value;
+                }
+                catch (InvalidCastException)
+                {
+                    if (rawValue.Value != null)
+                        value = (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromInvariantString(rawValue.Value?.ToString());
+                }
+            }
+
+            // Log if inPin is null
+            if ((value == null || value.Equals(default(T))) && inPin.DefaultValue != null)
+            {
+                if (typeof(T) == inPin.DefaultValue?.GetType())
+                {
+                    value = (T)inPin.DefaultValue;
+                }
+                else if (inPin?.DefaultValue?.ToString() != null)
+                {
+                    value = (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromInvariantString(inPin?.DefaultValue?.ToString());
+                }
+            }
 
             return value;
         }
 
         public IList<T> GetListValue<T>(DataPin inPin)
         {
-            var value = (PinValues.FirstOrDefault(x => x.Key == inPin.Id).Value as IList);
-            var list = value.Cast<T>().ToList();
+            if (PinValues.Any(x => x.Key == inPin.Id))
+            {
+                var value = (PinValues.FirstOrDefault(x => x.Key == inPin.Id).Value as IList);
+                var list = value.Cast<T>().ToList();
 
-            // Check
+                // Check
 
-            return list;
+                return list;
+            }
+            else
+                return new List<T>();
         }
 
         public void SetValue(DataPin outPin, object value)

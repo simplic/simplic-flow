@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Simplic.Flow;
 
 namespace Simplic.FlowInstance.Service
 {
@@ -22,7 +23,7 @@ namespace Simplic.FlowInstance.Service
         /// Gets a list of <see cref="FlowInstance"/> from the database
         /// </summary>
         /// <returns>A list of <see cref="FlowInstance"/> from the database</returns>
-        public IEnumerable<FlowInstance> GetAll()
+        public IEnumerable<Flow.FlowInstance> GetAll()
         {
             return flowInstanceRepository.GetAll();
         }
@@ -33,7 +34,7 @@ namespace Simplic.FlowInstance.Service
         /// Gets a list of <see cref="FlowInstance"/> which are alive from the database 
         /// </summary>
         /// <returns>A list of <see cref="FlowInstance"/> which are alive from the database</returns>
-        public IEnumerable<FlowInstance> GetAllAlive()
+        public IEnumerable<Flow.FlowInstance> GetAllAlive()
         {
             return flowInstanceRepository.GetAllAlive();
         }
@@ -45,7 +46,7 @@ namespace Simplic.FlowInstance.Service
         /// </summary>
         /// <param name="flowInstanceId">Id to get</param>
         /// <returns><see cref="FlowInstance"/></returns>
-        public FlowInstance GetById(Guid flowInstanceId)
+        public Flow.FlowInstance GetById(Guid flowInstanceId)
         {
             return flowInstanceRepository.GetById(flowInstanceId);
         }
@@ -57,7 +58,7 @@ namespace Simplic.FlowInstance.Service
         /// </summary>
         /// <param name="flowInstance">Object to save</param>
         /// <returns>True if successfull</returns>
-        public bool Save(FlowInstance flowInstance)
+        public bool Save(Flow.FlowInstance flowInstance)
         {
             return flowInstanceRepository.Save(flowInstance);
         }

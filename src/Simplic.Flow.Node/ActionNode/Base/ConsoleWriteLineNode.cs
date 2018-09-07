@@ -4,11 +4,9 @@ namespace Simplic.Flow.Node
 {
     public class ConsoleWriteLineNode : ActionNode
     {
-        public override string FriendlyName { get; }
-
         public ConsoleWriteLineNode()
         {
-            ToPrint = new DataPin
+            InPinToPrint = new DataPin
             {
                 ContainerType = DataPinContainerType.Single,
                 DataType = typeof(object),
@@ -20,17 +18,20 @@ namespace Simplic.Flow.Node
 
         public override bool Execute(IFlowRuntimeService runtime, DataPinScope scope)
         {
-            System.Console.WriteLine(scope.GetValue<object>(ToPrint));
+            System.Console.WriteLine(scope.GetValue<object>(InPinToPrint));
 
             System.Console.WriteLine($"> {GetType().Name} {DateTime.Now} :: {DateTime.Now.Millisecond}");
 
-            if (FlowOut != null)
-                runtime.EnqueueNode(FlowOut, scope);
+            if (OutNode != null)
+                runtime.EnqueueNode(OutNode, scope);
 
             return true;
         }
-        
-        public ActionNode FlowOut { get; set; }
-        public DataPin ToPrint { get; set; }
+
+        public ActionNode OutNode { get; set; }
+        public DataPin InPinToPrint { get; set; }
+
+        public override string FriendlyName { get { return nameof(ConsoleWriteLineNode); } }
+        public override string Name { get { return nameof(ConsoleWriteLineNode); } }        
     }
 }

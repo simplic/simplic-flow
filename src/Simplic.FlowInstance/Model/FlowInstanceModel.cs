@@ -9,5 +9,6 @@ namespace Simplic.FlowInstance
         public byte[] Data { get; set; }
         public bool IsAlive { get; set; }
         public DateTime CreateDateTime { get; set; }
+        public Guid FlowConfigurationId { get; set; }
     }
 }

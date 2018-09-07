@@ -1,4 +1,5 @@
 ﻿using Simplic.Collections.Generic;
+using Simplic.Flow.Event;
 using Simplic.Flow.Log;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,20 +11,26 @@ namespace Simplic.Flow.Service
         private Dequeue<NodeScope<ActionNode>> nextNodes = new Dequeue<NodeScope<ActionNode>>();
         private IList<NodeScope<ActionNode>> tempNextNodes = new List<NodeScope<ActionNode>>();
         private readonly IFlowLogService flowLogService;
-        private FlowInstance.FlowInstance instance;
+        private FlowInstance instance;
+        private EventCall eventCall;
+
+        public FlowEventArgs FlowEventArgs { get; private set; }
+        public FlowInstance Instance { get { return instance; } }
 
         /// <summary>
         /// Initialize new runtime instance
         /// </summary>
         /// <param name="flowLogService">Log service</param>
-        public FlowRuntimeService(IFlowLogService flowLogService)
+        public FlowRuntimeService(IFlowLogService flowLogService, FlowEventArgs flowEventArgs)
         {
             this.flowLogService = flowLogService;
+            this.FlowEventArgs = flowEventArgs;
         }
 
-        public void Run(FlowInstance.FlowInstance instance, EventCall call)
+        public void Run(FlowInstance instance, EventCall call)
         {
             this.instance = instance;
+            this.eventCall = call;
 
             if (!instance.CurrentNodes.Any())
             {
@@ -32,9 +39,7 @@ namespace Simplic.Flow.Service
                     x => x.IsStartEvent && x.Id == call.Delegate.EventNodeId))
                 {
                     // Pass arguments to event
-                    startNode.Arguments = call.Args;
-
-                    if (!startNode.ShouldExecute(instance.DataScope))
+                    if (!startNode.ShouldExecute(this, instance.DataScope))
                         continue;
 
                     // Execute event
@@ -46,9 +51,9 @@ namespace Simplic.Flow.Service
                 var executedEvents = new List<NodeScope<EventNode>>();
                 foreach (var eventNode in instance.CurrentNodes.Where(x => x.NodeId == call.Delegate.EventNodeId))
                 {
-                    eventNode.Node.Arguments = call.Args;
+                    eventNode.Node = instance.Flow.Nodes.OfType<EventNode>().FirstOrDefault(x => x.Id == eventNode.NodeId);
 
-                    if (!eventNode.Node.ShouldExecute(eventNode.Scope))
+                    if (!eventNode.Node.ShouldExecute(this, eventNode.Scope))
                         continue;
 
                     if (Execute(eventNode))
@@ -73,9 +78,7 @@ namespace Simplic.Flow.Service
                         Node = nextNode.Node as EventNode,
                         Scope = nextNode.Scope,
                         NodeId = nextNode.NodeId
-                    });
-
-                    //TODO: should we save the state here ?
+                    });                    
                 }
                 else
                 {

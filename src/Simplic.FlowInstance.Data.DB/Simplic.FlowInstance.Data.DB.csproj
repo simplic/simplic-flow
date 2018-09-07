@@ -60,6 +60,10 @@
       <Project>{7206af52-60cb-46b1-9fe7-cf172752b0e9}</Project>
       <Name>Simplic.FlowInstance</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Simplic.Flow\Simplic.Flow.csproj">
+      <Project>{1F540A26-62FB-45CB-ABC6-B4B2D8F7005E}</Project>
+      <Name>Simplic.Flow</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="package.bat" />
