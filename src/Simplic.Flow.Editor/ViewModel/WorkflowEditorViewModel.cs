@@ -3,23 +3,24 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Telerik.Windows.Controls;
 using Telerik.Windows.Diagrams.Core;
 
 namespace Simplic.Flow.Editor
 {
     public class WorkflowEditorViewModel : Simplic.UI.MVC.ViewModelBase, IObservableGraphSource
     {
+        #region Private Members
         private Guid id;
         private object selectedItem;
         private ObservableCollection<NodeConnectionViewModel> connections;
+        #endregion
 
+        #region Constructor
         public WorkflowEditorViewModel()
         {
             connections = new ObservableCollection<NodeConnectionViewModel>();
             Nodes = new ObservableCollection<NodeViewModel>();
+            NodeDefinitions = new List<Definition.NodeDefinition>();
 
             Nodes.CollectionChanged += (s, e) =>
             {
@@ -33,65 +34,58 @@ namespace Simplic.Flow.Editor
                 }
             };
         }
+        #endregion
+
+        #region Public Properties
+        public Guid Id
+        {
+            get { return id; }
+            set { id = value; IsDirty = true; RaisePropertyChanged(nameof(Id)); }
+        }
 
         public ObservableCollection<NodeViewModel> Nodes { get; }
 
-        public Guid Id
-        {
-            get
-            {
-                return id;
-            }
-
-            set
-            {
-                id = value;
-                IsDirty = true;
-                RaisePropertyChanged(nameof(Id));
-            }
-        }
-
-        IEnumerable IGraphSource.Items
-        {
-            get
-            {
-                return Nodes;
-            }
-        }
+        public IList<Definition.NodeDefinition> NodeDefinitions { get; set; }
+        
+        IEnumerable IGraphSource.Items { get { return Nodes; } }
 
         public ObservableCollection<NodeConnectionViewModel> Connections
         {
-            get
-            {
-                return connections;
-            }
-
-            set
-            {
-                connections = value;
-                IsDirty = true;
-                RaisePropertyChanged(nameof(Connections));
-            }
+            get { return connections; }
+            set { connections = value; IsDirty = true; RaisePropertyChanged(nameof(Connections)); }
         }
 
-        IEnumerable<ILink> IGraphSource.Links
-        {
-            get
-            {
-                return connections;
-            }
-        }
+        IEnumerable<ILink> IGraphSource.Links { get { return connections; } }
 
         public ConnectorViewModel SourceConnector { get; set; }
+
         public ConnectorViewModel TargetConnector { get; set; }
+
+        public object SelectedItem
+        {
+            get { return selectedItem; }
+            set
+            {
+                // We have to reset the selection first
+                selectedItem = null;
+                RaisePropertyChanged(nameof(SelectedItem));
+
+                // Refresh selection
+                selectedItem = value;
+                RaisePropertyChanged(nameof(SelectedItem));
+            }
+        }
+        #endregion
+
+        #region Public Methods
         void IObservableGraphSource.AddLink(ILink link)
         {
             IsDirty = true;
 
             var connection = link as NodeConnectionViewModel;
-            if (TargetConnector != null)                         
-                connection.TargetConnectorViewModel = TargetConnector;            
-                
+            if (TargetConnector != null)
+                connection.TargetConnectorViewModel = TargetConnector;
+
             connections.Add(connection);
         }
 
@@ -104,7 +98,7 @@ namespace Simplic.Flow.Editor
 
         ILink IObservableGraphSource.CreateLink(object source, object target)
         {
-            IsDirty = true;            
+            IsDirty = true;
 
             return new NodeConnectionViewModel(source as NodeViewModel, target as NodeViewModel, SourceConnector, null);
         }
@@ -112,32 +106,14 @@ namespace Simplic.Flow.Editor
         object IObservableGraphSource.CreateNode(IShape shape)
         {
             IsDirty = true;
-            if (shape is Telerik.Windows.Controls.RadDiagramShape)
+            if (shape is ActionNodeShape)
             {
-                var inFlowPins = new List<FlowPinDefinition>();
-                inFlowPins.Add(new FlowPinDefinition { Id = Guid.NewGuid(), Name = "FlowIn", PinDirection = PinDirectionDefinition.In });
+                var actionNodeShape = shape as ActionNodeShape;
 
-                var inDataPins = new List<DataPinDefinition>();
-                inDataPins.Add(new DataPinDefinition { Id = Guid.NewGuid(), Name = "EmailAdressIn", Type = typeof(string), PinDirection = PinDirectionDefinition.In });
-                inDataPins.Add(new DataPinDefinition { Id = Guid.NewGuid(), Name = "SubjectIn", Type = typeof(string), PinDirection = PinDirectionDefinition.In });
+                var def = NodeDefinitions.Where(x => x.Name == actionNodeShape.Name).FirstOrDefault();
 
-                var outFlowPins = new List<FlowPinDefinition>();
-                outFlowPins.Add(new FlowPinDefinition { Id = Guid.NewGuid(), Name = "FlowOut", PinDirection = PinDirectionDefinition.Out });
+                var nodeViewModel = new ActionNodeViewModel(def, null);
 
-                var outDataPins = new List<DataPinDefinition>();
-                outDataPins.Add(new DataPinDefinition { Id = Guid.NewGuid(), Name = "ResultOut", Type = typeof(bool), PinDirection = PinDirectionDefinition.Out });
-
-                var emailNodeDefinition2 = new ActionNodeDefinition
-                {                    
-                    Name = "Send Fax",                    
-                    InFlowPins = inFlowPins,
-                    InDataPins = inDataPins,
-                    OutFlowPins = outFlowPins,
-                    OutDataPins = outDataPins
-                };
-
-                var nodeViewModel = new ActionNodeViewModel(emailNodeDefinition2, null);
-                
                 var actionShape = (shape as ActionNodeShape);
                 actionShape.DataContext = nodeViewModel;
 
@@ -178,25 +154,7 @@ namespace Simplic.Flow.Editor
             {
                 return false;
             }
-        }
-
-        public object SelectedItem
-        {
-            get
-            {
-                return selectedItem;
-            }
-
-            set
-            {
-                // We have to reset the selection first
-                selectedItem = null;
-                RaisePropertyChanged(nameof(SelectedItem));
-
-                // Refresh selection
-                selectedItem = value;
-                RaisePropertyChanged(nameof(SelectedItem));
-            }
-        }
+        } 
+        #endregion
     }
 }

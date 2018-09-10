@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace Simplic.Flow.Node
 {
+    [ActionNodeDefinition(DisplayName = "Sequence", Name = "SequenceNode")]
     public class SequenceNode : ActionNode
     {                
         public override bool Execute(IFlowRuntimeService runtime, DataPinScope scope)
@@ -17,6 +18,10 @@ namespace Simplic.Flow.Node
             return true;
         }
 
+        [FlowPinDefinition(AllowMultiple = true, 
+            DisplayName = "Out", 
+            Name = "OutNodes", 
+            PinDirection = PinDirection.Out)]
         public IList<ActionNode> OutNodes { get; set; } = new List<ActionNode>();
         public override string FriendlyName { get { return nameof(SequenceNode); } }
         public override string Name { get { return nameof(SequenceNode); } }

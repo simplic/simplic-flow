@@ -77,8 +77,8 @@
       <Project>{A2F33950-81AF-4D02-856F-5B2C69E78CAC}</Project>
       <Name>Simplic.Flow.Configuration</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Simplic.Flow.Edition.Definition\Simplic.Flow.Editor.Definition.csproj">
-      <Project>{75EF378A-23DD-4B14-B9F8-30747A8347FF}</Project>
+    <ProjectReference Include="..\Simplic.Flow.Editor.Definition\Simplic.Flow.Editor.Definition.csproj">
+      <Project>{75ef378a-23dd-4b14-b9f8-30747a8347ff}</Project>
       <Name>Simplic.Flow.Editor.Definition</Name>
     </ProjectReference>
     <ProjectReference Include="..\Simplic.Flow.Event\Simplic.Flow.Event.csproj">

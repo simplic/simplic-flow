@@ -1,4 +1,5 @@
 ﻿using Simplic.Flow.Configuration;
+using Simplic.Flow.Editor.Definition;
 
 namespace Simplic.Flow.Editor
 {

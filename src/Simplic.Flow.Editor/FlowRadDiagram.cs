@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-using Telerik.Windows.Controls;
+﻿using Telerik.Windows.Controls;
 
 namespace Simplic.Flow.Editor
 {
@@ -24,7 +16,7 @@ namespace Simplic.Flow.Editor
                 var actionNodeViewModel = item as ActionNodeViewModel;
 
                 var shape = new ActionNodeShape()
-                {
+                {                    
                     HeaderText = actionNodeViewModel.DisplayName
                 };
 

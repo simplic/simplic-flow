@@ -20,7 +20,13 @@ namespace Simplic.Flow.Node
         [FlowPinDefinition(DisplayName = "Out", Name = "OutNode", PinDirection = PinDirection.Out)]
         public ActionNode OutNode { get; set; }
 
-        [DataPinDefinition(ContainerType = DataPinContainerType.Single, DataType = typeof(object), Direction = PinDirection.In, Name = "ConsoleWriteLineInPin", Id="...")]
+        [DataPinDefinition(
+            Id = "b6ffc7b8-8f06-409c-8d27-7757518c2ab6", 
+            ContainerType = DataPinContainerType.Single, 
+            DataType = typeof(object), 
+            Direction = PinDirection.In, 
+            Name = "ConsoleWriteLineInPin",
+            DisplayName = "To Print")]
         public DataPin InPinToPrint { get; set; }
 
         public override string FriendlyName { get { return nameof(ConsoleWriteLineNode); } }

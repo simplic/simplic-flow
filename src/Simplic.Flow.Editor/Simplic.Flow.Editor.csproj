@@ -41,10 +41,17 @@
       <HintPath>..\packages\Simplic.CoreLib.6.14.318.906\lib\net451\Simplic.CoreLib.dll</HintPath>
     </Reference>
     <Reference Include="Simplic.Flow, Version=1.0.1618.730, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simplic.Flow.1.0.1618.730\lib\net451\Simplic.Flow.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Simplic.Flow.Node\bin\Debug\Simplic.Flow.dll</HintPath>
     </Reference>
     <Reference Include="Simplic.Flow.Configuration, Version=1.0.218.719, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Simplic.Flow.Configuration.1.0.218.719\lib\net451\Simplic.Flow.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Simplic.Flow.Edition.Definition">
+      <HintPath>..\Simplic.Flow.Editor.Definition\bin\Debug\Simplic.Flow.Edition.Definition.dll</HintPath>
+    </Reference>
+    <Reference Include="Simplic.Flow.Editor.Definition.Service">
+      <HintPath>..\Simplic.Flow.Editor.Definition.Service\bin\Debug\Simplic.Flow.Editor.Definition.Service.dll</HintPath>
     </Reference>
     <Reference Include="Simplic.Flow.Event, Version=1.0.218.719, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Simplic.Flow.Event.1.0.218.719\lib\net451\Simplic.Flow.Event.dll</HintPath>
@@ -102,14 +109,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Class1.cs" />
     <Compile Include="FlowRadDiagram.cs" />
-    <Compile Include="Model\ActionNodeDefinition.cs" />
-    <Compile Include="Model\DataPinDefinition.cs" />
-    <Compile Include="Model\EventNodeDefinition.cs" />
-    <Compile Include="Model\FlowPinDefinition.cs" />
-    <Compile Include="Model\NodeDefinition.cs" />
-    <Compile Include="Model\PinDirectionDefinition.cs" />
     <Compile Include="ViewModel\ActionNodeViewModel.cs" />
     <Compile Include="ViewModel\ConnectorViewModel.cs" />
     <Compile Include="ViewModel\FlowConnectorViewModel.cs" />
@@ -118,9 +118,6 @@
     <Compile Include="ViewModel\NodeConnectionViewModel.cs" />
     <Compile Include="ViewModel\NodeViewModel.cs" />
     <Compile Include="ViewModel\WorkflowEditorViewModel.cs" />
-    <Compile Include="Window1.xaml.cs">
-      <DependentUpon>Window1.xaml</DependentUpon>
-    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -142,10 +139,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Window1.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="StyleSelectors\NodeStyleSelector.cs" />

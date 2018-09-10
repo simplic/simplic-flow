@@ -1,20 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Telerik.Windows;
-using Telerik.Windows.Controls;
 using Telerik.Windows.Controls.Diagrams;
 using Telerik.Windows.Controls.Diagrams.Extensions;
 using Telerik.Windows.Diagrams.Core;
@@ -27,72 +15,80 @@ namespace Simplic.Flow.Editor
     public partial class MainWindow : Window
     {
         private RadDiagramToolboxItem selectedToolBoxItem;
-
         private BaseConnector sourceConnector;
-
         private ObservableCollection<Gallery> galleryItems;
-
-        Dictionary<string, ObservableCollection<GalleryItem>> sortedGallleries = new Dictionary<string, ObservableCollection<GalleryItem>>();
+        private Dictionary<string, ObservableCollection<GalleryItem>> sortedGallleries = new Dictionary<string, ObservableCollection<GalleryItem>>();
+        private WorkflowEditorViewModel diagramViewModel;
 
         public MainWindow()
         {
-            InitializeComponent();            
-            
+            InitializeComponent();
+
+            diagramViewModel = new WorkflowEditorViewModel();
+            this.DataContext = diagramViewModel;
+
             this.MyDiagram.ConnectionManipulationStarted += MyDiagram_ConnectionManipulationStarted;            
             this.MyDiagram.ConnectionManipulationCompleted += MyDiagram_ConnectionManipulationCompleted;
 
-            CreateTempNodes();
-
             // Init toolbox on the right side
-            InitializeToolBox();
+            LoadFlowNodeDefinitions();
+            InitializeToolBox();            
+        }
+
+        private void LoadFlowNodeDefinitions()
+        {
+            var asm = Assembly.LoadFrom(@"C:\dev\simplic-flow\src\Simplic.Flow.Node\bin\Debug\Simplic.Flow.Node.dll");
+
+            var defService = new Simplic.Flow.Editor.Definition.Service.DefinitionService();
+            diagramViewModel.NodeDefinitions = defService.Create(new List<Assembly>() { asm });
         }
 
         private void CreateTempNodes()
         {
-            var vm = new WorkflowEditorViewModel();
+            //var vm = new WorkflowEditorViewModel();
 
-            for (int i = 0; i < 10; i++)
-            {
-                var inFlowPins = new List<FlowPinDefinition>();
-                inFlowPins.Add(new FlowPinDefinition { Id = Guid.NewGuid(), Name = "FlowIn", PinDirection = PinDirectionDefinition.In });
+            //for (int i = 0; i < 10; i++)
+            //{
+            //    var inFlowPins = new List<FlowPinDefinition>();
+            //    inFlowPins.Add(new FlowPinDefinition { Id = Guid.NewGuid(), Name = "FlowIn", PinDirection = PinDirectionDefinition.In });
 
-                var inDataPins = new List<DataPinDefinition>();
-                inDataPins.Add(new DataPinDefinition { Id = Guid.NewGuid(), Name = "EmailAdressIn", Type = typeof(string), PinDirection = PinDirectionDefinition.In });
-                inDataPins.Add(new DataPinDefinition { Id = Guid.NewGuid(), Name = "SubjectIn", Type = typeof(string), PinDirection = PinDirectionDefinition.In });
-                inDataPins.Add(new DataPinDefinition { Id = Guid.NewGuid(), Name = "DoSend", Type = typeof(bool), PinDirection = PinDirectionDefinition.In });
+            //    var inDataPins = new List<DataPinDefinition>();
+            //    inDataPins.Add(new DataPinDefinition { Id = Guid.NewGuid(), Name = "EmailAdressIn", Type = typeof(string), PinDirection = PinDirectionDefinition.In });
+            //    inDataPins.Add(new DataPinDefinition { Id = Guid.NewGuid(), Name = "SubjectIn", Type = typeof(string), PinDirection = PinDirectionDefinition.In });
+            //    inDataPins.Add(new DataPinDefinition { Id = Guid.NewGuid(), Name = "DoSend", Type = typeof(bool), PinDirection = PinDirectionDefinition.In });
 
-                var outFlowPins = new List<FlowPinDefinition>();
-                outFlowPins.Add(new FlowPinDefinition { Id = Guid.NewGuid(), Name = "FlowOut", PinDirection = PinDirectionDefinition.Out });
+            //    var outFlowPins = new List<FlowPinDefinition>();
+            //    outFlowPins.Add(new FlowPinDefinition { Id = Guid.NewGuid(), Name = "FlowOut", PinDirection = PinDirectionDefinition.Out });
 
-                var outDataPins = new List<DataPinDefinition>();
-                outDataPins.Add(new DataPinDefinition { Id = Guid.NewGuid(), Name = "ResultOut", Type = typeof(bool), PinDirection = PinDirectionDefinition.Out });
+            //    var outDataPins = new List<DataPinDefinition>();
+            //    outDataPins.Add(new DataPinDefinition { Id = Guid.NewGuid(), Name = "ResultOut", Type = typeof(bool), PinDirection = PinDirectionDefinition.Out });
 
-                outDataPins.Add(new DataPinDefinition { Id = Guid.NewGuid(), Name = "ResultStrOut", Type = typeof(string), PinDirection = PinDirectionDefinition.Out });
+            //    outDataPins.Add(new DataPinDefinition { Id = Guid.NewGuid(), Name = "ResultStrOut", Type = typeof(string), PinDirection = PinDirectionDefinition.Out });
 
 
-                var emailNodeDefinition = new ActionNodeDefinition
-                {
-                    Name = "Send Email",
-                    InFlowPins = inFlowPins,
-                    InDataPins = inDataPins,
-                    OutFlowPins = outFlowPins,
-                    OutDataPins = outDataPins
-                };
+            //    var emailNodeDefinition = new ActionNodeDefinition
+            //    {
+            //        Name = "Send Email",
+            //        InFlowPins = inFlowPins,
+            //        InDataPins = inDataPins,
+            //        OutFlowPins = outFlowPins,
+            //        OutDataPins = outDataPins
+            //    };
 
-                var emailNodeDefinition2 = new EventNodeDefinition
-                {
-                    Name = "Send Fax",
-                    InFlowPins = inFlowPins,
-                    InDataPins = inDataPins,
-                    OutFlowPins = outFlowPins,
-                    OutDataPins = outDataPins
-                };
+            //    var emailNodeDefinition2 = new EventNodeDefinition
+            //    {
+            //        Name = "Send Fax",
+            //        InFlowPins = inFlowPins,
+            //        InDataPins = inDataPins,
+            //        OutFlowPins = outFlowPins,
+            //        OutDataPins = outDataPins
+            //    };
 
-                vm.Nodes.Add(new ActionNodeViewModel(emailNodeDefinition, null) { Position = new Point(650, 320) });
-                vm.Nodes.Add(new EventNodeViewModel(emailNodeDefinition2, null) { Position = new Point(950, 320) });
-            }
+            //    vm.Nodes.Add(new ActionNodeViewModel(emailNodeDefinition, null) { Position = new Point(650, 320) });
+            //    vm.Nodes.Add(new EventNodeViewModel(emailNodeDefinition2, null) { Position = new Point(950, 320) });
+            //}
 
-            this.DataContext = vm;
+            //this.DataContext = vm;
         }       
 
         private void MyDiagram_ConnectionManipulationStarted(object sender, ManipulationRoutedEventArgs e)
@@ -112,23 +108,23 @@ namespace Simplic.Flow.Editor
                     var flowConnector = sourceConnector as FlowConnector;
                     var flowConnectorViewModel = sourceConnector.DataContext as FlowConnectorViewModel;
                    
-                    var d = DiagramViewModel.Connections.Any(x => x.SourceConnectorViewModel == sourceConnector.DataContext);
+                    var d = diagramViewModel.Connections.Any(x => x.SourceConnectorViewModel == sourceConnector.DataContext);
                     if (d && !flowConnectorViewModel.IsList)
                     {
                         e.Handled = true;
-                        DiagramViewModel.SourceConnector = null;
-                        DiagramViewModel.TargetConnector = null;
+                        diagramViewModel.SourceConnector = null;
+                        diagramViewModel.TargetConnector = null;
                         return;
                     }
 
-                    DiagramViewModel.SourceConnector = flowConnectorViewModel;
+                    diagramViewModel.SourceConnector = flowConnectorViewModel;
                 }
                 else if (e.Connector is DataConnector)
                 {
                     sourceConnector = e.Connector as DataConnector;
                     var dataConnector = sourceConnector as DataConnector;
                     var dataConnectorViewModel = sourceConnector.DataContext as DataConnectorViewModel;
-                    DiagramViewModel.SourceConnector = dataConnectorViewModel;
+                    diagramViewModel.SourceConnector = dataConnectorViewModel;
                 }
             }
             else
@@ -143,8 +139,8 @@ namespace Simplic.Flow.Editor
             // Check whether the connection was not attached
             if (e.Connector == null)
             {
-                DiagramViewModel.SourceConnector = null;
-                DiagramViewModel.TargetConnector = null;
+                diagramViewModel.SourceConnector = null;
+                diagramViewModel.TargetConnector = null;
 
                 e.Handled = true;
                 return;
@@ -168,8 +164,8 @@ namespace Simplic.Flow.Editor
                     // bypass
                     e.Handled = true;
 
-                    DiagramViewModel.SourceConnector = null;
-                    DiagramViewModel.TargetConnector = null;
+                    diagramViewModel.SourceConnector = null;
+                    diagramViewModel.TargetConnector = null;
                 }
                 else
                 {
@@ -181,24 +177,24 @@ namespace Simplic.Flow.Editor
                     {
                         var flowConnector = e.Connector as FlowConnector;
                         var flowConnectorViewModel = flowConnector.DataContext as FlowConnectorViewModel;
-                        DiagramViewModel.TargetConnector = flowConnectorViewModel;
+                        diagramViewModel.TargetConnector = flowConnectorViewModel;
                     }
                     else if (e.Connector is DataConnector)
                     {
                         var dataConnector = e.Connector as DataConnector;
                         var dataConnectorViewModel = dataConnector.DataContext as DataConnectorViewModel;
 
-                        var d = DiagramViewModel.Connections.Any(x => x.TargetConnectorViewModel == dataConnector.DataContext);
+                        var d = diagramViewModel.Connections.Any(x => x.TargetConnectorViewModel == dataConnector.DataContext);
 
                         if (d)
                         {
                             e.Handled = true;
-                            DiagramViewModel.SourceConnector = null;
-                            DiagramViewModel.TargetConnector = null;
+                            diagramViewModel.SourceConnector = null;
+                            diagramViewModel.TargetConnector = null;
                             return;
                         }
 
-                        DiagramViewModel.TargetConnector = dataConnectorViewModel;
+                        diagramViewModel.TargetConnector = dataConnectorViewModel;
                     }
                 }
             }
@@ -207,32 +203,46 @@ namespace Simplic.Flow.Editor
         private void InitializeToolBox()
         {
             galleryItems = new ObservableCollection<Gallery>();
-            this.toolbox.ItemsSource = galleryItems;
 
-            NodeDefinitionResolver.Resolve();
-
-            // Workflow gallery
             var actionGallery = new Gallery();
             actionGallery.Header = "Aktion";
 
-            // Add items to workflow gallery
-            actionGallery.Items.Add(new GalleryItem("SendEmail", new ActionNodeShape()));
-            actionGallery.Items.Add(new GalleryItem("Gateway", new RadDiagramShape()
-            {
-                Geometry = ShapeFactory.GetShapeGeometry(CommonShapeType.RectangleShape),
-                Background = new SolidColorBrush(Colors.LightYellow)
-            }));
-            actionGallery.Items.Add(new GalleryItem("Start/Ende", new RadDiagramShape()
-            {
-                Geometry = ShapeFactory.GetShapeGeometry(CommonShapeType.RectangleShape),
-                Background = new SolidColorBrush(Colors.LightGreen)
-            }));
-
-            galleryItems.Add(actionGallery);
-
             var eventGallery = new Gallery();
             eventGallery.Header = "Event";
+
+            foreach (var item in diagramViewModel.NodeDefinitions)
+            {
+                var galleryItem = new GalleryItem(item.Name, new ActionNodeShape {
+                    Name = item.Name,
+                    HeaderText = item.Name
+                });
+
+                actionGallery.Items.Add(galleryItem);
+            }
+
+            galleryItems.Add(actionGallery);
             galleryItems.Add(eventGallery);
+            this.toolbox.ItemsSource = galleryItems;
+
+
+            //// Add items to workflow gallery
+            //actionGallery.Items.Add(new GalleryItem("SendEmail", new ActionNodeShape()));
+            //actionGallery.Items.Add(new GalleryItem("Gateway", new RadDiagramShape()
+            //{
+            //    Geometry = ShapeFactory.GetShapeGeometry(CommonShapeType.RectangleShape),
+            //    Background = new SolidColorBrush(Colors.LightYellow)
+            //}));
+            //actionGallery.Items.Add(new GalleryItem("Start/Ende", new RadDiagramShape()
+            //{
+            //    Geometry = ShapeFactory.GetShapeGeometry(CommonShapeType.RectangleShape),
+            //    Background = new SolidColorBrush(Colors.LightGreen)
+            //}));
+
+            //galleryItems.Add(actionGallery);
+
+            //var eventGallery = new Gallery();
+            //eventGallery.Header = "Event";
+            //galleryItems.Add(eventGallery);
             //var autoCompleteNodes = new ObservableCollection<string>();
 
             //var galleries = new HierarchicalGalleryItemsCollection();
@@ -296,11 +306,6 @@ namespace Simplic.Flow.Editor
             }
         }
 
-        private WorkflowEditorViewModel DiagramViewModel
-        {
-            get { return this.MyDiagram.DataContext as WorkflowEditorViewModel; }
-        }
-
-
+        
     }
 }

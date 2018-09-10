@@ -45,7 +45,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Simplic.Flow.Edition.Definition\Simplic.Flow.Editor.Definition.csproj">
+    <ProjectReference Include="..\Simplic.Flow.Editor.Definition\Simplic.Flow.Editor.Definition.csproj">
       <Project>{75ef378a-23dd-4b14-b9f8-30747a8347ff}</Project>
       <Name>Simplic.Flow.Editor.Definition</Name>
     </ProjectReference>
