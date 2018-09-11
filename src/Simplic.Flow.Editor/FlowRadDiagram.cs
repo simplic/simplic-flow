@@ -3,12 +3,7 @@
 namespace Simplic.Flow.Editor
 {
     public class FlowRadDiagram : RadDiagram
-    {
-        //protected override bool IsItemItsOwnShapeContainerOverride(object item)
-        //{
-        //    return item is ActionNodeViewModel || item is EventNodeViewModel;
-        //}
-
+    {       
         protected override Telerik.Windows.Diagrams.Core.IShape GetShapeContainerForItemOverride(object item)
         {
             if (item is ActionNodeViewModel)
@@ -16,12 +11,11 @@ namespace Simplic.Flow.Editor
                 var actionNodeViewModel = item as ActionNodeViewModel;
 
                 var shape = new ActionNodeShape()
-                {                    
-                    HeaderText = actionNodeViewModel.DisplayName
+                {
+                    DataContext = item
                 };
 
-                shape.DataContext = item;
-                shape.CreateConnectors();
+                shape.CreateConnectors();                
 
                 return shape;
             }
@@ -31,11 +25,10 @@ namespace Simplic.Flow.Editor
                     
                 var shape = new EventNodeShape
                 {
-                    HeaderText = eventNodeViewModel.DisplayName
+                    DataContext = item
                 };
 
-                shape.DataContext = item;
-                shape.CreateConnectors();
+                shape.CreateConnectors();                
 
                 return shape;
             }

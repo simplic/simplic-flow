@@ -1,5 +1,6 @@
 ﻿using Simplic.Flow.Editor.Definition;
 using Simplic.Framework.UI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -12,6 +13,8 @@ namespace Simplic.Flow.Editor
 {
     public abstract class BaseNodeShape : RadDiagramShape
     {
+        private IDictionary<TextBlock, Point> outPinTexts = new Dictionary<TextBlock, Point>();
+
         public BaseNodeShape()
         {
             //DataContext = this;
@@ -28,24 +31,26 @@ namespace Simplic.Flow.Editor
             this.BorderThickness = new Thickness(1);
             this.IsEditable = false;
 
-            Loaded += BaseNodeShape_Loaded;
+            
         }
-
-        private IDictionary<TextBlock, Point> outPinTexts = new Dictionary<TextBlock, Point>();
-
+        
         private void BaseNodeShape_Loaded(object sender, RoutedEventArgs e)
         {
             LoadConnectorText();
-            Loaded -= BaseNodeShape_Loaded;
+            this.Loaded -= BaseNodeShape_Loaded;
         }
 
         public void LoadConnectorText()
         {
-            var leftOffset = 6;
+            var leftOffset = 8;
             var topOffset = 8.5d;
 
-            var canvas = WPFVisualTreeHelper.FindChild<Canvas>(this);
+            var leftOffsetFlow = 9.5d;
+            var topOffsetFlow = 5.5d;
+
+            var canvas = WPFVisualTreeHelper.FindChild<Canvas>(this);            
             var connectors = WPFVisualTreeHelper.FindChildren<RadDiagramConnector>(this);
+
             foreach (var item in connectors)
             {
                 var connector = item as BaseConnector;
@@ -56,10 +61,20 @@ namespace Simplic.Flow.Editor
                 var connectorLocation = item.TranslatePoint(new Point(0, 0), this);
 
                 if (connector.ConnectorDirection == ConnectorDirection.In)
-                    text.SetLocation(connectorLocation.X + leftOffset, connectorLocation.Y - topOffset);
+                {
+                    if (connector is FlowConnector)                    
+                        text.SetLocation(connectorLocation.X + leftOffsetFlow, connectorLocation.Y - topOffsetFlow);
+                    else
+                        text.SetLocation(connectorLocation.X + leftOffset, connectorLocation.Y - topOffset);
+                }                    
                 else
                 {
-                    outPinTexts[text] = new Point(connectorLocation.X, connectorLocation.Y - topOffset);
+                    if (connector is FlowConnector)
+                        outPinTexts[text] = new Point(connectorLocation.X, connectorLocation.Y - topOffsetFlow);                    
+                    else
+                        outPinTexts[text] = new Point(connectorLocation.X, connectorLocation.Y - topOffset);
+
+                    //outPinTexts[text] = new Point(connectorLocation.X, connectorLocation.Y - topOffsetFlow);
 
                     text.Loaded += Text_Loaded;
                 }
@@ -82,21 +97,33 @@ namespace Simplic.Flow.Editor
             if (ViewModel?.DataPins == null || ViewModel?.FlowPins == null)
                 return;
 
+            // add flow in pin manually if it is not an event
+            if (ViewModel is ActionNodeViewModel)
+            {
+                ViewModel.FlowPins.Add(new FlowConnectorViewModel(new FlowPinDefinition {
+                    AllowMultiple = false,
+                    DisplayName = "In",
+                    Id = Guid.NewGuid(),
+                    Name = "FlowIn",
+                    PinDirection = PinDirectionDefinition.In
+                }));
+            }
+
             // Fill connector list
             foreach (var pin in ViewModel.DataPins)
-                DataConnectors.Add(new DataConnector(pin.Name, pin.Name, pin.PinDirection == PinDirectionDefinition.In ? ConnectorDirection.In : ConnectorDirection.Out, pin.Type)
+                DataConnectors.Add(new DataConnector(pin.Name, pin.DisplayName, pin.PinDirection == PinDirectionDefinition.In ? ConnectorDirection.In : ConnectorDirection.Out, pin.Type)
                 {
                     DataContext = pin
                 });
 
 
             foreach (var pin in ViewModel.FlowPins)
-                FlowConnectors.Add(new FlowConnector(pin.Name, pin.Name, pin.PinDirection == PinDirectionDefinition.In ? ConnectorDirection.In : ConnectorDirection.Out)
+                FlowConnectors.Add(new FlowConnector(pin.Name, pin.DisplayName, pin.PinDirection == PinDirectionDefinition.In ? ConnectorDirection.In : ConnectorDirection.Out)
                 {
                     DataContext = pin
                 });
 
-            double heightOffset = 0.28;
+            double heightOffset = 0.28;            
             double xLeft = 0.04;
             double xRight = 0.96;
             double yTop = heightOffset;
@@ -112,7 +139,7 @@ namespace Simplic.Flow.Editor
             foreach (var dataConnector in DataConnectors
                 .Where(connector => connector.ConnectorDirection == ConnectorDirection.In))
             {
-                dataConnector.Offset = new Point(xLeft, yTop);
+                dataConnector.Offset = new Point(xLeft - 0.01, yTop);
                 this.Connectors.Add(dataConnector);
                 yTop += 0.12;
             }
@@ -133,7 +160,11 @@ namespace Simplic.Flow.Editor
                 this.Connectors.Add(dataConnector);
                 yTop += 0.12;
             }
+
+            this.Loaded += BaseNodeShape_Loaded;
         }
+
+        
 
         protected override void UpdateVisualStates()
         {
@@ -143,7 +174,23 @@ namespace Simplic.Flow.Editor
             VisualStateManager.GoToState(this, "ConnectorsAdornerVisible", false);
         }
 
-        public string HeaderText { get; set; }
+        public override Telerik.Windows.Diagrams.Core.SerializationInfo Serialize()
+        {
+            var obj = base.Serialize();
+
+            obj["Name"] = Name;
+
+            return obj;
+        }
+
+        public override void Deserialize(Telerik.Windows.Diagrams.Core.SerializationInfo info)
+        {
+            base.Deserialize(info);
+
+            this.Name = info["Name"]?.ToString();
+        }
+
+        public string HeaderText { get { return ViewModel.DisplayName; } }
         public string TooltipText { get; set; }
         public IList<FlowConnector> FlowConnectors { get; set; } = new List<FlowConnector>();
         public IList<DataConnector> DataConnectors { get; set; } = new List<DataConnector>();

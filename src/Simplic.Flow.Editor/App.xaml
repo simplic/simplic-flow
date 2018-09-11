@@ -258,7 +258,22 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-        </Style> 
+        </Style>
+
+        <Style x:Key="DataConnectorObjectTemplate" TargetType="telerik:RadDiagramConnector">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Name="connectorRectangle" Width="7" Height="7" Stroke="Gray" Fill="Transparent"/>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" SourceName="connectorRectangle" Value="True">
+                                <Setter Property="Fill" TargetName="connectorRectangle" Value="Gray"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
         <Style x:Key="DataConnectorTemplate" TargetType="telerik:RadDiagramConnector">
             <Setter Property="Template">
@@ -277,10 +292,10 @@
         
 
         <DataTemplate x:Key="ToolboxItemTemplate">
-            <Grid Margin="0 1 1 0" Width="76" Height="100">
+            <Grid Margin="0 1 1 0" Width="72" Height="auto">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
-                    <RowDefinition Height="42" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Viewbox VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="5 5 5 0">
                     <ContentPresenter Content="{Binding Shape}" Margin="5" IsHitTestVisible="False" />
@@ -294,6 +309,7 @@
 			ItemTemplate="{StaticResource ToolboxItemTemplate}">
             <TextBlock Text="{Binding Header}" MinWidth="55" />
         </local:HierarchicalDataTemplate>
+       
 
     </Application.Resources>
 </Application>

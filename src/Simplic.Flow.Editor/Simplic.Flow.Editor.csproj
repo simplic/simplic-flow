@@ -117,6 +117,7 @@
     <Compile Include="ViewModel\EventNodeViewModel.cs" />
     <Compile Include="ViewModel\NodeConnectionViewModel.cs" />
     <Compile Include="ViewModel\NodeViewModel.cs" />
+    <Compile Include="ViewModel\ToolboxViewModel.cs" />
     <Compile Include="ViewModel\WorkflowEditorViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

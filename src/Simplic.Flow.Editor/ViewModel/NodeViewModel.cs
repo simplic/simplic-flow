@@ -8,15 +8,18 @@ namespace Simplic.Flow.Editor
 {
     public abstract class NodeViewModel : Simplic.UI.MVC.ViewModelBase
     {
-        private string displayName;
-        private bool isActive;        
+        #region Private Members
+        private bool isActive;
         private Point position;
         private double width;
         private double height;
+        private Guid id;
 
         private NodeDefinition nodeDefinition;
         private NodeConfiguration nodeConfiguration;
+        #endregion
 
+        #region Constructor
         public NodeViewModel(NodeDefinition nodeDefinition, NodeConfiguration nodeConfiguration)
         {
             this.nodeDefinition = nodeDefinition;
@@ -27,7 +30,11 @@ namespace Simplic.Flow.Editor
 
             FillPins();
         }
+        #endregion
 
+        #region Private Methods
+
+        #region [FillPins]
         private void FillPins()
         {
             foreach (var pin in nodeDefinition.InFlowPins)
@@ -66,26 +73,39 @@ namespace Simplic.Flow.Editor
                 });
             }
         }
+        #endregion
 
+        #endregion
+
+        #region Public Properties
+
+        #region [FlowPins]
         public ObservableCollection<FlowConnectorViewModel> FlowPins { get; }
+        #endregion
+        
+        #region [DataPins]
         public ObservableCollection<DataConnectorViewModel> DataPins { get; }
+        #endregion
 
+        #region [Id]
         public Guid Id
         {
             get
             {
-                return nodeConfiguration != null ? nodeConfiguration.Id : Guid.Empty;
+                return id;
             }
 
             set
             {
                 IsDirty = true;
-                nodeConfiguration.Id = value;
+                id = value;
 
                 RaisePropertyChanged(nameof(Id));
             }
         }
+        #endregion
 
+        #region [IsActive]
         public bool IsActive
         {
             get
@@ -100,26 +120,36 @@ namespace Simplic.Flow.Editor
                 RaisePropertyChanged(nameof(IsActive));
             }
         }
+        #endregion
 
+        #region [DisplayName]
         public string DisplayName
         {
-            get
-            {
-                return nodeDefinition.Name;
-            }            
+            get { return nodeDefinition.DisplayName; }
         }
+        #endregion
 
+        #region [Tooltip]
+        public string Tooltip
+        {
+            get { return nodeDefinition.Tooltip; }
+        }
+        #endregion
+
+        #region [Position]
         public Point Position
         {
             get { return position; }
             set
             {
                 position = value;
-                IsDirty = true;                
+                IsDirty = true;
                 RaisePropertyChanged(nameof(Position));
             }
         }
+        #endregion
 
+        #region [Width]
         public double Width
         {
             get
@@ -133,7 +163,9 @@ namespace Simplic.Flow.Editor
                 RaisePropertyChanged(nameof(Width));
             }
         }
+        #endregion
 
+        #region [Height]
         public double Height
         {
             get
@@ -146,6 +178,9 @@ namespace Simplic.Flow.Editor
                 IsDirty = true;
                 RaisePropertyChanged(nameof(Height));
             }
-        }       
+        }  
+        #endregion
+
+        #endregion
     }
 }

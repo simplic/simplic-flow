@@ -35,7 +35,7 @@ namespace Simplic.Flow.Node
             runtime.EnqueueNode(OutNodeCompleted, scope);
 
             return true;
-        }
+        }        
 
         [FlowPinDefinition(DisplayName = "Each Item", Name = "OutNodeEachItem", PinDirection = PinDirection.Out)]
         public ActionNode OutNodeEachItem { get; set; }

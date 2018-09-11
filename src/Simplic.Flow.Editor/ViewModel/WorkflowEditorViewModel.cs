@@ -10,17 +10,20 @@ namespace Simplic.Flow.Editor
     public class WorkflowEditorViewModel : Simplic.UI.MVC.ViewModelBase, IObservableGraphSource
     {
         #region Private Members
-        private Guid id;
-        private object selectedItem;
+        private Guid id;        
         private ObservableCollection<NodeConnectionViewModel> connections;
+
+        private Simplic.Flow.Configuration.FlowConfiguration flowConfiguration;
+
         #endregion
 
         #region Constructor
-        public WorkflowEditorViewModel()
+        public WorkflowEditorViewModel(IList<Definition.NodeDefinition> nodeDefinitions,
+            Simplic.Flow.Configuration.FlowConfiguration flowConfiguration)
         {
             connections = new ObservableCollection<NodeConnectionViewModel>();
             Nodes = new ObservableCollection<NodeViewModel>();
-            NodeDefinitions = new List<Definition.NodeDefinition>();
+            NodeDefinitions = nodeDefinitions;
 
             Nodes.CollectionChanged += (s, e) =>
             {
@@ -33,8 +36,19 @@ namespace Simplic.Flow.Editor
                     }
                 }
             };
+
+            this.flowConfiguration = flowConfiguration;
+            FillConfiguration();
         }
         #endregion
+
+        private void FillConfiguration()
+        {
+            foreach (var item in flowConfiguration.Nodes)
+            {
+              
+            }
+        }
 
         #region Public Properties
         public Guid Id
@@ -61,20 +75,6 @@ namespace Simplic.Flow.Editor
 
         public ConnectorViewModel TargetConnector { get; set; }
 
-        public object SelectedItem
-        {
-            get { return selectedItem; }
-            set
-            {
-                // We have to reset the selection first
-                selectedItem = null;
-                RaisePropertyChanged(nameof(SelectedItem));
-
-                // Refresh selection
-                selectedItem = value;
-                RaisePropertyChanged(nameof(SelectedItem));
-            }
-        }
         #endregion
 
         #region Public Methods
@@ -93,7 +93,6 @@ namespace Simplic.Flow.Editor
         {
             Nodes.Add(node as NodeViewModel);
             IsDirty = true;
-            this.SelectedItem = node as NodeViewModel;
         }
 
         ILink IObservableGraphSource.CreateLink(object source, object target)
@@ -111,16 +110,14 @@ namespace Simplic.Flow.Editor
                 var actionNodeShape = shape as ActionNodeShape;
 
                 var def = NodeDefinitions.Where(x => x.Name == actionNodeShape.Name).FirstOrDefault();
+                var actionNodeViewModel = new ActionNodeViewModel(def, null) {
+                    Id = Guid.NewGuid()
+                };
 
-                var nodeViewModel = new ActionNodeViewModel(def, null);
+                actionNodeShape.DataContext = actionNodeViewModel;
+                actionNodeShape.CreateConnectors();                
 
-                var actionShape = (shape as ActionNodeShape);
-                actionShape.DataContext = nodeViewModel;
-
-                actionShape.CreateConnectors();
-                actionShape.LoadConnectorText();
-                //return new NodeViewModel() { DisplayName = "<<Neu>>" };
-                return nodeViewModel;
+                return actionNodeViewModel;
             }
 
             return null;
@@ -147,7 +144,14 @@ namespace Simplic.Flow.Editor
 
             if (Nodes.Contains(node))
             {
-                Nodes.Remove(node as NodeViewModel);
+                var nodeVm = node as NodeViewModel;
+                Nodes.Remove(nodeVm);
+                var connection = Connections.Where(x => x.SourceViewModel?.Id == nodeVm.Id || 
+                    x.TargetViewModel?.Id == nodeVm.Id).FirstOrDefault();  
+                
+                if (connection != null)
+                    Connections.Remove(connection);
+                
                 return true;
             }
             else

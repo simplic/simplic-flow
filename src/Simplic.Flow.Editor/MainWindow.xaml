@@ -26,8 +26,7 @@
         <local:FlowRadDiagram x:Name="MyDiagram"                          
                             ShapeStyleSelector="{StaticResource CustomShapeStyleSelector}"
                             ConnectionStyleSelector="{StaticResource CustomConnectionStyleSelector}"                              
-                            GraphSource="{Binding}"
-                            SelectedItem="{Binding SelectedItem, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                            GraphSource="{Binding}"                            
                             Grid.Row="1" BorderThickness="1" Background="#252525" 
                             primitives:BackgroundGrid.LineStroke="#333333" 
                             primitives:BackgroundPageGrid.LineStroke="#151515">
@@ -46,17 +45,19 @@
         </StackPanel>
 
         <telerik:RadDiagramNavigationPane Background="#252525" Diagram="{Binding ElementName=MyDiagram}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Row="1" IsExpanded="True"/>
-        
+
         <telerik:RadDiagramToolbox x:Name="toolbox" Grid.Column="1" Grid.Row="1"
-                               Title="Available Nodes" 
+                               Title="Available Nodes"
                                SelectedIndex="6"
                                HorizontalAlignment="Right"
-                               Header="{Binding SelectedItem.Header, RelativeSource={RelativeSource Self}}"                              
-                               ItemTemplate="{StaticResource ToolboxTemplate}"
-                               Visibility="{Binding IsChecked, ElementName=toolboxButton, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                               ItemsSource="{Binding GalleryItems}"                                  
+                               SelectedItem="{Binding SelectedGallery}"
+                               Header="{Binding SelectedItem.Header, RelativeSource={RelativeSource Self}}"
+                               ItemTemplate="{StaticResource ToolboxTemplate}">
+        </telerik:RadDiagramToolbox>
 
         <StackPanel VerticalAlignment="Top" HorizontalAlignment="Center" Orientation="Horizontal">
-            <telerik:RadButton Content="Save" FontSize="18" Width="260" FontWeight="Bold" Margin="5 10"/>
+            <telerik:RadButton Content="Save" Click="RadButton_Click" FontSize="18" Width="260" FontWeight="Bold" Margin="5 10"/>
         </StackPanel>
     </Grid>
     <!--<Grid>

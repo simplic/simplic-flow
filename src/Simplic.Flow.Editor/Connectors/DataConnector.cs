@@ -19,8 +19,6 @@ namespace Simplic.Flow.Editor
 
         private void FillDataTemplate()
         {
-            var styleTemplate = ConnectorDirection == ConnectorDirection.In ? "Left" : "Right";            
-            
             if (Application.Current.Resources.Contains($"DataConnector{ConnectorDataType.Name}Template"))
                 this.Style = Application.Current.Resources[$"DataConnector{ConnectorDataType.Name}Template"] as Style;
             else
