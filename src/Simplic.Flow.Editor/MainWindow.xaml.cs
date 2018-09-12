@@ -21,7 +21,7 @@ namespace Simplic.Flow.Editor
             InitializeComponent();
 
             #region Load Available Node Definitions
-            var asm = Assembly.LoadFrom(@"C:\dev\simplic-flow\src\Simplic.Flow.Node\bin\Debug\Simplic.Flow.Node.dll");
+            var asm = Assembly.LoadFrom(@"G:\SimplicRepo\simplic-flow\src\Simplic.Flow.Node\bin\Debug\Simplic.Flow.Node.dll");
 
             var defService = new Simplic.Flow.Editor.Definition.Service.DefinitionService();
             var nodeDefinitions = defService.Create(new List<Assembly>() { asm });
@@ -39,9 +39,10 @@ namespace Simplic.Flow.Editor
 
         private Configuration.FlowConfiguration LoadTempConfiguration()
         {
-            var jsonText = File.ReadAllText(@"C:\Users\guenay\Desktop\HBTS.json");
+            //var jsonText = File.ReadAllText(@"C:\Users\guenay\Desktop\HBTS.json");
 
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<Configuration.FlowConfiguration>(jsonText);            
+            //return Newtonsoft.Json.JsonConvert.DeserializeObject<Configuration.FlowConfiguration>(jsonText);            
+            return null;
         }
 
         private void MyDiagram_ConnectionManipulationStarted(object sender, ManipulationRoutedEventArgs e)
@@ -155,7 +156,7 @@ namespace Simplic.Flow.Editor
 
         private void RadButton_Click(object sender, RoutedEventArgs e)
         {
-
+            var json = diagramViewModel.Serialize();
         }
     }
 }

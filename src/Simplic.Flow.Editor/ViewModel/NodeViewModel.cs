@@ -29,10 +29,22 @@ namespace Simplic.Flow.Editor
             DataPins = new ObservableCollection<DataConnectorViewModel>();
 
             FillPins();
+            FillPinsForConfiguration();
         }
         #endregion
 
         #region Private Methods
+
+        #region [FillPinsForConfiguration]
+        private void FillPinsForConfiguration()
+        {
+            if (nodeConfiguration != null) return;
+
+            nodeConfiguration = new NodeConfiguration();
+            // TODO: find out how this would be usefull
+            
+        } 
+        #endregion
 
         #region [FillPins]
         private void FillPins()

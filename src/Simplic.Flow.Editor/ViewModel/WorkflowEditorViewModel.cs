@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -37,17 +38,24 @@ namespace Simplic.Flow.Editor
                 }
             };
 
-            this.flowConfiguration = flowConfiguration;
+            if (flowConfiguration == null)
+                this.flowConfiguration = new Configuration.FlowConfiguration()
+                {
+                    Id = Guid.NewGuid()
+                };
+            else
+                this.flowConfiguration = flowConfiguration;
+
             FillConfiguration();
         }
         #endregion
 
         private void FillConfiguration()
         {
-            foreach (var item in flowConfiguration.Nodes)
-            {
+            //foreach (var item in flowConfiguration.Nodes)
+            //{
               
-            }
+            //}
         }
 
         #region Public Properties
@@ -77,7 +85,8 @@ namespace Simplic.Flow.Editor
 
         #endregion
 
-        #region Public Methods
+        #region Public Methods        
+
         void IObservableGraphSource.AddLink(ILink link)
         {
             IsDirty = true;
@@ -110,9 +119,14 @@ namespace Simplic.Flow.Editor
                 var actionNodeShape = shape as ActionNodeShape;
 
                 var def = NodeDefinitions.Where(x => x.Name == actionNodeShape.Name).FirstOrDefault();
-                var actionNodeViewModel = new ActionNodeViewModel(def, null) {
-                    Id = Guid.NewGuid()
+                
+                var nodeConfig = new Configuration.NodeConfiguration {
+                    Id = Guid.NewGuid(),
+                    Pins = def.InDataPins.Concat(def.InFlowPins).ToList()
                 };
+                this.flowConfiguration.Nodes.Add(nodeConfig);
+
+                var actionNodeViewModel = new ActionNodeViewModel(def, nodeConfig);
 
                 actionNodeShape.DataContext = actionNodeViewModel;
                 actionNodeShape.CreateConnectors();                
@@ -158,7 +172,34 @@ namespace Simplic.Flow.Editor
             {
                 return false;
             }
-        } 
+        }
+
+        //public void SerializeNode(object model, SerializationInfo info)
+        //{
+            
+        //}
+
+        //public void SerializeLink(ILink link, SerializationInfo info)
+        //{
+            
+        //}
+
+        //public object DeserializeNode(IShape shape, SerializationInfo info)
+        //{
+        //    return shape;
+        //}
+
+        //public ILink DeserializeLink(IConnection connection, SerializationInfo info)
+        //{
+        //    return null;
+        //}
+
+        public string Serialize()
+        {
+            var json = JsonConvert.SerializeObject(flowConfiguration);
+
+            return json;
+        }
         #endregion
     }
 }
