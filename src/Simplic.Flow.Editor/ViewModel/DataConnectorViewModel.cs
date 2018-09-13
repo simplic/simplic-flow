@@ -14,7 +14,7 @@ namespace Simplic.Flow.Editor
 
         public Guid Id => pinDefinition.Id;
 
-        public string Name => pinDefinition.Name;
+        public override string Name => pinDefinition.Name;
         public string DisplayName => pinDefinition.DisplayName;
 
         public Type Type => pinDefinition.Type;

@@ -21,7 +21,7 @@ namespace Simplic.Flow.Editor
             InitializeComponent();
 
             #region Load Available Node Definitions
-            var asm = Assembly.LoadFrom(@"G:\SimplicRepo\simplic-flow\src\Simplic.Flow.Node\bin\Debug\Simplic.Flow.Node.dll");
+            var asm = Assembly.LoadFrom(@"C:\dev\simplic-flow\src\Simplic.Flow.Node\bin\Debug\Simplic.Flow.Node.dll");
 
             var defService = new Simplic.Flow.Editor.Definition.Service.DefinitionService();
             var nodeDefinitions = defService.Create(new List<Assembly>() { asm });
@@ -39,10 +39,11 @@ namespace Simplic.Flow.Editor
 
         private Configuration.FlowConfiguration LoadTempConfiguration()
         {
-            //var jsonText = File.ReadAllText(@"C:\Users\guenay\Desktop\HBTS.json");
+            var jsonText = File.ReadAllText(@"C:\Users\guenay\Desktop\yvz.json");
 
-            //return Newtonsoft.Json.JsonConvert.DeserializeObject<Configuration.FlowConfiguration>(jsonText);            
-            return null;
+            var obj = Newtonsoft.Json.JsonConvert.DeserializeObject<Configuration.FlowConfiguration>(jsonText);            
+            return obj;
+            //return null;
         }
 
         private void MyDiagram_ConnectionManipulationStarted(object sender, ManipulationRoutedEventArgs e)
@@ -110,9 +111,12 @@ namespace Simplic.Flow.Editor
                     || sourceConnector.GetType() != e.Connector.GetType()
                     || (e.Connector as BaseConnector).ConnectorDirection == ConnectorDirection.Out
                     || (
-                        sourceConnector is DataConnector && e.Connector is DataConnector
-                        && (sourceConnector as DataConnector).ConnectorDataType
-                                != (e.Connector as DataConnector).ConnectorDataType
+                        sourceConnector is DataConnector 
+                        && e.Connector is DataConnector                                                
+                        && (// if target connector data type is object type, then allow it, otherwise check if the types match 
+                                (e.Connector as DataConnector).ConnectorDataType != typeof(object) 
+                                && (sourceConnector as DataConnector).ConnectorDataType != (e.Connector as DataConnector).ConnectorDataType
+                           )
                         ))
                 {
                     // bypass

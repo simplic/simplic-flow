@@ -9,15 +9,20 @@
         
         
         <Style x:Key="ActionNodeStyle" TargetType="telerik:RadDiagramShape">
-            <Setter Property="Position" Value="{Binding Position, Mode=TwoWay}" />
-            <Setter Property="Height" Value="{Binding Height, Mode=TwoWay}" />
-            <Setter Property="Width" Value="{Binding Width, Mode=TwoWay}" />
+            <Setter Property="Position" Value="{Binding Position, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <Setter Property="Height" Value="{Binding Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <Setter Property="Width" Value="{Binding Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <Setter Property="Content" Value="{Binding}" />
-            <Setter Property="MinWidth" Value="450" />
-            <Setter Property="MinHeight" Value="150" />
-            
+
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             <Setter Property="VerticalContentAlignment" Value="Stretch" />
+            <Setter Property="ContextMenu">
+                <Setter.Value>
+                    <ContextMenu>
+                        <MenuItem Header="Defaultwerte" Command="{Binding OpenDefaultValueEditor}" CommandParameter="{Binding}" />
+                    </ContextMenu>
+                </Setter.Value>
+            </Setter>
             <Setter Property="ContentTemplate">
                 <Setter.Value>
                     <DataTemplate>
@@ -27,6 +32,8 @@
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
 
+                            
+                            
                             <Canvas Name="textCanvas" Grid.RowSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
 
                             <Border Grid.Row="0" Margin="-3, -3, -3,0" Padding="0">
@@ -53,12 +60,10 @@
         </Style>
 
         <Style x:Key="EventNodeStyle" TargetType="telerik:RadDiagramShape">
-            <Setter Property="Position" Value="{Binding Position, Mode=TwoWay}" />
-            <Setter Property="Height" Value="{Binding Height, Mode=TwoWay}" />
-            <Setter Property="Width" Value="{Binding Width, Mode=TwoWay}" />
+            <Setter Property="Position" Value="{Binding Position, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <Setter Property="Height" Value="{Binding Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <Setter Property="Width" Value="{Binding Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <Setter Property="Content" Value="{Binding}" />
-            <Setter Property="MinWidth" Value="450" />
-            <Setter Property="MinHeight" Value="150" />
 
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             <Setter Property="VerticalContentAlignment" Value="Stretch" />

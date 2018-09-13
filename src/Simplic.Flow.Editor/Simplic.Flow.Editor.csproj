@@ -44,8 +44,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Simplic.Flow.Node\bin\Debug\Simplic.Flow.dll</HintPath>
     </Reference>
-    <Reference Include="Simplic.Flow.Configuration, Version=1.0.218.719, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simplic.Flow.Configuration.1.0.218.719\lib\net451\Simplic.Flow.Configuration.dll</HintPath>
+    <Reference Include="Simplic.Flow.Configuration, Version=1.0.418.913, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.Flow.Configuration.1.0.418.913\lib\net451\Simplic.Flow.Configuration.dll</HintPath>
     </Reference>
     <Reference Include="Simplic.Flow.Edition.Definition">
       <HintPath>..\Simplic.Flow.Editor.Definition\bin\Debug\Simplic.Flow.Edition.Definition.dll</HintPath>
@@ -67,6 +67,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -112,6 +113,7 @@
     <Compile Include="FlowRadDiagram.cs" />
     <Compile Include="ViewModel\ActionNodeViewModel.cs" />
     <Compile Include="ViewModel\ConnectorViewModel.cs" />
+    <Compile Include="ViewModel\DataPinDefaultValueViewModel.cs" />
     <Compile Include="ViewModel\FlowConnectorViewModel.cs" />
     <Compile Include="ViewModel\DataConnectorViewModel.cs" />
     <Compile Include="ViewModel\EventNodeViewModel.cs" />

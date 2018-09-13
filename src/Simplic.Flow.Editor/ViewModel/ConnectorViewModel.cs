@@ -8,5 +8,6 @@ namespace Simplic.Flow.Editor
 {
     public abstract class ConnectorViewModel : Simplic.UI.MVC.ViewModelBase
     {
+        public abstract string Name { get; }
     }
 }

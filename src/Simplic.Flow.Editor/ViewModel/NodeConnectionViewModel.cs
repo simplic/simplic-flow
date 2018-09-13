@@ -1,4 +1,5 @@
 ﻿using System;
+using Simplic.Flow.Configuration;
 using Telerik.Windows.Diagrams.Core;
 
 namespace Simplic.Flow.Editor
@@ -10,8 +11,11 @@ namespace Simplic.Flow.Editor
         private NodeViewModel target;
         private ConnectorViewModel sourceConnector;
         private ConnectorViewModel targetConnector;
-        
-        public NodeConnectionViewModel(NodeViewModel source, NodeViewModel target, 
+
+        private Simplic.Flow.Configuration.LinkConfiguration flowLink;
+        private Simplic.Flow.Configuration.PinConfiguration dataLink;
+
+        public NodeConnectionViewModel(NodeViewModel source, NodeViewModel target,
                 ConnectorViewModel sourceConnector, ConnectorViewModel targetConnector)
         {
             this.source = source;
@@ -45,6 +49,54 @@ namespace Simplic.Flow.Editor
         {
             get { return targetConnector; }
             set { targetConnector = value; RaisePropertyChanged(nameof(TargetConnectorViewModel)); }
+        }
+
+        public LinkConfiguration FlowLink
+        {
+            get
+            {
+                if (flowLink == null)
+                {
+                    if (sourceConnector != null && targetConnector != null 
+                        && sourceConnector is FlowConnectorViewModel)
+                    {
+                        var sc = sourceConnector as FlowConnectorViewModel;
+                        var tc = targetConnector as FlowConnectorViewModel;
+
+                        flowLink = new LinkConfiguration()
+                        {
+                            From = new Link { NodeId = source.Id, PinName = sc.Name },
+                            To = new Link { NodeId = target.Id, PinName = tc.Name }
+                        };
+                    }
+                }
+
+                return flowLink;
+            }
+        }
+
+        public PinConfiguration DataLink
+        {
+            get
+            {
+                if (dataLink == null)
+                {
+                    if (sourceConnector != null && targetConnector != null
+                        && sourceConnector is DataConnectorViewModel)
+                    {
+                        var sc = sourceConnector as DataConnectorViewModel;
+                        var tc = targetConnector as DataConnectorViewModel;
+
+                        dataLink = new PinConfiguration()
+                        {
+                            From = new Link { NodeId = source.Id, PinName = sc.Name },
+                            To = new Link { NodeId = target.Id, PinName = tc.Name }
+                        };
+                    }
+                }
+
+                return dataLink;
+            }
         }
 
         object ILink.Source

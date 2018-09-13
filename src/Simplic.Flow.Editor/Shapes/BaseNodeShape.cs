@@ -24,14 +24,13 @@ namespace Simplic.Flow.Editor
             this.IsRotationEnabled = false;
             this.IsResizingEnabled = false;
             this.UseDefaultConnectors = false;
-            this.UseGlidingConnector = false;
-            this.MinWidth = 200;
-            this.MinHeight = 150;
+            this.UseGlidingConnector = false;                        
             this.BorderBrush = (Brush)bc.ConvertFrom("#000000");
             this.BorderThickness = new Thickness(1);
             this.IsEditable = false;
-
-            
+            this.IsManipulationAdornerVisible = false;
+            this.MinWidth = 200;
+            this.MinHeight = 150;   
         }
         
         private void BaseNodeShape_Loaded(object sender, RoutedEventArgs e)
@@ -96,19 +95,7 @@ namespace Simplic.Flow.Editor
         {
             if (ViewModel?.DataPins == null || ViewModel?.FlowPins == null)
                 return;
-
-            // add flow in pin manually if it is not an event
-            if (ViewModel is ActionNodeViewModel)
-            {
-                ViewModel.FlowPins.Add(new FlowConnectorViewModel(new FlowPinDefinition {
-                    AllowMultiple = false,
-                    DisplayName = "In",
-                    Id = Guid.NewGuid(),
-                    Name = "FlowIn",
-                    PinDirection = PinDirectionDefinition.In
-                }));
-            }
-
+            
             // Fill connector list
             foreach (var pin in ViewModel.DataPins)
                 DataConnectors.Add(new DataConnector(pin.Name, pin.DisplayName, pin.PinDirection == PinDirectionDefinition.In ? ConnectorDirection.In : ConnectorDirection.Out, pin.Type)
@@ -163,9 +150,7 @@ namespace Simplic.Flow.Editor
 
             this.Loaded += BaseNodeShape_Loaded;
         }
-
         
-
         protected override void UpdateVisualStates()
         {
             base.UpdateVisualStates();
@@ -178,7 +163,7 @@ namespace Simplic.Flow.Editor
         {
             var obj = base.Serialize();
 
-            obj["Name"] = Name;
+            obj[nameof(Name)] = Name;
 
             return obj;
         }
@@ -187,7 +172,7 @@ namespace Simplic.Flow.Editor
         {
             base.Deserialize(info);
 
-            this.Name = info["Name"]?.ToString();
+            this.Name = info[nameof(Name)]?.ToString();
         }
 
         public string HeaderText { get { return ViewModel.DisplayName; } }

@@ -42,7 +42,7 @@ namespace Simplic.Flow.Editor
 
             foreach (var item in NodeDefinitions.Where(x => x is Simplic.Flow.Editor.Definition.EventNodeDefinition))
             {
-                var galleryItem = new GalleryItem(item.Name, new ActionNodeShape
+                var galleryItem = new GalleryItem(item.Name, new EventNodeShape
                 {
                     Name = item.Name,
                     DataContext = item,

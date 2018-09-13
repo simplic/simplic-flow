@@ -1,22 +1,25 @@
 ﻿using Simplic.Flow.Configuration;
 using Simplic.Flow.Editor.Definition;
+using Simplic.UI.MVC;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace Simplic.Flow.Editor
 {
-    public abstract class NodeViewModel : Simplic.UI.MVC.ViewModelBase
+    public abstract class NodeViewModel : ViewModelBase
     {
-        #region Private Members
-        private bool isActive;
-        private Point position;
-        private double width;
-        private double height;
-        private Guid id;
-
+        #region Private Members                
         private NodeDefinition nodeDefinition;
         private NodeConfiguration nodeConfiguration;
+
+        private const double DefaultWidth = 200;
+        private const double DefaultHeight = 150;
+        private ICommand openDefaultValueEditor;
+        private ObservableCollection<DataPinDefaultValueViewModel> defaultValues;
         #endregion
 
         #region Constructor
@@ -27,24 +30,46 @@ namespace Simplic.Flow.Editor
 
             FlowPins = new ObservableCollection<FlowConnectorViewModel>();
             DataPins = new ObservableCollection<DataConnectorViewModel>();
+            defaultValues = new ObservableCollection<DataPinDefaultValueViewModel>();
 
             FillPins();
-            FillPinsForConfiguration();
+
+            foreach (var inPin in DataPins.Where(x => x.PinDirection == PinDirectionDefinition.In))
+            {
+                // Skip if array
+
+                var configuration = new NodePinConfiguration
+                {
+                    Name = inPin.Name,
+                    DefaultValue = nodeConfiguration.Pins.FirstOrDefault(x => x.Name == inPin.Name)?.DefaultValue
+                };
+
+                defaultValues.Add(new DataPinDefaultValueViewModel(configuration) { Parent = this });
+            }
+
+            if (nodeConfiguration == null)
+                nodeConfiguration = new NodeConfiguration();
+
+            openDefaultValueEditor = new RelayCommand((e) =>
+            {
+                var win = new Window();
+
+                var content = new StackPanel();
+                content.VerticalAlignment = VerticalAlignment.Stretch;
+                content.HorizontalAlignment = HorizontalAlignment.Stretch;
+                content.Orientation = Orientation.Vertical;
+
+                foreach (var d in DefaultValues)
+                    content.Children.Add(new Label() { Content = d.PinName });
+
+                win.Content = content;
+                win.Title = DisplayName;
+                win.ShowDialog();
+            });
         }
         #endregion
 
         #region Private Methods
-
-        #region [FillPinsForConfiguration]
-        private void FillPinsForConfiguration()
-        {
-            if (nodeConfiguration != null) return;
-
-            nodeConfiguration = new NodeConfiguration();
-            // TODO: find out how this would be usefull
-            
-        } 
-        #endregion
 
         #region [FillPins]
         private void FillPins()
@@ -94,7 +119,7 @@ namespace Simplic.Flow.Editor
         #region [FlowPins]
         public ObservableCollection<FlowConnectorViewModel> FlowPins { get; }
         #endregion
-        
+
         #region [DataPins]
         public ObservableCollection<DataConnectorViewModel> DataPins { get; }
         #endregion
@@ -104,32 +129,15 @@ namespace Simplic.Flow.Editor
         {
             get
             {
-                return id;
+                return nodeConfiguration.Id;
             }
 
             set
             {
                 IsDirty = true;
-                id = value;
+                nodeConfiguration.Id = value;
 
                 RaisePropertyChanged(nameof(Id));
-            }
-        }
-        #endregion
-
-        #region [IsActive]
-        public bool IsActive
-        {
-            get
-            {
-                return isActive;
-            }
-
-            set
-            {
-                IsDirty = true;
-                isActive = value;
-                RaisePropertyChanged(nameof(IsActive));
             }
         }
         #endregion
@@ -151,10 +159,11 @@ namespace Simplic.Flow.Editor
         #region [Position]
         public Point Position
         {
-            get { return position; }
+            get { return new Point(nodeConfiguration.PositionX, nodeConfiguration.PositionY); }
             set
             {
-                position = value;
+                nodeConfiguration.PositionX = value.X;
+                nodeConfiguration.PositionY = value.Y;
                 IsDirty = true;
                 RaisePropertyChanged(nameof(Position));
             }
@@ -166,11 +175,14 @@ namespace Simplic.Flow.Editor
         {
             get
             {
-                return width;
+                if (nodeConfiguration.Width == 0)
+                    nodeConfiguration.Width = DefaultWidth;
+
+                return nodeConfiguration.Width;
             }
             set
             {
-                width = value;
+                nodeConfiguration.Width = value;
                 IsDirty = true;
                 RaisePropertyChanged(nameof(Width));
             }
@@ -182,15 +194,21 @@ namespace Simplic.Flow.Editor
         {
             get
             {
-                return height;
+                if (nodeConfiguration.Height == 0)
+                    nodeConfiguration.Height = DefaultHeight;
+
+                return nodeConfiguration.Height;
             }
             set
             {
-                height = value;
+                nodeConfiguration.Height = value;
                 IsDirty = true;
                 RaisePropertyChanged(nameof(Height));
             }
-        }  
+        }
+
+        public ICommand OpenDefaultValueEditor { get => openDefaultValueEditor; set => openDefaultValueEditor = value; }
+        internal ObservableCollection<DataPinDefaultValueViewModel> DefaultValues { get => defaultValues; set => defaultValues = value; }
         #endregion
 
         #endregion

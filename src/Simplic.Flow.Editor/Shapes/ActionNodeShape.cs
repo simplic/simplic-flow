@@ -9,7 +9,7 @@ namespace Simplic.Flow.Editor
         public ActionNodeShape() 
             : base()
         {
-
+            
         }
     }
 }
