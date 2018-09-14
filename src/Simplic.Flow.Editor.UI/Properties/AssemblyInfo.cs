@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Windows.Markup;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
@@ -20,7 +21,7 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("e2164af5-152f-44a7-8413-d6a5bddf7190")]
-
+[assembly: XmlnsDefinition("urn:simplic", "Simplic.Flow.Editor.UI")]
 // Version information for an assembly consists of the following four values:
 //
 //      Major Version
