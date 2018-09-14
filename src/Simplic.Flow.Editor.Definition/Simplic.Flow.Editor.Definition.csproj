@@ -41,7 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IDefinitionService.cs" />
+    <Compile Include="Interface\IDefinitionService.cs" />
     <Compile Include="Model\ActionNodeDefinition.cs" />
     <Compile Include="Model\DataPinDefinition.cs" />
     <Compile Include="Model\EventNodeDefinition.cs" />
@@ -49,6 +49,10 @@
     <Compile Include="Model\NodeDefinition.cs" />
     <Compile Include="Model\PinDirectionDefinition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="package.bat" />
+    <None Include="Simplic.Flow.Editor.Definition.nuspec" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

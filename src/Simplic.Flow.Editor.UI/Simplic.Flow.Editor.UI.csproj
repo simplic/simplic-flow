@@ -129,7 +129,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <None Include="package.bat" />
     <None Include="packages.config" />
+    <None Include="Simplic.Flow.Editor.UI.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Simplic.Flow.Editor.Definition\Simplic.Flow.Editor.Definition.csproj">
