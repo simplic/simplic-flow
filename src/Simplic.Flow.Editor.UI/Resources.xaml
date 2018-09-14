@@ -193,6 +193,19 @@
                     ForEachNodeStyle="{StaticResource ForEachNodeStyle}"
                     IfNodeStyle="{StaticResource IfNodeStyle}" />
 
+    <Style TargetType="telerik:RadDiagramConnection" x:Key="StandardDataTypeLinkStyle">
+        <Setter Property="Stroke" Value="Gray" />
+        <Setter Property="StrokeThickness" Value="2" />
+        <Setter Property="ConnectionType" Value="Bezier" />
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Grid />
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
     <Style TargetType="telerik:RadDiagramConnection" x:Key="FlowLinkStyle">
         <Setter Property="Stroke" Value="White" />
         <Setter Property="StrokeThickness" Value="2" />
@@ -249,7 +262,8 @@
 				IntDataTypeLinkStyle="{StaticResource IntDataTypeLinkStyle}"
 				StringDataTypeLinkStyle="{StaticResource StringDataTypeLinkStyle}"
 				FlowLinkStyle="{StaticResource FlowLinkStyle}" 
-                BooleanDataTypeLinkStyle="{StaticResource BooleanDataTypeLinkStyle}"/>
+                BooleanDataTypeLinkStyle="{StaticResource BooleanDataTypeLinkStyle}"
+                StandardDataTypeLinkStyle="{StaticResource StandardDataTypeLinkStyle}"/>
 
     <Style x:Key="FlowConnectorTemplate" TargetType="telerik:RadDiagramConnector">
         <Setter Property="Width" Value="12" />

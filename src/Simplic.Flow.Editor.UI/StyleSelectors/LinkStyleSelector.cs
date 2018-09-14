@@ -9,6 +9,7 @@ namespace Simplic.Flow.Editor.UI
     public class LinkStyleSelector : StyleSelector
     {
         public Style FlowLinkStyle { get; set; }
+        public Style StandardDataTypeLinkStyle { get; set; }
         public Style StringDataTypeLinkStyle { get; set; }
         public Style BooleanDataTypeLinkStyle { get; set; }
         public Style IntDataTypeLinkStyle { get; set; }
@@ -23,7 +24,7 @@ namespace Simplic.Flow.Editor.UI
         {                        
             var link = item as NodeConnectionViewModel;
             if (link == null || link.SourceConnectorViewModel == null)
-                return base.SelectStyle(item, container);
+                return StandardDataTypeLinkStyle;
 
             if (link.SourceConnectorViewModel is FlowConnectorViewModel)
                 return FlowLinkStyle;
@@ -38,8 +39,8 @@ namespace Simplic.Flow.Editor.UI
                 else if (sourceDataType.Type == typeof(bool))
                     return BooleanDataTypeLinkStyle;
             }
-            
-            return base.SelectStyle(item, container);
+
+            return StandardDataTypeLinkStyle;
         }
     }
 }

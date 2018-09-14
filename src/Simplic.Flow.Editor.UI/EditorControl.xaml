@@ -20,8 +20,7 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="60"/>
-            <RowDefinition />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <local:FlowRadDiagram x:Name="MyDiagram"                          
