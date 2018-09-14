@@ -1,0 +1,403 @@
+﻿using Simplic.Flow.Editor.Definition;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using Telerik.Windows.Diagrams.Core;
+
+namespace Simplic.Flow.Editor.UI
+{
+    /// <summary>
+    /// WorkflowEditorViewModel
+    /// </summary>
+    public class WorkflowEditorViewModel : Simplic.UI.MVC.ViewModelBase, IObservableGraphSource
+    {
+        #region Private Members
+        private Guid id;
+        private ObservableCollection<NodeConnectionViewModel> connections;
+        private Configuration.FlowConfiguration flowConfiguration;
+        private NodeViewModel selectedNode;
+        private IList<NodeDefinition> nodeDefinitions;
+        private ConnectorViewModel sourceConnector;
+        private ConnectorViewModel targetConnector;
+        #endregion
+
+        #region Constructor
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="nodeDefinitions">NodeDefinition</param>
+        /// <param name="flowConfiguration">FlowConfiguration</param>
+        public WorkflowEditorViewModel(IList<NodeDefinition> nodeDefinitions,
+            Configuration.FlowConfiguration flowConfiguration)
+        {
+            connections = new ObservableCollection<NodeConnectionViewModel>();
+            Nodes = new ObservableCollection<NodeViewModel>();
+            this.nodeDefinitions = nodeDefinitions;
+
+            Nodes.CollectionChanged += (s, e) =>
+            {
+                IsDirty = true;
+                if (e.NewItems != null)
+                {
+                    foreach (var item in e.NewItems.OfType<Simplic.UI.MVC.ViewModelBase>())
+                    {
+                        item.Parent = this;
+                    }
+                }
+            };
+
+            if (flowConfiguration == null)
+                this.flowConfiguration = new Configuration.FlowConfiguration()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "New Workflow"
+                };
+            else
+                this.flowConfiguration = flowConfiguration;
+
+            FillConfiguration();
+        }
+        #endregion
+
+        #region Private Methods
+
+        #region [FillConfiguration]
+        /// <summary>
+        /// Fills the configuration values
+        /// </summary>
+        private void FillConfiguration()
+        {
+            if (!flowConfiguration.Nodes.Any())
+                return;
+
+            // create node view models
+            foreach (var node in flowConfiguration.Nodes)
+            {
+                NodeViewModel nodeViewModel = null;
+                var nodeDefinition = NodeDefinitions.Where(x => x.Name == node.ClassName).FirstOrDefault();
+
+                if (node.NodeType == "ActionNode")
+                {
+                    nodeViewModel = new ActionNodeViewModel(nodeDefinition, node);
+                }
+                else if (node.NodeType == "EventNode")
+                {
+                    nodeViewModel = new EventNodeViewModel(nodeDefinition, node);
+                }
+
+                Nodes.Add(nodeViewModel);
+            }
+
+            // create flow links
+            foreach (var flow in flowConfiguration.Links)
+            {
+                var sourceNodeViewModel = Nodes.Where(x => x.Id == flow.From.NodeId).FirstOrDefault();
+                var sourceConnectorViewModel = sourceNodeViewModel.FlowPins.Where(x => x.Name == flow.From.PinName).FirstOrDefault();
+
+                var targetNodeViewModel = Nodes.Where(x => x.Id == flow.To.NodeId).FirstOrDefault();
+                var targetConnectorViewModel = targetNodeViewModel.FlowPins.Where(x => x.Name == flow.To.PinName).FirstOrDefault();
+
+                var connectionViewModel = new NodeConnectionViewModel(sourceNodeViewModel, targetNodeViewModel, sourceConnectorViewModel, targetConnectorViewModel);
+                Connections.Add(connectionViewModel);
+            }
+
+            // create data pins
+            foreach (var pin in flowConfiguration.Pins)
+            {
+                var sourceNodeViewModel = Nodes.Where(x => x.Id == pin.From.NodeId).FirstOrDefault();
+                var sourceConnectorViewModel = sourceNodeViewModel.DataPins.Where(x => x.Name == pin.From.PinName).FirstOrDefault();
+
+                var targetNodeViewModel = Nodes.Where(x => x.Id == pin.To.NodeId).FirstOrDefault();
+                var targetConnectorViewModel = targetNodeViewModel.DataPins.Where(x => x.Name == pin.To.PinName).FirstOrDefault();
+
+                var connectionViewModel = new NodeConnectionViewModel(sourceNodeViewModel, targetNodeViewModel, sourceConnectorViewModel, targetConnectorViewModel);
+                Connections.Add(connectionViewModel);
+            }
+        }
+        #endregion
+
+        #region [IObservableGraphSource.AddLink]
+        /// <summary>
+        /// Adds a link
+        /// </summary>
+        /// <param name="link">ILink</param>
+        void IObservableGraphSource.AddLink(ILink link)
+        {
+            IsDirty = true;
+
+            var connection = link as NodeConnectionViewModel;
+
+            if (TargetConnector != null)
+                connection.TargetConnectorViewModel = TargetConnector;
+
+            connections.Add(connection);
+        }
+        #endregion
+
+        #region [IObservableGraphSource.AddNode]
+        /// <summary>
+        /// Adds a node
+        /// </summary>
+        /// <param name="node"></param>
+        void IObservableGraphSource.AddNode(object node)
+        {
+            Nodes.Add(node as NodeViewModel);
+            IsDirty = true;
+        }
+        #endregion
+
+        #region [IObservableGraphSource.CreateLink]
+        /// <summary>
+        /// Creates a link
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="target"></param>
+        /// <returns>ILink</returns>
+        ILink IObservableGraphSource.CreateLink(object source, object target)
+        {
+            IsDirty = true;
+
+            return new NodeConnectionViewModel(source as NodeViewModel, target as NodeViewModel, SourceConnector, null);
+        }
+        #endregion
+
+        #region [IObservableGraphSource.CreateNode]
+        /// <summary>
+        /// Creates a node
+        /// </summary>
+        /// <param name="shape"></param>
+        /// <returns></returns>
+        object IObservableGraphSource.CreateNode(IShape shape)
+        {
+            IsDirty = true;
+            if (shape is BaseNodeShape)
+            {
+                var actionNodeShape = shape as BaseNodeShape;
+
+                var def = NodeDefinitions.Where(x => x.Name == actionNodeShape.Name).FirstOrDefault();
+
+                var nodeConfig = new Configuration.NodeConfiguration
+                {
+                    Id = Guid.NewGuid(),
+                    ClassName = def.Name,
+                    NodeType = def is ActionNodeDefinition ? "ActionNode" : "EventNode"
+                };
+
+                this.flowConfiguration.Nodes.Add(nodeConfig);
+
+                NodeViewModel nodeViewModel = null;
+
+                if (def is ActionNodeDefinition)
+                    nodeViewModel = new ActionNodeViewModel(def, nodeConfig);
+                else
+                if (def is EventNodeDefinition)
+                    nodeViewModel = new EventNodeViewModel(def, nodeConfig);
+
+                actionNodeShape.DataContext = nodeViewModel;
+                actionNodeShape.CreateConnectors();
+
+                return nodeViewModel;
+            }
+
+            return null;
+        }
+        #endregion
+
+        #region [IObservableGraphSource.RemoveLink]
+        /// <summary>
+        /// Removes a link
+        /// </summary>
+        /// <param name="link"></param>
+        /// <returns></returns>
+        bool IObservableGraphSource.RemoveLink(ILink link)
+        {
+            IsDirty = true;
+
+            if (connections.Contains(link))
+            {
+                connections.Remove(link as NodeConnectionViewModel);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        #endregion
+
+        #region [IObservableGraphSource.RemoveNode]
+        /// <summary>
+        /// Removes a node
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
+        bool IObservableGraphSource.RemoveNode(object node)
+        {
+            IsDirty = true;
+
+            if (Nodes.Contains(node))
+            {
+                var nodeVm = node as NodeViewModel;
+                Nodes.Remove(nodeVm);
+
+                var connections = Connections.Where(x =>
+                       !Nodes.Any(y => y.Id == x.SourceViewModel?.Id)
+                    || !Nodes.Any(y => y.Id == x.TargetViewModel?.Id)).ToList();
+
+                foreach (var connection in connections)
+                    Connections.Remove(connection);
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        #endregion
+
+        #endregion
+
+        #region Public Methods
+
+        #region [GetFlowConfiguration]
+        /// <summary>
+        /// Creates a flow configuration
+        /// </summary>
+        /// <returns></returns>
+        public Configuration.FlowConfiguration GetFlowConfiguration()
+        {
+            flowConfiguration.Nodes.Clear();
+
+            for (int i = Nodes.Count - 1; i >= 0; i--)
+            {
+                if (Nodes[i] == null)
+                    Nodes.RemoveAt(i);
+            }
+
+            foreach (var node in Nodes)
+            {
+                flowConfiguration.Nodes.Add(node.CreateConfiguration());
+            }
+
+            flowConfiguration.Links.Clear();
+            flowConfiguration.Links = connections.Where(x => x.FlowLink != null).Select(x => x.FlowLink).ToList();
+            flowConfiguration.Pins = connections.Where(x => x.DataLink != null).Select(x => x.DataLink).ToList();
+
+            return flowConfiguration;
+        } 
+        #endregion
+
+        #endregion
+
+        #region Private Properties
+
+        #region [IGraphSource.Items]
+        IEnumerable IGraphSource.Items { get { return Nodes; } }
+        #endregion
+
+        #region [IGraphSource.Links]
+        IEnumerable<ILink> IGraphSource.Links { get { return connections; } } 
+        #endregion
+
+        #endregion
+
+        #region Public Properties
+
+        #region [Id]
+        /// <summary>
+        /// Gets or sets the Id
+        /// </summary>
+        public Guid Id
+        {
+            get { return id; }
+            set { id = value; IsDirty = true; RaisePropertyChanged(nameof(Id)); }
+        }
+        #endregion
+
+        #region [Nodes]
+        /// <summary>
+        /// Gets the nodes list
+        /// </summary>
+        public ObservableCollection<NodeViewModel> Nodes { get; }
+        #endregion
+
+        #region [NodeDefinitions]
+        /// <summary>
+        /// Gets or sets the node definitions
+        /// </summary>
+        public IList<NodeDefinition> NodeDefinitions
+        {
+            get { return nodeDefinitions; }
+            set
+            {
+                IsDirty = true;
+                nodeDefinitions = value;
+                RaisePropertyChanged(nameof(NodeDefinitions));
+            }
+        } 
+        #endregion
+        
+        #region [Connections]
+        /// <summary>
+        /// Gets or sets the connections
+        /// </summary>
+        public ObservableCollection<NodeConnectionViewModel> Connections
+        {
+            get { return connections; }
+            set { connections = value; IsDirty = true; RaisePropertyChanged(nameof(Connections)); }
+        } 
+        #endregion        
+
+        #region [SourceConnector]
+        /// <summary>
+        /// Gets or sets the source connector
+        /// </summary>
+        public ConnectorViewModel SourceConnector
+        {
+            get { return sourceConnector; }
+            set
+            {
+                sourceConnector = value;
+                IsDirty = true;
+                RaisePropertyChanged(nameof(SourceConnector));
+            }
+        }
+        #endregion
+
+        #region [TargetConnector]
+        /// <summary>
+        /// Gets or sets the target connector
+        /// </summary>
+        public ConnectorViewModel TargetConnector
+        {
+            get { return targetConnector; }
+            set
+            {
+                targetConnector = value;
+                IsDirty = true;
+                RaisePropertyChanged(nameof(TargetConnector));
+            }
+        }
+        #endregion
+
+        #region [SelectedNode]
+        /// <summary>
+        /// Gets or sets the selected node
+        /// </summary>
+        public NodeViewModel SelectedNode
+        {
+            get { return selectedNode; }
+            set
+            {
+                selectedNode = value;
+                RaisePropertyChanged(nameof(SelectedNode));
+            }
+        } 
+        #endregion
+
+        #endregion
+    }
+}

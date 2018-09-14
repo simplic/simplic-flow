@@ -67,6 +67,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.Flow.Editor.Definit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.Flow.Editor.Definition", "Simplic.Flow.Editor.Definition\Simplic.Flow.Editor.Definition.csproj", "{75EF378A-23DD-4B14-B9F8-30747A8347FF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simplic.Flow.Editor.UI", "Simplic.Flow.Editor.UI\Simplic.Flow.Editor.UI.csproj", "{E2164AF5-152F-44A7-8413-D6A5BDDF7190}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -169,6 +171,10 @@ Global
 		{75EF378A-23DD-4B14-B9F8-30747A8347FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75EF378A-23DD-4B14-B9F8-30747A8347FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75EF378A-23DD-4B14-B9F8-30747A8347FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2164AF5-152F-44A7-8413-D6A5BDDF7190}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2164AF5-152F-44A7-8413-D6A5BDDF7190}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2164AF5-152F-44A7-8413-D6A5BDDF7190}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2164AF5-152F-44A7-8413-D6A5BDDF7190}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -194,6 +200,7 @@ Global
 		{FDEFE8E4-EA2B-4E30-8854-A6C35B081306} = {18EF6E53-DE0B-44A1-BF0E-D23E731B4406}
 		{BB050BC6-5E07-4875-9FF4-FF0046A0E589} = {38E1B1C2-65A7-4E9F-9FC4-6E94C51E22CE}
 		{75EF378A-23DD-4B14-B9F8-30747A8347FF} = {38E1B1C2-65A7-4E9F-9FC4-6E94C51E22CE}
+		{E2164AF5-152F-44A7-8413-D6A5BDDF7190} = {38E1B1C2-65A7-4E9F-9FC4-6E94C51E22CE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DFCA28AB-EBED-44F4-9B03-F609AEA4F137}
