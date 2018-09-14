@@ -168,6 +168,7 @@ namespace Simplic.Flow.Editor.UI
         #endregion
 
         #region Public Methods
+
         #region [Initialize]
         /// <summary>
         /// Initializes the editor
@@ -186,6 +187,7 @@ namespace Simplic.Flow.Editor.UI
             this.MyDiagram.ConnectionManipulationCompleted += MyDiagram_ConnectionManipulationCompleted;
         }
         #endregion 
+
         #endregion
     }
 }

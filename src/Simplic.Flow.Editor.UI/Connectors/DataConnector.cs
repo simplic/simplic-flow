@@ -30,10 +30,10 @@ namespace Simplic.Flow.Editor.UI
         /// </summary>
         private void FillDataTemplate()
         {
-            if (Application.Current.Resources.Contains($"DataConnector{ConnectorDataType.Name}Template"))
-                this.Style = Application.Current.Resources[$"DataConnector{ConnectorDataType.Name}Template"] as Style;
+            if (TryFindResource($"DataConnector{ConnectorDataType.Name}Template") != null)
+                this.Style = TryFindResource($"DataConnector{ConnectorDataType.Name}Template") as Style;
             else
-                this.Style = Application.Current.Resources[$"DataConnectorTemplate"] as Style;
+                this.Style = TryFindResource($"DataConnectorTemplate") as Style;
         }
 
         /// <summary>
