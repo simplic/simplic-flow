@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace Simplic.Flow.Editor.Definition
 {
-    public interface IDefinitionService
+    public interface IFlowDefinitionService
     {
         IList<NodeDefinition> Create(IList<Assembly> assemblies);
     }

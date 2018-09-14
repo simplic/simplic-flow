@@ -41,7 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interface\IDefinitionService.cs" />
+    <Compile Include="Interface\IFlowDefinitionService.cs" />
     <Compile Include="Model\ActionNodeDefinition.cs" />
     <Compile Include="Model\DataPinDefinition.cs" />
     <Compile Include="Model\EventNodeDefinition.cs" />

@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace Simplic.Flow.Editor.Definition.Service
 {
-    public class DefinitionService : IDefinitionService
+    public class FlowDefinitionService : IFlowDefinitionService
     {
         public IList<NodeDefinition> Create(IList<Assembly> assemblies)
         {
