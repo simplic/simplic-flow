@@ -7,8 +7,8 @@
     <ProjectGuid>{75EF378A-23DD-4B14-B9F8-30747A8347FF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Simplic.Flow.Edition.Definition</RootNamespace>
-    <AssemblyName>Simplic.Flow.Edition.Definition</AssemblyName>
+    <RootNamespace>Simplic.Flow.Editor.Definition</RootNamespace>
+    <AssemblyName>Simplic.Flow.Editor.Definition</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

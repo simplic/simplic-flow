@@ -11,5 +11,6 @@ namespace Simplic.Flow
         public Type DataType { get; set; }
         public PinDirection Direction { get; set; }
         public string Id { get; set; }
+        public object DefaultValue { get; set; }
     }
 }

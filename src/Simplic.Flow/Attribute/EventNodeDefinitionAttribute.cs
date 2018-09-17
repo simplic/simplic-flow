@@ -2,6 +2,6 @@
 {
     public class EventNodeDefinitionAttribute : NodeDefinitionAttribute
     {
-
+        public string EventName { get; set; }
     }
 }
