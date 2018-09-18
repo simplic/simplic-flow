@@ -23,6 +23,10 @@ namespace Simplic.Flow.Editor.UI
             }            
         }
 
+        /// <summary>
+        /// Checks if this event should be a start event and returns the configuration created by the base class
+        /// </summary>
+        /// <returns>NodeConfiguration</returns>
         public override NodeConfiguration CreateConfiguration()
         {
             var parentViewModel = this.Parent as WorkflowEditorViewModel;
