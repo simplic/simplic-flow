@@ -304,12 +304,26 @@
         </Setter>
     </Style>
 
+    <Style TargetType="telerik:RadDiagramConnection" x:Key="GuidDataTypeLinkStyle">
+        <Setter Property="Stroke" Value="#4CC6AD" />
+        <Setter Property="StrokeThickness" Value="2" />
+        <Setter Property="ConnectionType" Value="Bezier" />
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Grid />
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <local:LinkStyleSelector x:Key="CustomConnectionStyleSelector"
 				IntDataTypeLinkStyle="{StaticResource IntDataTypeLinkStyle}"
 				StringDataTypeLinkStyle="{StaticResource StringDataTypeLinkStyle}"
 				FlowLinkStyle="{StaticResource FlowLinkStyle}" 
                 BooleanDataTypeLinkStyle="{StaticResource BooleanDataTypeLinkStyle}"
-                StandardDataTypeLinkStyle="{StaticResource StandardDataTypeLinkStyle}"/>
+                StandardDataTypeLinkStyle="{StaticResource StandardDataTypeLinkStyle}"
+                GuidDataTypeLinkStyle="{StaticResource GuidDataTypeLinkStyle}"/>
 
     <Style x:Key="FlowConnectorTemplate" TargetType="telerik:RadDiagramConnector">
         <Setter Property="Width" Value="12" />

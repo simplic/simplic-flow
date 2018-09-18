@@ -128,10 +128,32 @@ namespace Simplic.Flow.Editor.UI
             }
 
             return nodeConfiguration;
-        } 
+        }
         #endregion
 
         #endregion
+
+        protected void CreateFlowInPin()
+        {
+            if (!nodeDefinition.InFlowPins.Any())
+            {
+                var pin = new FlowPinDefinition
+                {
+                    AllowMultiple = false,
+                    DisplayName = "In",
+                    Id = Guid.NewGuid(),
+                    Name = "FlowIn",
+                    PinDirection = PinDirectionDefinition.In
+                };
+                nodeDefinition.InFlowPins.Add(pin);
+
+                FlowPins.Add(new FlowConnectorViewModel(pin)
+                {
+                    Parent = this,
+                    PinDirection = PinDirectionDefinition.In
+                });
+            }
+        }
 
         #region Public Properties
 

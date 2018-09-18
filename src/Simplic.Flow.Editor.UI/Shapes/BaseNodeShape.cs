@@ -17,7 +17,6 @@ namespace Simplic.Flow.Editor.UI
     {
         #region Private Members
         private IDictionary<TextBlock, Point> outPinTexts = new Dictionary<TextBlock, Point>();
-        private bool isPinTextCreated = false;
         #endregion
 
         #region Constructor
@@ -78,7 +77,7 @@ namespace Simplic.Flow.Editor.UI
 
             // show always connectors
             VisualStateManager.GoToState(this, "ConnectorsAdornerVisible", false);
-        } 
+        }
         #endregion
 
         #endregion
@@ -100,7 +99,7 @@ namespace Simplic.Flow.Editor.UI
 
             textBlock.Loaded -= Text_Loaded;
             outPinTexts.Remove(textBlock);
-        } 
+        }
         #endregion
 
         #endregion
@@ -111,10 +110,9 @@ namespace Simplic.Flow.Editor.UI
         /// <summary>
         /// Creates connector text based on connectors
         /// </summary>
-        public void LoadConnectorText()
+        /// <param name="connector">Connector instance</param>
+        public void LoadConnectorText(BaseConnector connector)
         {
-            if (isPinTextCreated) return;
-
             var leftOffset = 8;
             var topOffset = 8.5d;
 
@@ -124,34 +122,33 @@ namespace Simplic.Flow.Editor.UI
             var canvas = WPFVisualTreeHelper.FindChild<Canvas>(this);
             var connectors = WPFVisualTreeHelper.FindChildren<RadDiagramConnector>(this);
 
-            foreach (var item in connectors)
+            foreach (var item in connectors.OfType<BaseConnector>())
             {
-                var connector = item as BaseConnector;
+                if ((item == connector) == false)
+                    continue;
 
-                var text = new TextBlock { Text = connector.Text, Foreground = Brushes.White };
+                var text = new TextBlock { Text = item.Text, Foreground = Brushes.White };
                 canvas.Children.Add(text);
 
                 var connectorLocation = item.TranslatePoint(new Point(0, 0), this);
 
-                if (connector.ConnectorDirection == ConnectorDirection.In)
+                if (item.ConnectorDirection == ConnectorDirection.In)
                 {
-                    if (connector is FlowConnector)
+                    if (item is FlowConnector)
                         text.SetLocation(connectorLocation.X + leftOffsetFlow, connectorLocation.Y - topOffsetFlow);
                     else
                         text.SetLocation(connectorLocation.X + leftOffset, connectorLocation.Y - topOffset);
                 }
                 else
                 {
-                    if (connector is FlowConnector)
+                    if (item is FlowConnector)
                         outPinTexts[text] = new Point(connectorLocation.X, connectorLocation.Y - topOffsetFlow);
                     else
-                        outPinTexts[text] = new Point(connectorLocation.X, connectorLocation.Y - topOffset);                    
+                        outPinTexts[text] = new Point(connectorLocation.X, connectorLocation.Y - topOffset);
 
                     text.Loaded += Text_Loaded;
                 }
             }
-
-            isPinTextCreated = true;
         }
         #endregion
 
@@ -224,8 +221,8 @@ namespace Simplic.Flow.Editor.UI
                 dataConnector.Offset = new Point(xRight, yTop);
                 this.Connectors.Add(dataConnector);
                 yTop += 0.12;
-            }            
-        } 
+            }
+        }
 
         #endregion
 
@@ -278,7 +275,7 @@ namespace Simplic.Flow.Editor.UI
         #endregion
 
         #region [ViewModel]
-        public NodeViewModel ViewModel { get { return DataContext as NodeViewModel; } }  
+        public NodeViewModel ViewModel { get { return DataContext as NodeViewModel; } }
         #endregion
 
         #endregion

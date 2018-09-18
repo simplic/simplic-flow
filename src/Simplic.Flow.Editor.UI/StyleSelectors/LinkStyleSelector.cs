@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Simplic.Flow.Editor.UI
@@ -13,6 +14,8 @@ namespace Simplic.Flow.Editor.UI
         public Style StringDataTypeLinkStyle { get; set; }
         public Style BooleanDataTypeLinkStyle { get; set; }
         public Style IntDataTypeLinkStyle { get; set; }
+        public Style GuidDataTypeLinkStyle { get; set; }
+        
 
         /// <summary>
         /// Selects a link style based on the link type
@@ -38,6 +41,8 @@ namespace Simplic.Flow.Editor.UI
                     return IntDataTypeLinkStyle;
                 else if (sourceDataType.Type == typeof(bool))
                     return BooleanDataTypeLinkStyle;
+                else if(sourceDataType.Type == typeof(Guid))
+                    return GuidDataTypeLinkStyle;
             }
 
             return StandardDataTypeLinkStyle;

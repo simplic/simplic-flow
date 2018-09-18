@@ -281,7 +281,7 @@ namespace Simplic.Flow.Editor.UI
             {
                 flowConfiguration.Nodes.Add(node.CreateConfiguration());
             }
-
+            
             flowConfiguration.Links.Clear();
             flowConfiguration.Links = connections.Where(x => x.FlowLink != null).Select(x => x.FlowLink).ToList();
             flowConfiguration.Pins = connections.Where(x => x.DataLink != null).Select(x => x.DataLink).ToList();

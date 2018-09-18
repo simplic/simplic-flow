@@ -9,6 +9,8 @@ namespace Simplic.Flow.Editor.UI
     /// </summary>
     public abstract class BaseConnector : RadDiagramConnector
     {
+        private bool isPinTextCreated;
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -25,10 +27,14 @@ namespace Simplic.Flow.Editor.UI
 
         private void BaseConnector_Loaded(object sender, RoutedEventArgs e)
         {
+            if (isPinTextCreated) return;
+
             var parentNode = Framework.UI.WPFVisualTreeHelper.FindParent<BaseNodeShape>(this);
-            parentNode.LoadConnectorText();
+            parentNode.LoadConnectorText(this);
 
             this.Loaded -= BaseConnector_Loaded;
+
+            isPinTextCreated = true;
         }
 
         /// <summary>
