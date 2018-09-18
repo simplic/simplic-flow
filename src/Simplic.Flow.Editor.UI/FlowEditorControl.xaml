@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Simplic.Flow.Editor.UI.EditorControl"
+﻿<UserControl x:Class="Simplic.Flow.Editor.UI.FlowEditorControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -38,7 +38,18 @@
 
         <telerik:RadDiagramNavigationPane Background="#252525" Diagram="{Binding ElementName=MyDiagram}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Row="1" IsExpanded="True"/>
 
-        <telerik:RadDiagramToolbox x:Name="toolbox" Grid.Column="1" Grid.Row="1"
+        <Grid Grid.Column="1" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0">
+                <Label Content="Name:" FontWeight="Bold"/>
+                <TextBox Text="{Binding WorkflowName, UpdateSourceTrigger=PropertyChanged}" Margin="5" Padding="5"/>
+            </StackPanel>
+
+            <telerik:RadDiagramToolbox x:Name="toolbox" Grid.Row="1"
                                Title="Available Nodes"
                                SelectedIndex="6"
                                HorizontalAlignment="Right"
@@ -46,6 +57,7 @@
                                SelectedItem="{Binding SelectedGallery}"
                                Header="{Binding SelectedItem.Header, RelativeSource={RelativeSource Self}}"
                                ItemTemplate="{StaticResource ToolboxTemplate}">
-        </telerik:RadDiagramToolbox>        
+            </telerik:RadDiagramToolbox>
+        </Grid>
     </Grid>
 </UserControl>

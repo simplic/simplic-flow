@@ -395,7 +395,23 @@ namespace Simplic.Flow.Editor.UI
                 selectedNode = value;
                 RaisePropertyChanged(nameof(SelectedNode));
             }
-        } 
+        }
+        #endregion
+
+        #region [WorkflowName]
+        /// <summary>
+        /// Gets or sets the workflow name
+        /// </summary>
+        public string WorkflowName
+        {
+            get { return flowConfiguration.Name; }
+            set
+            {
+                flowConfiguration.Name = value;
+                IsDirty = true;
+                RaisePropertyChanged(nameof(WorkflowName));
+            }
+        }
         #endregion
 
         #endregion

@@ -64,7 +64,14 @@ namespace Simplic.Flow.Configuration.Data.DB
             });
 
             if (flowConfigurationModel != null)
-                return ConvertToJson(flowConfigurationModel.Configuration);
+            {
+                var config = ConvertToJson(flowConfigurationModel.Configuration);
+                config.Id = flowConfigurationModel.Id;
+                config.Name = flowConfigurationModel.Name;   
+                
+                return config;
+            }
+                
             else
                 return null;
         }

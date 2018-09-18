@@ -74,8 +74,6 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
-
-
                         <Canvas Name="textCanvas" Grid.RowSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
 
                         <Border Grid.Row="0" Margin="-3, -3, -3,0" Padding="0">
@@ -102,6 +100,54 @@
     </Style>
 
     <Style x:Key="EventNodeStyle" TargetType="telerik:RadDiagramShape">
+        <Setter Property="Position" Value="{Binding Position, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <Setter Property="Height" Value="{Binding Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <Setter Property="Width" Value="{Binding Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <Setter Property="Content" Value="{Binding}" />
+
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="ContextMenu">
+            <Setter.Value>
+                <ContextMenu>
+                    <MenuItem Header="Defaultwerte" Command="{Binding OpenDefaultValueEditor}" CommandParameter="{Binding}" />
+                </ContextMenu>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <Canvas Name="textCanvas" Grid.RowSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
+
+                        <Border Grid.Row="0" Margin="-3, -3, -3,0" Padding="0">
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Color="#771111" Offset="0"/>
+                                    <GradientStop Color="#331919"  Offset="1"/>
+                                </LinearGradientBrush>
+                            </Border.Background>
+
+                            <StackPanel Orientation="Horizontal">
+                                <Canvas Width="12" Margin="5,0,0,0" Height="14" Clip="F1 M 0,0L 14,0L 14,14L 0,14L 0,0">
+                                    <Path Width="12" Height="14" Stretch="Fill" Fill="Yellow" Data="M 52.252,18.9974L 38,34.8333L 50.6667,34.8333L 25.3316,60.1667L 34.8333,39.5833L 23.75,39.5833L 36.4164,18.9974L 52.252,18.9974 Z"/>
+                                </Canvas>
+
+                                <TextBlock Foreground="White" Margin="5,5,0,0" Text="{Binding DisplayName}"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="EventNodeStyle_Old" TargetType="telerik:RadDiagramShape">
         <Setter Property="Position" Value="{Binding Position, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <Setter Property="Height" Value="{Binding Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <Setter Property="Width" Value="{Binding Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />

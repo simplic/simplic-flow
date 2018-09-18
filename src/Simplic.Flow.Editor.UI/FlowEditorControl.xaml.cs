@@ -7,9 +7,9 @@ using Telerik.Windows.Diagrams.Core;
 namespace Simplic.Flow.Editor.UI
 {
     /// <summary>
-    /// Interaction logic for EditorControl.xaml
+    /// Interaction logic for FlowEditorControl.xaml
     /// </summary>
-    public partial class EditorControl : UserControl
+    public partial class FlowEditorControl : UserControl
     {
         #region Private Members
         private BaseConnector sourceConnector;
@@ -18,7 +18,7 @@ namespace Simplic.Flow.Editor.UI
         #endregion
 
         #region Constructor
-        public EditorControl()
+        public FlowEditorControl()
         {
             InitializeComponent();
             this.Loaded += EditorControl_Loaded;
@@ -186,7 +186,14 @@ namespace Simplic.Flow.Editor.UI
             this.MyDiagram.ConnectionManipulationStarted += MyDiagram_ConnectionManipulationStarted;
             this.MyDiagram.ConnectionManipulationCompleted += MyDiagram_ConnectionManipulationCompleted;
         }
-        #endregion 
+        #endregion
+
+        #region [GetFlowConfiguration]
+        public Configuration.FlowConfiguration GetFlowConfiguration()
+        {
+            return diagramViewModel.GetFlowConfiguration();
+        }
+        #endregion
 
         #endregion
     }
