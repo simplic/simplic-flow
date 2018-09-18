@@ -7,7 +7,7 @@ namespace Simplic.Flow.Editor.UI
     /// Data Connector type
     /// </summary>
     public class DataConnector : BaseConnector
-    {
+    {        
         /// <summary>
         /// Constructor
         /// </summary>

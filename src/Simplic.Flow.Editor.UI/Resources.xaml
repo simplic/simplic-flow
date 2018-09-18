@@ -367,6 +367,21 @@
         </Setter>
     </Style>
 
+    <Style x:Key="DataConnectorGuidTemplate" TargetType="telerik:RadDiagramConnector">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Rectangle Name="connectorRectangle" Width="7" Height="7" Stroke="#4CC6AD" Fill="Transparent"/>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" SourceName="connectorRectangle" Value="True">
+                            <Setter Property="Fill" TargetName="connectorRectangle" Value="#4CC6AD"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style x:Key="DataConnectorObjectTemplate" TargetType="telerik:RadDiagramConnector">
         <Setter Property="Template">
             <Setter.Value>

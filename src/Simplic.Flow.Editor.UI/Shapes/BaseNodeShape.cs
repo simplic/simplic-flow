@@ -17,6 +17,7 @@ namespace Simplic.Flow.Editor.UI
     {
         #region Private Members
         private IDictionary<TextBlock, Point> outPinTexts = new Dictionary<TextBlock, Point>();
+        private bool isPinTextCreated = false;
         #endregion
 
         #region Constructor
@@ -84,19 +85,6 @@ namespace Simplic.Flow.Editor.UI
 
         #region Private Methods
 
-        #region [BaseNodeShape_Loaded]
-        /// <summary>
-        /// Node loaded event
-        /// </summary>
-        /// <param name="sender">node shape itself</param>
-        /// <param name="e">RoutedEventArgs</param>
-        private void BaseNodeShape_Loaded(object sender, RoutedEventArgs e)
-        {
-            LoadConnectorText();
-            this.Loaded -= BaseNodeShape_Loaded;
-        }
-        #endregion
-
         #region [Text_Loaded]
         /// <summary>
         /// Text loaded event, rearranges text positions based on their width
@@ -125,6 +113,8 @@ namespace Simplic.Flow.Editor.UI
         /// </summary>
         public void LoadConnectorText()
         {
+            if (isPinTextCreated) return;
+
             var leftOffset = 8;
             var topOffset = 8.5d;
 
@@ -160,6 +150,8 @@ namespace Simplic.Flow.Editor.UI
                     text.Loaded += Text_Loaded;
                 }
             }
+
+            isPinTextCreated = true;
         }
         #endregion
 
@@ -232,9 +224,7 @@ namespace Simplic.Flow.Editor.UI
                 dataConnector.Offset = new Point(xRight, yTop);
                 this.Connectors.Add(dataConnector);
                 yTop += 0.12;
-            }
-
-            this.Loaded += BaseNodeShape_Loaded;
+            }            
         } 
 
         #endregion

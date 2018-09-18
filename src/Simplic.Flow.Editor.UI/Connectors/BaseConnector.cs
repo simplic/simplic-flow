@@ -1,4 +1,5 @@
-﻿using Telerik.Windows.Controls.Diagrams;
+﻿using System.Windows;
+using Telerik.Windows.Controls.Diagrams;
 using Telerik.Windows.Diagrams.Core;
 
 namespace Simplic.Flow.Editor.UI
@@ -18,7 +19,16 @@ namespace Simplic.Flow.Editor.UI
         {
             this.Name = name;
             this.Text = text;
-            this.ConnectorDirection = connectorDirection;                  
+            this.ConnectorDirection = connectorDirection;
+            this.Loaded += BaseConnector_Loaded;
+        }
+
+        private void BaseConnector_Loaded(object sender, RoutedEventArgs e)
+        {
+            var parentNode = Framework.UI.WPFVisualTreeHelper.FindParent<BaseNodeShape>(this);
+            parentNode.LoadConnectorText();
+
+            this.Loaded -= BaseConnector_Loaded;
         }
 
         /// <summary>
