@@ -43,10 +43,11 @@ namespace Simplic.Flow
             // Log if inPin is null
             if ((value == null || value.Equals(default(T))) && inPin.DefaultValue != null)
             {
-                if (typeof(T) == inPin.DefaultValue?.GetType())
+                var defaultValueType = inPin.DefaultValue?.GetType();
+                if (defaultValueType == typeof(T) || defaultValueType == typeof(string))
                 {
                     value = (T)inPin.DefaultValue;
-                }
+                }                
                 else if (inPin?.DefaultValue?.ToString() != null)
                 {
                     value = (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromInvariantString(inPin?.DefaultValue?.ToString());
