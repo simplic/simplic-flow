@@ -47,6 +47,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attribute\ActionNodeDefinitionAttribute.cs" />
+    <Compile Include="Attribute\DataPinDefinitionAttribute.cs" />
+    <Compile Include="Attribute\EventNodeDefinitionAttribute.cs" />
+    <Compile Include="Attribute\FlowPinDefinitionAttribute.cs" />
+    <Compile Include="Attribute\NodeDefinitionAttribute.cs" />
     <Compile Include="GenericNodeResolver.cs" />
     <Compile Include="Interface\IFlowRuntimeService.cs" />
     <Compile Include="Interface\INodeResolver.cs" />
@@ -71,6 +76,10 @@
     <ProjectReference Include="..\Simplic.Flow.Configuration\Simplic.Flow.Configuration.csproj">
       <Project>{A2F33950-81AF-4D02-856F-5B2C69E78CAC}</Project>
       <Name>Simplic.Flow.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.Flow.Editor.Definition\Simplic.Flow.Editor.Definition.csproj">
+      <Project>{75ef378a-23dd-4b14-b9f8-30747a8347ff}</Project>
+      <Name>Simplic.Flow.Editor.Definition</Name>
     </ProjectReference>
     <ProjectReference Include="..\Simplic.Flow.Event\Simplic.Flow.Event.csproj">
       <Project>{EFCC8359-4ED2-421F-B9BE-4E25CDD5CF40}</Project>

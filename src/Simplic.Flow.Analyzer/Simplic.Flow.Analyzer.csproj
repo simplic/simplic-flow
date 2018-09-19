@@ -40,9 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IFlowAnalyzer.cs" />
-    <Compile Include="IFlowAnalyzerService.cs" />
-    <Compile Include="IFlowNodeAnalyzer.cs" />
+    <Compile Include="Interface\IFlowAnalyzer.cs" />
+    <Compile Include="Interface\IFlowAnalyzerService.cs" />
+    <Compile Include="Interface\IFlowNodeAnalyzer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

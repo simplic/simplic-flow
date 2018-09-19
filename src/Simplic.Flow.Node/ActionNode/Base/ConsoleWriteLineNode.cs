@@ -2,25 +2,22 @@
 
 namespace Simplic.Flow.Node
 {
+    [ActionNodeDefinition(DisplayName = "Write Line to Console", Name = "ConsoleWriteLineNode")]
     public class ConsoleWriteLineNode : ActionNode
     {
-        public ConsoleWriteLineNode()
-        {
-            InPinToPrint = new DataPin
-            {
-                ContainerType = DataPinContainerType.Single,
-                DataType = typeof(object),
-                Direction = PinDirection.In,
-                Id = Guid.NewGuid(),
-                Name = "ConsoleWriteLineInPin"
-            };
-        }
-
         public override bool Execute(IFlowRuntimeService runtime, DataPinScope scope)
         {
-            System.Console.WriteLine(scope.GetValue<object>(InPinToPrint));
+            try
+            {
+                var value = scope.GetValue<object>(InPinToPrint);
+                System.Console.WriteLine(value);
+            }
+            catch (Exception ex)
+            {
 
-            System.Console.WriteLine($"> {GetType().Name} {DateTime.Now} :: {DateTime.Now.Millisecond}");
+                throw;
+            }
+            
 
             if (OutNode != null)
                 runtime.EnqueueNode(OutNode, scope);
@@ -28,7 +25,16 @@ namespace Simplic.Flow.Node
             return true;
         }
 
+        [FlowPinDefinition(DisplayName = "Out", Name = "OutNode", PinDirection = PinDirection.Out)]
         public ActionNode OutNode { get; set; }
+
+        [DataPinDefinition(
+            Id = "b6ffc7b8-8f06-409c-8d27-7757518c2ab6", 
+            ContainerType = DataPinContainerType.Single, 
+            DataType = typeof(object), 
+            Direction = PinDirection.In, 
+            Name = "InPinToPrint",
+            DisplayName = "To Print")]
         public DataPin InPinToPrint { get; set; }
 
         public override string FriendlyName { get { return nameof(ConsoleWriteLineNode); } }

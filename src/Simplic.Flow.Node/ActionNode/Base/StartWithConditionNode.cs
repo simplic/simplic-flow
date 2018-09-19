@@ -2,6 +2,7 @@
 
 namespace Simplic.Flow.Node
 {
+    [ActionNodeDefinition(DisplayName = "Start With Condition", Name = "StartWithConditionNode")]
     public class StartWithConditionNode : ConditionNode
     {
         protected override bool Compare(IFlowRuntimeService runtime, DataPinScope scope)

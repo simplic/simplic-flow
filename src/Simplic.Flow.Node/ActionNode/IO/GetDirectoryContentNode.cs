@@ -1,20 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Simplic.Flow.Node.IO
 {
+    [ActionNodeDefinition(DisplayName = "Get Directory Content", Name = "GetDirectoryContentNode")]
     public class GetDirectoryContentNode : ActionNode
-    {
-        public GetDirectoryContentNode()
-        {
-            OutPinFilePath = CreateOutNode<string>(nameof(OutPinFilePath), Guid.Parse("0b87f0d0-ab56-460d-b4c2-8d1460921fd6"));
-            InPinDirectoryPath = CreateInNode<string>(nameof(InPinDirectoryPath), Guid.Parse("fc1eb96c-e17d-4d0e-868c-5d74850fbfe1"));
-        }
-
+    {        
         public override bool Execute(IFlowRuntimeService runtime, DataPinScope scope)
         {
             var path = scope.GetValue<string>(InPinDirectoryPath);
@@ -41,9 +32,28 @@ namespace Simplic.Flow.Node.IO
             }
         }
 
+        [FlowPinDefinition(DisplayName = "Each File", Name = "OutNodeEachFile", PinDirection = PinDirection.Out)]
         public ActionNode OutNodeEachFile { get; set; }
+
+        [FlowPinDefinition(DisplayName = "Completed", Name = "OutNodeCompleted", PinDirection = PinDirection.Out)]
         public ActionNode OutNodeCompleted { get; set; }
+
+        [DataPinDefinition(
+            Id = "9dd53fba-3a13-44d2-8f41-5abfd5820562",
+            ContainerType = DataPinContainerType.Single,
+            DataType = typeof(string),
+            Direction = PinDirection.Out,
+            Name = "OutPinFilePath",
+            DisplayName = "File Path")]
         public DataPin OutPinFilePath { get; set; }
+
+        [DataPinDefinition(
+            Id = "488f578c-d77c-4bca-80e8-8c456208d8c8",
+            ContainerType = DataPinContainerType.Single,
+            DataType = typeof(string),
+            Direction = PinDirection.In,
+            Name = "InPinDirectoryPath",
+            DisplayName = "Directory Path")]
         public DataPin InPinDirectoryPath { get; set; }
 
         public override string FriendlyName

@@ -35,7 +35,7 @@ namespace Simplic.Flow.Service
 
         #region Constructor
         public FlowService(IUnityContainer unityContainer)
-        {
+        {           
             this.unityContainer = unityContainer;
 
             flows = new List<Flow>();
@@ -58,11 +58,14 @@ namespace Simplic.Flow.Service
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<OnCheckDirectoryContentNode>>("OnCheckDirectoryContentNode");
 
             flowConfigurations = flowConfigurationService.GetAll().ToList();
-
-            foreach (var configuration in flowConfigurations)
-                flowLogService.Info($"Load flow configuration: {configuration.Name}");
-
-
+            if (flowConfigurations.Count > 0)
+                flowLogService.Info($"# {flowConfigurations.Count} Flow Configuration were found: {string.Join(", ", flowConfigurations.Select(x => $"\"{x.Name}\""))}");
+            else
+            {
+                flowLogService.Info("No flow configurations were found!");
+                return;
+            }
+                
             flows = CreateFlowsFromConfiguration();
             CreateActiveFlowsFrom(flowInstanceService.GetAllAlive().ToList());
 
@@ -79,7 +82,9 @@ namespace Simplic.Flow.Service
         /// <param name="flowInstances">Objects to create from</param>
         private void CreateActiveFlowsFrom(List<FlowInstance> flowInstances)
         {
-            flowLogService.Info($"Running CreateActiveFlowsFrom with {string.Join(",", flowInstances)}");
+            if (flowInstances.Count > 0)
+                flowLogService.Info($"> Creating active flows from {string.Join(",", flowInstances.Select(x => $"\"{x.Flow.Name}\""))}");
+
             foreach (var flowInstance in flowInstances)
             {
                 if (flowInstance.Flow == null)
@@ -93,10 +98,13 @@ namespace Simplic.Flow.Service
                         CurrentEventNodes = flowInstance.CurrentNodes,
                         FlowId = flowInstance?.Flow?.Id ?? flowInstance.FlowId
                     };
-                    
+
                     activeFlows.Add(activeFlow);
                 }
             }
+
+            if (activeFlows.Count > 0)
+                flowLogService.Info($"> {activeFlows.Count} active flows were created.");
         }
         #endregion
 
@@ -106,8 +114,9 @@ namespace Simplic.Flow.Service
         /// </summary>
         /// <returns>A list <see cref="Flow"/> objects</returns>
         private IList<Flow> CreateFlowsFromConfiguration()
-        {
-            flowLogService.Info($"Running CreateFlowsFromConfiguration with {string.Join(",", flowConfigurations)}");
+        {         
+            flowLogService.Info($"> Creating flows from configurations...");
+
             var list = new List<Flow>();
             foreach (var flowConfiguration in flowConfigurations)
             {
@@ -116,6 +125,10 @@ namespace Simplic.Flow.Service
                 {
                     var resolver = unityContainer.Resolve<INodeResolver>($"{node.ClassName}");
                     var newNode = resolver.Create(node.Id, node.IsStartEvent);
+
+                    // Create data pin instances inside node
+                    newNode.CreateDataPins();
+
                     nodes.Add(newNode);
                     // Set default values
                     if (node?.Pins != null)
@@ -193,6 +206,8 @@ namespace Simplic.Flow.Service
                 });
             }
 
+            flowLogService.Info($"> {flowConfigurations.Count} flows created.");
+
             return list;
         }
         #endregion
@@ -205,7 +220,8 @@ namespace Simplic.Flow.Service
         {
             var unhandledEvents = flowEventQueueService.GetAllUnhandled();
 
-            flowLogService.Info($"Unhandled events found: {unhandledEvents.Count()}");
+            if (unhandledEvents.Count() > 0)
+                flowLogService.Info($"> {unhandledEvents.Count()} unhandled events were found.");
 
             foreach (var flowEventQueue in unhandledEvents)
             {
@@ -217,11 +233,20 @@ namespace Simplic.Flow.Service
                         PreserveReferencesHandling = PreserveReferencesHandling.Objects
                     });
 
+                // if there are no event args create an empty object
+                if (eventArgs == null)                
+                    eventArgs = new FlowEventArgs();
+
+
+                eventArgs.EventName = flowEventQueue.EventName;
                 eventArgs.QueueId = flowEventQueue.Id;
                 eventArgs.UserId = flowEventQueue.CreateUserId;
 
                 EnqueueEvent(eventArgs);
             }
+
+            if (eventQueue.Count() > 0)
+                flowLogService.Info($"> {eventQueue.Count()} events were created.");            
         }
         #endregion
 
@@ -247,11 +272,18 @@ namespace Simplic.Flow.Service
         /// </summary>
         public void Run()
         {
+            flowLogService.Info($"> Running at {DateTime.Now}");
             try
             {
                 // load event queue from db            
                 LoadEventQueue();
 
+                if (eventQueue.Count() == 0)
+                {
+                    flowLogService.Info($"- Event queue is empty. Nothing to do.");
+                    return;
+                }
+                    
                 // pop event entries from queue first
                 var newFlowInstances = new List<FlowInstance>();
 
@@ -259,7 +291,7 @@ namespace Simplic.Flow.Service
                 {
                     var queueEntry = eventQueue.PopFirst();
 
-                    flowLogService.Info($"Processing {queueEntry}");
+                    flowLogService.Info($"> Processing {queueEntry.Args.EventName}...");
 
                     if (!queueEntry.Delegate.IsStartEvent)
                     {
@@ -311,7 +343,7 @@ namespace Simplic.Flow.Service
                     }
                     else
                     {
-                        flowLogService.Info($"Create new flow instance {queueEntry.Args.EventName} : {queueEntry.Delegate.FlowId}");
+                        flowLogService.Info($"- Create new flow instance {queueEntry.Args.EventName} : {queueEntry.Delegate.FlowId}");
 
                         var runtime = new FlowRuntimeService(flowLogService, queueEntry.Args);
                         var newFlowInstance = new FlowInstance
@@ -325,7 +357,7 @@ namespace Simplic.Flow.Service
                             runtime.Run(newFlowInstance, queueEntry);
                             newFlowInstances.Add(newFlowInstance);
 
-                            flowLogService.Info("Flow instance successfull", newFlowInstance?.Id);
+                            flowLogService.Info("- Flow instance successfull", newFlowInstance?.Id);
 
                             // Save active flow instance after run
                             flowInstanceService.Save(newFlowInstance);
@@ -335,8 +367,7 @@ namespace Simplic.Flow.Service
                             newFlowInstance.IsFailed = true;
                             flowInstanceService.Save(newFlowInstance);
 
-                            flowLogService.Error($"NewFlowInstace could not be run", ex, newFlowInstance.Id, queueEntry.QueueId);
-                            throw;
+                            flowLogService.Error($"- NewFlowInstace could not be run", ex, newFlowInstance.Id, queueEntry.QueueId);                            
                         }
                     }
 
@@ -348,7 +379,7 @@ namespace Simplic.Flow.Service
             }
             catch (Exception ex)
             {
-                flowLogService.Error($"FlowService.Run could not be run", ex);
+                flowLogService.Error($"- FlowService.Run could not be run", ex);
                 throw;
             }
         }
@@ -361,7 +392,7 @@ namespace Simplic.Flow.Service
         /// <param name="args"></param>
         public void EnqueueEvent(FlowEventArgs args)
         {
-            flowLogService.Info($"Enqueue event: {args.EventName} / object id {args.ObjectId ?? "<unset>"}");
+            flowLogService.Info($"- Enqueue event: {args.EventName} / object id {args.ObjectId ?? "<unset>"}");
 
             bool isEnqueued = false;
 
@@ -371,7 +402,7 @@ namespace Simplic.Flow.Service
             {
                 foreach (var del in delegates)
                 {
-                    flowLogService.Info($"Create event call: {args.EventName} / Flow: {del.FlowId} / Is start event {del.IsStartEvent}");
+                    flowLogService.Info($"- Create event call: {args.EventName} / Flow: {del.FlowId} / Is start event {del.IsStartEvent}");
 
                     eventQueue.PushBack(new EventCall { QueueId = args.QueueId, Args = args, Delegate = del });
                     isEnqueued = true;
@@ -380,7 +411,7 @@ namespace Simplic.Flow.Service
 
             if (!isEnqueued)
             {
-                flowLogService.Info($"No delegate was found for {args.EventName}, changing status to handled.");
+                flowLogService.Info($"- No delegate was found for {args.EventName}, changing status to handled.");
                 flowEventQueueService.SetHandled(args.QueueId, true);
             }
         }
@@ -388,11 +419,11 @@ namespace Simplic.Flow.Service
 
         #region [RefreshEventDelegates]
         /// <summary>
-        /// Cash event delegates
+        /// Cache event delegates
         /// </summary>
         public void RefreshEventDelegates()
         {
-            flowLogService.Info("Create event delegate list");
+            flowLogService.Info("> Creating event delegates...");
 
             eventDelegates = new Dictionary<string, IList<EventDelegate>>();
             foreach (var flow in flows)
@@ -421,7 +452,7 @@ namespace Simplic.Flow.Service
                 }
             }
 
-            flowLogService.Info($"Created delegates: {eventDelegates.Count}");
+            flowLogService.Info($"> {eventDelegates.Count} event delegates were created. \"{string.Join(", ", eventDelegates.Select(x => x.Key))}\"");
         }
         #endregion 
 

@@ -1,19 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Simplic.Flow.Node.IO
 {
+    [EventNodeDefinition(DisplayName = "On Check Directory Content", Name = "OnCheckDirectoryContentNode", EventName = "OnCheckDirectoryContent")]
     public class OnCheckDirectoryContentNode : EventNode
     {
-        public OnCheckDirectoryContentNode()
-        {
-            OutPinDirectoryPath = CreateOutNode<string>(nameof(OutPinDirectoryPath), Guid.Parse("be1a31c7-4f82-417b-b199-221af87dac68"));
-        }
-
         public override bool Execute(IFlowRuntimeService runtime, DataPinScope scope)
         {
             var args = runtime.FlowEventArgs as OnCheckDirectoryContentEventArgs;
@@ -45,8 +38,16 @@ namespace Simplic.Flow.Node.IO
             return true;
         }
 
-
+        [FlowPinDefinition(DisplayName = "Out", Name = "OutNode", PinDirection = PinDirection.Out)]
         public ActionNode OutNode { get; set; }
+
+        [DataPinDefinition(
+            Id = "f980c0e6-5dc3-4064-8db7-c95b08d90664",
+            ContainerType = DataPinContainerType.Single,
+            DataType = typeof(string),
+            Direction = PinDirection.Out,
+            Name = "OutPinDirectoryPath",
+            DisplayName = "Pin Directory Path")]
         public DataPin OutPinDirectoryPath { get; set; }
 
         public override string EventName

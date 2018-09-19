@@ -2,22 +2,9 @@
 
 namespace Simplic.Flow.Node
 {
+    [ActionNodeDefinition(DisplayName = "For Each", Name = "ForeachNode")]
     public class ForeachNode : ActionNode
     {
-        public ForeachNode()
-        {
-            OutPin = new DataPin
-            {
-                DataType = typeof(object),
-                ContainerType = DataPinContainerType.Single,
-                Owner = this,
-                Id = Guid.NewGuid(),
-                Name = "Each item out",
-                Direction = PinDirection.Out,
-                Description = "Each item out"
-            };
-        }
-
         public override bool Execute(IFlowRuntimeService runtime, DataPinScope scope)
         {
             System.Console.WriteLine($"Execute: {GetType().Name}");
@@ -34,11 +21,30 @@ namespace Simplic.Flow.Node
             runtime.EnqueueNode(OutNodeCompleted, scope);
 
             return true;
-        }
+        }        
 
+        [FlowPinDefinition(DisplayName = "Each Item", Name = "OutNodeEachItem", PinDirection = PinDirection.Out)]
         public ActionNode OutNodeEachItem { get; set; }
+
+        [FlowPinDefinition(DisplayName = "Completed", Name = "OutNodeCompleted", PinDirection = PinDirection.Out)]
         public ActionNode OutNodeCompleted { get; set; }
+
+        [DataPinDefinition(
+            Id = "20c769b3-7796-457d-a024-50467f3902e0",
+            ContainerType = DataPinContainerType.List,
+            DataType = typeof(object),
+            Direction = PinDirection.In,
+            Name = "InPinList",
+            DisplayName = "Array")]
         public DataPin InPinList { get; set; }
+
+        [DataPinDefinition(
+            Id = "9c503704-835c-45af-9183-cd6f58b014ff",
+            ContainerType = DataPinContainerType.Single,
+            DataType = typeof(object),
+            Direction = PinDirection.Out,
+            Name = "OutPin",
+            DisplayName = "Each item")]
         public DataPin OutPin { get; set; }
         public override string FriendlyName { get { return nameof(ForeachNode); } }
         public override string Name { get { return nameof(ForeachNode); } }

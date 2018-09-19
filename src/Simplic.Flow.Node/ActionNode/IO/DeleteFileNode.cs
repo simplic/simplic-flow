@@ -1,19 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Simplic.Flow.Node.IO
 {
+    [ActionNodeDefinition(DisplayName = "Delete File", Name = "DeleteFileNode")]
     public class DeleteFileNode : ActionNode
     {
-        public DeleteFileNode()
-        {
-            InPinFilePath = CreateInNode<string>(nameof(InPinFilePath), Guid.Parse("701a7e15-9ed0-4fe2-a641-031c461b1aaf"));
-        }
-
         public override bool Execute(IFlowRuntimeService runtime, DataPinScope scope)
         {
             try
@@ -34,8 +26,19 @@ namespace Simplic.Flow.Node.IO
             return true;
         }
 
+        [FlowPinDefinition(DisplayName = "Out", Name = "OutNode", PinDirection = PinDirection.Out)]
         public ActionNode OutNode { get; set; }
+
+        [FlowPinDefinition(DisplayName = "Failed", Name = "OutNodeFailed", PinDirection = PinDirection.Out)]
         public ActionNode OutNodeFailed { get; set; }
+
+        [DataPinDefinition(
+            Id = "701a7e15-9ed0-4fe2-a641-031c461b1aaf",
+            ContainerType = DataPinContainerType.Single,
+            DataType = typeof(string),
+            Direction = PinDirection.In,
+            Name = "InPinFilePath",
+            DisplayName = "File Path")]
         public DataPin InPinFilePath { get; set; }
 
         public override string FriendlyName
