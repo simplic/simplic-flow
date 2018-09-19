@@ -5,20 +5,6 @@ namespace Simplic.Flow.Node
     [ActionNodeDefinition(DisplayName = "For Each", Name = "ForeachNode")]
     public class ForeachNode : ActionNode
     {
-        public ForeachNode()
-        {
-            OutPin = new DataPin
-            {
-                DataType = typeof(object),
-                ContainerType = DataPinContainerType.Single,
-                Owner = this,
-                Id = Guid.NewGuid(),
-                Name = "Each item out",
-                Direction = PinDirection.Out,
-                Description = "Each item out"
-            };
-        }
-
         public override bool Execute(IFlowRuntimeService runtime, DataPinScope scope)
         {
             System.Console.WriteLine($"Execute: {GetType().Name}");

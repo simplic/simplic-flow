@@ -7,9 +7,17 @@ namespace Simplic.Flow.Node
     {
         public override bool Execute(IFlowRuntimeService runtime, DataPinScope scope)
         {
-            System.Console.WriteLine(scope.GetValue<object>(InPinToPrint));
+            try
+            {
+                var value = scope.GetValue<object>(InPinToPrint);
+                System.Console.WriteLine(value);
+            }
+            catch (Exception ex)
+            {
 
-            System.Console.WriteLine($"> {GetType().Name} {DateTime.Now} :: {DateTime.Now.Millisecond}");
+                throw;
+            }
+            
 
             if (OutNode != null)
                 runtime.EnqueueNode(OutNode, scope);
@@ -25,7 +33,7 @@ namespace Simplic.Flow.Node
             ContainerType = DataPinContainerType.Single, 
             DataType = typeof(object), 
             Direction = PinDirection.In, 
-            Name = "ConsoleWriteLineInPin",
+            Name = "InPinToPrint",
             DisplayName = "To Print")]
         public DataPin InPinToPrint { get; set; }
 
