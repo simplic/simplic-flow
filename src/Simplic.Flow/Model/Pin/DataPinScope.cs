@@ -44,13 +44,18 @@ namespace Simplic.Flow
             if ((value == null || value.Equals(default(T))) && inPin.DefaultValue != null)
             {
                 var defaultValueType = inPin.DefaultValue?.GetType();
-                if (defaultValueType == typeof(T) || defaultValueType == typeof(string))
+                var valueType = typeof(T);
+
+                /* ugly fix: if the value type is object and default value type is string, 
+                 * converter can not convert, so check if its object and string and just cast it.
+                 */
+                if (defaultValueType == valueType || (valueType == typeof(object) && defaultValueType == typeof(string)))
                 {
                     value = (T)inPin.DefaultValue;
                 }                
                 else if (inPin?.DefaultValue?.ToString() != null)
                 {
-                    value = (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromInvariantString(inPin?.DefaultValue?.ToString());
+                    value = (T)TypeDescriptor.GetConverter(valueType).ConvertFromInvariantString(inPin?.DefaultValue?.ToString());
                 }
             }
 
