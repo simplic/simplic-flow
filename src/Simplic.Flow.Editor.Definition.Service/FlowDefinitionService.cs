@@ -11,11 +11,15 @@ namespace Simplic.Flow.Editor.Definition.Service
         {
             var nodes = new List<NodeDefinition>();
 
-            var result = assemblies.Select(x => x.GetTypes().Where(y => typeof(BaseNode).IsAssignableFrom(y)));
+            assemblies = assemblies.Where(x => x.GetTypes().Any(y => typeof(BaseNode).IsAssignableFrom(y)))
+                .ToList();
 
-            foreach (var typeList in result)
+            foreach (var asm in assemblies)
             {
-                foreach (var nodeType in typeList)
+                var baseType = typeof(BaseNode);
+                var types = asm.GetTypes().Where(x => baseType.IsAssignableFrom(x)).ToList();
+
+                foreach (var nodeType in types)
                 {
                     NodeDefinition nodeDefinition = null;
 
@@ -39,7 +43,7 @@ namespace Simplic.Flow.Editor.Definition.Service
 
                     // if we cant find what type the node definition is, just return the empty list
                     if (nodeDefinition == null)
-                        return nodes;
+                        continue;
 
                     // create flow pins from attributes
                     var flowPins = nodeType.GetProperties().Where(x => x.PropertyType == typeof(ActionNode));
