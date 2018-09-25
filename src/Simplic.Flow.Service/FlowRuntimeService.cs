@@ -113,6 +113,8 @@ namespace Simplic.Flow.Service
                     //   Item a
                     //   Item b
                     //   Item c <--- increased index = 2
+                    // Item 2
+                    // Item 3
                     indexAddon++;
                 }
 
