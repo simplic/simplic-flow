@@ -38,7 +38,7 @@ namespace Simplic.Flow.Editor.UI
         #region [DefaultValue]
         public string DefaultValue
         {
-            get => pinConfiguration.DefaultValue?.ToString();
+            get { return pinConfiguration.DefaultValue?.ToString(); }
             set
             {
                 pinConfiguration.DefaultValue = value;
