@@ -44,6 +44,7 @@
     <Compile Include="ActionNode\Base\ForeachNode.cs" />
     <Compile Include="ActionNode\IO\DeleteFileNode.cs" />
     <Compile Include="ActionNode\IO\GetDirectoryContentNode.cs" />
+    <Compile Include="ActionNode\Thread\ThreadSleepNode.cs" />
     <Compile Include="EventNode\IO\OnCheckDirectoryContentEventArgs.cs" />
     <Compile Include="EventNode\IO\OnCheckDirectoryContentNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
