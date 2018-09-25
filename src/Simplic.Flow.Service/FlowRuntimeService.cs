@@ -90,6 +90,13 @@ namespace Simplic.Flow.Service
             }
         }
 
+        /// <summary>
+        /// Call the execute method of a given node an enqueues all temporarily added nodes
+        /// </summary>
+        /// <typeparam name="T">Node type</typeparam>
+        /// <param name="nodeScope">Scope to put and push data from/to</param>
+        /// <param name="index">Index where the temporarily created nodes should be added to</param>
+        /// <returns>Return value of the executed node</returns>
         public bool Execute<T>(NodeScope<T> nodeScope, int? index = null) where T : ActionNode
         {
             tempNextNodes = new List<NodeScope<ActionNode>>();
@@ -108,13 +115,14 @@ namespace Simplic.Flow.Service
                             nextNodes.Add(nextNode);
                     }
 
-                    // Increase index for next item
-                    // Item 1
-                    //   Item a
-                    //   Item b
-                    //   Item c <--- increased index = 2
-                    // Item 2
-                    // Item 3
+                    /* Increase index for next item
+                       Item 1
+                         Item a
+                         Item b
+                         Item c <--- increased index = 2
+                       Item 2
+                       Item 3 
+                    */
                     indexAddon++;
                 }
 
