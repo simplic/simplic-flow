@@ -364,9 +364,7 @@ namespace Simplic.Flow.Service
                 try
                 {
                     runtime.Run(threadInfo.FlowInstance, threadInfo.EventCall);
-                    CreateActiveFlow(threadInfo.FlowInstance);
-
-                    flowLogService.Info("- Flow instance successfull", threadInfo.FlowInstance?.Id);
+                    CreateActiveFlow(threadInfo.FlowInstance);                    
 
                     // Save active flow instance after run
                     flowInstanceService.Save(threadInfo.FlowInstance);
