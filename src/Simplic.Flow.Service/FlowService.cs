@@ -108,6 +108,7 @@ namespace Simplic.Flow.Service
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<DeleteFileNode>>("DeleteFileNode");
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<GetDirectoryContentNode>>("GetDirectoryContentNode");
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<OnCheckDirectoryContentNode>>("OnCheckDirectoryContentNode");
+            unityContainer.RegisterType<INodeResolver, GenericNodeResolver<ThreadSleepNode>>("ThreadSleepNode");
 
             flowConfigurations = flowConfigurationService.GetAll().ToList();
             if (flowConfigurations.Count > 0)
@@ -339,7 +340,7 @@ namespace Simplic.Flow.Service
                     if (!threadInfo.FlowInstance.IsAlive)
                     {                        
                         activeFlows.Remove(threadInfo.ActiveFlow);
-                        flowLogService.Info($"Flow instance {threadInfo.ActiveFlow.FlowInstanceId} is not alive anymore.");
+                       // flowLogService.Info($"Flow instance {threadInfo.ActiveFlow.FlowInstanceId} is not alive anymore.");
                     }
 
                     // Save active flow instance after run
@@ -353,7 +354,7 @@ namespace Simplic.Flow.Service
                     activeFlows.Remove(threadInfo.ActiveFlow);
 
                     // log the exception
-                    flowLogService.Error($"Continue flow instance failed.", ex, threadInfo.ActiveFlow.FlowInstanceId, threadInfo.EventCall.QueueId);
+                    //flowLogService.Error($"Continue flow instance failed.", ex, threadInfo.ActiveFlow.FlowInstanceId, threadInfo.EventCall.QueueId);
 
                     flowInstanceService.Save(threadInfo.FlowInstance);
                     throw;
@@ -374,7 +375,7 @@ namespace Simplic.Flow.Service
                     threadInfo.FlowInstance.IsFailed = true;
                     flowInstanceService.Save(threadInfo.FlowInstance);
 
-                    flowLogService.Error($"- NewFlowInstace could not be run", ex, threadInfo.FlowInstance.Id, threadInfo.EventCall.QueueId);
+                    //flowLogService.Error($"- NewFlowInstace could not be run", ex, threadInfo.FlowInstance.Id, threadInfo.EventCall.QueueId);
                 }                
             }            
         }
@@ -392,7 +393,7 @@ namespace Simplic.Flow.Service
             // Raise event before the process has begun.
             OnStarted?.Invoke(this, EventArgs.Empty);
 
-            flowLogService.Info($"> Running at {DateTime.Now}");
+            //flowLogService.Info($"> Running at {DateTime.Now}");
             try
             {
                 // load event queue from db            
@@ -400,7 +401,7 @@ namespace Simplic.Flow.Service
 
                 if (eventQueue.Count() == 0)
                 {
-                    flowLogService.Info($"- Event queue is empty. Nothing to do.");
+                    //flowLogService.Info($"- Event queue is empty. Nothing to do.");
                     return;
                 }
                                     
@@ -411,11 +412,11 @@ namespace Simplic.Flow.Service
                     // pop event entries from queue first
                     var queueEntry = eventQueue.PopFirst();
 
-                    flowLogService.Info($"> Processing {queueEntry.Args.EventName}...");
+                    //flowLogService.Info($"> Processing {queueEntry.Args.EventName}...");
 
                     if (queueEntry.Delegate.IsStartEvent)
                     {
-                        flowLogService.Info($"- Create new flow instance {queueEntry.Args.EventName} : {queueEntry.Delegate.FlowId}");
+                        //flowLogService.Info($"- Create new flow instance {queueEntry.Args.EventName} : {queueEntry.Delegate.FlowId}");
 
                         var newFlowInstance = new FlowInstance
                         {
@@ -434,7 +435,7 @@ namespace Simplic.Flow.Service
                         // Notify ALL instances, which MIGHT BE continued
                         foreach (var activeFlow in activeFlows.Where(x => x.FlowId == queueEntry.Delegate.FlowId))
                         {
-                            flowLogService.Info($"Continuing flow instance: {activeFlow.FlowInstanceId}");
+                            //flowLogService.Info($"Continuing flow instance: {activeFlow.FlowInstanceId}");
 
                             // Get from database
                             var flowInstance = flowInstanceService.GetById(activeFlow.FlowInstanceId);
@@ -459,7 +460,7 @@ namespace Simplic.Flow.Service
             }
             catch (Exception ex)
             {
-                flowLogService.Error($"- FlowService.Run could not be run", ex);
+                //flowLogService.Error($"- FlowService.Run could not be run", ex);
 
                 // Raise event after the process has begun.
                 OnCompleted?.Invoke(this, EventArgs.Empty);

@@ -2,7 +2,7 @@
 
 namespace Simplic.Flow.Node
 {
-    [ActionNodeDefinition(DisplayName = "Write Line to Console", Name = "ConsoleWriteLineNode")]
+    [ActionNodeDefinition(DisplayName = "Console out", Name = "ConsoleWriteLineNode")]
     public class ConsoleWriteLineNode : ActionNode
     {
         public override bool Execute(IFlowRuntimeService runtime, DataPinScope scope)
