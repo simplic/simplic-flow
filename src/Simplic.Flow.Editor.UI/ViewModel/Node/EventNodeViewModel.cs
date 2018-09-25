@@ -17,10 +17,7 @@ namespace Simplic.Flow.Editor.UI
         public EventNodeViewModel(NodeDefinition nodeDefinition, NodeConfiguration nodeConfiguration)
             : base(nodeDefinition, nodeConfiguration)
         {
-            if (!nodeConfiguration.IsStartEvent)
-            {
-                CreateFlowInPin();
-            }            
+            CreateFlowInPin();            
         }
 
         /// <summary>
