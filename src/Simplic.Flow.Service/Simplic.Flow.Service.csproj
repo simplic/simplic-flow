@@ -58,6 +58,7 @@
     <Compile Include="FlowService.cs" />
     <Compile Include="FlowRuntimeService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ThreadStateInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Simplic.ActiveFlow\Simplic.ActiveFlow.csproj">
