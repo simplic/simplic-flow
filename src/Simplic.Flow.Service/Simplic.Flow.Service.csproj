@@ -33,8 +33,11 @@
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Simplic.CoreLib, Version=6.1.118.621, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simplic.CoreLib.6.1.118.621\lib\net451\Simplic.CoreLib.dll</HintPath>
+    <Reference Include="Simplic.CoreLib, Version=6.14.318.906, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.CoreLib.6.14.318.906\lib\net451\Simplic.CoreLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Simplic.Flow, Version=6.1.518.925, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.Flow.6.1.518.925\lib\net451\Simplic.Flow.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -55,6 +58,7 @@
     <Compile Include="FlowService.cs" />
     <Compile Include="FlowRuntimeService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ThreadStateInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Simplic.ActiveFlow\Simplic.ActiveFlow.csproj">
@@ -84,10 +88,6 @@
     <ProjectReference Include="..\Simplic.FlowInstance\Simplic.FlowInstance.csproj">
       <Project>{7206AF52-60CB-46B1-9FE7-CF172752B0E9}</Project>
       <Name>Simplic.FlowInstance</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Simplic.Flow\Simplic.Flow.csproj">
-      <Project>{1f540a26-62fb-45cb-abc6-b4b2d8f7005e}</Project>
-      <Name>Simplic.Flow</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
