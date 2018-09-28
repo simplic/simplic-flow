@@ -38,26 +38,51 @@
 
         <telerik:RadDiagramNavigationPane Background="#252525" Diagram="{Binding ElementName=MyDiagram}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Row="1" IsExpanded="True"/>
 
-        <Grid Grid.Column="1" Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+        <TabControl Grid.Column="1" Grid.Row="1">
+            
+            <TabItem Header="Workflow">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    
+                    <Label Grid.Row="0" Content="Name:" FontWeight="Bold"/>
+                    <TextBox Grid.Row="1" Text="{Binding WorkflowName, UpdateSourceTrigger=PropertyChanged}" Margin="5" Padding="5"/>
 
-            <StackPanel Grid.Row="0">
-                <Label Content="Name:" FontWeight="Bold"/>
-                <TextBox Text="{Binding WorkflowName, UpdateSourceTrigger=PropertyChanged}" Margin="5" Padding="5"/>
-            </StackPanel>
+                    <GroupBox Header="Variables" Grid.Row="2" Padding="5" Margin="5">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
 
-            <telerik:RadDiagramToolbox x:Name="toolbox" Grid.Row="1"
-                               Title="Available Nodes"
-                               SelectedIndex="6"
+                            <telerik:RadButton Grid.Row="0" Content="Add new variable" Command="{Binding AddNewVariableCommand}"/>
+
+                            <StackPanel Margin="5" Grid.Row="1">
+                                <ItemsControl >
+                                    <DataTemplate>
+                                        <Label Content="{Binding Name}" Margin="5" />
+                                    </DataTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                            
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+            
+            <TabItem Header="Available Nodes">
+                <telerik:RadDiagramToolbox x:Name="toolbox"
+                               Title="Available Nodes"                               
                                HorizontalAlignment="Right"
                                ItemsSource="{Binding GalleryItems}"                                  
                                SelectedItem="{Binding SelectedGallery}"
                                Header="{Binding SelectedItem.Header, RelativeSource={RelativeSource Self}}"
                                ItemTemplate="{StaticResource ToolboxTemplate}">
-            </telerik:RadDiagramToolbox>
-        </Grid>
+                </telerik:RadDiagramToolbox>
+            </TabItem>
+        </TabControl>
     </Grid>
 </UserControl>

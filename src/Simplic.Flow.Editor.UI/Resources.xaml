@@ -433,9 +433,11 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
+
             <Viewbox VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="5 5 5 0">
-                <ContentPresenter Content="{Binding Shape}" Margin="5" IsHitTestVisible="False" />
+                <ContentPresenter Content="{Binding Shape}" Margin="5" IsHitTestVisible="False"  />
             </Viewbox>
+
             <TextBlock Grid.Row="1" Text="{Binding Header}" TextWrapping="Wrap" Margin="5" FontSize="12"
 					TextAlignment="Center" FontFamily="Segoe UI Semibold" HorizontalAlignment="Center" VerticalAlignment="Top"/>
         </Grid>

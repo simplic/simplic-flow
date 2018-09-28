@@ -1,4 +1,5 @@
 ﻿using Simplic.Flow.Editor.Definition;
+using Simplic.UI.MVC;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,6 +22,7 @@ namespace Simplic.Flow.Editor.UI
         private IList<NodeDefinition> nodeDefinitions;
         private ConnectorViewModel sourceConnector;
         private ConnectorViewModel targetConnector;
+        private ObservableCollection<FlowVariable> variables;
         #endregion
 
         #region Constructor
@@ -33,6 +35,7 @@ namespace Simplic.Flow.Editor.UI
             Configuration.FlowConfiguration flowConfiguration)
         {
             connections = new ObservableCollection<NodeConnectionViewModel>();
+            variables = new ObservableCollection<FlowVariable>();
             Nodes = new ObservableCollection<NodeViewModel>();
             this.nodeDefinitions = nodeDefinitions;
 
@@ -58,6 +61,10 @@ namespace Simplic.Flow.Editor.UI
                 this.flowConfiguration = flowConfiguration;
 
             FillConfiguration();
+
+            AddVariableCommand = new Simplic.UI.MVC.RelayCommand((param) => {
+                // TODO: add a window to create a variable
+            });
         }
         #endregion
 
@@ -114,6 +121,16 @@ namespace Simplic.Flow.Editor.UI
 
                 var connectionViewModel = new NodeConnectionViewModel(sourceNodeViewModel, targetNodeViewModel, sourceConnectorViewModel, targetConnectorViewModel);
                 Connections.Add(connectionViewModel);
+            }
+
+            // create workflow variables
+            foreach (var variable in flowConfiguration.Variables)
+            {
+                Variables.Add(new FlowVariable
+                {
+                    Name = variable.Name,
+                    Value = variable.Value
+                });
             }
         }
         #endregion
@@ -413,6 +430,19 @@ namespace Simplic.Flow.Editor.UI
             }
         }
         #endregion
+
+        #region [Variables]
+        public ObservableCollection<FlowVariable> Variables
+        {
+            get { return variables; }
+            set { variables = value; RaisePropertyChanged(nameof(Variables)); }
+        } 
+        #endregion
+
+        public System.Windows.Input.ICommand AddVariableCommand
+        {
+            get; set;
+        }
 
         #endregion
     }
