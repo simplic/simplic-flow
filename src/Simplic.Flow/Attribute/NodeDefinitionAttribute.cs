@@ -7,5 +7,6 @@ namespace Simplic.Flow
         public string Name { get; set; }
         public string DisplayName { get; set; }
         public string Tooltip { get; set; }
+        public string Category { get; set; }
     }
 }
