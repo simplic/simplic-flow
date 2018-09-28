@@ -36,8 +36,8 @@
     <Reference Include="Simplic.CoreLib, Version=6.14.318.906, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Simplic.CoreLib.6.14.318.906\lib\net451\Simplic.CoreLib.dll</HintPath>
     </Reference>
-    <Reference Include="Simplic.Flow, Version=6.1.518.925, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simplic.Flow.6.1.518.925\lib\net451\Simplic.Flow.dll</HintPath>
+    <Reference Include="Simplic.Flow, Version=6.1.618.925, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.Flow.6.1.618.925\lib\net451\Simplic.Flow.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -80,10 +80,6 @@
     <ProjectReference Include="..\Simplic.Flow.Log\Simplic.Flow.Log.csproj">
       <Project>{EEDF5DE9-3E21-427C-8788-799D4D8E35B7}</Project>
       <Name>Simplic.Flow.Log</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Simplic.Flow.Node\Simplic.Flow.Node.csproj">
-      <Project>{A88421D5-6B43-4B8D-8865-79A33F935112}</Project>
-      <Name>Simplic.Flow.Node</Name>
     </ProjectReference>
     <ProjectReference Include="..\Simplic.FlowInstance\Simplic.FlowInstance.csproj">
       <Project>{7206AF52-60CB-46B1-9FE7-CF172752B0E9}</Project>
