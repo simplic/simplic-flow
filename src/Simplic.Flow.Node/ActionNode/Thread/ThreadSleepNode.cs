@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace Simplic.Flow.Node
 {
-    [ActionNodeDefinition(DisplayName = "Thread sleep", Name = "ThreadSleepNode")]
+    [ActionNodeDefinition(DisplayName = "Thread sleep", Name = "ThreadSleepNode", Category = "Thread")]
     public class ThreadSleepNode : ActionNode
     {
         public override bool Execute(IFlowRuntimeService runtime, DataPinScope scope)

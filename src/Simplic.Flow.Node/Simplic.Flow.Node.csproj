@@ -41,8 +41,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionNode\Base\ConsoleWriteLineNode.cs" />
+    <Compile Include="ActionNode\Base\FloatGreaterThanNode.cs" />
+    <Compile Include="ActionNode\Base\FloatLessThanNode.cs" />
     <Compile Include="ActionNode\Base\ForeachNode.cs" />
     <Compile Include="ActionNode\Base\GetVariableNode.cs" />
+    <Compile Include="ActionNode\Base\IntGreaterThanNode.cs" />
+    <Compile Include="ActionNode\Base\IntLessThanNode.cs" />
     <Compile Include="ActionNode\Base\SetVariableNode.cs" />
     <Compile Include="ActionNode\IO\DeleteFileNode.cs" />
     <Compile Include="ActionNode\IO\GetDirectoryContentNode.cs" />
