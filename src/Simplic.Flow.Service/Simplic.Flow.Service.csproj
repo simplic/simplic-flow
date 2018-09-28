@@ -36,8 +36,14 @@
     <Reference Include="Simplic.CoreLib, Version=6.14.318.906, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Simplic.CoreLib.6.14.318.906\lib\net451\Simplic.CoreLib.dll</HintPath>
     </Reference>
-    <Reference Include="Simplic.Flow, Version=6.1.618.925, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simplic.Flow.6.1.618.925\lib\net451\Simplic.Flow.dll</HintPath>
+    <Reference Include="Simplic.Flow, Version=6.1.718.928, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.Flow.6.1.718.928\lib\net451\Simplic.Flow.dll</HintPath>
+    </Reference>
+    <Reference Include="Simplic.Flow.Event, Version=6.1.118.914, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.Flow.Event.6.1.118.914\lib\net451\Simplic.Flow.Event.dll</HintPath>
+    </Reference>
+    <Reference Include="Simplic.Flow.Node, Version=6.2.118.928, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.Flow.Node.6.2.118.928\lib\net451\Simplic.Flow.Node.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -72,10 +78,6 @@
     <ProjectReference Include="..\Simplic.Flow.EventQueue\Simplic.Flow.EventQueue.csproj">
       <Project>{BBEA1BE9-D55C-4242-9F56-6640EFD36194}</Project>
       <Name>Simplic.Flow.EventQueue</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Simplic.Flow.Event\Simplic.Flow.Event.csproj">
-      <Project>{EFCC8359-4ED2-421F-B9BE-4E25CDD5CF40}</Project>
-      <Name>Simplic.Flow.Event</Name>
     </ProjectReference>
     <ProjectReference Include="..\Simplic.Flow.Log\Simplic.Flow.Log.csproj">
       <Project>{EEDF5DE9-3E21-427C-8788-799D4D8E35B7}</Project>
