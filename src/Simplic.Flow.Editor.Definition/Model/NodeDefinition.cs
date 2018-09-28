@@ -7,6 +7,7 @@ namespace Simplic.Flow.Editor.Definition
         public string Name { get; set; }
         public string DisplayName { get; set; }
         public string Tooltip { get; set; }
+        public string Category { get; set; }
         public IList<FlowPinDefinition> InFlowPins { get; set; } = new List<FlowPinDefinition>();
         public IList<FlowPinDefinition> OutFlowPins { get; set; } = new List<FlowPinDefinition>();
         public IList<DataPinDefinition> InDataPins { get; set; } = new List<DataPinDefinition>();
