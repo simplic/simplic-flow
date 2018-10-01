@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Simplic.Flow.Editor.UI"
              xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             xmlns:simplic="http://schemas.simplic-systems.com/2016/xaml/presentation"
              xmlns:primitives="clr-namespace:Telerik.Windows.Controls.Diagrams.Primitives;assembly=Telerik.Windows.Controls.Diagrams"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -16,7 +17,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="350" />
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
@@ -45,13 +46,44 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
                     
                     <Label Grid.Row="0" Content="Name:" FontWeight="Bold"/>
                     <TextBox Grid.Row="1" Text="{Binding WorkflowName, UpdateSourceTrigger=PropertyChanged}" Margin="5" Padding="5"/>
 
-                    <GroupBox Header="Variables" Grid.Row="2" Padding="5" Margin="5">
+                    <Button Grid.Row="2" HorizontalAlignment="Left" Margin="0, 5" Width="150" Content="Add new variable" Command="{Binding AddVariableCommand}" />
+
+                    <TabControl Grid.Row="3">
+                        <TabItem Header="Variables">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <simplic:AutomaticSelectionGridView Grid.Row="0" Grid.Column="0" 
+                                        ItemsSource="{Binding Variables}" AutoGenerateColumns="False" 
+                                                                    CanUserInsertRows="True" 
+                                                                    CanUserDeleteRows="True" 
+                                                                    ShowGroupPanel="False">
+                                    <simplic:AutomaticSelectionGridView.Columns>
+                                        <telerik:GridViewDataColumn DataMemberBinding="{Binding Name}" Header="Variable Name" />
+                                    </simplic:AutomaticSelectionGridView.Columns>
+                                </simplic:AutomaticSelectionGridView>
+                            </Grid>
+                        </TabItem>
+                    </TabControl>
+
+                    <!--<GroupBox Header="Variables" Grid.Row="2" Padding="5" Margin="5">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto" />
@@ -60,16 +92,14 @@
 
                             <telerik:RadButton Grid.Row="0" Content="Add new variable" Command="{Binding AddNewVariableCommand}"/>
 
-                            <StackPanel Margin="5" Grid.Row="1">
-                                <ItemsControl >
-                                    <DataTemplate>
-                                        <Label Content="{Binding Name}" Margin="5" />
-                                    </DataTemplate>
-                                </ItemsControl>
-                            </StackPanel>
-                            
+                            <Border Grid.Row="1">
+
+                                
+
+                            </Border>
+
                         </Grid>
-                    </GroupBox>
+                    </GroupBox>-->
                 </Grid>
             </TabItem>
             

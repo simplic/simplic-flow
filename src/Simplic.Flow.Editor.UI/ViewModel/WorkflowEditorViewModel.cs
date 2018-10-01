@@ -23,6 +23,7 @@ namespace Simplic.Flow.Editor.UI
         private ConnectorViewModel sourceConnector;
         private ConnectorViewModel targetConnector;
         private ObservableCollection<FlowVariable> variables;
+        private System.Windows.Input.ICommand addVariableCommand;
         #endregion
 
         #region Constructor
@@ -61,10 +62,8 @@ namespace Simplic.Flow.Editor.UI
                 this.flowConfiguration = flowConfiguration;
 
             FillConfiguration();
-
-            AddVariableCommand = new Simplic.UI.MVC.RelayCommand((param) => {
-                // TODO: add a window to create a variable
-            });
+            
+            addVariableCommand = new Simplic.UI.MVC.RelayCommand(NewVariableRelayCommand);
         }
         #endregion
 
@@ -275,6 +274,18 @@ namespace Simplic.Flow.Editor.UI
         }
         #endregion
 
+        #region [NewVariableRelayCommand]
+        private void NewVariableRelayCommand(object parameter)
+        {
+            var lastVariable = Variables.OrderBy(x => x.Name).LastOrDefault();
+            var newVariable = new FlowVariable {
+                Name = lastVariable != null ? lastVariable.Name + "(Copy)" : "New Variable"
+            };
+
+            Variables.Add(newVariable);
+        } 
+        #endregion
+
         #endregion
 
         #region Public Methods
@@ -436,13 +447,16 @@ namespace Simplic.Flow.Editor.UI
         {
             get { return variables; }
             set { variables = value; RaisePropertyChanged(nameof(Variables)); }
-        } 
+        }
         #endregion
 
+        #region [AddVariableCommand]
         public System.Windows.Input.ICommand AddVariableCommand
         {
-            get; set;
-        }
+            get { return addVariableCommand; }
+            set { addVariableCommand = value; }
+        } 
+        #endregion
 
         #endregion
     }
