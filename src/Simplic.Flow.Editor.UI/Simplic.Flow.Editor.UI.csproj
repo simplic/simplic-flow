@@ -36,8 +36,8 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="Simplic.CoreLib, Version=6.14.318.906, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simplic.CoreLib.6.14.318.906\lib\net451\Simplic.CoreLib.dll</HintPath>
+    <Reference Include="Simplic.CoreLib, Version=6.14.418.1002, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.CoreLib.6.14.418.1002\lib\net451\Simplic.CoreLib.dll</HintPath>
     </Reference>
     <Reference Include="Simplic.Flow, Version=6.1.718.928, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Simplic.Flow.6.1.718.928\lib\net451\Simplic.Flow.dll</HintPath>
@@ -99,6 +99,7 @@
     <Compile Include="Connectors\ConnectorDirection.cs" />
     <Compile Include="Connectors\DataConnector.cs" />
     <Compile Include="Connectors\FlowConnector.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="FlowEditorControl.xaml.cs">
       <DependentUpon>FlowEditorControl.xaml</DependentUpon>
     </Compile>

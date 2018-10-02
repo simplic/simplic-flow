@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Input;
 
 namespace Simplic.Flow.Editor.UI
 {
@@ -29,11 +30,8 @@ namespace Simplic.Flow.Editor.UI
         /// Decides which template to use based on data type
         /// </summary>
         private void FillDataTemplate()
-        {
-            if (TryFindResource($"DataConnector{ConnectorDataType.Name}Template") != null)
-                this.Style = TryFindResource($"DataConnector{ConnectorDataType.Name}Template") as Style;
-            else
-                this.Style = TryFindResource($"DataConnectorTemplate") as Style;
+        {            
+            this.Style = TryFindResource($"DataConnectorTemplate") as Style;
         }
 
         /// <summary>

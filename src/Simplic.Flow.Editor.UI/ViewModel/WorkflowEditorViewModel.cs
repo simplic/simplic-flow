@@ -148,6 +148,12 @@ namespace Simplic.Flow.Editor.UI
             if (TargetConnector != null)
                 connection.TargetConnectorViewModel = TargetConnector;
 
+            if (connection.SourceConnectorViewModel is DataConnectorViewModel)
+                (connection.SourceConnectorViewModel as DataConnectorViewModel).IsConnected = true;
+
+            if (connection.TargetConnectorViewModel is DataConnectorViewModel)
+                (connection.TargetConnectorViewModel as DataConnectorViewModel).IsConnected = true;
+
             connections.Add(connection);
         }
         #endregion
@@ -232,7 +238,15 @@ namespace Simplic.Flow.Editor.UI
             IsDirty = true;
 
             if (connections.Contains(link))
-            {
+            {                
+                var connection = link as NodeConnectionViewModel;
+
+                if (connection.SourceConnectorViewModel is DataConnectorViewModel)
+                    (connection.SourceConnectorViewModel as DataConnectorViewModel).IsConnected = false;
+
+                if (connection.TargetConnectorViewModel is DataConnectorViewModel)
+                    (connection.TargetConnectorViewModel as DataConnectorViewModel).IsConnected = false;
+
                 connections.Remove(link as NodeConnectionViewModel);
                 return true;
             }
