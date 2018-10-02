@@ -2,7 +2,7 @@
 
 namespace Simplic.Flow.Node
 {
-    [ActionNodeDefinition(DisplayName = "For Each", Name = "ForeachNode")]
+    [ActionNodeDefinition(DisplayName = "For Each", Name = "ForeachNode", Category = "Common")]
     public class ForeachNode : ActionNode
     {
         public override bool Execute(IFlowRuntimeService runtime, DataPinScope scope)

@@ -3,13 +3,11 @@ using System.Collections.Generic;
 
 namespace Simplic.Flow.Node
 {
-    [ActionNodeDefinition(DisplayName = "Sequence", Name = "SequenceNode")]
+    [ActionNodeDefinition(DisplayName = "Sequence", Name = "SequenceNode", Category = "Common")]
     public class SequenceNode : ActionNode
     {                
         public override bool Execute(IFlowRuntimeService runtime, DataPinScope scope)
-        {
-            System.Console.WriteLine($"Execute: {GetType().Name}");
-
+        {         
             foreach (var node in OutNodes)
             {
                 runtime.EnqueueNode(node, scope);

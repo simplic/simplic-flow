@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Simplic.Flow.Node.IO
 {
-    [ActionNodeDefinition(DisplayName = "Get Directory Content", Name = "GetDirectoryContentNode")]
+    [ActionNodeDefinition(DisplayName = "Get Directory Content", Name = "GetDirectoryContentNode", Category = "IO")]
     public class GetDirectoryContentNode : ActionNode
     {        
         public override bool Execute(IFlowRuntimeService runtime, DataPinScope scope)

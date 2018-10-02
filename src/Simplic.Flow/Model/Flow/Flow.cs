@@ -15,5 +15,6 @@ namespace Simplic.Flow
         public Guid Id { get; set; }
         public string Name { get; set; }
         public IList<BaseNode> Nodes { get; set; } = new List<BaseNode>();
+        public IList<FlowVariable> Variables { get; set; } = new List<FlowVariable>();
     }
 }

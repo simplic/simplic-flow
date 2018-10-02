@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Simplic.Flow.Node.IO
 {
-    [ActionNodeDefinition(DisplayName = "Delete File", Name = "DeleteFileNode")]
+    [ActionNodeDefinition(DisplayName = "Delete File", Name = "DeleteFileNode", Category = "IO")]
     public class DeleteFileNode : ActionNode
     {
         public override bool Execute(IFlowRuntimeService runtime, DataPinScope scope)

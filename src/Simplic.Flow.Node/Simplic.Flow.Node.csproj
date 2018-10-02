@@ -30,6 +30,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Simplic.CoreLib, Version=6.14.318.906, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.CoreLib.6.14.318.906\lib\net451\Simplic.CoreLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Simplic.Flow, Version=6.1.718.928, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.Flow.6.1.718.928\lib\net451\Simplic.Flow.dll</HintPath>
+    </Reference>
+    <Reference Include="Simplic.Flow.Event, Version=6.1.118.914, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.Flow.Event.6.1.118.914\lib\net451\Simplic.Flow.Event.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -41,9 +53,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionNode\Base\ConsoleWriteLineNode.cs" />
+    <Compile Include="ActionNode\Base\FloatGreaterThanNode.cs" />
+    <Compile Include="ActionNode\Base\FloatLessThanNode.cs" />
     <Compile Include="ActionNode\Base\ForeachNode.cs" />
+    <Compile Include="ActionNode\Base\GetVariableNode.cs" />
+    <Compile Include="ActionNode\Base\IntGreaterThanNode.cs" />
+    <Compile Include="ActionNode\Base\IntLessThanNode.cs" />
+    <Compile Include="ActionNode\Base\SetVariableNode.cs" />
     <Compile Include="ActionNode\IO\DeleteFileNode.cs" />
     <Compile Include="ActionNode\IO\GetDirectoryContentNode.cs" />
+    <Compile Include="ActionNode\Thread\ThreadSleepNode.cs" />
     <Compile Include="EventNode\IO\OnCheckDirectoryContentEventArgs.cs" />
     <Compile Include="EventNode\IO\OnCheckDirectoryContentNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -51,17 +70,8 @@
     <Compile Include="ActionNode\Base\StartWithConditionNode.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Simplic.Flow.Event\Simplic.Flow.Event.csproj">
-      <Project>{EFCC8359-4ED2-421F-B9BE-4E25CDD5CF40}</Project>
-      <Name>Simplic.Flow.Event</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Simplic.Flow\Simplic.Flow.csproj">
-      <Project>{1f540a26-62fb-45cb-abc6-b4b2d8f7005e}</Project>
-      <Name>Simplic.Flow</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="package.bat" />
+    <None Include="packages.config" />
     <None Include="Simplic.Flow.Node.nuspec" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

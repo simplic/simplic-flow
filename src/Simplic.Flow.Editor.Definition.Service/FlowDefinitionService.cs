@@ -29,7 +29,8 @@ namespace Simplic.Flow.Editor.Definition.Service
                     {
                         nodeDefinition = new ActionNodeDefinition {
                             DisplayName = nodeAttribute.DisplayName,
-                            Name = nodeAttribute.Name                            
+                            Name = nodeAttribute.Name,
+                            Category = nodeAttribute.Category
                         };                                                
                     }
                     else if (nodeAttribute is EventNodeDefinitionAttribute)
@@ -37,7 +38,8 @@ namespace Simplic.Flow.Editor.Definition.Service
                         nodeDefinition = new EventNodeDefinition
                         {
                             DisplayName = nodeAttribute.DisplayName,
-                            Name = nodeAttribute.Name
+                            Name = nodeAttribute.Name,
+                            Category = nodeAttribute.Category
                         };
                     }
 

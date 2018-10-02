@@ -29,43 +29,46 @@ namespace Simplic.Flow.Editor.UI
         #region [LoadGalleryItems]
         private void LoadGalleryItems()
         {
-            var actionGallery = new Gallery();
-            actionGallery.Header = "Aktion";
+            var categories = NodeDefinitions.OrderBy(x => x.Category).GroupBy(x => x.Category);
 
-            var eventGallery = new Gallery();
-            eventGallery.Header = "Event";
-
-            foreach (var item in NodeDefinitions.Where(x => x is Simplic.Flow.Editor.Definition.ActionNodeDefinition))
+            foreach (var category in categories)
             {
-                var galleryItem = new GalleryItem(item.Name, new ActionNodeShape
+                var gallery = new Gallery
                 {
-                    Name = item.Name,
-                    DataContext = item,
-                });
-                galleryItem.ItemType = item.GetType().ToString();
-                galleryItem.Header = item.DisplayName;
+                    Header = category.Key
+                };
 
-                actionGallery.Items.Add(galleryItem);
-            }
-
-            GalleryItems.Add(actionGallery);
-
-
-            foreach (var item in NodeDefinitions.Where(x => x is Simplic.Flow.Editor.Definition.EventNodeDefinition))
-            {
-                var galleryItem = new GalleryItem(item.Name, new EventNodeShape
+                foreach (var item in category.OrderBy(x => x.DisplayName))
                 {
-                    Name = item.Name,
-                    DataContext = item,
-                });
-                galleryItem.ItemType = item.GetType().ToString();
+                    var galleryItem = new GalleryItem
+                    {
+                        Header = item.DisplayName
+                    };
 
-                eventGallery.Items.Add(galleryItem);
-            }
+                    if (item is Definition.ActionNodeDefinition)
+                    {
+                        galleryItem.Shape = new ActionNodeShape
+                        {
+                            Name = item.Name,
+                            DataContext = item,
+                        };
+                    }
+                    else
+                    {
+                        galleryItem.Shape = new EventNodeShape
+                        {
+                            Name = item.Name,                            
+                            DataContext = item,
+                        };
+                    }
 
-            GalleryItems.Add(eventGallery);
+                    gallery.Items.Add(galleryItem);
+                }
 
-            SelectedGallery = actionGallery;
+                GalleryItems.Add(gallery);
+            }            
+            
+            SelectedGallery = GalleryItems.FirstOrDefault();
         }
         #endregion
 

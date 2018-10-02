@@ -27,6 +27,19 @@ namespace Simplic.Flow.Editor.UI
             this.target = target;
             this.sourceConnector = sourceConnector;
             this.targetConnector = targetConnector;
+
+            // TODO: Move is connected to the base class, just need to figure out a way to raise property changed
+            if (SourceConnectorViewModel is DataConnectorViewModel)
+                (SourceConnectorViewModel as DataConnectorViewModel).IsConnected = true;
+
+            if (TargetConnectorViewModel is DataConnectorViewModel)
+                (TargetConnectorViewModel as DataConnectorViewModel).IsConnected = true;
+
+            if (SourceConnectorViewModel is FlowConnectorViewModel)
+                (SourceConnectorViewModel as FlowConnectorViewModel).IsConnected = true;
+
+            if (TargetConnectorViewModel is FlowConnectorViewModel)
+                (TargetConnectorViewModel as FlowConnectorViewModel).IsConnected = true;
         }
         #endregion
 
@@ -147,9 +160,30 @@ namespace Simplic.Flow.Editor.UI
 
                 return dataLink;
             }
+        }
+        #endregion
+
+        #region [StrokeColor]
+        /// <summary>
+        /// Gets a color depending on the pin type
+        /// </summary>
+        public string StrokeColor
+        {
+            get
+            {
+                if (SourceConnectorViewModel is FlowConnectorViewModel)
+                {
+                    return Constants.FlowStrokeColor;
+                }
+                else
+                {
+                    return (SourceConnectorViewModel as DataConnectorViewModel).StrokeColor;
+                }
+            }
         } 
         #endregion
-        
+
+
         #endregion
     }
 }

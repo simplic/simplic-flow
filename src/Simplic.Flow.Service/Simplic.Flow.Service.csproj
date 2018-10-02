@@ -33,8 +33,17 @@
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Simplic.CoreLib, Version=6.1.118.621, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simplic.CoreLib.6.1.118.621\lib\net451\Simplic.CoreLib.dll</HintPath>
+    <Reference Include="Simplic.CoreLib, Version=6.14.318.906, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.CoreLib.6.14.318.906\lib\net451\Simplic.CoreLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Simplic.Flow, Version=6.1.718.928, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.Flow.6.1.718.928\lib\net451\Simplic.Flow.dll</HintPath>
+    </Reference>
+    <Reference Include="Simplic.Flow.Event, Version=6.1.118.914, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.Flow.Event.6.1.118.914\lib\net451\Simplic.Flow.Event.dll</HintPath>
+    </Reference>
+    <Reference Include="Simplic.Flow.Node, Version=6.2.118.928, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.Flow.Node.6.2.118.928\lib\net451\Simplic.Flow.Node.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -55,6 +64,7 @@
     <Compile Include="FlowService.cs" />
     <Compile Include="FlowRuntimeService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ThreadStateInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Simplic.ActiveFlow\Simplic.ActiveFlow.csproj">
@@ -69,25 +79,13 @@
       <Project>{BBEA1BE9-D55C-4242-9F56-6640EFD36194}</Project>
       <Name>Simplic.Flow.EventQueue</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Simplic.Flow.Event\Simplic.Flow.Event.csproj">
-      <Project>{EFCC8359-4ED2-421F-B9BE-4E25CDD5CF40}</Project>
-      <Name>Simplic.Flow.Event</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Simplic.Flow.Log\Simplic.Flow.Log.csproj">
       <Project>{EEDF5DE9-3E21-427C-8788-799D4D8E35B7}</Project>
       <Name>Simplic.Flow.Log</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Simplic.Flow.Node\Simplic.Flow.Node.csproj">
-      <Project>{A88421D5-6B43-4B8D-8865-79A33F935112}</Project>
-      <Name>Simplic.Flow.Node</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Simplic.FlowInstance\Simplic.FlowInstance.csproj">
       <Project>{7206AF52-60CB-46B1-9FE7-CF172752B0E9}</Project>
       <Name>Simplic.FlowInstance</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Simplic.Flow\Simplic.Flow.csproj">
-      <Project>{1f540a26-62fb-45cb-abc6-b4b2d8f7005e}</Project>
-      <Name>Simplic.Flow</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

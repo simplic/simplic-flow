@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Simplic.Data;
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Controls;
 using Telerik.Windows.Controls.Diagrams;
 using Telerik.Windows.Diagrams.Core;
@@ -41,7 +44,19 @@ namespace Simplic.Flow.Editor.UI
             }
 
             this.Loaded -= EditorControl_Loaded;
-        } 
+        }
+        #endregion
+
+        #region [HasImplicitConversion]
+        public static bool HasImplicitConversion(Type baseType, Type targetType)
+        {
+            return baseType.GetMethods(BindingFlags.Public | BindingFlags.Static)
+                .Where(mi => mi.Name == "op_Implicit" && mi.ReturnType == targetType)
+                .Any(mi => {
+                    ParameterInfo pi = mi.GetParameters().FirstOrDefault();
+                    return pi != null && pi.ParameterType == baseType;
+                });
+        }
         #endregion
 
         #region [MyDiagram_ConnectionManipulationStarted]
@@ -86,9 +101,9 @@ namespace Simplic.Flow.Editor.UI
                 sourceConnector = null;
                 e.Handled = true;
             }
-        } 
+        }
         #endregion
-
+        
         #region [MyDiagram_ConnectionManipulationCompleted]
         /// <summary>
         /// MyDiagram_ConnectionManipulationCompleted
@@ -112,15 +127,19 @@ namespace Simplic.Flow.Editor.UI
                 /*
                     ignore any connection attempt on wrong connection and data types.
                     e.Connector is the target
-                 */
+                */
+
+                var targetConnector = e.Connector;
+
                 if (sourceConnector == null
-                    || sourceConnector.GetType() != e.Connector.GetType()
-                    || (e.Connector as BaseConnector).ConnectorDirection == ConnectorDirection.Out
+                    || sourceConnector.GetType() != targetConnector.GetType()
+                    || (targetConnector as BaseConnector).ConnectorDirection == ConnectorDirection.Out
                     || (
                         sourceConnector is DataConnector
-                        && e.Connector is DataConnector
+                        && targetConnector is DataConnector
                         && (// if target connector data type is object type, then allow it, otherwise check if the types match 
-                                (e.Connector as DataConnector).ConnectorDataType != typeof(object)
+                                (targetConnector as DataConnector).ConnectorDataType != typeof(object)
+                                
                                 && (sourceConnector as DataConnector).ConnectorDataType != (e.Connector as DataConnector).ConnectorDataType
                            )
                         ))

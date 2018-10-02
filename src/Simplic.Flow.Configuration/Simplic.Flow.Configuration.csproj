@@ -44,6 +44,7 @@
     <Compile Include="Model\FlowConfiguration.cs" />
     <Compile Include="Interface\IFlowConfigurationService.cs" />
     <Compile Include="Model\FlowConfigurationModel.cs" />
+    <Compile Include="Model\FlowVariableConfiguration.cs" />
     <Compile Include="Model\LinkConfiguration.cs" />
     <Compile Include="Model\Link.cs" />
     <Compile Include="Model\NodeConfiguration.cs" />

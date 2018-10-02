@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Simplic.Flow.Node.IO
 {
-    [EventNodeDefinition(DisplayName = "On Check Directory Content", Name = "OnCheckDirectoryContentNode", EventName = "OnCheckDirectoryContent")]
+    [EventNodeDefinition(DisplayName = "On Check Directory Content", Name = "OnCheckDirectoryContentNode", EventName = "OnCheckDirectoryContent", Category = "IO")]
     public class OnCheckDirectoryContentNode : EventNode
     {
         public override bool Execute(IFlowRuntimeService runtime, DataPinScope scope)

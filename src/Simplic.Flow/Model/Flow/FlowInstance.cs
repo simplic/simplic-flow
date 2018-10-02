@@ -12,6 +12,7 @@ namespace Simplic.Flow
         [JsonIgnore]
         public Guid FlowId { get; set; }
         public IList<NodeScope<EventNode>> CurrentNodes { get; set; } = new List<NodeScope<EventNode>>();
+        public IList<FlowVariable> Variables { get { return Flow.Variables; } }
         public DataPinScope DataScope { get; set; } = new DataPinScope();
         public bool IsAlive { get { return CurrentNodes.Count > 0; } }
         public bool IsFailed { get; set; }

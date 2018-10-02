@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Simplic.Flow.Configuration
 {
+    /// <summary>
+    /// Represents FlowConfiguration table in the db
+    /// </summary>
     public class FlowConfigurationModel
     {
         public Guid Id { get; set; }
