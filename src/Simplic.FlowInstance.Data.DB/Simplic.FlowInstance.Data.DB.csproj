@@ -36,8 +36,8 @@
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Simplic.CoreLib, Version=6.14.318.906, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simplic.CoreLib.6.14.318.906\lib\net451\Simplic.CoreLib.dll</HintPath>
+    <Reference Include="Simplic.CoreLib, Version=6.14.418.1002, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.CoreLib.6.14.418.1002\lib\net451\Simplic.CoreLib.dll</HintPath>
     </Reference>
     <Reference Include="Simplic.Sql, Version=6.2.18.926, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Simplic.Sql.6.2.18.926\lib\net451\Simplic.Sql.dll</HintPath>

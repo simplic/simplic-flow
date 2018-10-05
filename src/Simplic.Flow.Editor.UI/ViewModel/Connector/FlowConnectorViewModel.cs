@@ -1,5 +1,6 @@
 ﻿using Simplic.Flow.Editor.Definition;
 using System;
+using System.Linq;
 
 namespace Simplic.Flow.Editor.UI
 {
@@ -16,17 +17,17 @@ namespace Simplic.Flow.Editor.UI
         public Guid Id => pinDefinition.Id;
 
         public override string Name => pinDefinition.Name;
-        public string DisplayName => pinDefinition.DisplayName;
+        public override string DisplayName => pinDefinition.DisplayName;
 
         public bool IsList { get { return pinDefinition.AllowMultiple; } }
 
-        public PinDirectionDefinition PinDirection
+        public override PinDirectionDefinition PinDirection
         {
             get { return pinDefinition.PinDirection; }
             set { pinDefinition.PinDirection = value; RaisePropertyChanged(nameof(PinDirection)); }
         }
 
-        public bool IsConnected
+        public override bool IsConnected
         {
             get { return isConnected; }
             set
@@ -70,6 +71,31 @@ namespace Simplic.Flow.Editor.UI
                 else
                     return "Transparent";
             }
+        }
+
+        private WorkflowEditorViewModel DiagramViewModel
+        {
+            get
+            {
+                return this.Parent.Parent as WorkflowEditorViewModel;
+            }
+        }
+
+        public override bool CanConnect()
+        {
+            return PinDirection == PinDirectionDefinition.Out;
+        }
+
+        public override bool CanConnectTo(ConnectorViewModel otherConnectorViewModel)
+        {
+            var connectionExists = DiagramViewModel.Connections.Any(
+                x => x.SourceConnectorViewModel == this);
+
+            if (connectionExists && !IsList)
+                return false;
+
+            return otherConnectorViewModel is FlowConnectorViewModel
+                && otherConnectorViewModel.PinDirection == PinDirectionDefinition.Out;
         }
     }
 }

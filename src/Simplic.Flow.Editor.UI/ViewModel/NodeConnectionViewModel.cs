@@ -29,17 +29,10 @@ namespace Simplic.Flow.Editor.UI
             this.targetConnector = targetConnector;
 
             // TODO: Move is connected to the base class, just need to figure out a way to raise property changed
-            if (SourceConnectorViewModel is DataConnectorViewModel)
-                (SourceConnectorViewModel as DataConnectorViewModel).IsConnected = true;
+            SourceConnectorViewModel.IsConnected = true;
 
-            if (TargetConnectorViewModel is DataConnectorViewModel)
-                (TargetConnectorViewModel as DataConnectorViewModel).IsConnected = true;
-
-            if (SourceConnectorViewModel is FlowConnectorViewModel)
-                (SourceConnectorViewModel as FlowConnectorViewModel).IsConnected = true;
-
-            if (TargetConnectorViewModel is FlowConnectorViewModel)
-                (TargetConnectorViewModel as FlowConnectorViewModel).IsConnected = true;
+            if (TargetConnectorViewModel != null)
+                TargetConnectorViewModel.IsConnected = true;
         }
         #endregion
 
@@ -56,7 +49,7 @@ namespace Simplic.Flow.Editor.UI
             set
             {
                 source = value as NodeViewModel;
-                IsDirty = true;
+                IsDirty = true;                
                 RaisePropertyChanged(nameof(ILink.Source));
             }
         }

@@ -31,7 +31,8 @@ namespace Simplic.Flow.Editor.UI
         {
             foreach (RadDiagramConnection connection in Connections)
             {
-                connection.ConnectionType = Telerik.Windows.Diagrams.Core.ConnectionType.Bezier;
+                //connection.ConnectionType = Telerik.Windows.Diagrams.Core.ConnectionType.Bezier;
+
                 var connectionViewModel = connection.DataContext as NodeConnectionViewModel;
 
                 connection.SourceConnectorPosition = connectionViewModel.SourceConnectorViewModel.Name;

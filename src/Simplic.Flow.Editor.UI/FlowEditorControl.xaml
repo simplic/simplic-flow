@@ -26,7 +26,7 @@
 
         <local:FlowRadDiagram x:Name="MyDiagram"                          
                             ShapeStyleSelector="{StaticResource CustomShapeStyleSelector}"
-                            ConnectionStyleSelector="{StaticResource CustomConnectionStyleSelector}"                              
+                            ConnectionStyle="{StaticResource CustomLinkStyle}"                              
                             GraphSource="{Binding}"     
                             SelectedItem="{Binding SelectedNode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             Grid.Row="1" BorderThickness="1" Background="#252525" 
@@ -77,29 +77,13 @@
                                                                     ShowGroupPanel="False">
                                     <simplic:AutomaticSelectionGridView.Columns>
                                         <telerik:GridViewDataColumn DataMemberBinding="{Binding Name}" Header="Variable Name" />
+                                        <telerik:GridViewComboBoxColumn ItemsSource="{Binding AvailableVariableTypes}" DataMemberBinding="{Binding Type}" Header="Variable Typ" />
                                     </simplic:AutomaticSelectionGridView.Columns>
                                 </simplic:AutomaticSelectionGridView>
                             </Grid>
                         </TabItem>
                     </TabControl>
 
-                    <!--<GroupBox Header="Variables" Grid.Row="2" Padding="5" Margin="5">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-
-                            <telerik:RadButton Grid.Row="0" Content="Add new variable" Command="{Binding AddNewVariableCommand}"/>
-
-                            <Border Grid.Row="1">
-
-                                
-
-                            </Border>
-
-                        </Grid>
-                    </GroupBox>-->
                 </Grid>
             </TabItem>
             

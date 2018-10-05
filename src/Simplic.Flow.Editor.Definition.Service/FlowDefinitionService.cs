@@ -87,7 +87,9 @@ namespace Simplic.Flow.Editor.Definition.Service
                                 Name = attribute.Name,
                                 Type = attribute.DataType,
                                 PinDirection = attribute.Direction == PinDirection.In ? PinDirectionDefinition.In : PinDirectionDefinition.Out,
-                                Id = Guid.Parse(attribute.Id)
+                                Id = Guid.Parse(attribute.Id),
+                                IsGeneric = attribute.IsGeneric,
+                                AllowedTypes = attribute.AllowedTypes                                
                             };
 
                             if (attribute.Direction == PinDirection.In)
