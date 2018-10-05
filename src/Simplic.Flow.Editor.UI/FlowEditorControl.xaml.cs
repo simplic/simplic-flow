@@ -82,42 +82,7 @@ namespace Simplic.Flow.Editor.UI
 
                         return;
                     }
-                }    
-                
-
-                //if (e.Connector is FlowConnector)
-                //{
-                //    sourceConnector = e.Connector as FlowConnector;
-                //    var flowConnector = sourceConnector as FlowConnector;
-                //    var flowConnectorViewModel = sourceConnector.DataContext as FlowConnectorViewModel;
-
-                //    var d = diagramViewModel.Connections.Any(x => x.SourceConnectorViewModel == sourceConnector.DataContext);
-                //    if (d && !flowConnectorViewModel.IsList)
-                //    {
-                //        e.Handled = true;
-                //        diagramViewModel.SourceConnector = null;
-                //        diagramViewModel.TargetConnector = null;
-                //        return;
-                //    }
-
-                //    diagramViewModel.SourceConnector = flowConnectorViewModel;
-                //}
-                //else if (e.Connector is DataConnector)
-                //{                    
-                //    var dataConnector = e.Connector as DataConnector;
-                //    var dataConnectorViewModel = dataConnector.DataContext as DataConnectorViewModel;
-
-                //    // skip if connector does not have any type assigned yet
-                //    if (dataConnector.ConnectorDataType == null)
-                //    {
-                //        sourceConnector = null;
-                //        e.Handled = true;
-                //        return;
-                //    }
-
-                //    sourceConnector = dataConnector;
-                //    diagramViewModel.SourceConnector = dataConnectorViewModel;
-                //}
+                }                                   
             }
 
             // skip            
@@ -156,58 +121,7 @@ namespace Simplic.Flow.Editor.UI
             sourceConnector = null;
             diagramViewModel.SourceConnector = null;
             diagramViewModel.TargetConnector = null;
-            e.Handled = true;                        
-
-            //if (sourceConnector == null
-            //    || sourceConnector.GetType() != targetConnector.GetType()
-            //    || (targetConnector as BaseConnector).ConnectorDirection == ConnectorDirection.Out
-            //    || (
-            //        sourceConnector is DataConnector
-            //        && targetConnector is DataConnector
-            //        && (// if target connector data type is object type, then allow it, otherwise check if the types match 
-            //                (targetConnector as DataConnector).ConnectorDataType != typeof(object)
-
-            //                && (sourceConnector as DataConnector).ConnectorDataType != (e.Connector as DataConnector).ConnectorDataType
-            //           )
-            //        ))
-            //{
-            //    // bypass
-            //    e.Handled = true;
-
-            //    diagramViewModel.SourceConnector = null;
-            //    diagramViewModel.TargetConnector = null;
-            //}
-            //else
-            //{
-            //    /* 
-            //    *   add target connector to the diagram's view model, so it can use the connector information
-            //        when linking the connectors we need this information.
-            //    */
-            //    if (e.Connector is FlowConnector)
-            //    {
-            //        var flowConnector = e.Connector as FlowConnector;
-            //        var flowConnectorViewModel = flowConnector.DataContext as FlowConnectorViewModel;
-            //        diagramViewModel.TargetConnector = flowConnectorViewModel;
-            //    }
-            //    else if (e.Connector is DataConnector)
-            //    {
-            //        var dataConnector = e.Connector as DataConnector;
-            //        var dataConnectorViewModel = dataConnector.DataContext as DataConnectorViewModel;
-
-            //        var d = diagramViewModel.Connections.Any(x => x.TargetConnectorViewModel == dataConnector.DataContext);
-
-            //        if (d)
-            //        {
-            //            e.Handled = true;
-            //            diagramViewModel.SourceConnector = null;
-            //            diagramViewModel.TargetConnector = null;
-            //            return;
-            //        }
-
-            //        diagramViewModel.TargetConnector = dataConnectorViewModel;
-            //    }
-            //}
-
+            e.Handled = true;                                   
         }
         #endregion
 
