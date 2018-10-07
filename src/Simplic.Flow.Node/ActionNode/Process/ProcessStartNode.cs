@@ -16,14 +16,18 @@ namespace Simplic.Flow.Node
                 startInfo.CreateNoWindow = true;
                 startInfo.FileName = scope.GetValue<string>(InPinPath);
                 startInfo.Arguments = scope.GetValue<string>(InPinArguments);
-                startInfo.WorkingDirectory = scope.GetValue<string>(InPinWorkingDir) ?? Path.GetDirectoryName(startInfo.FileName);
+
+                var workingDirectory = scope.GetValue<string>(InPinWorkingDir);
+                if (!string.IsNullOrWhiteSpace(workingDirectory))
+                    startInfo.WorkingDirectory = workingDirectory;
+
                 var process = new Process();
 
                 process.StartInfo = startInfo;
 
                 if (scope.GetValue<bool>(InPinWaitForExit))
                     process.WaitForExit();
-                
+
                 process.Start();
 
                 if (OutSuccessNode != null)
