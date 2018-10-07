@@ -62,6 +62,7 @@
     <Compile Include="ActionNode\IO\DeleteFileNode.cs" />
     <Compile Include="ActionNode\IO\GetDirectoryContentNode.cs" />
     <Compile Include="ActionNode\Math\SubtractNode.cs" />
+    <Compile Include="ActionNode\Process\ProcessStartNode.cs" />
     <Compile Include="ActionNode\Thread\ThreadSleepNode.cs" />
     <Compile Include="EventNode\IO\OnCheckDirectoryContentEventArgs.cs" />
     <Compile Include="EventNode\IO\OnCheckDirectoryContentNode.cs" />
