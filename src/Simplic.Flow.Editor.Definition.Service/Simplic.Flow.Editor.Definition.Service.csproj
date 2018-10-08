@@ -40,8 +40,8 @@
     <Reference Include="Simplic.Flow, Version=6.1.1118.1004, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Simplic.Flow.6.1.1118.1004\lib\net451\Simplic.Flow.dll</HintPath>
     </Reference>
-    <Reference Include="Simplic.Flow.Editor.Definition, Version=6.1.1018.1005, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simplic.Flow.Editor.Definition.6.1.1018.1005\lib\net451\Simplic.Flow.Editor.Definition.dll</HintPath>
+    <Reference Include="Simplic.Flow.Editor.Definition, Version=6.2.18.1006, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.Flow.Editor.Definition.6.2.18.1006\lib\net451\Simplic.Flow.Editor.Definition.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
