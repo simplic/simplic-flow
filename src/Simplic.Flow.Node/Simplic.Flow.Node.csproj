@@ -69,7 +69,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ActionNode\Base\SequenceNode.cs" />
     <Compile Include="ActionNode\Base\StartWithConditionNode.cs" />
-    <Compile Include="YvzNode.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="package.bat" />
