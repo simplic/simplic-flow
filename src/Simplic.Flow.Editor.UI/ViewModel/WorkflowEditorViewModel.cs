@@ -168,13 +168,12 @@ namespace Simplic.Flow.Editor.UI
 
             if (TargetConnector != null)
             {
-                connection.TargetConnectorViewModel = TargetConnector;                
+                connection.TargetConnectorViewModel = TargetConnector;
+                connection.TargetConnectorViewModel.IsConnected = true;
             }
-
-            connection.TargetConnectorViewModel.IsConnected = true;
+            
             connection.SourceConnectorViewModel.IsConnected = true;
             
-
             connections.Add(connection);
         }
         #endregion
@@ -200,7 +199,7 @@ namespace Simplic.Flow.Editor.UI
         /// <returns>ILink</returns>
         ILink IObservableGraphSource.CreateLink(object source, object target)
         {
-            IsDirty = true;
+            IsDirty = true;                        
 
             return new NodeConnectionViewModel(source as NodeViewModel, target as NodeViewModel, SourceConnector, null);
         }
@@ -264,18 +263,42 @@ namespace Simplic.Flow.Editor.UI
                 connection.SourceConnectorViewModel.IsConnected = false;
                 connection.TargetConnectorViewModel.IsConnected = false;
 
-                if (connection.SourceConnectorViewModel is DataConnectorViewModel)
+                if (connection.SourceViewModel is ActionNodeViewModel 
+                    && connection.SourceConnectorViewModel is DataConnectorViewModel)
                 {
                     var connector = connection.SourceConnectorViewModel as DataConnectorViewModel;
-                    if (connector.IsGeneric)                    
-                        (connection.SourceViewModel as ActionNodeViewModel).UpdateDataTypes(null);                                        
+
+                    if (connector.IsGeneric)
+                    {
+                        var nodeViewModel = connection.SourceViewModel as ActionNodeViewModel;
+
+                        var genericCount = nodeViewModel.DataPins.Count(x => x.IsGeneric);
+                        var notConnectedGenericCount = nodeViewModel.DataPins.Count(x => x.IsGeneric && !x.IsConnected);
+
+                        if (genericCount == notConnectedGenericCount)
+                        {
+                            nodeViewModel.UpdateDataTypes(null);
+                        }
+                    }
                 }
                     
-                if (connection.TargetConnectorViewModel is DataConnectorViewModel)
+                if (connection.TargetViewModel is ActionNodeViewModel 
+                    && connection.TargetConnectorViewModel is DataConnectorViewModel)
                 {
                     var connector = connection.TargetConnectorViewModel as DataConnectorViewModel;
+
                     if (connector.IsGeneric)
-                        (connection.TargetViewModel as ActionNodeViewModel).UpdateDataTypes(null);                    
+                    {
+                        var nodeViewModel = connection.TargetViewModel as ActionNodeViewModel;
+
+                        var genericCount = nodeViewModel.DataPins.Count(x => x.IsGeneric);
+                        var notConnectedGenericCount = nodeViewModel.DataPins.Count(x => x.IsGeneric && !x.IsConnected);
+
+                        if (genericCount == notConnectedGenericCount)
+                        {
+                            nodeViewModel.UpdateDataTypes(null);
+                        }
+                    }
                 }
 
                 connections.Remove(link as NodeConnectionViewModel);

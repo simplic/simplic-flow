@@ -260,28 +260,34 @@ namespace Simplic.Flow.Editor.UI
         /// <returns>True if successfull</returns>
         public override bool CanConnectTo(ConnectorViewModel targetConnectorViewModel)
         {
-            if (targetConnectorViewModel is DataConnectorViewModel 
-                && PinDirection == PinDirectionDefinition.In)
+            var otherDataConnectorViewModel = targetConnectorViewModel as DataConnectorViewModel;
+
+            // if the target is null or has the same parent as me
+            if (otherDataConnectorViewModel == null || otherDataConnectorViewModel.Parent == this.Parent)
             {
-                var target = targetConnectorViewModel as DataConnectorViewModel;
+                return false;
+            }
 
-                if (DataConnectorType != null)
+            if (this.PinDirection == PinDirectionDefinition.In && otherDataConnectorViewModel.PinDirection == PinDirectionDefinition.In
+                || (this.PinDirection == PinDirectionDefinition.Out && otherDataConnectorViewModel.PinDirection == PinDirectionDefinition.Out))
+                return false;
+
+            if (DataConnectorType != null)
+            {
+                if (otherDataConnectorViewModel.DataConnectorType.IsAssignableFrom(DataConnectorType)
+                    || DataConnectorType == typeof(object))
                 {
-                    if (target.DataConnectorType.IsAssignableFrom(DataConnectorType) 
-                        || DataConnectorType == typeof(object))
-                    {
-                        return true;
-                    }
+                    return true;
                 }
-                else
-                {                    
-                    if (AllowedTypes.Contains(target.DataConnectorType.Name))
-                    {
-                        // call parent node to update connector types
-                        ParentViewModel.UpdateDataTypes(target.DataConnectorType);
+            }
+            else
+            {
+                if (AllowedTypes.Contains(otherDataConnectorViewModel.DataConnectorType.Name))
+                {
+                    // call parent node to update connector types
+                    ParentViewModel.UpdateDataTypes(otherDataConnectorViewModel.DataConnectorType);
 
-                        return true;
-                    }                    
+                    return true;
                 }
             }
 

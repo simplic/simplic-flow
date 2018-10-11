@@ -78,10 +78,12 @@ namespace Simplic.Flow.Editor.UI
                     if (viewModel.CanConnect())
                     {
                         sourceConnector = connector;
-                        diagramViewModel.SourceConnector = viewModel;                        
+                        diagramViewModel.SourceConnector = viewModel;
 
                         return;
                     }
+                    else
+                        viewModel.IsConnected = false;
                 }                                   
             }
 
@@ -118,6 +120,7 @@ namespace Simplic.Flow.Editor.UI
                 }
             }
 
+            (sourceConnector.DataContext as ConnectorViewModel).IsConnected = false;
             sourceConnector = null;
             diagramViewModel.SourceConnector = null;
             diagramViewModel.TargetConnector = null;

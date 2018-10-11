@@ -87,15 +87,25 @@ namespace Simplic.Flow.Editor.UI
         }
 
         public override bool CanConnectTo(ConnectorViewModel otherConnectorViewModel)
-        {
+        {            
+            var otherFlowConnectorViewModel = otherConnectorViewModel as FlowConnectorViewModel;
+
+            // if the target is null or has the same parent as me
+            if (otherFlowConnectorViewModel == null || otherFlowConnectorViewModel.Parent == this.Parent)
+            {
+                return false;
+            }
+
             var connectionExists = DiagramViewModel.Connections.Any(
                 x => x.SourceConnectorViewModel == this);
 
             if (connectionExists && !IsList)
                 return false;
 
-            return otherConnectorViewModel is FlowConnectorViewModel
-                && otherConnectorViewModel.PinDirection == PinDirectionDefinition.Out;
+            if (this.PinDirection == PinDirectionDefinition.In)            
+                return otherFlowConnectorViewModel.PinDirection == PinDirectionDefinition.Out;            
+            else
+                return otherFlowConnectorViewModel.PinDirection == PinDirectionDefinition.In;            
         }
     }
 }
