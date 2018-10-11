@@ -166,7 +166,7 @@ namespace Simplic.Flow.Editor.UI
             {
                 var dataConnector = new DataConnector(pin.Name, pin.DisplayName,
                     pin.PinDirection == PinDirectionDefinition.In ? ConnectorDirection.In : ConnectorDirection.Out,
-                    pin.Type)
+                    pin.DataConnectorType, pin.IsGeneric, pin.AllowedTypes)
                 {
                     DataContext = pin
                 };

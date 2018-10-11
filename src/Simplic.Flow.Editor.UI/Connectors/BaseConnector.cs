@@ -22,7 +22,7 @@ namespace Simplic.Flow.Editor.UI
             this.Name = name;
             this.Text = text;
             this.ConnectorDirection = connectorDirection;
-            this.Loaded += BaseConnector_Loaded;            
+            this.Loaded += BaseConnector_Loaded;
         }
 
         private void BaseConnector_Loaded(object sender, RoutedEventArgs e)

@@ -64,6 +64,20 @@ namespace Simplic.Flow.Editor.UI
             FillConfiguration();
             
             addVariableCommand = new Simplic.UI.MVC.RelayCommand(NewVariableRelayCommand);
+
+            AvailableVariableTypes = new List<Type>()
+            {
+                { typeof(string) },
+                { typeof(int) },
+                { typeof(uint) },
+                { typeof(short) },
+                { typeof(ushort) },
+                { typeof(long) },
+                { typeof(ulong) },
+                { typeof(float) },
+                { typeof(double) },
+                { typeof(decimal) }                
+            };
         }
         #endregion
 
@@ -120,6 +134,12 @@ namespace Simplic.Flow.Editor.UI
 
                 var connectionViewModel = new NodeConnectionViewModel(sourceNodeViewModel, targetNodeViewModel, sourceConnectorViewModel, targetConnectorViewModel);
                 Connections.Add(connectionViewModel);
+
+                // if the target connector is a generic data type, update all other generic types to the source data type
+                if (targetConnectorViewModel.IsGeneric)
+                {
+                    (targetNodeViewModel as ActionNodeViewModel).UpdateDataTypes(sourceConnectorViewModel.DataConnectorType);
+                }
             }
 
             // create workflow variables
@@ -128,7 +148,8 @@ namespace Simplic.Flow.Editor.UI
                 Variables.Add(new FlowVariable
                 {
                     Name = variable.Name,
-                    Value = variable.Value
+                    Value = variable.Value,
+                    Type = variable.Type
                 });
             }
         }
@@ -142,18 +163,17 @@ namespace Simplic.Flow.Editor.UI
         void IObservableGraphSource.AddLink(ILink link)
         {
             IsDirty = true;
-
-            var connection = link as NodeConnectionViewModel;
+            
+            var connection = link as NodeConnectionViewModel;            
 
             if (TargetConnector != null)
+            {
                 connection.TargetConnectorViewModel = TargetConnector;
-
-            if (connection.SourceConnectorViewModel is DataConnectorViewModel)
-                (connection.SourceConnectorViewModel as DataConnectorViewModel).IsConnected = true;
-
-            if (connection.TargetConnectorViewModel is DataConnectorViewModel)
-                (connection.TargetConnectorViewModel as DataConnectorViewModel).IsConnected = true;
-
+                connection.TargetConnectorViewModel.IsConnected = true;
+            }
+            
+            connection.SourceConnectorViewModel.IsConnected = true;
+            
             connections.Add(connection);
         }
         #endregion
@@ -179,7 +199,7 @@ namespace Simplic.Flow.Editor.UI
         /// <returns>ILink</returns>
         ILink IObservableGraphSource.CreateLink(object source, object target)
         {
-            IsDirty = true;
+            IsDirty = true;                        
 
             return new NodeConnectionViewModel(source as NodeViewModel, target as NodeViewModel, SourceConnector, null);
         }
@@ -240,12 +260,46 @@ namespace Simplic.Flow.Editor.UI
             if (connections.Contains(link))
             {                
                 var connection = link as NodeConnectionViewModel;
+                connection.SourceConnectorViewModel.IsConnected = false;
+                connection.TargetConnectorViewModel.IsConnected = false;
 
-                if (connection.SourceConnectorViewModel is DataConnectorViewModel)
-                    (connection.SourceConnectorViewModel as DataConnectorViewModel).IsConnected = false;
+                if (connection.SourceViewModel is ActionNodeViewModel 
+                    && connection.SourceConnectorViewModel is DataConnectorViewModel)
+                {
+                    var connector = connection.SourceConnectorViewModel as DataConnectorViewModel;
 
-                if (connection.TargetConnectorViewModel is DataConnectorViewModel)
-                    (connection.TargetConnectorViewModel as DataConnectorViewModel).IsConnected = false;
+                    if (connector.IsGeneric)
+                    {
+                        var nodeViewModel = connection.SourceViewModel as ActionNodeViewModel;
+
+                        var genericCount = nodeViewModel.DataPins.Count(x => x.IsGeneric);
+                        var notConnectedGenericCount = nodeViewModel.DataPins.Count(x => x.IsGeneric && !x.IsConnected);
+
+                        if (genericCount == notConnectedGenericCount)
+                        {
+                            nodeViewModel.UpdateDataTypes(null);
+                        }
+                    }
+                }
+                    
+                if (connection.TargetViewModel is ActionNodeViewModel 
+                    && connection.TargetConnectorViewModel is DataConnectorViewModel)
+                {
+                    var connector = connection.TargetConnectorViewModel as DataConnectorViewModel;
+
+                    if (connector.IsGeneric)
+                    {
+                        var nodeViewModel = connection.TargetViewModel as ActionNodeViewModel;
+
+                        var genericCount = nodeViewModel.DataPins.Count(x => x.IsGeneric);
+                        var notConnectedGenericCount = nodeViewModel.DataPins.Count(x => x.IsGeneric && !x.IsConnected);
+
+                        if (genericCount == notConnectedGenericCount)
+                        {
+                            nodeViewModel.UpdateDataTypes(null);
+                        }
+                    }
+                }
 
                 connections.Remove(link as NodeConnectionViewModel);
                 return true;
@@ -293,7 +347,8 @@ namespace Simplic.Flow.Editor.UI
         {
             var lastVariable = Variables.OrderBy(x => x.Name).LastOrDefault();
             var newVariable = new FlowVariable {
-                Name = lastVariable != null ? lastVariable.Name + "(Copy)" : "New Variable"
+                Name = lastVariable != null ? lastVariable.Name + "(Copy)" : "New Variable",
+                Type = typeof(string)
             };
 
             Variables.Add(newVariable);
@@ -462,6 +517,13 @@ namespace Simplic.Flow.Editor.UI
             get { return variables; }
             set { variables = value; RaisePropertyChanged(nameof(Variables)); }
         }
+        #endregion
+
+        #region [AvailableVariableTypes]
+        /// <summary>
+        /// Gets or sets a list of available variable types
+        /// </summary>
+        public IList<Type> AvailableVariableTypes { get; set; } 
         #endregion
 
         #region [AddVariableCommand]

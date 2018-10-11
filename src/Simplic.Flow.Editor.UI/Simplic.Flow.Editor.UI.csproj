@@ -39,20 +39,20 @@
     <Reference Include="Simplic.CoreLib, Version=6.14.418.1002, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Simplic.CoreLib.6.14.418.1002\lib\net451\Simplic.CoreLib.dll</HintPath>
     </Reference>
-    <Reference Include="Simplic.Flow, Version=6.1.718.928, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simplic.Flow.6.1.718.928\lib\net451\Simplic.Flow.dll</HintPath>
+    <Reference Include="Simplic.Flow, Version=6.1.1118.1004, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.Flow.6.1.1118.1004\lib\net451\Simplic.Flow.dll</HintPath>
     </Reference>
-    <Reference Include="Simplic.Flow.Configuration, Version=6.1.218.927, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simplic.Flow.Configuration.6.1.218.927\lib\net451\Simplic.Flow.Configuration.dll</HintPath>
+    <Reference Include="Simplic.Flow.Configuration, Version=6.2.18.1006, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.Flow.Configuration.6.2.18.1006\lib\net451\Simplic.Flow.Configuration.dll</HintPath>
     </Reference>
-    <Reference Include="Simplic.Flow.Editor.Definition, Version=6.1.618.928, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simplic.Flow.Editor.Definition.6.1.618.928\lib\net451\Simplic.Flow.Editor.Definition.dll</HintPath>
+    <Reference Include="Simplic.Flow.Editor.Definition, Version=6.2.18.1006, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.Flow.Editor.Definition.6.2.18.1006\lib\net451\Simplic.Flow.Editor.Definition.dll</HintPath>
     </Reference>
     <Reference Include="Simplic.Flow.Event, Version=6.1.118.914, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Simplic.Flow.Event.6.1.118.914\lib\net451\Simplic.Flow.Event.dll</HintPath>
     </Reference>
-    <Reference Include="Simplic.Flow.Node, Version=6.2.118.928, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simplic.Flow.Node.6.2.118.928\lib\net451\Simplic.Flow.Node.dll</HintPath>
+    <Reference Include="Simplic.Flow.Node, Version=6.3.218.1007, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.Flow.Node.6.3.218.1007\lib\net451\Simplic.Flow.Node.dll</HintPath>
     </Reference>
     <Reference Include="Simplic.Framework.Base">
       <HintPath>..\..\..\simplic-framework\src\Simplic.Main\bin\Debug\Simplic.Framework.Base.dll</HintPath>
@@ -109,7 +109,6 @@
     <Compile Include="Shapes\ActionNodeShape.cs" />
     <Compile Include="Shapes\BaseNodeShape.cs" />
     <Compile Include="Shapes\EventNodeShape.cs" />
-    <Compile Include="StyleSelectors\LinkStyleSelector.cs" />
     <Compile Include="StyleSelectors\NodeStyleSelector.cs" />
     <Compile Include="ViewModel\Connector\ConnectorViewModel.cs" />
     <Compile Include="ViewModel\Connector\DataConnectorViewModel.cs" />
@@ -141,6 +140,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(TargetDir)$(TargetName).dll" "C:\dev\simplic-framework\src\Simplic.Main\bin\Debug\" /F /Y</PostBuildEvent>
+    <PostBuildEvent>xcopy "$(TargetDir)$(TargetName).dll" "$(SolutionDir)..\..\simplic-framework\src\Simplic.Main\bin\Debug\" /F /Y</PostBuildEvent>
   </PropertyGroup>
 </Project>

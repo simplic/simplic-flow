@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Input;
 
 namespace Simplic.Flow.Editor.UI
 {
@@ -16,12 +15,16 @@ namespace Simplic.Flow.Editor.UI
         /// <param name="text">Connector display name</param>
         /// <param name="connectorDirection">Connector direction</param>
         /// <param name="connectorDataType">Connector data type</param>
-        public DataConnector(string name, string text, ConnectorDirection connectorDirection, Type connectorDataType) 
+        /// <param name="isGeneric">Is a generic type ?</param>
+        /// <param name="allowedTypes">if a generic type, this limits the types</param>
+        public DataConnector(string name, string text, ConnectorDirection connectorDirection, Type connectorDataType, bool isGeneric, string allowedTypes) 
             : base(name, text, connectorDirection)
         {
             this.ConnectorDataType = connectorDataType;            
-            DataContext = this;
-            ToolTip = $"{Text} ({connectorDataType.Name})";
+            this.DataContext = this;
+            this.ToolTip = $"{Text} ({connectorDataType?.Name})";
+            this.IsGeneric = isGeneric;
+            this.AllowedTypes = allowedTypes;
 
             FillDataTemplate();
         }
@@ -38,5 +41,8 @@ namespace Simplic.Flow.Editor.UI
         /// Gets or sets the connector data type
         /// </summary>
         public Type ConnectorDataType { get; set; }
+
+        public bool IsGeneric { get; set; }
+        public string AllowedTypes { get; set; }
     }
 }

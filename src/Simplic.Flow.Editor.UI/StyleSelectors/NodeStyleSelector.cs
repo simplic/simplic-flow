@@ -10,8 +10,6 @@ namespace Simplic.Flow.Editor.UI
     {
         public Style ActionNodeStyle { get; set; }
         public Style EventNodeStyle { get; set; }
-        public Style IfNodeStyle { get; set; }
-        public Style ForEachNodeStyle { get; set; }
 
         /// <summary>
         /// Selects a style based on the node type

@@ -33,11 +33,11 @@
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Simplic.CoreLib, Version=6.14.318.906, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simplic.CoreLib.6.14.318.906\lib\net451\Simplic.CoreLib.dll</HintPath>
+    <Reference Include="Simplic.CoreLib, Version=6.14.418.1002, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.CoreLib.6.14.418.1002\lib\net451\Simplic.CoreLib.dll</HintPath>
     </Reference>
-    <Reference Include="Simplic.Flow, Version=6.1.718.928, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simplic.Flow.6.1.718.928\lib\net451\Simplic.Flow.dll</HintPath>
+    <Reference Include="Simplic.Flow, Version=6.1.1118.1004, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.Flow.6.1.1118.1004\lib\net451\Simplic.Flow.dll</HintPath>
     </Reference>
     <Reference Include="Simplic.Flow.Event, Version=6.1.118.914, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Simplic.Flow.Event.6.1.118.914\lib\net451\Simplic.Flow.Event.dll</HintPath>
@@ -53,15 +53,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionNode\Base\ConsoleWriteLineNode.cs" />
-    <Compile Include="ActionNode\Base\FloatGreaterThanNode.cs" />
-    <Compile Include="ActionNode\Base\FloatLessThanNode.cs" />
     <Compile Include="ActionNode\Base\ForeachNode.cs" />
     <Compile Include="ActionNode\Base\GetVariableNode.cs" />
-    <Compile Include="ActionNode\Base\IntGreaterThanNode.cs" />
-    <Compile Include="ActionNode\Base\IntLessThanNode.cs" />
+    <Compile Include="ActionNode\Math\AddNode.cs" />
+    <Compile Include="ActionNode\Math\DivideNode.cs" />
+    <Compile Include="ActionNode\Math\MultiplyNode.cs" />
     <Compile Include="ActionNode\Base\SetVariableNode.cs" />
     <Compile Include="ActionNode\IO\DeleteFileNode.cs" />
     <Compile Include="ActionNode\IO\GetDirectoryContentNode.cs" />
+    <Compile Include="ActionNode\Math\SubtractNode.cs" />
+    <Compile Include="ActionNode\Process\ProcessStartNode.cs" />
     <Compile Include="ActionNode\Thread\ThreadSleepNode.cs" />
     <Compile Include="EventNode\IO\OnCheckDirectoryContentEventArgs.cs" />
     <Compile Include="EventNode\IO\OnCheckDirectoryContentNode.cs" />
@@ -75,4 +76,7 @@
     <None Include="Simplic.Flow.Node.nuspec" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(TargetDir)$(TargetName).dll" "$(SolutionDir)..\..\simplic-framework\src\Simplic.Main\bin\Debug\" /F /Y</PostBuildEvent>
+  </PropertyGroup>
 </Project>

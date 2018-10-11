@@ -63,44 +63,36 @@ namespace Simplic.Flow.Editor.UI
         private void MyDiagram_ConnectionManipulationStarted(object sender, ManipulationRoutedEventArgs e)
         {
             // only accept connections from out nodes
-            if (e.ManipulationStatus == ManipulationStatus.Attaching
-                    && (e.Connector as BaseConnector).ConnectorDirection == ConnectorDirection.Out)
+            if (e.ManipulationStatus == ManipulationStatus.Attaching)
             {
                 /* 
                  *  add source connector to the diagram's view model, so it can use the connector information
                     when linking the connectors we need this information.
                 */
 
-                if (e.Connector is FlowConnector)
+                var connector = e.Connector as BaseConnector;
+                if (connector != null && connector.DataContext is ConnectorViewModel)
                 {
-                    sourceConnector = e.Connector as FlowConnector;
-                    var flowConnector = sourceConnector as FlowConnector;
-                    var flowConnectorViewModel = sourceConnector.DataContext as FlowConnectorViewModel;
+                    var viewModel = connector.DataContext as ConnectorViewModel;
 
-                    var d = diagramViewModel.Connections.Any(x => x.SourceConnectorViewModel == sourceConnector.DataContext);
-                    if (d && !flowConnectorViewModel.IsList)
+                    if (viewModel.CanConnect())
                     {
-                        e.Handled = true;
-                        diagramViewModel.SourceConnector = null;
-                        diagramViewModel.TargetConnector = null;
+                        sourceConnector = connector;
+                        diagramViewModel.SourceConnector = viewModel;
+
                         return;
                     }
+                    else
+                        viewModel.IsConnected = false;
+                }                                   
+            }
 
-                    diagramViewModel.SourceConnector = flowConnectorViewModel;
-                }
-                else if (e.Connector is DataConnector)
-                {
-                    sourceConnector = e.Connector as DataConnector;
-                    var dataConnector = sourceConnector as DataConnector;
-                    var dataConnectorViewModel = sourceConnector.DataContext as DataConnectorViewModel;
-                    diagramViewModel.SourceConnector = dataConnectorViewModel;
-                }
-            }
-            else
-            {
-                sourceConnector = null;
-                e.Handled = true;
-            }
+            // skip            
+            sourceConnector = null;
+            diagramViewModel.SourceConnector = null;
+            diagramViewModel.TargetConnector = null;
+
+            e.Handled = true;
         }
         #endregion
         
@@ -112,76 +104,28 @@ namespace Simplic.Flow.Editor.UI
         /// <param name="e"></param>
         private void MyDiagram_ConnectionManipulationCompleted(object sender, ManipulationRoutedEventArgs e)
         {
-            // Check whether the connection was not attached
-            if (e.Connector == null)
+            if (sourceConnector != null && e.Connector != null && e.Connector != sourceConnector
+                && e.ManipulationStatus == ManipulationStatus.Attaching)
             {
-                diagramViewModel.SourceConnector = null;
-                diagramViewModel.TargetConnector = null;
+                var sourceConnectorViewModel = sourceConnector.DataContext as ConnectorViewModel;
 
-                e.Handled = true;
-                return;
-            }
+                var targetConnector = e.Connector as BaseConnector;
+                var targetConnectorViewModel = targetConnector.DataContext as ConnectorViewModel;
 
-            if (e.ManipulationStatus == ManipulationStatus.Attaching)
-            {
-                /*
-                    ignore any connection attempt on wrong connection and data types.
-                    e.Connector is the target
-                */
-
-                var targetConnector = e.Connector;
-
-                if (sourceConnector == null
-                    || sourceConnector.GetType() != targetConnector.GetType()
-                    || (targetConnector as BaseConnector).ConnectorDirection == ConnectorDirection.Out
-                    || (
-                        sourceConnector is DataConnector
-                        && targetConnector is DataConnector
-                        && (// if target connector data type is object type, then allow it, otherwise check if the types match 
-                                (targetConnector as DataConnector).ConnectorDataType != typeof(object)
-                                
-                                && (sourceConnector as DataConnector).ConnectorDataType != (e.Connector as DataConnector).ConnectorDataType
-                           )
-                        ))
+                if (targetConnectorViewModel.CanConnectTo(sourceConnectorViewModel))
                 {
-                    // bypass
-                    e.Handled = true;
+                    diagramViewModel.TargetConnector = targetConnectorViewModel;
 
-                    diagramViewModel.SourceConnector = null;
-                    diagramViewModel.TargetConnector = null;
-                }
-                else
-                {
-                    /* 
-                    *   add target connector to the diagram's view model, so it can use the connector information
-                        when linking the connectors we need this information.
-                    */
-                    if (e.Connector is FlowConnector)
-                    {
-                        var flowConnector = e.Connector as FlowConnector;
-                        var flowConnectorViewModel = flowConnector.DataContext as FlowConnectorViewModel;
-                        diagramViewModel.TargetConnector = flowConnectorViewModel;
-                    }
-                    else if (e.Connector is DataConnector)
-                    {
-                        var dataConnector = e.Connector as DataConnector;
-                        var dataConnectorViewModel = dataConnector.DataContext as DataConnectorViewModel;
-
-                        var d = diagramViewModel.Connections.Any(x => x.TargetConnectorViewModel == dataConnector.DataContext);
-
-                        if (d)
-                        {
-                            e.Handled = true;
-                            diagramViewModel.SourceConnector = null;
-                            diagramViewModel.TargetConnector = null;
-                            return;
-                        }
-
-                        diagramViewModel.TargetConnector = dataConnectorViewModel;
-                    }
+                    return;
                 }
             }
-        }  
+
+            (sourceConnector.DataContext as ConnectorViewModel).IsConnected = false;
+            sourceConnector = null;
+            diagramViewModel.SourceConnector = null;
+            diagramViewModel.TargetConnector = null;
+            e.Handled = true;                                   
+        }
         #endregion
 
         #endregion

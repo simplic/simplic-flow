@@ -75,7 +75,7 @@ namespace Simplic.Flow
             }
             else
                 return new List<T>();
-        }
+        }        
 
         public void SetValue(DataPin outPin, object value)
         {

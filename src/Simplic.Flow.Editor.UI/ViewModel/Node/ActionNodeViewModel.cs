@@ -19,7 +19,15 @@ namespace Simplic.Flow.Editor.UI
             : base(nodeDefinition, nodeConfiguration)
         {
             // add flow in pin manually if it is not an event            
-            CreateFlowInPin();
+            CreateFlowInPin();            
+        }
+
+        public void UpdateDataTypes(Type typeToSet)
+        {
+            foreach (var item in DataPins.Where(x => x.IsGeneric))
+            {
+                item.DataConnectorType = typeToSet;                
+            }
         }
     }
 }

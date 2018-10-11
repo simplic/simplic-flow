@@ -19,6 +19,9 @@ namespace Simplic.Flow.Editor.UI
 
             this.Style = TryFindResource("FlowConnectorTemplate") as Style;            
             ToolTip = Text;
+            
         }               
+
+                
     }
 }

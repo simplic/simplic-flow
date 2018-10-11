@@ -38,6 +38,11 @@ namespace Simplic.Flow.Editor.UI
                     Header = category.Key
                 };
 
+                if (string.IsNullOrEmpty(gallery.Header))
+                {
+                    gallery.Header = "General";
+                }
+
                 foreach (var item in category.OrderBy(x => x.DisplayName))
                 {
                     var galleryItem = new GalleryItem

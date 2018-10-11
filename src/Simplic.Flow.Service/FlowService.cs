@@ -98,7 +98,12 @@ namespace Simplic.Flow.Service
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<DeleteFileNode>>("DeleteFileNode");
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<GetDirectoryContentNode>>("GetDirectoryContentNode");
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<OnCheckDirectoryContentNode>>("OnCheckDirectoryContentNode");
-            unityContainer.RegisterType<INodeResolver, GenericNodeResolver<ThreadSleepNode>>("ThreadSleepNode");
+            unityContainer.RegisterType<INodeResolver, GenericNodeResolver<GetVariableNode>>(nameof(GetVariableNode));
+            unityContainer.RegisterType<INodeResolver, GenericNodeResolver<SetVariableNode>>(nameof(SetVariableNode));
+            unityContainer.RegisterType<INodeResolver, GenericNodeResolver<AddNode>>(nameof(AddNode));
+            unityContainer.RegisterType<INodeResolver, GenericNodeResolver<DivideNode>>(nameof(DivideNode));
+            unityContainer.RegisterType<INodeResolver, GenericNodeResolver<MultiplyNode>>(nameof(MultiplyNode));
+            unityContainer.RegisterType<INodeResolver, GenericNodeResolver<SubtractNode>>(nameof(SubtractNode));
 
             flowConfigurations = flowConfigurationService.GetAll().ToList();
             if (flowConfigurations.Count > 0)

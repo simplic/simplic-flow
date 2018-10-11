@@ -48,8 +48,6 @@
         </Setter>
     </Style>
     <!-- /SettingsPaneView -->
-
-
     <Style x:Key="ActionNodeStyle" TargetType="telerik:RadDiagramShape">
         <Setter Property="Position" Value="{Binding Position, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <Setter Property="Height" Value="{Binding Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -140,99 +138,11 @@
         </Setter>
     </Style>
 
-    <Style x:Key="EventNodeStyle_Old" TargetType="telerik:RadDiagramShape">
-        <Setter Property="Position" Value="{Binding Position, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <Setter Property="Height" Value="{Binding Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <Setter Property="Width" Value="{Binding Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <Setter Property="Content" Value="{Binding}" />
-
-        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="VerticalContentAlignment" Value="Stretch" />
-        <Setter Property="ContentTemplate">
-            <Setter.Value>
-                <DataTemplate>
-                    <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="20" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-
-                        <Canvas Name="textCanvas" Grid.RowSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
-
-                        <Border Grid.Row="0" Margin="-4, -4, -4,0" Padding="0">
-                            <Border.Background>
-                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                    <GradientStop Color="#771111" Offset="0"/>
-                                    <GradientStop Color="#331919"  Offset="1"/>
-                                </LinearGradientBrush>
-                            </Border.Background>
-
-                            <StackPanel Orientation="Horizontal">
-                                <Canvas Width="12" Margin="5,0,0,0" Height="14" Clip="F1 M 0,0L 14,0L 14,14L 0,14L 0,0">
-                                    <Path Width="12" Height="14" Stretch="Fill" Fill="Yellow" 
-                                              Data="M 52.252,18.9974L 38,34.8333L 50.6667,34.8333L 25.3316,60.1667L 34.8333,39.5833L 23.75,39.5833L 36.4164,18.9974L 52.252,18.9974 Z"/>
-                                </Canvas>
-
-                                <TextBlock Foreground="White" Margin="5,5,0,0" Text="{Binding DisplayName}"/>
-                            </StackPanel>
-                        </Border>
-                    </Grid>
-                </DataTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style x:Key="ForEachNodeStyle" TargetType="telerik:RadDiagramShape">
-        <Setter Property="ContentTemplate">
-            <Setter.Value>
-                <DataTemplate>
-                    <StackPanel Orientation="Vertical" Height="150" Width="200" Margin="0">
-                        <Border Width="200" VerticalAlignment="Top" Height="26" 
-                            Padding="0" Margin="0">
-                            <Border.Background>
-                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                    <GradientStop Color="#771111" Offset="0"/>
-                                    <GradientStop Color="#331919" Offset="1"/>
-                                </LinearGradientBrush>
-                            </Border.Background>
-
-                            <Label Margin="5 0 0 0" Width="auto" VerticalAlignment="Top" Content="{Binding HeaderText}" Foreground="White" />
-                        </Border>
-                    </StackPanel>
-                </DataTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style x:Key="IfNodeStyle" TargetType="telerik:RadDiagramShape">
-        <Setter Property="ContentTemplate">
-            <Setter.Value>
-                <DataTemplate>
-                    <StackPanel Orientation="Vertical" Height="150" Width="200" Margin="0">
-                        <Border Width="200" VerticalAlignment="Top" Height="26" 
-                            Padding="0" Margin="0">
-                            <Border.Background>
-                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                    <GradientStop Color="#771111" Offset="0"/>
-                                    <GradientStop Color="#331919" Offset="1"/>
-                                </LinearGradientBrush>
-                            </Border.Background>
-
-                            <Label Margin="5 0 0 0" Width="auto" VerticalAlignment="Top" Content="{Binding HeaderText}" Foreground="White" />
-                        </Border>
-                    </StackPanel>
-                </DataTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
     <local:NodeStyleSelector x:Key="CustomShapeStyleSelector"
                     ActionNodeStyle="{StaticResource ActionNodeStyle}"
-                    EventNodeStyle="{StaticResource EventNodeStyle}"
-                    ForEachNodeStyle="{StaticResource ForEachNodeStyle}"
-                    IfNodeStyle="{StaticResource IfNodeStyle}" />
+                    EventNodeStyle="{StaticResource EventNodeStyle}" />
 
-    <Style TargetType="telerik:RadDiagramConnection" x:Key="StandardDataTypeLinkStyle">
+    <Style TargetType="telerik:RadDiagramConnection" x:Key="CustomLinkStyle">
         <Setter Property="Stroke" Value="{Binding StrokeColor}" />
         <Setter Property="StrokeThickness" Value="1" />
         <Setter Property="ConnectionType" Value="Bezier" />
@@ -244,87 +154,6 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
-    <Style TargetType="telerik:RadDiagramConnection" x:Key="FlowLinkStyle">
-        <Setter Property="Stroke" Value="White" />
-        <Setter Property="StrokeThickness" Value="1" />
-        <Setter Property="ConnectionType" Value="Bezier" />
-        <Setter Property="ContentTemplate">
-            <Setter.Value>
-                <DataTemplate>
-                    <Grid />
-                </DataTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <!--<Style TargetType="telerik:RadDiagramConnection" x:Key="StringDataTypeLinkStyle">
-        <Setter Property="Stroke" Value="#00aaf5" />
-        <Setter Property="StrokeThickness" Value="2" />
-        <Setter Property="ConnectionType" Value="Bezier" />
-        <Setter Property="ContentTemplate">
-            <Setter.Value>
-                <DataTemplate>
-                    <Grid />
-                </DataTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style TargetType="telerik:RadDiagramConnection" x:Key="IntDataTypeLinkStyle">
-        <Setter Property="Stroke" Value="#a1ff45" />
-        <Setter Property="StrokeThickness" Value="2" />
-        <Setter Property="ConnectionType" Value="Bezier" />
-        <Setter Property="ContentTemplate">
-            <Setter.Value>
-                <DataTemplate>
-                    <Grid />
-                </DataTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style TargetType="telerik:RadDiagramConnection" x:Key="FloatDataTypeLinkStyle">
-        <Setter Property="Stroke" Value="#1ee4af" />
-        <Setter Property="StrokeThickness" Value="2" />
-        <Setter Property="ConnectionType" Value="Bezier" />
-        <Setter Property="ContentTemplate">
-            <Setter.Value>
-                <DataTemplate>
-                    <Grid />
-                </DataTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style TargetType="telerik:RadDiagramConnection" x:Key="BooleanDataTypeLinkStyle">
-        <Setter Property="Stroke" Value="#950000" />
-        <Setter Property="StrokeThickness" Value="2" />
-        <Setter Property="ConnectionType" Value="Bezier" />
-        <Setter Property="ContentTemplate">
-            <Setter.Value>
-                <DataTemplate>
-                    <Grid />
-                </DataTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style TargetType="telerik:RadDiagramConnection" x:Key="GuidDataTypeLinkStyle">
-        <Setter Property="Stroke" Value="#4CC6AD" />
-        <Setter Property="StrokeThickness" Value="2" />
-        <Setter Property="ConnectionType" Value="Bezier" />
-        <Setter Property="ContentTemplate">
-            <Setter.Value>
-                <DataTemplate>
-                    <Grid />
-                </DataTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>-->
-
-    <local:LinkStyleSelector x:Key="CustomConnectionStyleSelector"				
-                StandardDataTypeLinkStyle="{StaticResource StandardDataTypeLinkStyle}" />
 
     <Style x:Key="FlowConnectorTemplate" TargetType="telerik:RadDiagramConnector">
         <Setter Property="Width" Value="12" />
@@ -368,128 +197,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-
-    <Style x:Key="DataConnectorInt32Template" TargetType="telerik:RadDiagramConnector">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate>
-                    <Rectangle Name="connectorRectangle" Width="7" Height="7" Stroke="#a1ff45" Fill="Transparent"/>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" SourceName="connectorRectangle" Value="True">
-                            <Setter Property="Fill" TargetName="connectorRectangle" Value="#a1ff45"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style x:Key="DataConnectorInt64Template" TargetType="telerik:RadDiagramConnector">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate>
-                    <Rectangle Name="connectorRectangle" Width="7" Height="7" Stroke="#a1ff45" Fill="Transparent"/>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" SourceName="connectorRectangle" Value="True">
-                            <Setter Property="Fill" TargetName="connectorRectangle" Value="#a1ff45"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style x:Key="DataConnectorSingleTemplate" TargetType="telerik:RadDiagramConnector">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate>
-                    <Rectangle Name="connectorRectangle" Width="7" Height="7" Stroke="#1ee4af" Fill="Transparent"/>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" SourceName="connectorRectangle" Value="True">
-                            <Setter Property="Fill" TargetName="connectorRectangle" Value="#1ee4af"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style x:Key="DataConnectorDoubleTemplate" TargetType="telerik:RadDiagramConnector">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate>
-                    <Rectangle Name="connectorRectangle" Width="7" Height="7" Stroke="#1ee4af" Fill="Transparent"/>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" SourceName="connectorRectangle" Value="True">
-                            <Setter Property="Fill" TargetName="connectorRectangle" Value="#1ee4af"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style x:Key="DataConnectorBooleanTemplate" TargetType="telerik:RadDiagramConnector">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate>
-                    <Rectangle Name="connectorRectangle" Width="7" Height="7" Stroke="#950000" Fill="Transparent"/>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" SourceName="connectorRectangle" Value="True">
-                            <Setter Property="Fill" TargetName="connectorRectangle" Value="#950000"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style x:Key="DataConnectorGuidTemplate" TargetType="telerik:RadDiagramConnector">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate>
-                    <Rectangle Name="connectorRectangle" Width="7" Height="7" Stroke="#4CC6AD" Fill="Transparent"/>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" SourceName="connectorRectangle" Value="True">
-                            <Setter Property="Fill" TargetName="connectorRectangle" Value="#4CC6AD"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style x:Key="DataConnectorObjectTemplate" TargetType="telerik:RadDiagramConnector">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate>
-                    <Rectangle Name="connectorRectangle" Width="7" Height="7" Stroke="Gray" Fill="Transparent"/>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" SourceName="connectorRectangle" Value="True">
-                            <Setter Property="Fill" TargetName="connectorRectangle" Value="Gray"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style x:Key="DataConnectordTemplate" TargetType="telerik:RadDiagramConnector">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate>
-                    <Rectangle Name="connectorRectangle" Width="7" Height="7" Stroke="White" Fill="Transparent"/>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" SourceName="connectorRectangle" Value="True">
-                            <Setter Property="Fill" TargetName="connectorRectangle" Value="White"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-
+    
     <DataTemplate x:Key="ToolboxItemTemplate">
         <Grid Margin="0 1 1 0" Width="72" Height="auto">
             <Grid.RowDefinitions>
