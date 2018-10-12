@@ -37,11 +37,11 @@
     <Reference Include="Simplic.CoreLib, Version=6.14.418.1002, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Simplic.CoreLib.6.14.418.1002\lib\net451\Simplic.CoreLib.dll</HintPath>
     </Reference>
-    <Reference Include="Simplic.Flow, Version=6.1.1118.1004, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simplic.Flow.6.1.1118.1004\lib\net451\Simplic.Flow.dll</HintPath>
+    <Reference Include="Simplic.Flow, Version=6.2.18.1012, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.Flow.6.2.18.1012\lib\net451\Simplic.Flow.dll</HintPath>
     </Reference>
-    <Reference Include="Simplic.Flow.Editor.Definition, Version=6.2.18.1006, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simplic.Flow.Editor.Definition.6.2.18.1006\lib\net451\Simplic.Flow.Editor.Definition.dll</HintPath>
+    <Reference Include="Simplic.Flow.Editor.Definition, Version=6.2.118.1012, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.Flow.Editor.Definition.6.2.118.1012\lib\net451\Simplic.Flow.Editor.Definition.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
