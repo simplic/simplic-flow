@@ -40,7 +40,18 @@
         <telerik:RadDiagramNavigationPane Background="#252525" Diagram="{Binding ElementName=MyDiagram}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Row="1" IsExpanded="True"/>
 
         <TabControl Grid.Column="1" Grid.Row="1">
-            
+                                    
+            <TabItem Header="Available Nodes">
+                <telerik:RadDiagramToolbox x:Name="toolbox"
+                               Title="Available Nodes"                               
+                               HorizontalAlignment="Right"
+                               ItemsSource="{Binding GalleryItems}"                                  
+                               SelectedItem="{Binding SelectedGallery}"
+                               Header="{Binding SelectedItem.Header, RelativeSource={RelativeSource Self}}"
+                               ItemTemplate="{StaticResource ToolboxTemplate}">
+                </telerik:RadDiagramToolbox>
+            </TabItem>
+
             <TabItem Header="Workflow">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -53,7 +64,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    
+
                     <Label Grid.Row="0" Content="Name:" FontWeight="Bold"/>
                     <TextBox Grid.Row="1" Text="{Binding WorkflowName, UpdateSourceTrigger=PropertyChanged}" Margin="5" Padding="5"/>
 
@@ -85,17 +96,6 @@
                     </TabControl>
 
                 </Grid>
-            </TabItem>
-            
-            <TabItem Header="Available Nodes">
-                <telerik:RadDiagramToolbox x:Name="toolbox"
-                               Title="Available Nodes"                               
-                               HorizontalAlignment="Right"
-                               ItemsSource="{Binding GalleryItems}"                                  
-                               SelectedItem="{Binding SelectedGallery}"
-                               Header="{Binding SelectedItem.Header, RelativeSource={RelativeSource Self}}"
-                               ItemTemplate="{StaticResource ToolboxTemplate}">
-                </telerik:RadDiagramToolbox>
             </TabItem>
         </TabControl>
     </Grid>
