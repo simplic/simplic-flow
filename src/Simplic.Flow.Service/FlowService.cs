@@ -104,6 +104,8 @@ namespace Simplic.Flow.Service
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<DivideNode>>(nameof(DivideNode));
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<MultiplyNode>>(nameof(MultiplyNode));
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<SubtractNode>>(nameof(SubtractNode));
+            unityContainer.RegisterType<INodeResolver, GenericNodeResolver<ReadAllTextNode>>(nameof(ReadAllTextNode));
+            unityContainer.RegisterType<INodeResolver, GenericNodeResolver<ClearPinNode>>(nameof(ClearPinNode));
 
             flowConfigurations = flowConfigurationService.GetAll().ToList();
             if (flowConfigurations.Count > 0)
