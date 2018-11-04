@@ -107,7 +107,9 @@ namespace Simplic.Flow.Service
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<ReadAllTextNode>>(nameof(ReadAllTextNode));
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<ClearPinNode>>(nameof(ClearPinNode));
 
-            flowConfigurations = flowConfigurationService.GetAll().ToList();
+            // Load active flow configurations
+            flowConfigurations = flowConfigurationService.GetAll().Where(x => x.IsActive).ToList();
+
             if (flowConfigurations.Count > 0)
                 flowLogService.Info($"# {flowConfigurations.Count} Flow Configuration were found: {string.Join(", ", flowConfigurations.Select(x => $"\"{x.Name}\""))}");
             else

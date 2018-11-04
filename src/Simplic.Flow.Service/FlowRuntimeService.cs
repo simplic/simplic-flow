@@ -14,9 +14,6 @@ namespace Simplic.Flow.Service
         private FlowInstance instance;
         private EventCall eventCall;
 
-        public FlowEventArgs FlowEventArgs { get; private set; }
-        public FlowInstance Instance { get { return instance; } }
-
         /// <summary>
         /// Initialize new runtime instance
         /// </summary>
@@ -143,5 +140,15 @@ namespace Simplic.Flow.Service
 
             return false;
         }
+
+        /// <summary>
+        /// Gets or sets the flow arguments
+        /// </summary>
+        public FlowEventArgs FlowEventArgs { get; private set; }
+
+        /// <summary>
+        /// Gets or sets flow instance
+        /// </summary>
+        public FlowInstance Instance { get { return instance; } }
     }
 }
