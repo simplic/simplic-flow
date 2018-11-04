@@ -36,12 +36,6 @@
     <Reference Include="Simplic.CoreLib, Version=6.14.418.1002, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Simplic.CoreLib.6.14.418.1002\lib\net451\Simplic.CoreLib.dll</HintPath>
     </Reference>
-    <Reference Include="Simplic.Flow, Version=6.2.18.1012, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simplic.Flow.6.2.18.1012\lib\net451\Simplic.Flow.dll</HintPath>
-    </Reference>
-    <Reference Include="Simplic.Flow.Event, Version=6.1.218.1012, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simplic.Flow.Event.6.1.218.1012\lib\net451\Simplic.Flow.Event.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -76,6 +70,16 @@
     <None Include="package.bat" />
     <None Include="packages.config" />
     <None Include="Simplic.Flow.Node.nuspec" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Simplic.Flow.Event\Simplic.Flow.Event.csproj">
+      <Project>{EFCC8359-4ED2-421F-B9BE-4E25CDD5CF40}</Project>
+      <Name>Simplic.Flow.Event</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.Flow\Simplic.Flow.csproj">
+      <Project>{1F540A26-62FB-45CB-ABC6-B4B2D8F7005E}</Project>
+      <Name>Simplic.Flow</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

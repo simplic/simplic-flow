@@ -37,12 +37,6 @@
     <Reference Include="Simplic.CoreLib, Version=6.14.418.1002, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Simplic.CoreLib.6.14.418.1002\lib\net451\Simplic.CoreLib.dll</HintPath>
     </Reference>
-    <Reference Include="Simplic.Flow, Version=6.2.18.1012, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simplic.Flow.6.2.18.1012\lib\net451\Simplic.Flow.dll</HintPath>
-    </Reference>
-    <Reference Include="Simplic.Flow.Editor.Definition, Version=6.2.118.1012, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simplic.Flow.Editor.Definition.6.2.118.1012\lib\net451\Simplic.Flow.Editor.Definition.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -60,6 +54,16 @@
     <None Include="package.bat" />
     <None Include="packages.config" />
     <None Include="Simplic.Flow.Editor.Definition.Service.nuspec" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Simplic.Flow.Editor.Definition\Simplic.Flow.Editor.Definition.csproj">
+      <Project>{75EF378A-23DD-4B14-B9F8-30747A8347FF}</Project>
+      <Name>Simplic.Flow.Editor.Definition</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.Flow\Simplic.Flow.csproj">
+      <Project>{1F540A26-62FB-45CB-ABC6-B4B2D8F7005E}</Project>
+      <Name>Simplic.Flow</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

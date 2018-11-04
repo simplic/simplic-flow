@@ -39,23 +39,6 @@
     <Reference Include="Simplic.CoreLib, Version=6.14.418.1002, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Simplic.CoreLib.6.14.418.1002\lib\net451\Simplic.CoreLib.dll</HintPath>
     </Reference>
-    <Reference Include="Simplic.Flow, Version=6.2.18.1012, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simplic.Flow.6.2.18.1012\lib\net451\Simplic.Flow.dll</HintPath>
-    </Reference>
-    <Reference Include="Simplic.Flow.Configuration, Version=6.3.18.1104, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simplic.Flow.Configuration.6.3.18.1104\lib\net451\Simplic.Flow.Configuration.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Simplic.Flow.Editor.Definition, Version=6.2.118.1012, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simplic.Flow.Editor.Definition.6.2.118.1012\lib\net451\Simplic.Flow.Editor.Definition.dll</HintPath>
-    </Reference>
-    <Reference Include="Simplic.Flow.Event, Version=6.1.218.1012, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simplic.Flow.Event.6.1.218.1012\lib\net451\Simplic.Flow.Event.dll</HintPath>
-    </Reference>
-    <Reference Include="Simplic.Flow.Node, Version=6.4.118.1031, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simplic.Flow.Node.6.4.118.1031\lib\net451\Simplic.Flow.Node.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Simplic.Framework.Base">
       <HintPath>..\..\..\simplic-framework\src\Simplic.Main\bin\Debug\Simplic.Framework.Base.dll</HintPath>
     </Reference>
@@ -139,6 +122,20 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Simplic.Flow.Editor.UI.nuspec" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Simplic.Flow.Configuration\Simplic.Flow.Configuration.csproj">
+      <Project>{a2f33950-81af-4d02-856f-5b2c69e78cac}</Project>
+      <Name>Simplic.Flow.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.Flow.Editor.Definition\Simplic.Flow.Editor.Definition.csproj">
+      <Project>{75EF378A-23DD-4B14-B9F8-30747A8347FF}</Project>
+      <Name>Simplic.Flow.Editor.Definition</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.Flow\Simplic.Flow.csproj">
+      <Project>{1F540A26-62FB-45CB-ABC6-B4B2D8F7005E}</Project>
+      <Name>Simplic.Flow</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
