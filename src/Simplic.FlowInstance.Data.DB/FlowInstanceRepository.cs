@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Simplic.Flow;
 
 namespace Simplic.FlowInstance.Data.DB
 {
@@ -149,7 +150,27 @@ namespace Simplic.FlowInstance.Data.DB
                 return affectedRows > 0;
             });
         }
-        #endregion 
+        #endregion
+
+        #region [Delete]
+        /// <summary>
+        /// Deletes a <see cref="FlowInstance"/> from the database
+        /// </summary>
+        /// <param name="flowInstance">Object to remove</param>
+        /// <returns>True if successfull</returns>
+        public bool Delete(Flow.FlowInstance flowInstance)
+        {
+            return sqlService.OpenConnection((conn) =>
+            {
+                var affectedRows = conn.Execute($"DELETE FROM {Flow_InstanceTableName} WHERE Id = :Id", new
+                   {
+                       Id = flowInstance.Id
+                   });
+
+                return affectedRows > 0;
+            });
+        }
+        #endregion
 
         #endregion
     }
