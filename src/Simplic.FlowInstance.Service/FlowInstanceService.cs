@@ -7,6 +7,9 @@ using Simplic.Flow;
 
 namespace Simplic.FlowInstance.Service
 {
+    /// <summary>
+    /// Flow instance service implementation
+    /// </summary>
     public class FlowInstanceService : IFlowInstanceService
     {
         private readonly IFlowInstanceRepository flowInstanceRepository;
@@ -15,10 +18,7 @@ namespace Simplic.FlowInstance.Service
         {
             this.flowInstanceRepository = flowInstanceRepository;
         }
-        
-        #region Public Methods
 
-        #region [GetAll]
         /// <summary>
         /// Gets a list of <see cref="FlowInstance"/> from the database
         /// </summary>
@@ -27,9 +27,7 @@ namespace Simplic.FlowInstance.Service
         {
             return flowInstanceRepository.GetAll();
         }
-        #endregion
 
-        #region [GetAllAlive]
         /// <summary>
         /// Gets a list of <see cref="FlowInstance"/> which are alive from the database 
         /// </summary>
@@ -38,9 +36,7 @@ namespace Simplic.FlowInstance.Service
         {
             return flowInstanceRepository.GetAllAlive();
         }
-        #endregion
 
-        #region [GetById]
         /// <summary>
         /// Gets a <see cref="FlowInstance"/>
         /// </summary>
@@ -50,9 +46,7 @@ namespace Simplic.FlowInstance.Service
         {
             return flowInstanceRepository.GetById(flowInstanceId);
         }
-        #endregion
 
-        #region [Save]
         /// <summary>
         /// Saves a <see cref="FlowInstance"/> into the database
         /// </summary>
@@ -62,8 +56,15 @@ namespace Simplic.FlowInstance.Service
         {
             return flowInstanceRepository.Save(flowInstance);
         }
-        #endregion 
 
-        #endregion
+        /// <summary>
+        /// Delete flow instance
+        /// </summary>
+        /// <param name="flowInstance">Flow instance</param>
+        /// <returns>True if successfull</returns>
+        public bool Delete(Flow.FlowInstance flowInstance)
+        {
+            return flowInstanceRepository.Delete(flowInstance);
+        }
     }
 }

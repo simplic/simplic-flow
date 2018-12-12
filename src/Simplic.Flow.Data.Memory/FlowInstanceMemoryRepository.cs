@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Simplic.Flow;
 
 namespace Simplic.FlowInstance.Data.Memory
 {
@@ -11,6 +12,15 @@ namespace Simplic.FlowInstance.Data.Memory
         public FlowInstanceMemoryRepository()
         {
             flowInstances = new List<Flow.FlowInstance>();
+        }
+
+        public bool Delete(Flow.FlowInstance flowInstance)
+        {
+            var index = flowInstances.IndexOf(flowInstance);
+            if (index > -1)
+                flowInstances.Remove(flowInstance);
+
+            return true;
         }
 
         public IEnumerable<Flow.FlowInstance> GetAll()
