@@ -5,14 +5,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Simplic.Flow;
 
 namespace Simplic.FlowInstance.Data.DB
 {
+    /// <summary>
+    /// Flow instance repository implementation (database)
+    /// </summary>
     public class FlowInstanceRepository : IFlowInstanceRepository
     {
         private readonly ISqlService sqlService;
-        private const string Flow_InstanceTableName = "Flow_Instance";
+        private const string FlowInstanceTableName = "Flow_Instance";
 
+        /// <summary>
+        /// Initialize repository
+        /// </summary>
+        /// <param name="sqlService">Sql service instance</param>
         public FlowInstanceRepository(ISqlService sqlService)
         {
             this.sqlService = sqlService;
@@ -65,7 +73,7 @@ namespace Simplic.FlowInstance.Data.DB
         {
             var flow_Instances = sqlService.OpenConnection((conn) =>
             {
-                return conn.Query<FlowInstanceModel>($"SELECT * from {Flow_InstanceTableName}");
+                return conn.Query<FlowInstanceModel>($"SELECT * from {FlowInstanceTableName}");
             });
 
             foreach (var item in flow_Instances)
@@ -86,7 +94,7 @@ namespace Simplic.FlowInstance.Data.DB
         {
             var flow_Instances = sqlService.OpenConnection((conn) =>
             {
-                return conn.Query<FlowInstanceModel>($"SELECT * from {Flow_InstanceTableName} WHERE IsAlive = :IsAlive ORDER BY CreateTime",
+                return conn.Query<FlowInstanceModel>($"SELECT * from {FlowInstanceTableName} WHERE IsAlive = :IsAlive ORDER BY CreateTime",
                     new { IsAlive = true });
             });
 
@@ -110,7 +118,7 @@ namespace Simplic.FlowInstance.Data.DB
         {
             var flow_Instance = sqlService.OpenConnection((conn) =>
             {
-                return conn.Query<FlowInstanceModel>($"SELECT * from {Flow_InstanceTableName} WHERE Id = :flowInstanceId",
+                return conn.Query<FlowInstanceModel>($"SELECT * from {FlowInstanceTableName} WHERE Id = :flowInstanceId",
                     new { flowInstanceId }).FirstOrDefault();
             });
 
@@ -136,7 +144,7 @@ namespace Simplic.FlowInstance.Data.DB
         {
             return sqlService.OpenConnection((conn) =>
             {
-                var affectedRows = conn.Execute($"Insert Into {Flow_InstanceTableName} " +
+                var affectedRows = conn.Execute($"Insert Into {FlowInstanceTableName} " +
                    $" (Id, Data, IsAlive, FlowConfigurationId) On Existing Update Values " +
                    $" (:Id, :Data, :IsAlive, :FlowConfigurationId);", new
                    {
@@ -149,7 +157,27 @@ namespace Simplic.FlowInstance.Data.DB
                 return affectedRows > 0;
             });
         }
-        #endregion 
+        #endregion
+
+        #region [Delete]
+        /// <summary>
+        /// Deletes a <see cref="FlowInstance"/> from the database
+        /// </summary>
+        /// <param name="flowInstance">Object to remove</param>
+        /// <returns>True if successfull</returns>
+        public bool Delete(Flow.FlowInstance flowInstance)
+        {
+            return sqlService.OpenConnection((conn) =>
+            {
+                var affectedRows = conn.Execute($"DELETE FROM {FlowInstanceTableName} WHERE Id = :Id", new
+                   {
+                       Id = flowInstance.Id
+                   });
+
+                return affectedRows > 0;
+            });
+        }
+        #endregion
 
         #endregion
     }
