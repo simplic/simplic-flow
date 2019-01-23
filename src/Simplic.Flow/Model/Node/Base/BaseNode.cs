@@ -22,7 +22,8 @@ namespace Simplic.Flow
                     {
                         Id = Guid.Parse(attribute.Id),
                         ContainerType = attribute.ContainerType,
-                        DataType = attribute.DataType
+                        DataType = attribute.DataType,
+                        TemporaryNodeId = this.Id
                     };
 
                     // Create instance

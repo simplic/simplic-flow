@@ -16,18 +16,23 @@ namespace Simplic.Flow
             return scope;
         }
 
-        public IDictionary<Guid, object> PinValues { get; set; } = new Dictionary<Guid, object>();
+        public IDictionary<string, object> PinValues { get; set; } = new Dictionary<string, object>();
+
+        private string BuildPinHash(Guid nodeId, Guid pinId) => $"{nodeId}_{pinId}";
+
         public DataPinScope Parent { get; set; }
         public T GetValue<T>(DataPin inPin)
         {
             if (inPin == null)
                 return default(T);
 
+            var pinKey = BuildPinHash(inPin.TemporaryNodeId, inPin.Id);
+
             var value = default(T);
 
-            if (PinValues.Any(x => x.Key == inPin.Id))
+            if (PinValues.Any(x => x.Key == pinKey))
             {
-                var rawValue = PinValues.FirstOrDefault(x => x.Key == inPin.Id);
+                var rawValue = PinValues.FirstOrDefault(x => x.Key == pinKey);
 
                 try
                 {
@@ -64,9 +69,11 @@ namespace Simplic.Flow
 
         public IList<T> GetListValue<T>(DataPin inPin)
         {
-            if (PinValues.Any(x => x.Key == inPin.Id))
+            var pinKey = BuildPinHash(inPin.TemporaryNodeId, inPin.Id);
+
+            if (PinValues.Any(x => x.Key == pinKey))
             {
-                var value = (PinValues.FirstOrDefault(x => x.Key == inPin.Id).Value as IList);
+                var value = (PinValues.FirstOrDefault(x => x.Key == pinKey).Value as IList);
                 var list = value.Cast<T>().ToList();
 
                 // Check
@@ -79,7 +86,9 @@ namespace Simplic.Flow
 
         public void SetValue(DataPin outPin, object value)
         {
-            PinValues[outPin.Id] = value;
+            var pinKey = BuildPinHash(outPin.TemporaryNodeId, outPin.Id);
+
+            PinValues[pinKey] = value;
         }
     }
 }
