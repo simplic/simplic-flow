@@ -15,5 +15,10 @@ namespace Simplic.Flow
         public bool IsNullable { get; set; }
         public object DefaultValue { get; set; }
         public bool IsGeneric { get; set; }
+
+        /// <summary>
+        /// Gets or sets the temporary node id
+        /// </summary>
+        public Guid TemporaryNodeId { get; set; }
     }
 }
