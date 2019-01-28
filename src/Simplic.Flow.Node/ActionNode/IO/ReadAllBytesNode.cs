@@ -56,7 +56,7 @@ namespace Simplic.Flow.Node
         /// Gets or sets the in pin file path
         /// </summary>
         [DataPinDefinition(
-            Id = "9a66577f-e4ad-4671-991b-23784b2e199e",
+            Id = "0932042e-d24c-4b44-8032-1a4e04172d5e",
             ContainerType = DataPinContainerType.Single,
             DataType = typeof(string),
             Direction = PinDirection.In,
@@ -68,7 +68,7 @@ namespace Simplic.Flow.Node
         /// Gets or sets the out pin text
         /// </summary>
         [DataPinDefinition(
-            Id = "3fc60445-df7a-41bf-9778-879e894cf8c",
+            Id = "2b78d26c-c69f-480c-9725-05a8e813fb0b",
             ContainerType = DataPinContainerType.Single,
             DataType = typeof(byte[]),
             Direction = PinDirection.Out,
