@@ -10,11 +10,11 @@ namespace Simplic.Flow.Node
     /// <summary>
     /// Read all text node
     /// </summary>
-    [ActionNodeDefinition(DisplayName = "ReadAllBytes", Name = "ReadAllBytesNode", Category = "IO", Tooltip = "Read text")]
+    [ActionNodeDefinition(DisplayName = "ReadAllBytes", Name = "ReadAllBytesNode", Category = "IO", Tooltip = "Read bytes")]
     public class ReadAllBytesNode : ActionNode
     {
         /// <summary>
-        /// Execute read all text
+        /// Execute read all bytes
         /// </summary>
         /// <param name="runtime">Runtime instance</param>
         /// <param name="scope">Scope instance</param>
@@ -24,7 +24,7 @@ namespace Simplic.Flow.Node
             try
             {
                 var blob = File.ReadAllBytes(scope.GetValue<string>(InPinFilePath));
-                scope.SetValue(OutPinText, blob);
+                scope.SetValue(OutPinBlob, blob);
 
                 if (OutNode != null)
                     runtime.EnqueueNode(OutNode, scope);
@@ -74,7 +74,7 @@ namespace Simplic.Flow.Node
             Direction = PinDirection.Out,
             Name = "OutPinBlob",
             DisplayName = "Blob")]
-        public DataPin OutPinText { get; set; }
+        public DataPin OutPinBlob { get; set; }
 
         /// <summary>
         /// Gets or sets the friendly name
