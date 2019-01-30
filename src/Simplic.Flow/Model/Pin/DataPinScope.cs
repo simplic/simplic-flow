@@ -30,7 +30,7 @@ namespace Simplic.Flow
         /// <param name="pinId">Unique pin id</param>
         /// <returns>Value key as string</returns>
         private string BuildPinHash(Guid nodeId, Guid pinId) => $"{nodeId}_{pinId}";
-
+        
         /// <summary>
         /// Get value from pin instance
         /// </summary>
@@ -47,9 +47,10 @@ namespace Simplic.Flow
             var value = default(T);
 
             if (!PinValues.Any(x => x.Key == pinKey) && Parent != null)
+            {
                 return Parent.GetValue<T>(inPin);
-
-            if (PinValues.Any(x => x.Key == pinKey))
+            }
+            else
             {
                 var rawValue = PinValues.FirstOrDefault(x => x.Key == pinKey);
 
