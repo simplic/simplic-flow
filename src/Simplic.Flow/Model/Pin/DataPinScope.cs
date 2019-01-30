@@ -6,8 +6,15 @@ using System.Linq;
 
 namespace Simplic.Flow
 {
+    /// <summary>
+    /// Flow scope instance
+    /// </summary>
     public class DataPinScope
     {
+        /// <summary>
+        /// Create new child scope and set parent
+        /// </summary>
+        /// <returns>Scope instance witht he current scope as parent</returns>
         public DataPinScope CreateChild()
         {
             var scope = new DataPinScope();
@@ -16,11 +23,20 @@ namespace Simplic.Flow
             return scope;
         }
 
-        public IDictionary<string, object> PinValues { get; set; } = new Dictionary<string, object>();
-
+        /// <summary>
+        /// Build unique value key
+        /// </summary>
+        /// <param name="nodeId">Unique node id</param>
+        /// <param name="pinId">Unique pin id</param>
+        /// <returns>Value key as string</returns>
         private string BuildPinHash(Guid nodeId, Guid pinId) => $"{nodeId}_{pinId}";
-
-        public DataPinScope Parent { get; set; }
+        
+        /// <summary>
+        /// Get value from pin instance
+        /// </summary>
+        /// <typeparam name="T">Value type</typeparam>
+        /// <param name="inPin">Pin instance</param>
+        /// <returns>Value of type <see cref="T"/></returns>
         public T GetValue<T>(DataPin inPin)
         {
             if (inPin == null)
@@ -30,7 +46,11 @@ namespace Simplic.Flow
 
             var value = default(T);
 
-            if (PinValues.Any(x => x.Key == pinKey))
+            if (!PinValues.Any(x => x.Key == pinKey) && Parent != null)
+            {
+                return Parent.GetValue<T>(inPin);
+            }
+            else
             {
                 var rawValue = PinValues.FirstOrDefault(x => x.Key == pinKey);
 
@@ -57,7 +77,7 @@ namespace Simplic.Flow
                 if (defaultValueType == valueType || (valueType == typeof(object) && defaultValueType == typeof(string)))
                 {
                     value = (T)inPin.DefaultValue;
-                }                
+                }
                 else if (inPin?.DefaultValue?.ToString() != null)
                 {
                     value = (T)TypeDescriptor.GetConverter(valueType).ConvertFromInvariantString(inPin?.DefaultValue?.ToString());
@@ -67,6 +87,12 @@ namespace Simplic.Flow
             return value;
         }
 
+        /// <summary>
+        /// Get pin value as list
+        /// </summary>
+        /// <typeparam name="T">Generic type</typeparam>
+        /// <param name="inPin">Pin instance</param>
+        /// <returns>Result as list</returns>
         public IList<T> GetListValue<T>(DataPin inPin)
         {
             var pinKey = BuildPinHash(inPin.TemporaryNodeId, inPin.Id);
@@ -82,13 +108,28 @@ namespace Simplic.Flow
             }
             else
                 return new List<T>();
-        }        
+        }
 
+        /// <summary>
+        /// Set pin value
+        /// </summary>
+        /// <param name="outPin">Pin instance</param>
+        /// <param name="value">Pin value</param>
         public void SetValue(DataPin outPin, object value)
         {
             var pinKey = BuildPinHash(outPin.TemporaryNodeId, outPin.Id);
 
             PinValues[pinKey] = value;
         }
+
+        /// <summary>
+        /// Gets or sets all pin values
+        /// </summary>
+        public IDictionary<string, object> PinValues { get; set; } = new Dictionary<string, object>();
+
+        /// <summary>
+        /// Gets or sets the parent scope
+        /// </summary>
+        public DataPinScope Parent { get; set; }
     }
 }
