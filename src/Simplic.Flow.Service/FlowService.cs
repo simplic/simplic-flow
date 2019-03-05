@@ -16,7 +16,7 @@ using System.Threading;
 using Unity;
 
 namespace Simplic.Flow.Service
-{    
+{
     public class FlowService : IFlowService
     {
         #region Events
@@ -58,7 +58,7 @@ namespace Simplic.Flow.Service
                     OnCompleted -= value;
                 }
             }
-        } 
+        }
         #endregion
 
         #region Private Members                
@@ -105,6 +105,7 @@ namespace Simplic.Flow.Service
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<MultiplyNode>>(nameof(MultiplyNode));
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<SubtractNode>>(nameof(SubtractNode));
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<ReadAllTextNode>>(nameof(ReadAllTextNode));
+            unityContainer.RegisterType<INodeResolver, GenericNodeResolver<ReadAllBytesNode>>(nameof(ReadAllBytesNode));
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<ClearPinNode>>(nameof(ClearPinNode));
 
             flowConfigurations = flowConfigurationService.GetAll().ToList();
@@ -166,7 +167,7 @@ namespace Simplic.Flow.Service
 
                 ActiveFlows.Add(activeFlow);
             }
-        } 
+        }
         #endregion
 
         #region [CreateFlowsFromConfiguration]
@@ -332,55 +333,54 @@ namespace Simplic.Flow.Service
         {
             var threadInfo = param as ThreadStateInfo;
 
+            // Create runtime
             var runtime = new FlowRuntimeService(flowLogService, threadInfo.EventCall.Args);
 
-            if (threadInfo.IsStartEvent)
+            try
             {
-                try
+                if (threadInfo.IsStartEvent)
                 {
+                    // Run flow service
                     runtime.Run(threadInfo.FlowInstance, threadInfo.EventCall);
-                    if (!threadInfo.FlowInstance.IsAlive)
-                    {
-                        ActiveFlows.Remove(threadInfo.ActiveFlow);
-                        // flowLogService.Info($"Flow instance {threadInfo.ActiveFlow.FlowInstanceId} is not alive anymore.");
-                    }
 
-                    // Save active flow instance after run
-                    flowInstanceService.Save(threadInfo.FlowInstance);
+                    // Save or remove active flow
+                    SaveOrDeleteFlowInstance(threadInfo.FlowInstance);
                 }
-                catch (Exception ex)
-                {
-                    // Cancel active flow
-                    threadInfo.FlowInstance.IsFailed = true;
-
-                    ActiveFlows.Remove(threadInfo.ActiveFlow);
-
-                    // log the exception
-                    //flowLogService.Error($"Continue flow instance failed.", ex, threadInfo.ActiveFlow.FlowInstanceId, threadInfo.EventCall.QueueId);
-
-                    flowInstanceService.Save(threadInfo.FlowInstance);
-                    throw;
-                }
-            }
-            else
-            {
-                try
+                else
                 {
                     runtime.Run(threadInfo.FlowInstance, threadInfo.EventCall);
                     CreateActiveFlow(threadInfo.FlowInstance);
 
-                    // Save active flow instance after run
-                    flowInstanceService.Save(threadInfo.FlowInstance);
-                }
-                catch (Exception ex)
-                {
-                    threadInfo.FlowInstance.IsFailed = true;
-                    flowInstanceService.Save(threadInfo.FlowInstance);
-
-                    //flowLogService.Error($"- NewFlowInstace could not be run", ex, threadInfo.FlowInstance.Id, threadInfo.EventCall.QueueId);
+                    // Save or remove active flow
+                    SaveOrDeleteFlowInstance(threadInfo.FlowInstance);
                 }
             }
-        } 
+            catch (Exception ex)
+            {
+                threadInfo.FlowInstance.IsFailed = true;
+
+                // Save or remove active flow
+                SaveOrDeleteFlowInstance(threadInfo.FlowInstance);
+            }
+
+            // Remove from active flows
+            if (!threadInfo.FlowInstance.IsAlive || threadInfo.FlowInstance.IsFailed)
+                ActiveFlows.Remove(threadInfo.ActiveFlow);
+        }
+
+        /// <summary>
+        /// Save or delete flow instance
+        /// </summary>
+        /// <param name="flowInstance">Flow instance</param>
+        private void SaveOrDeleteFlowInstance(FlowInstance flowInstance)
+        {
+            if (flowInstance.IsAlive)
+                flowInstanceService.Save(flowInstance);
+            else
+            {
+                flowInstanceService.Delete(flowInstance);
+            }
+        }
         #endregion
 
         #endregion
@@ -400,14 +400,14 @@ namespace Simplic.Flow.Service
             try
             {
                 // load event queue from db            
-                LoadEventQueue();                
+                LoadEventQueue();
 
                 if (eventQueue.Count() == 0)
                 {
                     //flowLogService.Info($"- Event queue is empty. Nothing to do.");
                     return;
                 }
-                                    
+
                 //var newFlowInstances = new List<FlowInstance>();
 
                 while (eventQueue.Count > 0)
@@ -453,10 +453,10 @@ namespace Simplic.Flow.Service
                             });
                         }
                     }
-                    
+
                     // change the event status to handled and save to the database
-                    SetEventQueueHandled(queueEntry.QueueId);                    
-                }                
+                    SetEventQueueHandled(queueEntry.QueueId);
+                }
             }
             catch (Exception ex)
             {
@@ -547,7 +547,7 @@ namespace Simplic.Flow.Service
 
         #region Public Properties
 
-        public IList<ActiveFlow.ActiveFlow> ActiveFlows { get; set; }        
+        public IList<ActiveFlow.ActiveFlow> ActiveFlows { get; set; }
 
         public IList<Flow> Flows { get; set; }
 

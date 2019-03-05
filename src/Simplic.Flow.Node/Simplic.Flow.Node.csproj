@@ -56,6 +56,7 @@
     <Compile Include="ActionNode\Base\ClearPinNode.cs" />
     <Compile Include="ActionNode\Base\ForeachNode.cs" />
     <Compile Include="ActionNode\Base\GetVariableNode.cs" />
+    <Compile Include="ActionNode\IO\ReadAllBytesNode.cs" />
     <Compile Include="ActionNode\IO\ReadAllTextNode.cs" />
     <Compile Include="ActionNode\Math\AddNode.cs" />
     <Compile Include="ActionNode\Math\DivideNode.cs" />
