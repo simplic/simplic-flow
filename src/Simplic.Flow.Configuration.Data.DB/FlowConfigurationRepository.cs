@@ -49,6 +49,7 @@ namespace Simplic.Flow.Configuration.Data.DB
             foreach (var item in flowConfigurationModels)
             {
                 var flowConfiguration = ConvertToJson(item.Configuration);
+                flowConfiguration.IsActive = item.IsActive;
                 yield return flowConfiguration;
             }
         }

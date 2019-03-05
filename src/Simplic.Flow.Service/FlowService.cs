@@ -179,7 +179,7 @@ namespace Simplic.Flow.Service
             flowLogService.Info($"> Creating flows from configurations...");
 
             var list = new List<Flow>();
-            foreach (var flowConfiguration in flowConfigurations)
+            foreach (var flowConfiguration in flowConfigurations.Where(f=>f.IsActive))
             {
                 var nodes = new List<BaseNode>();
                 foreach (var node in flowConfiguration.Nodes)
@@ -267,7 +267,7 @@ namespace Simplic.Flow.Service
                 });
             }
 
-            flowLogService.Info($"> {flowConfigurations.Count} flows created.");
+            flowLogService.Info($"> {list.Count} flows created.");
 
             return list;
         }
