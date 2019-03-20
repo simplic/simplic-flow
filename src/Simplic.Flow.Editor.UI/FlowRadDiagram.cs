@@ -1,4 +1,5 @@
-﻿using Telerik.Windows.Controls;
+﻿using System.Globalization;
+using Telerik.Windows.Controls;
 using Telerik.Windows.Diagrams.Core;
 
 namespace Simplic.Flow.Editor.UI
@@ -8,10 +9,6 @@ namespace Simplic.Flow.Editor.UI
     /// </summary>
     public class FlowRadDiagram : RadDiagram
     {
-        #region Private Members
-        private BaseConnector sourceConnector;
-        #endregion
-
         #region Constructor
         /// <summary>
         /// Constructor
@@ -20,10 +17,12 @@ namespace Simplic.Flow.Editor.UI
         {
             AllowCopy = false;
             AllowPaste = false;
-            SelectionMode = Telerik.Windows.Diagrams.Core.SelectionMode.Single;
+            SelectionMode = SelectionMode.Single;
 
-            Loaded += FlowRadDiagram_Loaded;            
+            Loaded += FlowRadDiagram_Loaded;
+            
         }
+
         #endregion
 
         #region Private Methods
@@ -42,6 +41,8 @@ namespace Simplic.Flow.Editor.UI
         }
         #endregion
 
+        
+
         #region Protected Override
         /// <summary>
         /// GetShapeContainerForItemOverride
@@ -50,10 +51,8 @@ namespace Simplic.Flow.Editor.UI
         /// <returns></returns>
         protected override IShape GetShapeContainerForItemOverride(object item)
         {
-            if (item is ActionNodeViewModel)
+            if (item is ActionNodeViewModel actionNodeViewModel)
             {
-                var actionNodeViewModel = item as ActionNodeViewModel;
-
                 var shape = new ActionNodeShape()
                 {
                     DataContext = item
@@ -63,10 +62,8 @@ namespace Simplic.Flow.Editor.UI
 
                 return shape;
             }
-            else if (item is EventNodeViewModel)
+            else if (item is EventNodeViewModel eventNodeViewModel)
             {
-                var eventNodeViewModel = item as EventNodeViewModel;
-
                 var shape = new EventNodeShape
                 {
                     DataContext = item
@@ -77,7 +74,9 @@ namespace Simplic.Flow.Editor.UI
                 return shape;
             }
             else
+            {
                 return null;
+            }
         } 
         #endregion
     }

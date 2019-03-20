@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Simplic.Flow.Editor.UI"
              xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
              xmlns:simplic="http://schemas.simplic-systems.com/2016/xaml/presentation"
-             xmlns:primitives="clr-namespace:Telerik.Windows.Controls.Diagrams.Primitives;assembly=Telerik.Windows.Controls.Diagrams"
+             xmlns:primitives="clr-namespace:Telerik.Windows.Controls.Diagrams.Primitives;assembly=Telerik.Windows.Controls.Diagrams"             
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
@@ -17,19 +17,20 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="350" />
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition MinWidth="350" Width="400" />
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <local:FlowRadDiagram x:Name="MyDiagram"                          
+        <local:FlowRadDiagram Grid.Row="0" Grid.Column="0" x:Name="MyDiagram"                          
                             ShapeStyleSelector="{StaticResource CustomShapeStyleSelector}"
                             ConnectionStyle="{StaticResource CustomLinkStyle}"                              
                             GraphSource="{Binding}"     
                             SelectedItem="{Binding SelectedNode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            Grid.Row="1" BorderThickness="1" Background="#252525" 
+                             BorderThickness="1" Background="#252525" 
                             primitives:BackgroundGrid.LineStroke="#333333" 
                             primitives:BackgroundPageGrid.LineStroke="#151515">
             <primitives:ItemInformationAdorner.AdditionalContent>
@@ -37,11 +38,20 @@
             </primitives:ItemInformationAdorner.AdditionalContent>
         </local:FlowRadDiagram>
 
-        <telerik:RadDiagramNavigationPane Background="#252525" Diagram="{Binding ElementName=MyDiagram}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Row="1" IsExpanded="True"/>
+        <GridSplitter Grid.Row="0" Grid.Column="1" 
+              HorizontalAlignment="Center"
+              VerticalAlignment="Stretch"
+              Background="Black" 
+              ShowsPreview="True"
+              Width="5"
+              />
 
-        <TabControl Grid.Column="1" Grid.Row="1">
-            
-            <TabItem Header="Workflow">
+        <telerik:RadDiagramNavigationPane Grid.Row="1" Background="#252525" Diagram="{Binding ElementName=MyDiagram}" VerticalAlignment="Bottom" HorizontalAlignment="Right" 
+                                           IsExpanded="True"/>
+
+        <TabControl Grid.Column="2" Grid.Row="0" Padding="5">
+
+            <TabItem Header="{simplic:Localization Key=flow_tab_header}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
@@ -57,10 +67,10 @@
                     <Label Grid.Row="0" Content="Name:" FontWeight="Bold"/>
                     <TextBox Grid.Row="1" Text="{Binding WorkflowName, UpdateSourceTrigger=PropertyChanged}" Margin="5" Padding="5"/>
 
-                    <Button Grid.Row="2" HorizontalAlignment="Left" Margin="0, 5" Width="150" Content="Add new variable" Command="{Binding AddVariableCommand}" />
+                    <Button Grid.Row="2" HorizontalAlignment="Left" Margin="0, 5" Width="150" Content="{simplic:Localization Key=flow_new_variable}" Command="{Binding AddVariableCommand}" />
 
                     <TabControl Grid.Row="3">
-                        <TabItem Header="Variables">
+                        <TabItem Header="{simplic:Localization Key=flow_variables}">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
@@ -76,8 +86,8 @@
                                                                     CanUserDeleteRows="True" 
                                                                     ShowGroupPanel="False">
                                     <simplic:AutomaticSelectionGridView.Columns>
-                                        <telerik:GridViewDataColumn DataMemberBinding="{Binding Name}" Header="Variable Name" />
-                                        <telerik:GridViewComboBoxColumn ItemsSource="{Binding AvailableVariableTypes}" DataMemberBinding="{Binding Type}" Header="Variable Typ" />
+                                        <telerik:GridViewDataColumn DataMemberBinding="{Binding Name}" Header="{simplic:Localization Key=flow_variable_name}" />
+                                        <telerik:GridViewComboBoxColumn ItemsSource="{Binding AvailableVariableTypes}" DataMemberBinding="{Binding Type}" Header="{simplic:Localization Key=flow_variable_name}" />
                                     </simplic:AutomaticSelectionGridView.Columns>
                                 </simplic:AutomaticSelectionGridView>
                             </Grid>
@@ -86,15 +96,15 @@
 
                 </Grid>
             </TabItem>
-            
-            <TabItem Header="Available Nodes">
-                <telerik:RadDiagramToolbox x:Name="toolbox"
-                               Title="Available Nodes"                               
-                               HorizontalAlignment="Right"
+
+            <TabItem Header="{simplic:Localization Key=flow_available_nodes}">
+                <telerik:RadDiagramToolbox x:Name="toolbox" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                               Title="{simplic:Localization Key=flow_available_nodes}"                               
                                ItemsSource="{Binding GalleryItems}"                                  
                                SelectedItem="{Binding SelectedGallery}"
                                Header="{Binding SelectedItem.Header, RelativeSource={RelativeSource Self}}"
-                               ItemTemplate="{StaticResource ToolboxTemplate}">
+                               ItemTemplate="{StaticResource ToolboxTemplate}"                                           
+                               IsTextSearchEnabled="True">
                 </telerik:RadDiagramToolbox>
             </TabItem>
         </TabControl>

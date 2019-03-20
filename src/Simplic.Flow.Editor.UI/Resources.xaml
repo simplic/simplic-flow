@@ -52,6 +52,7 @@
         <Setter Property="Position" Value="{Binding Position, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <Setter Property="Height" Value="{Binding Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <Setter Property="Width" Value="{Binding Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <Setter Property="ToolTip" Value="{Binding TooltipText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <Setter Property="Content" Value="{Binding}" />
 
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -94,6 +95,7 @@
         <Setter Property="Position" Value="{Binding Position, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <Setter Property="Height" Value="{Binding Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <Setter Property="Width" Value="{Binding Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <Setter Property="ToolTip" Value="{Binding TooltipText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <Setter Property="Content" Value="{Binding}" />
 
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -199,18 +201,19 @@
     </Style>
     
     <DataTemplate x:Key="ToolboxItemTemplate">
-        <Grid Margin="0 1 1 0" Width="72" Height="auto">
+        <Grid Margin="0 1 1 0" Width="72" Height="auto" HorizontalAlignment="Stretch">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Viewbox VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="5 5 5 0">
+            <Viewbox VerticalAlignment="Top" HorizontalAlignment="Center" Margin="5 5 5 0">
                 <ContentPresenter Content="{Binding Shape}" Margin="5" IsHitTestVisible="False"  />
             </Viewbox>
 
             <TextBlock Grid.Row="1" Text="{Binding Header}" TextWrapping="Wrap" Margin="5" FontSize="12"
-					TextAlignment="Center" FontFamily="Segoe UI Semibold" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+					TextAlignment="Center" FontFamily="Segoe UI Semibold" HorizontalAlignment="Center" 
+                       VerticalAlignment="Top"/>
         </Grid>
     </DataTemplate>
 
