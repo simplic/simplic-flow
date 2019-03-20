@@ -37,10 +37,12 @@ namespace Simplic.Flow.Editor.UI
             this.BorderThickness = new Thickness(1);
             this.IsEditable = false;
             this.IsManipulationAdornerVisible = false;
-            this.MinWidth = 200;
-            this.MinHeight = 150;
+            //this.MinWidth = 200;
+            //this.MinHeight = 150;
         }
         #endregion
+
+        
 
         #region Protected Methods
 
@@ -52,7 +54,7 @@ namespace Simplic.Flow.Editor.UI
         /// <param name="newValue"></param>
         protected override void OnIsSelectedChanged(bool oldValue, bool newValue)
         {
-            if (newValue == true)
+            if (newValue)
             {
                 this.BorderThickness = new Thickness(2);
                 this.BorderBrush = new SolidColorBrush(Colors.Yellow);
@@ -113,18 +115,18 @@ namespace Simplic.Flow.Editor.UI
         /// <param name="connector">Connector instance</param>
         public void LoadConnectorText(BaseConnector connector)
         {
-            var leftOffset = 8;
-            var topOffset = 8.5d;
+            const int leftOffset = 8;
+            const double topOffset = 8.5d;
 
-            var leftOffsetFlow = 9.5d;
-            var topOffsetFlow = 5.5d;
+            const double leftOffsetFlow = 9.5d;
+            const double topOffsetFlow = 5.5d;
 
             var canvas = WPFVisualTreeHelper.FindChild<Canvas>(this);
             var connectors = WPFVisualTreeHelper.FindChildren<RadDiagramConnector>(this);
 
             foreach (var item in connectors.OfType<BaseConnector>())
             {
-                if ((item == connector) == false)
+                if (item != connector)
                     continue;
 
                 var text = new TextBlock { Text = item.Text, Foreground = Brushes.White };
@@ -161,6 +163,8 @@ namespace Simplic.Flow.Editor.UI
             if (ViewModel?.DataPins == null || ViewModel?.FlowPins == null)
                 return;
 
+            int longestTextLength = 0;
+
             // Fill connector list
             foreach (var pin in ViewModel.DataPins)
             {
@@ -172,6 +176,9 @@ namespace Simplic.Flow.Editor.UI
                 };
 
                 DataConnectors.Add(dataConnector);
+
+                if (dataConnector.Name.Length > longestTextLength)
+                    longestTextLength = dataConnector.Name.Length;
             }
 
             foreach (var pin in ViewModel.FlowPins)
@@ -183,11 +190,48 @@ namespace Simplic.Flow.Editor.UI
                 };
 
                 FlowConnectors.Add(flowConnector);
+
+                if (flowConnector.Name.Length > longestTextLength)
+                    longestTextLength = flowConnector.Name.Length;
             }
 
-            double heightOffset = 0.28;
-            double xLeft = 0.04;
-            double xRight = 0.96;
+            var headerWidth = 15 + (ViewModel.DisplayName.Length * 8);
+            var totalLineWidth = longestTextLength * 10;
+
+            if (headerWidth < totalLineWidth)
+                ViewModel.Width = totalLineWidth;
+            else
+                ViewModel.Width = headerWidth;
+
+            if (ViewModel.Width < 50)
+                ViewModel.Width = 50;
+
+            const double heightPerDataPin = 15;
+            const double heightPerFlowPin = 20;
+            const double baseHeight = 35;
+
+            var flowInPinCount = FlowConnectors.Count(x => x.ConnectorDirection == ConnectorDirection.In);
+            var dataInPinCount = DataConnectors.Count(x => x.ConnectorDirection == ConnectorDirection.In);
+            var flowOutPinCount = FlowConnectors.Count(x => x.ConnectorDirection == ConnectorDirection.Out);
+            var dataOutPinCount = DataConnectors.Count(x => x.ConnectorDirection == ConnectorDirection.Out);
+
+            if ((flowInPinCount + dataInPinCount) > (flowOutPinCount + dataOutPinCount))
+            {
+                var flowPinsHeight = heightPerFlowPin * flowInPinCount;
+                var dataPinsHeight = heightPerDataPin * dataInPinCount;
+                ViewModel.Height = baseHeight + flowPinsHeight + dataPinsHeight;
+            }
+            else
+            {
+                var flowPinsHeight = heightPerFlowPin * flowOutPinCount;
+                var dataPinsHeight = heightPerDataPin * dataOutPinCount;
+                ViewModel.Height = baseHeight + flowPinsHeight + dataPinsHeight;
+            }
+
+            double heightOffset = (35 / ViewModel.Height);
+            double rowMargin = (18 / ViewModel.Height);
+            double xLeft = (8 / ViewModel.Width); // 0.04;
+            double xRight = 1 - xLeft;
             double yTop = heightOffset;
 
             foreach (var flowConnector in FlowConnectors
@@ -195,7 +239,7 @@ namespace Simplic.Flow.Editor.UI
             {
                 flowConnector.Offset = new Point(xLeft, yTop);
                 this.Connectors.Add(flowConnector);
-                yTop += 0.12;
+                yTop += rowMargin;                
             }
 
             foreach (var dataConnector in DataConnectors
@@ -203,7 +247,7 @@ namespace Simplic.Flow.Editor.UI
             {
                 dataConnector.Offset = new Point(xLeft - 0.01, yTop);
                 this.Connectors.Add(dataConnector);
-                yTop += 0.12;
+                yTop += rowMargin;                
             }
 
             yTop = heightOffset;
@@ -212,7 +256,7 @@ namespace Simplic.Flow.Editor.UI
             {
                 flowConnector.Offset = new Point(xRight, yTop);
                 this.Connectors.Add(flowConnector);
-                yTop += 0.12;
+                yTop += rowMargin;
             }
 
             foreach (var dataConnector in DataConnectors
@@ -220,7 +264,7 @@ namespace Simplic.Flow.Editor.UI
             {
                 dataConnector.Offset = new Point(xRight, yTop);
                 this.Connectors.Add(dataConnector);
-                yTop += 0.12;
+                yTop += rowMargin;
             }
         }
 
@@ -263,7 +307,7 @@ namespace Simplic.Flow.Editor.UI
         #endregion
 
         #region [TooltipText]
-        public string TooltipText { get; set; }
+        public string TooltipText { get { return ViewModel.Tooltip; } }
         #endregion
 
         #region [FlowConnectors]

@@ -49,7 +49,7 @@ namespace Simplic.Flow.Editor.UI
                     {
                         Header = item.DisplayName
                     };
-
+                    
                     if (item is Definition.ActionNodeDefinition)
                     {
                         galleryItem.Shape = new ActionNodeShape
@@ -67,7 +67,7 @@ namespace Simplic.Flow.Editor.UI
                         };
                     }
 
-                    gallery.Items.Add(galleryItem);
+                    gallery.Items.Add(galleryItem);                    
                 }
 
                 GalleryItems.Add(gallery);

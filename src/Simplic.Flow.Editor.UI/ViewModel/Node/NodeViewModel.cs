@@ -18,7 +18,7 @@ namespace Simplic.Flow.Editor.UI
         private NodeConfiguration nodeConfiguration;
 
         private const double DefaultWidth = 200;
-        private const double DefaultHeight = 150;        
+        private const double DefaultHeight = 150;
         private ObservableCollection<DataPinDefaultValueViewModel> defaultValues;
         #endregion
 
@@ -210,10 +210,7 @@ namespace Simplic.Flow.Editor.UI
         public double Width
         {
             get
-            {
-                if (nodeConfiguration.Width == 0)
-                    nodeConfiguration.Width = DefaultWidth;
-
+            {                
                 return nodeConfiguration.Width;
             }
             set
@@ -229,12 +226,10 @@ namespace Simplic.Flow.Editor.UI
         public double Height
         {
             get
-            {
-                if (nodeConfiguration.Height == 0)
-                    nodeConfiguration.Height = DefaultHeight;
-
+            {                                
                 return nodeConfiguration.Height;
             }
+
             set
             {
                 nodeConfiguration.Height = value;

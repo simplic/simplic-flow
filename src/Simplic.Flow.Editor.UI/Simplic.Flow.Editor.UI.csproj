@@ -31,31 +31,40 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.2.0.2\lib\net45\CommonServiceLocator.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="Simplic.CoreLib, Version=6.14.418.1002, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simplic.CoreLib.6.14.418.1002\lib\net451\Simplic.CoreLib.dll</HintPath>
+    <Reference Include="Simplic.CoreLib, Version=6.16.18.1125, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.CoreLib.6.16.18.1125\lib\net451\Simplic.CoreLib.dll</HintPath>
     </Reference>
-    <Reference Include="Simplic.Flow, Version=6.2.18.1012, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simplic.Flow.6.2.18.1012\lib\net451\Simplic.Flow.dll</HintPath>
+    <Reference Include="Simplic.Flow, Version=6.5.19.130, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.Flow.6.5.19.130\lib\net451\Simplic.Flow.dll</HintPath>
     </Reference>
-    <Reference Include="Simplic.Flow.Configuration, Version=6.2.118.1012, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simplic.Flow.Configuration.6.2.118.1012\lib\net451\Simplic.Flow.Configuration.dll</HintPath>
+    <Reference Include="Simplic.Flow.Configuration, Version=6.4.18.1218, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.Flow.Configuration.6.4.18.1218\lib\net451\Simplic.Flow.Configuration.dll</HintPath>
     </Reference>
     <Reference Include="Simplic.Flow.Editor.Definition, Version=6.2.118.1012, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Simplic.Flow.Editor.Definition.6.2.118.1012\lib\net451\Simplic.Flow.Editor.Definition.dll</HintPath>
     </Reference>
-    <Reference Include="Simplic.Flow.Event, Version=6.1.218.1012, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simplic.Flow.Event.6.1.218.1012\lib\net451\Simplic.Flow.Event.dll</HintPath>
+    <Reference Include="Simplic.Flow.Event, Version=6.3.118.1212, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.Flow.Event.6.3.118.1212\lib\net451\Simplic.Flow.Event.dll</HintPath>
     </Reference>
-    <Reference Include="Simplic.Flow.Node, Version=6.3.418.1012, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simplic.Flow.Node.6.3.418.1012\lib\net451\Simplic.Flow.Node.dll</HintPath>
+    <Reference Include="Simplic.Flow.Node, Version=6.7.219.128, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.Flow.Node.6.7.219.128\lib\net451\Simplic.Flow.Node.dll</HintPath>
     </Reference>
     <Reference Include="Simplic.Framework.Base">
       <HintPath>..\..\..\simplic-framework\src\Simplic.Main\bin\Debug\Simplic.Framework.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="Simplic.Localization, Version=6.0.118.913, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.Localization.6.0.118.913\lib\net451\Simplic.Localization.dll</HintPath>
+    </Reference>
+    <Reference Include="Simplic.Localization.UI, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.Localization.UI.1.0.0.2\lib\net451\Simplic.Localization.UI.dll</HintPath>
     </Reference>
     <Reference Include="Simplic.UI">
       <HintPath>..\..\..\simplic-framework\src\Simplic.Main\bin\Debug\Simplic.UI.dll</HintPath>
@@ -91,6 +100,12 @@
     </Reference>
     <Reference Include="Telerik.Windows.Diagrams.Core">
       <HintPath>..\..\..\simplic-framework\src\Simplic.Main\bin\Debug\Assemblies\Telerik.Windows.Diagrams.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Abstractions, Version=3.3.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.Abstractions.3.3.0\lib\net45\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ServiceLocation, Version=2.1.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.ServiceLocation.2.1.1\lib\net45\Unity.ServiceLocation.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
@@ -132,6 +147,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="package.bat" />
     <None Include="packages.config">
       <SubType>Designer</SubType>

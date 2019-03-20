@@ -216,9 +216,9 @@ namespace Simplic.Flow.Editor.UI
             IsDirty = true;
             if (shape is BaseNodeShape)
             {
-                var actionNodeShape = shape as BaseNodeShape;
+                var baseNodeShape = shape as BaseNodeShape;
 
-                var def = NodeDefinitions.Where(x => x.Name == actionNodeShape.Name).FirstOrDefault();
+                var def = NodeDefinitions.FirstOrDefault(x => x.Name == baseNodeShape.Name);
 
                 var nodeConfig = new Configuration.NodeConfiguration
                 {
@@ -232,20 +232,27 @@ namespace Simplic.Flow.Editor.UI
                 NodeViewModel nodeViewModel = null;
 
                 if (def is ActionNodeDefinition)
+                {
                     nodeViewModel = new ActionNodeViewModel(def, nodeConfig);
-                else
-                if (def is EventNodeDefinition)
+                    baseNodeShape.DataContext = nodeViewModel;
+                }
+                else if (def is EventNodeDefinition)
+                {
                     nodeViewModel = new EventNodeViewModel(def, nodeConfig);
+                    baseNodeShape.DataContext = nodeViewModel;
+                }
 
-                actionNodeShape.DataContext = nodeViewModel;
-                actionNodeShape.CreateConnectors();
-
+                baseNodeShape.CreateConnectors();
+                baseNodeShape.Height = nodeViewModel.Height;
+                baseNodeShape.Width = nodeViewModel.Width;
                 return nodeViewModel;
             }
 
             return null;
         }
         #endregion
+
+
 
         #region [IObservableGraphSource.RemoveLink]
         /// <summary>
