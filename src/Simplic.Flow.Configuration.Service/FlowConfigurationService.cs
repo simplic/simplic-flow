@@ -16,9 +16,9 @@ namespace Simplic.Flow.Configuration.Service
             return this.flowConfigurationRepository.Get(id);
         }
 
-        public IEnumerable<FlowConfiguration> GetAll()
+        public IEnumerable<FlowConfiguration> GetAll(bool getOnlyActive = true)
         {
-            return this.flowConfigurationRepository.GetAll();
+            return this.flowConfigurationRepository.GetAll(getOnlyActive);
         }
 
         public bool Save(FlowConfiguration flowConfiguration)
