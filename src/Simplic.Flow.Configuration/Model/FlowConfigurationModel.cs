@@ -25,6 +25,6 @@ namespace Simplic.Flow.Configuration
         /// <summary>
         /// Gets or sets if the configuration is active. If not, it will not be processed.
         /// </summary>
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = true;
     }
 }
