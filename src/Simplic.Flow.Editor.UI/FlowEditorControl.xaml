@@ -61,11 +61,14 @@
                     </Grid.RowDefinitions>
 
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     
-                    <Label Grid.Row="0" Content="Name:" FontWeight="Bold"/>
-                    <TextBox Grid.Row="1" Text="{Binding WorkflowName, UpdateSourceTrigger=PropertyChanged}" Margin="5" Padding="5"/>
+                    <Label Grid.Row="0" Content="Name" FontWeight="Bold"/>
+                    <simplic:TextBox Grid.Row="0" Grid.Column="1" Text="{Binding WorkflowName, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <simplic:CheckBox Content="Is active" Grid.Row="1" Grid.Column="1" IsChecked="{Binding IsActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Button Grid.Row="2" HorizontalAlignment="Left" Margin="0, 5" Width="150" Content="{simplic:Localization Key=flow_new_variable}" Command="{Binding AddVariableCommand}" />
 

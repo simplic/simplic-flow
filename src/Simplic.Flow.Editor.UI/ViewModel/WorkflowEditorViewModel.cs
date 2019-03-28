@@ -1,4 +1,5 @@
-﻿using Simplic.Flow.Editor.Definition;
+﻿using Simplic.Flow;
+using Simplic.Flow.Editor.Definition;
 using Simplic.UI.MVC;
 using System;
 using System.Collections;
@@ -540,7 +541,22 @@ namespace Simplic.Flow.Editor.UI
             set { addVariableCommand = value; }
         } 
         #endregion
-
+        
+        /// <summary>
+        /// Gets or sets whether the flow is active
+        /// </summary>
+        public bool IsActive
+        {
+            get
+            {
+                return flowConfiguration.IsActive;
+            }
+            set
+            {
+                flowConfiguration.IsActive = value;
+                RaisePropertyChanged(nameof(IsActive));
+            }
+        }
         #endregion
     }
 }

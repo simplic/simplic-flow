@@ -37,5 +37,10 @@ namespace Simplic.Flow.Configuration
         /// Gets or sets the configuration wide variables
         /// </summary>
         public List<FlowVariableConfiguration> Variables { get; set; } = new List<FlowVariableConfiguration>();
+
+        /// <summary>
+        /// Gets or sets whether the flow configuration is active
+        /// </summary>
+        public bool IsActive { get; set; } = true;
     }
 }
