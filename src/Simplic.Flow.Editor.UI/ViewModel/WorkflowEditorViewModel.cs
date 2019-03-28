@@ -1,6 +1,4 @@
-﻿using Simplic.Flow;
-using Simplic.Flow.Editor.Definition;
-using Simplic.UI.MVC;
+﻿using Simplic.Flow.Editor.Definition;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -63,7 +61,7 @@ namespace Simplic.Flow.Editor.UI
                 this.flowConfiguration = flowConfiguration;
 
             FillConfiguration();
-            
+
             addVariableCommand = new Simplic.UI.MVC.RelayCommand(NewVariableRelayCommand);
 
             AvailableVariableTypes = new List<Type>()
@@ -77,7 +75,7 @@ namespace Simplic.Flow.Editor.UI
                 { typeof(ulong) },
                 { typeof(float) },
                 { typeof(double) },
-                { typeof(decimal) }                
+                { typeof(decimal) }
             };
         }
         #endregion
@@ -164,17 +162,17 @@ namespace Simplic.Flow.Editor.UI
         void IObservableGraphSource.AddLink(ILink link)
         {
             IsDirty = true;
-            
-            var connection = link as NodeConnectionViewModel;            
+
+            var connection = link as NodeConnectionViewModel;
 
             if (TargetConnector != null)
             {
                 connection.TargetConnectorViewModel = TargetConnector;
                 connection.TargetConnectorViewModel.IsConnected = true;
             }
-            
+
             connection.SourceConnectorViewModel.IsConnected = true;
-            
+
             connections.Add(connection);
         }
         #endregion
@@ -200,7 +198,7 @@ namespace Simplic.Flow.Editor.UI
         /// <returns>ILink</returns>
         ILink IObservableGraphSource.CreateLink(object source, object target)
         {
-            IsDirty = true;                        
+            IsDirty = true;
 
             return new NodeConnectionViewModel(source as NodeViewModel, target as NodeViewModel, SourceConnector, null);
         }
@@ -266,12 +264,12 @@ namespace Simplic.Flow.Editor.UI
             IsDirty = true;
 
             if (connections.Contains(link))
-            {                
+            {
                 var connection = link as NodeConnectionViewModel;
                 connection.SourceConnectorViewModel.IsConnected = false;
                 connection.TargetConnectorViewModel.IsConnected = false;
 
-                if (connection.SourceViewModel is ActionNodeViewModel 
+                if (connection.SourceViewModel is ActionNodeViewModel
                     && connection.SourceConnectorViewModel is DataConnectorViewModel)
                 {
                     var connector = connection.SourceConnectorViewModel as DataConnectorViewModel;
@@ -289,8 +287,8 @@ namespace Simplic.Flow.Editor.UI
                         }
                     }
                 }
-                    
-                if (connection.TargetViewModel is ActionNodeViewModel 
+
+                if (connection.TargetViewModel is ActionNodeViewModel
                     && connection.TargetConnectorViewModel is DataConnectorViewModel)
                 {
                     var connector = connection.TargetConnectorViewModel as DataConnectorViewModel;
@@ -354,13 +352,14 @@ namespace Simplic.Flow.Editor.UI
         private void NewVariableRelayCommand(object parameter)
         {
             var lastVariable = Variables.OrderBy(x => x.Name).LastOrDefault();
-            var newVariable = new FlowVariable {
+            var newVariable = new FlowVariable
+            {
                 Name = lastVariable != null ? lastVariable.Name + "(Copy)" : "New Variable",
                 Type = typeof(string)
             };
 
             Variables.Add(newVariable);
-        } 
+        }
         #endregion
 
         #endregion
@@ -386,13 +385,13 @@ namespace Simplic.Flow.Editor.UI
             {
                 flowConfiguration.Nodes.Add(node.CreateConfiguration());
             }
-            
+
             flowConfiguration.Links.Clear();
             flowConfiguration.Links = connections.Where(x => x.FlowLink != null).Select(x => x.FlowLink).ToList();
             flowConfiguration.Pins = connections.Where(x => x.DataLink != null).Select(x => x.DataLink).ToList();
 
             return flowConfiguration;
-        } 
+        }
         #endregion
 
         #endregion
@@ -404,7 +403,7 @@ namespace Simplic.Flow.Editor.UI
         #endregion
 
         #region [IGraphSource.Links]
-        IEnumerable<ILink> IGraphSource.Links { get { return connections; } } 
+        IEnumerable<ILink> IGraphSource.Links { get { return connections; } }
         #endregion
 
         #endregion
@@ -442,9 +441,9 @@ namespace Simplic.Flow.Editor.UI
                 nodeDefinitions = value;
                 RaisePropertyChanged(nameof(NodeDefinitions));
             }
-        } 
+        }
         #endregion
-        
+
         #region [Connections]
         /// <summary>
         /// Gets or sets the connections
@@ -453,8 +452,8 @@ namespace Simplic.Flow.Editor.UI
         {
             get { return connections; }
             set { connections = value; IsDirty = true; RaisePropertyChanged(nameof(Connections)); }
-        } 
-        #endregion        
+        }
+        #endregion
 
         #region [SourceConnector]
         /// <summary>
@@ -531,7 +530,7 @@ namespace Simplic.Flow.Editor.UI
         /// <summary>
         /// Gets or sets a list of available variable types
         /// </summary>
-        public IList<Type> AvailableVariableTypes { get; set; } 
+        public IList<Type> AvailableVariableTypes { get; set; }
         #endregion
 
         #region [AddVariableCommand]
@@ -539,9 +538,9 @@ namespace Simplic.Flow.Editor.UI
         {
             get { return addVariableCommand; }
             set { addVariableCommand = value; }
-        } 
+        }
         #endregion
-        
+
         /// <summary>
         /// Gets or sets whether the flow is active
         /// </summary>

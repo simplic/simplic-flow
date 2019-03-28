@@ -1,5 +1,4 @@
-﻿using Simplic.Collections.Generic;
-using Simplic.Flow.Event;
+﻿using Simplic.Flow.Event;
 using Simplic.Flow.Log;
 using System.Collections.Generic;
 using System.Linq;
