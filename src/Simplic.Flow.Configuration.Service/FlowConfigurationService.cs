@@ -9,6 +9,7 @@ namespace Simplic.Flow.Configuration.Service
     public class FlowConfigurationService : IFlowConfigurationService
     {
         private readonly IFlowConfigurationRepository flowConfigurationRepository;
+
         public FlowConfigurationService(IFlowConfigurationRepository flowConfigurationRepository)
         {
             this.flowConfigurationRepository = flowConfigurationRepository;
@@ -27,30 +28,34 @@ namespace Simplic.Flow.Configuration.Service
                 throw new FlowConfigurationServiceException($"Flow Configuration with id {configurationGuid} was not found.");
 
             original.Id = Guid.NewGuid();
-            original.Name = newConfigurationName;            
+            original.Name = newConfigurationName;
 
             return original;
         }
 
         public FlowConfiguration Get(Guid id)
         {
-            return this.flowConfigurationRepository.Get(id);
+            return flowConfigurationRepository.Get(id);
         }
 
         public IEnumerable<FlowConfiguration> GetAll(bool getOnlyActive = true)
         {
-            return this.flowConfigurationRepository.GetAll(getOnlyActive);
+            return flowConfigurationRepository.GetAll(getOnlyActive);
         }
 
         public bool Save(FlowConfiguration flowConfiguration)
-        {            
+        {
             return flowConfigurationRepository.Save(flowConfiguration);
         }
-
 
         public bool SetStatus(Guid id, bool isActive)
         {
             return flowConfigurationRepository.SetStatus(id, isActive);
+        }
+
+        public FlowConfiguration GetByExportId(Guid exportId)
+        {
+            return flowConfigurationRepository.GetByExportId(exportId);
         }
     }
 }
