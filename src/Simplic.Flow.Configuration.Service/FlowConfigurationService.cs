@@ -46,5 +46,11 @@ namespace Simplic.Flow.Configuration.Service
         {            
             return flowConfigurationRepository.Save(flowConfiguration);
         }
+
+
+        public bool SetStatus(Guid id, bool isActive)
+        {
+            return flowConfigurationRepository.SetStatus(id, isActive);
+        }
     }
 }

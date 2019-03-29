@@ -96,7 +96,23 @@ namespace Simplic.Flow.Configuration.Data.DB
                 return affectedRows > 0;
             });
         }
-        #endregion 
+        #endregion
+
+        #region [SetStatus]
+        public bool SetStatus(Guid id, bool isActive)
+        {
+            return sqlService.OpenConnection((conn) =>
+            {
+                var affectedRows = conn.Execute($"UPDATE {FlowConfigurationTableName} Set IsActive = :isActive WHERE Id = :id", new
+                {
+                    id,
+                    isActive
+                });
+
+                return affectedRows > 0;
+            });
+        } 
+        #endregion
 
         #endregion
     }
