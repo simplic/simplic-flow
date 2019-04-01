@@ -9,6 +9,7 @@ namespace Simplic.Flow.EventQueue
         IEnumerable<EventQueueModel> GetAllUnhandled();
         EventQueueModel Get(Guid id);
         bool Save(EventQueueModel model);
-        bool SetHandled(Guid id, bool isHandled);        
+        bool SetHandled(Guid id, bool isHandled);
+        void ClearEventQueue();
     }
 }
