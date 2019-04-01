@@ -9,7 +9,6 @@ using Simplic.Flow.Node.IO;
 using Simplic.FlowInstance;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -108,12 +107,14 @@ namespace Simplic.Flow.Service
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<ReadAllBytesNode>>(nameof(ReadAllBytesNode));
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<ClearPinNode>>(nameof(ClearPinNode));
 
-            flowConfigurations = flowConfigurationService.GetAll().ToList();
+            // Load active flow configurations
+            flowConfigurations = flowConfigurationService.GetAll().Where(x => x.IsActive).ToList();
+
             if (flowConfigurations.Count > 0)
-                flowLogService.Info($"# {flowConfigurations.Count} Flow Configuration were found: {string.Join(", ", flowConfigurations.Select(x => $"\"{x.Name}\""))}");
+                flowLogService.Info($"# {flowConfigurations.Count} Active flow configurations were found: {string.Join(", ", flowConfigurations.Select(x => $"\"{x.Name}\""))}");
             else
             {
-                flowLogService.Info("No flow configurations were found!");
+                flowLogService.Info("No active flow configurations were found!");
                 return;
             }
 

@@ -1,5 +1,4 @@
-﻿using Simplic.Collections.Generic;
-using Simplic.Flow.Event;
+﻿using Simplic.Flow.Event;
 using Simplic.Flow.Log;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +12,6 @@ namespace Simplic.Flow.Service
         private readonly IFlowLogService flowLogService;
         private FlowInstance instance;
         private EventCall eventCall;
-
-        public FlowEventArgs FlowEventArgs { get; private set; }
-        public FlowInstance Instance { get { return instance; } }
 
         /// <summary>
         /// Initialize new runtime instance
@@ -143,5 +139,15 @@ namespace Simplic.Flow.Service
 
             return false;
         }
+
+        /// <summary>
+        /// Gets or sets the flow arguments
+        /// </summary>
+        public FlowEventArgs FlowEventArgs { get; private set; }
+
+        /// <summary>
+        /// Gets or sets flow instance
+        /// </summary>
+        public FlowInstance Instance { get { return instance; } }
     }
 }

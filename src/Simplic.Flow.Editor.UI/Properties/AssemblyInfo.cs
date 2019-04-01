@@ -10,7 +10,7 @@ using System.Windows.Markup;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("SIMPLIC GmbH")]
 [assembly: AssemblyProduct("Simplic.Flow.Editor.UI")]
-[assembly: AssemblyCopyright("Copyright © SIMPLIC GmbH 2018")]
+[assembly: AssemblyCopyright("Copyright © SIMPLIC GmbH")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Windows.Markup;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("6.6.619.0320")]
-[assembly: AssemblyFileVersion("6.6.619.0320")]
+[assembly: AssemblyVersion("6.7.119.0328")]
+[assembly: AssemblyFileVersion("6.7.119.0328")]

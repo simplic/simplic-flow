@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("SIMPLIC GmbH")]
 [assembly: AssemblyProduct("Simplic.Flow.Configuration.Service")]
-[assembly: AssemblyCopyright("Copyright © SIMPLIC GmbH 2018")]
+[assembly: AssemblyCopyright("Copyright © SIMPLIC GmbH")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -31,5 +31,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("6.1.218.1012")]
-[assembly: AssemblyFileVersion("6.1.218.1012")]
+[assembly: AssemblyVersion("6.3.119.0329")]
+[assembly: AssemblyFileVersion("6.3.119.0329")]

@@ -39,11 +39,13 @@ namespace Simplic.Flow.Configuration.Data.DB
         #region Public Methods
 
         #region [GetAll]
-        public IEnumerable<FlowConfiguration> GetAll()
+        public IEnumerable<FlowConfiguration> GetAll(bool getOnlyActive = true)
         {
             var flowConfigurationModels = sqlService.OpenConnection((conn) =>
             {
-                return conn.Query<FlowConfigurationModel>($"SELECT * from {FlowConfigurationTableName}");
+                var condition = getOnlyActive ? " WHERE IsActive = 1 " : "";
+                var sql = $"SELECT * from {FlowConfigurationTableName} {condition}";
+                return conn.Query<FlowConfigurationModel>(sql);
             });
 
             foreach (var item in flowConfigurationModels)
@@ -67,11 +69,11 @@ namespace Simplic.Flow.Configuration.Data.DB
             {
                 var config = ConvertToJson(flowConfigurationModel.Configuration);
                 config.Id = flowConfigurationModel.Id;
-                config.Name = flowConfigurationModel.Name;   
-                
+                config.Name = flowConfigurationModel.Name;
+
                 return config;
             }
-                
+
             else
                 return null;
         }
@@ -94,7 +96,23 @@ namespace Simplic.Flow.Configuration.Data.DB
                 return affectedRows > 0;
             });
         }
-        #endregion 
+        #endregion
+
+        #region [SetStatus]
+        public bool SetStatus(Guid id, bool isActive)
+        {
+            return sqlService.OpenConnection((conn) =>
+            {
+                var affectedRows = conn.Execute($"UPDATE {FlowConfigurationTableName} Set IsActive = :isActive WHERE Id = :id", new
+                {
+                    id,
+                    isActive
+                });
+
+                return affectedRows > 0;
+            });
+        } 
+        #endregion
 
         #endregion
     }

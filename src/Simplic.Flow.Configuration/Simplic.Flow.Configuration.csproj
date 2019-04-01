@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exception\FlowConfigurationServiceException.cs" />
     <Compile Include="Interface\IFlowConfigurationRepository.cs" />
     <Compile Include="Model\FlowConfiguration.cs" />
     <Compile Include="Interface\IFlowConfigurationService.cs" />
