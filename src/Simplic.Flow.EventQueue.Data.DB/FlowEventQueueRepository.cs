@@ -74,7 +74,7 @@ namespace Simplic.Flow.EventQueue.Data.DB
             sqlService.OpenConnection((conn) =>
             {
                 var sql = $"DELETE {FlowEventQueueTableName} WHERE CreateDateTime < :createDateTime";
-                var affectedRows = conn.Execute(sql, new { createDateTime = DateTime.Now.AddDays(-1) });
+                var affectedRows = conn.Execute(sql, new { createDateTime = DateTime.Now.AddMinutes(-10) });
 
                 return affectedRows > 0;
             });
