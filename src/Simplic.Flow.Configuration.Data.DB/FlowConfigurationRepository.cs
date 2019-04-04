@@ -79,6 +79,29 @@ namespace Simplic.Flow.Configuration.Data.DB
         }
         #endregion
 
+        #region [GetByExportId]
+        public FlowConfiguration GetByExportId(Guid exportId)
+        {
+            var flowConfigurationModel = sqlService.OpenConnection((conn) =>
+            {
+                return conn.Query<FlowConfigurationModel>
+                    ($"SELECT * from {FlowConfigurationTableName} WHERE ExportId = :exportId",
+                    new { exportId }).FirstOrDefault();
+            });
+
+            if (flowConfigurationModel != null)
+            {
+                var config = ConvertToJson(flowConfigurationModel.Configuration);
+                config.Id = flowConfigurationModel.Id;
+                config.Name = flowConfigurationModel.Name;
+
+                return config;
+            }
+            else
+                return null;
+        }
+        #endregion
+
         #region [Save]
         public bool Save(FlowConfiguration flowConfiguration)
         {
@@ -111,7 +134,7 @@ namespace Simplic.Flow.Configuration.Data.DB
 
                 return affectedRows > 0;
             });
-        } 
+        }
         #endregion
 
         #endregion
