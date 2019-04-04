@@ -553,6 +553,7 @@ namespace Simplic.Flow.Editor.UI
             set
             {
                 flowConfiguration.IsActive = value;
+                IsDirty = true;
                 RaisePropertyChanged(nameof(IsActive));
             }
         }
