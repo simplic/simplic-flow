@@ -68,5 +68,16 @@ namespace Simplic.Flow.EventQueue.Data.DB
                 return affectedRows > 0;
             });
         }
+
+        public void ClearEventQueue()
+        {
+            sqlService.OpenConnection((conn) =>
+            {
+                var sql = $"DELETE {FlowEventQueueTableName} WHERE CreateDateTime < :createDateTime";
+                var affectedRows = conn.Execute(sql, new { createDateTime = DateTime.Now.AddMinutes(-10) });
+
+                return affectedRows > 0;
+            });
+        }
     }
 }
