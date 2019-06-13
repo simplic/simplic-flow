@@ -44,5 +44,7 @@ namespace Simplic.Flow.EventQueue.Service
         {
             flowEventQueueRepository.ClearEventQueue();
         }
+
+        public void Remove(Guid id) => flowEventQueueRepository.Remove(id);
     }
 }

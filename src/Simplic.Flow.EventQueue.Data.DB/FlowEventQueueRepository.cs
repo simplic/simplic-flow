@@ -25,6 +25,15 @@ namespace Simplic.Flow.EventQueue.Data.DB
             });
         }
 
+        public void Remove(Guid id)
+        {
+            sqlService.OpenConnection((conn) =>
+            {
+                conn.Query<EventQueueModel>($"DELETE FROM {FlowEventQueueTableName} WHERE Id = :id",
+                    new { id }).FirstOrDefault();
+            });
+        }
+
         public IEnumerable<EventQueueModel> GetAll()
         {
             return sqlService.OpenConnection((conn) =>

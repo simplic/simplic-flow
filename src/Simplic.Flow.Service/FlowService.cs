@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using Unity;
 
 namespace Simplic.Flow.Service
@@ -321,7 +322,10 @@ namespace Simplic.Flow.Service
         private bool SetEventQueueHandled(Guid eventQueueId)
         {
             flowLogService.Info($"Running SetEventQueueHandled with {eventQueueId}");
-            return flowEventQueueService.SetHandled(eventQueueId, true);
+            var result = flowEventQueueService.SetHandled(eventQueueId, true);
+            flowEventQueueService.Remove(eventQueueId);
+
+            return result;
         }
         #endregion
 
@@ -387,7 +391,7 @@ namespace Simplic.Flow.Service
         #endregion
 
         #region Public Methods
-
+        private IList<ThreadStateInfo> flowJob = new List<ThreadStateInfo>();
         #region [Run]
         /// <summary>
         /// Run a single cycle
@@ -428,7 +432,7 @@ namespace Simplic.Flow.Service
                             Id = Guid.NewGuid()
                         };
 
-                        ThreadPool.QueueUserWorkItem(new WaitCallback(ProcessEvent), new ThreadStateInfo
+                        flowJob.Add(new ThreadStateInfo
                         {
                             FlowInstance = newFlowInstance,
                             EventCall = queueEntry
@@ -445,7 +449,7 @@ namespace Simplic.Flow.Service
                             var flowInstance = flowInstanceService.GetById(activeFlow.FlowInstanceId);
                             flowInstance.Flow = Flows.FirstOrDefault(x => x.Id == flowInstance.FlowId);
 
-                            ThreadPool.QueueUserWorkItem(new WaitCallback(ProcessEvent), new ThreadStateInfo
+                            flowJob.Add(new ThreadStateInfo
                             {
                                 IsStartEvent = false,
                                 FlowInstance = flowInstance,
@@ -454,10 +458,46 @@ namespace Simplic.Flow.Service
                             });
                         }
                     }
-
-                    // change the event status to handled and save to the database
-                    SetEventQueueHandled(queueEntry.QueueId);
                 }
+
+                var failed = new ConcurrentList<Guid>();
+                var success = new ConcurrentList<Guid>();
+
+                while (flowJob.Any())
+                {
+                    var executedJobs = flowJob.Take(2);
+                    var tempTasks = new List<Task>();
+
+                    foreach (var job in executedJobs)
+                        tempTasks.Add(Task.Run(() => 
+                        {
+                            try
+                            {
+                                ProcessEvent(job);
+                                success.Add(job.EventCall.QueueId);
+                            }
+                            catch
+                            {
+                                failed.Add(job.EventCall.QueueId);
+                            }
+                        }));
+
+                    Task.WaitAll(tempTasks.ToArray());
+
+                    foreach (var toRemove in executedJobs)
+                        flowJob.Remove(toRemove);
+                }
+
+                // Remove failed from success
+                foreach (var failedJob in failed)
+                {
+                    SetEventQueueFailed(failed);
+                    success.Remove(failedJob);
+                }
+
+                // Set handled jobs and remove them
+                foreach (var successJob in success)
+                    SetEventQueueHandled(successJob);
             }
             catch (Exception ex)
             {
@@ -470,6 +510,11 @@ namespace Simplic.Flow.Service
 
             // Raise event after the process has begun.
             OnCompleted?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void SetEventQueueFailed(ConcurrentList<Guid> failed)
+        {
+            throw new NotImplementedException();
         }
         #endregion
 
@@ -500,7 +545,9 @@ namespace Simplic.Flow.Service
             if (!isEnqueued)
             {
                 flowLogService.Info($"- No delegate was found for {args.EventName}, changing status to handled.");
-                flowEventQueueService.SetHandled(args.QueueId, true);
+
+                // Remove events that can't be handled
+                flowEventQueueService.Remove(args.QueueId);
             }
         }
         #endregion

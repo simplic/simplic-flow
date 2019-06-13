@@ -11,5 +11,6 @@ namespace Simplic.Flow.EventQueue
         bool Save(EventQueueModel model);
         bool SetHandled(Guid id, bool isHandled);
         void ClearEventQueue();
+        void Remove(Guid queueId);
     }
 }
