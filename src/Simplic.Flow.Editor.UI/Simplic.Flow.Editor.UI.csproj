@@ -1,0 +1,180 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E2164AF5-152F-44A7-8413-D6A5BDDF7190}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Simplic.Flow.Editor.UI</RootNamespace>
+    <AssemblyName>Simplic.Flow.Editor.UI</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.2.0.2\lib\net45\CommonServiceLocator.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="Simplic.CoreLib, Version=6.16.18.1125, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.CoreLib.6.16.18.1125\lib\net451\Simplic.CoreLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Simplic.Framework.Base">
+      <HintPath>..\..\..\simplic-framework\src\Simplic.Main\bin\Debug\Simplic.Framework.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="Simplic.Localization, Version=6.0.118.913, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.Localization.6.0.118.913\lib\net451\Simplic.Localization.dll</HintPath>
+    </Reference>
+    <Reference Include="Simplic.Localization.UI, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.Localization.UI.1.0.0.2\lib\net451\Simplic.Localization.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Simplic.UI">
+      <HintPath>..\..\..\simplic-framework\src\Simplic.Main\bin\Debug\Simplic.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Telerik.Windows.Controls">
+      <HintPath>..\..\..\simplic-framework\src\Simplic.Main\bin\Debug\Assemblies\Telerik.Windows.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.Diagrams">
+      <HintPath>..\..\..\simplic-framework\src\Simplic.Main\bin\Debug\Assemblies\Telerik.Windows.Controls.Diagrams.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.Diagrams.Extensions">
+      <HintPath>..\..\..\simplic-framework\src\Simplic.Main\bin\Debug\Assemblies\Telerik.Windows.Controls.Diagrams.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.GridView">
+      <HintPath>..\..\..\simplic-framework\src\Simplic.Main\bin\Debug\Assemblies\Telerik.Windows.Controls.GridView.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.Navigation, Version=2018.1.122.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\simplic-framework\src\Simplic.Main\bin\Debug\Assemblies\Telerik.Windows.Controls.Navigation.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Data, Version=2018.1.122.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\simplic-framework\src\Simplic.Main\bin\Debug\Assemblies\Telerik.Windows.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Diagrams.Core">
+      <HintPath>..\..\..\simplic-framework\src\Simplic.Main\bin\Debug\Assemblies\Telerik.Windows.Diagrams.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Abstractions, Version=3.3.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.Abstractions.3.3.0\lib\net45\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ServiceLocation, Version=2.1.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.ServiceLocation.2.1.1\lib\net45\Unity.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Connectors\BaseConnector.cs" />
+    <Compile Include="Connectors\ConnectorDirection.cs" />
+    <Compile Include="Connectors\DataConnector.cs" />
+    <Compile Include="Connectors\FlowConnector.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="FlowEditorControl.xaml.cs">
+      <DependentUpon>FlowEditorControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FlowRadDiagram.cs" />
+    <Compile Include="HierarchicalDataTemplate.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Shapes\ActionNodeShape.cs" />
+    <Compile Include="Shapes\BaseNodeShape.cs" />
+    <Compile Include="Shapes\EventNodeShape.cs" />
+    <Compile Include="StyleSelectors\NodeStyleSelector.cs" />
+    <Compile Include="ViewModel\Connector\ConnectorViewModel.cs" />
+    <Compile Include="ViewModel\Connector\DataConnectorViewModel.cs" />
+    <Compile Include="ViewModel\Connector\FlowConnectorViewModel.cs" />
+    <Compile Include="ViewModel\DataPinDefaultValueViewModel.cs" />
+    <Compile Include="ViewModel\NodeConnectionViewModel.cs" />
+    <Compile Include="ViewModel\Node\ActionNodeViewModel.cs" />
+    <Compile Include="ViewModel\Node\EventNodeViewModel.cs" />
+    <Compile Include="ViewModel\Node\NodeViewModel.cs" />
+    <Compile Include="ViewModel\ToolboxViewModel.cs" />
+    <Compile Include="ViewModel\WorkflowEditorViewModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="FlowEditorControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="package.bat" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Simplic.Flow.Editor.UI.nuspec" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Simplic.Flow.Configuration\Simplic.Flow.Configuration.csproj">
+      <Project>{a2f33950-81af-4d02-856f-5b2c69e78cac}</Project>
+      <Name>Simplic.Flow.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.Flow.Configuration\Simplic.Flow.Configuration.csproj">
+      <Project>{a2f33950-81af-4d02-856f-5b2c69e78cac}</Project>
+      <Name>Simplic.Flow.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.Flow.Editor.Definition\Simplic.Flow.Editor.Definition.csproj">
+      <Project>{75EF378A-23DD-4B14-B9F8-30747A8347FF}</Project>
+      <Name>Simplic.Flow.Editor.Definition</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.Flow.Editor.Definition\Simplic.Flow.Editor.Definition.csproj">
+      <Project>{75ef378a-23dd-4b14-b9f8-30747a8347ff}</Project>
+      <Name>Simplic.Flow.Editor.Definition</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.Flow.Event\Simplic.Flow.Event.csproj">
+      <Project>{efcc8359-4ed2-421f-b9be-4e25cdd5cf40}</Project>
+      <Name>Simplic.Flow.Event</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.Flow.Node\Simplic.Flow.Node.csproj">
+      <Project>{a88421d5-6b43-4b8d-8865-79a33f935112}</Project>
+      <Name>Simplic.Flow.Node</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.Flow\Simplic.Flow.csproj">
+      <Project>{1F540A26-62FB-45CB-ABC6-B4B2D8F7005E}</Project>
+      <Name>Simplic.Flow</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.Flow\Simplic.Flow.csproj">
+      <Project>{1f540a26-62fb-45cb-abc6-b4b2d8f7005e}</Project>
+      <Name>Simplic.Flow</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(TargetDir)$(TargetName).dll" "$(SolutionDir)..\..\simplic-framework\src\Simplic.Main\bin\Debug\" /F /Y</PostBuildEvent>
+  </PropertyGroup>
+</Project>

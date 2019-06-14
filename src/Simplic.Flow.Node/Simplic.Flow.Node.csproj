@@ -30,6 +30,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Simplic.CoreLib, Version=6.14.418.1002, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.CoreLib.6.14.418.1002\lib\net451\Simplic.CoreLib.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,15 +46,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\ConsoleWriteLineNode.cs" />
-    <Compile Include="Model\ForeachNode.cs" />
+    <Compile Include="ActionNode\Base\ConsoleWriteLineNode.cs" />
+    <Compile Include="ActionNode\Base\ClearPinNode.cs" />
+    <Compile Include="ActionNode\Base\ForeachNode.cs" />
+    <Compile Include="ActionNode\Base\GetVariableNode.cs" />
+    <Compile Include="ActionNode\IO\ReadAllBytesNode.cs" />
+    <Compile Include="ActionNode\IO\ReadAllTextNode.cs" />
+    <Compile Include="ActionNode\Math\AddNode.cs" />
+    <Compile Include="ActionNode\Math\DivideNode.cs" />
+    <Compile Include="ActionNode\Math\MultiplyNode.cs" />
+    <Compile Include="ActionNode\Base\SetVariableNode.cs" />
+    <Compile Include="ActionNode\IO\DeleteFileNode.cs" />
+    <Compile Include="ActionNode\IO\GetDirectoryContentNode.cs" />
+    <Compile Include="ActionNode\Math\SubtractNode.cs" />
+    <Compile Include="ActionNode\Process\ProcessStartNode.cs" />
+    <Compile Include="ActionNode\Thread\ThreadSleepNode.cs" />
+    <Compile Include="EventNode\IO\OnCheckDirectoryContentEventArgs.cs" />
+    <Compile Include="EventNode\IO\OnCheckDirectoryContentNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resolver\ConsoleWriteLineNodeResolver.cs" />
-    <Compile Include="Resolver\ForeachNodeResolver.cs" />
-    <Compile Include="Resolver\SequenceNodeResolver.cs" />
-    <Compile Include="Resolver\StartWithConditionNodeResolver.cs" />
-    <Compile Include="Model\SequenceNode.cs" />
-    <Compile Include="Model\StartWithConditionNode.cs" />
+    <Compile Include="ActionNode\Base\SequenceNode.cs" />
+    <Compile Include="ActionNode\Base\StartWithConditionNode.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="package.bat" />
+    <None Include="packages.config" />
+    <None Include="Simplic.Flow.Node.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Simplic.Flow.Event\Simplic.Flow.Event.csproj">
@@ -56,13 +78,12 @@
       <Name>Simplic.Flow.Event</Name>
     </ProjectReference>
     <ProjectReference Include="..\Simplic.Flow\Simplic.Flow.csproj">
-      <Project>{1f540a26-62fb-45cb-abc6-b4b2d8f7005e}</Project>
+      <Project>{1F540A26-62FB-45CB-ABC6-B4B2D8F7005E}</Project>
       <Name>Simplic.Flow</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="package.bat" />
-    <None Include="Simplic.Flow.Node.nuspec" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(TargetDir)$(TargetName).dll" "$(SolutionDir)..\..\simplic-framework\src\Simplic.Main\bin\Debug\" /F /Y</PostBuildEvent>
+  </PropertyGroup>
 </Project>

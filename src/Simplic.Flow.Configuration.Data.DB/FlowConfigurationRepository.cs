@@ -39,11 +39,13 @@ namespace Simplic.Flow.Configuration.Data.DB
         #region Public Methods
 
         #region [GetAll]
-        public IEnumerable<FlowConfiguration> GetAll()
+        public IEnumerable<FlowConfiguration> GetAll(bool getOnlyActive = true)
         {
             var flowConfigurationModels = sqlService.OpenConnection((conn) =>
             {
-                return conn.Query<FlowConfigurationModel>($"SELECT * from {FlowConfigurationTableName}");
+                var condition = getOnlyActive ? " WHERE IsActive = 1 " : "";
+                var sql = $"SELECT * from {FlowConfigurationTableName} {condition}";
+                return conn.Query<FlowConfigurationModel>(sql);
             });
 
             foreach (var item in flowConfigurationModels)
@@ -64,7 +66,37 @@ namespace Simplic.Flow.Configuration.Data.DB
             });
 
             if (flowConfigurationModel != null)
-                return ConvertToJson(flowConfigurationModel.Configuration);
+            {
+                var config = ConvertToJson(flowConfigurationModel.Configuration);
+                config.Id = flowConfigurationModel.Id;
+                config.Name = flowConfigurationModel.Name;
+
+                return config;
+            }
+
+            else
+                return null;
+        }
+        #endregion
+
+        #region [GetByExportId]
+        public FlowConfiguration GetByExportId(Guid exportId)
+        {
+            var flowConfigurationModel = sqlService.OpenConnection((conn) =>
+            {
+                return conn.Query<FlowConfigurationModel>
+                    ($"SELECT * from {FlowConfigurationTableName} WHERE ExportId = :exportId",
+                    new { exportId }).FirstOrDefault();
+            });
+
+            if (flowConfigurationModel != null)
+            {
+                var config = ConvertToJson(flowConfigurationModel.Configuration);
+                config.Id = flowConfigurationModel.Id;
+                config.Name = flowConfigurationModel.Name;
+
+                return config;
+            }
             else
                 return null;
         }
@@ -76,18 +108,35 @@ namespace Simplic.Flow.Configuration.Data.DB
             return sqlService.OpenConnection((conn) =>
             {
                 var affectedRows = conn.Execute($"Insert Into {FlowConfigurationTableName} " +
-                   $" (Id, Configuration, Name) On Existing Update Values " +
-                   $" (:id, :configuration, :name);", new
+                   $" (Id, Configuration, Name, IsActive) On Existing Update Values " +
+                   $" (:id, :configuration, :name, :isActive);", new
                    {
                        id = flowConfiguration.Id,
                        name = flowConfiguration.Name,
-                       configuration = ConvertFromJson(flowConfiguration)
+                       configuration = ConvertFromJson(flowConfiguration),
+                       isActive = flowConfiguration.IsActive
                    });
 
                 return affectedRows > 0;
             });
         }
-        #endregion 
+        #endregion
+
+        #region [SetStatus]
+        public bool SetStatus(Guid id, bool isActive)
+        {
+            return sqlService.OpenConnection((conn) =>
+            {
+                var affectedRows = conn.Execute($"UPDATE {FlowConfigurationTableName} Set IsActive = :isActive WHERE Id = :id", new
+                {
+                    id,
+                    isActive
+                });
+
+                return affectedRows > 0;
+            });
+        }
+        #endregion
 
         #endregion
     }

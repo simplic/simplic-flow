@@ -5,14 +5,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Simplic.Flow;
 
 namespace Simplic.FlowInstance.Data.DB
 {
+    /// <summary>
+    /// Flow instance repository implementation (database)
+    /// </summary>
     public class FlowInstanceRepository : IFlowInstanceRepository
     {
         private readonly ISqlService sqlService;
-        private const string Flow_InstanceTableName = "Flow_Instance";
+        private const string FlowInstanceTableName = "Flow_Instance";
 
+        /// <summary>
+        /// Initialize repository
+        /// </summary>
+        /// <param name="sqlService">Sql service instance</param>
         public FlowInstanceRepository(ISqlService sqlService)
         {
             this.sqlService = sqlService;
@@ -26,9 +34,9 @@ namespace Simplic.FlowInstance.Data.DB
         /// </summary>
         /// <param name="data">Serialized data</param>
         /// <returns><see cref="FlowInstance"/> object</returns>
-        private FlowInstance ConvertToJson(byte[] data)
+        private Flow.FlowInstance ConvertToJson(byte[] data)
         {
-            return JsonConvert.DeserializeObject<FlowInstance>(Encoding.UTF8.GetString(data), new JsonSerializerSettings
+            return JsonConvert.DeserializeObject<Flow.FlowInstance>(Encoding.UTF8.GetString(data), new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.All,
                 PreserveReferencesHandling = PreserveReferencesHandling.Objects
@@ -42,7 +50,7 @@ namespace Simplic.FlowInstance.Data.DB
         /// </summary>
         /// <param name="flowInstance">object to convert</param>
         /// <returns>A byte array containing json object of the given <see cref="FlowInstance"/></returns>
-        private byte[] ConvertFromJson(FlowInstance flowInstance)
+        private byte[] ConvertFromJson(Flow.FlowInstance flowInstance)
         {
             return Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(flowInstance, new JsonSerializerSettings
             {
@@ -61,16 +69,17 @@ namespace Simplic.FlowInstance.Data.DB
         /// Gets a list of <see cref="FlowInstance"/> from the database
         /// </summary>
         /// <returns>A list of <see cref="FlowInstance"/> from the database</returns>
-        public IEnumerable<FlowInstance> GetAll()
+        public IEnumerable<Flow.FlowInstance> GetAll()
         {
             var flow_Instances = sqlService.OpenConnection((conn) =>
             {
-                return conn.Query<FlowInstanceModel>($"SELECT * from {Flow_InstanceTableName}");
+                return conn.Query<FlowInstanceModel>($"SELECT * from {FlowInstanceTableName}");
             });
 
             foreach (var item in flow_Instances)
             {
                 var flowInstance = ConvertToJson(item.Data);
+                flowInstance.FlowId = item.FlowConfigurationId;
                 yield return flowInstance;
             }
         }
@@ -81,17 +90,19 @@ namespace Simplic.FlowInstance.Data.DB
         /// Gets a list of <see cref="FlowInstance"/> which are alive from the database 
         /// </summary>
         /// <returns>A list of <see cref="FlowInstance"/> which are alive from the database</returns>
-        public IEnumerable<FlowInstance> GetAllAlive()
+        public IEnumerable<Flow.FlowInstance> GetAllAlive()
         {
             var flow_Instances = sqlService.OpenConnection((conn) =>
             {
-                return conn.Query<FlowInstanceModel>($"SELECT * from {Flow_InstanceTableName} WHERE IsAlive = :IsAlive ORDER BY CreateTime",
+                return conn.Query<FlowInstanceModel>($"SELECT * from {FlowInstanceTableName} WHERE IsAlive = :IsAlive ORDER BY CreateTime",
                     new { IsAlive = true });
             });
 
             foreach (var item in flow_Instances)
             {
                 var flowInstance = ConvertToJson(item.Data);
+                flowInstance.FlowId = item.FlowConfigurationId;
+
                 yield return flowInstance;
             }
         }
@@ -103,16 +114,21 @@ namespace Simplic.FlowInstance.Data.DB
         /// </summary>
         /// <param name="flowInstanceId">Id to get</param>
         /// <returns><see cref="FlowInstance"/></returns>
-        public FlowInstance GetById(Guid flowInstanceId)
+        public Flow.FlowInstance GetById(Guid flowInstanceId)
         {
             var flow_Instance = sqlService.OpenConnection((conn) =>
             {
-                return conn.Query<FlowInstanceModel>($"SELECT * from {Flow_InstanceTableName} WHERE Id = :flowInstanceId",
+                return conn.Query<FlowInstanceModel>($"SELECT * from {FlowInstanceTableName} WHERE Id = :flowInstanceId",
                     new { flowInstanceId }).FirstOrDefault();
             });
 
             if (flow_Instance != null)
-                return ConvertToJson(flow_Instance.Data);
+            {
+                var flowInstance = ConvertToJson(flow_Instance.Data);
+                flowInstance.FlowId = flow_Instance.FlowConfigurationId;
+
+                return flowInstance;
+            }
             else
                 return null;
         }
@@ -124,23 +140,44 @@ namespace Simplic.FlowInstance.Data.DB
         /// </summary>
         /// <param name="flowInstance">Object to save</param>
         /// <returns>True if successfull</returns>
-        public bool Save(FlowInstance flowInstance)
+        public bool Save(Flow.FlowInstance flowInstance)
         {
             return sqlService.OpenConnection((conn) =>
             {
-                var affectedRows = conn.Execute($"Insert Into {Flow_InstanceTableName} " +
-                   $" (Id, Data, IsAlive) On Existing Update Values " +
-                   $" (:Id, :Data, :IsAlive);", new
+                var affectedRows = conn.Execute($"Insert Into {FlowInstanceTableName} " +
+                   $" (Id, Data, IsAlive, FlowConfigurationId) On Existing Update Values " +
+                   $" (:Id, :Data, :IsAlive, :FlowConfigurationId);", new
                    {
                        Id = flowInstance.Id,
                        Data = ConvertFromJson(flowInstance),
-                       IsAlive = flowInstance.IsAlive                       
+                       IsAlive = flowInstance.IsAlive,
+                       FlowConfigurationId = flowInstance.Flow.Id
                    });
 
                 return affectedRows > 0;
             });
         }
-        #endregion 
+        #endregion
+
+        #region [Delete]
+        /// <summary>
+        /// Deletes a <see cref="FlowInstance"/> from the database
+        /// </summary>
+        /// <param name="flowInstance">Object to remove</param>
+        /// <returns>True if successfull</returns>
+        public bool Delete(Flow.FlowInstance flowInstance)
+        {
+            return sqlService.OpenConnection((conn) =>
+            {
+                var affectedRows = conn.Execute($"DELETE FROM {FlowInstanceTableName} WHERE Id = :Id", new
+                   {
+                       Id = flowInstance.Id
+                   });
+
+                return affectedRows > 0;
+            });
+        }
+        #endregion
 
         #endregion
     }

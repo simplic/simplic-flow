@@ -7,5 +7,7 @@ namespace Simplic.Flow
         bool EnqueueNode(ActionNode node, DataPinScope scope);
 
         FlowEventArgs FlowEventArgs { get; }
+
+        FlowInstance Instance { get; }
     }
 }

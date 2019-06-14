@@ -1,5 +1,4 @@
-﻿using Simplic.Collections.Generic;
-using Simplic.Flow.Event;
+﻿using Simplic.Flow.Event;
 using Simplic.Flow.Log;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,13 +7,11 @@ namespace Simplic.Flow.Service
 {
     public class FlowRuntimeService : IFlowRuntimeService
     {
-        private Dequeue<NodeScope<ActionNode>> nextNodes = new Dequeue<NodeScope<ActionNode>>();
+        private IList<NodeScope<ActionNode>> nextNodes = new List<NodeScope<ActionNode>>();
         private IList<NodeScope<ActionNode>> tempNextNodes = new List<NodeScope<ActionNode>>();
         private readonly IFlowLogService flowLogService;
-        private FlowInstance.FlowInstance instance;
+        private FlowInstance instance;
         private EventCall eventCall;
-
-        public FlowEventArgs FlowEventArgs { get; private set; }
 
         /// <summary>
         /// Initialize new runtime instance
@@ -26,7 +23,7 @@ namespace Simplic.Flow.Service
             this.FlowEventArgs = flowEventArgs;
         }
 
-        public void Run(FlowInstance.FlowInstance instance, EventCall call)
+        public void Run(FlowInstance instance, EventCall call)
         {
             this.instance = instance;
             this.eventCall = call;
@@ -38,7 +35,7 @@ namespace Simplic.Flow.Service
                     x => x.IsStartEvent && x.Id == call.Delegate.EventNodeId))
                 {
                     // Pass arguments to event
-                    if (!startNode.ShouldExecute(instance.DataScope))
+                    if (!startNode.ShouldExecute(this, instance.DataScope))
                         continue;
 
                     // Execute event
@@ -50,7 +47,9 @@ namespace Simplic.Flow.Service
                 var executedEvents = new List<NodeScope<EventNode>>();
                 foreach (var eventNode in instance.CurrentNodes.Where(x => x.NodeId == call.Delegate.EventNodeId))
                 {
-                    if (!eventNode.Node.ShouldExecute(eventNode.Scope))
+                    eventNode.Node = instance.Flow.Nodes.OfType<EventNode>().FirstOrDefault(x => x.Id == eventNode.NodeId);
+
+                    if (!eventNode.Node.ShouldExecute(this, eventNode.Scope))
                         continue;
 
                     if (Execute(eventNode))
@@ -66,7 +65,10 @@ namespace Simplic.Flow.Service
 
             while (nextNodes.Any())
             {
-                var nextNode = nextNodes.PopFirst();
+                // Peek first element, get index and remove
+                var nextNode = nextNodes.First();
+                var index = nextNodes.IndexOf(nextNode);
+                nextNodes.Remove(nextNode);
 
                 if (nextNode.Node is EventNode)
                 {
@@ -75,24 +77,50 @@ namespace Simplic.Flow.Service
                         Node = nextNode.Node as EventNode,
                         Scope = nextNode.Scope,
                         NodeId = nextNode.NodeId
-                    });                    
+                    });
                 }
                 else
                 {
-                    Execute(nextNode);
+                    Execute(nextNode, index);
                 }
             }
         }
 
-        public bool Execute<T>(NodeScope<T> nodeScope) where T : ActionNode
+        /// <summary>
+        /// Call the execute method of a given node an enqueues all temporarily added nodes
+        /// </summary>
+        /// <typeparam name="T">Node type</typeparam>
+        /// <param name="nodeScope">Scope to put and push data from/to</param>
+        /// <param name="index">Index where the temporarily created nodes should be added to</param>
+        /// <returns>Return value of the executed node</returns>
+        public bool Execute<T>(NodeScope<T> nodeScope, int? index = null) where T : ActionNode
         {
             tempNextNodes = new List<NodeScope<ActionNode>>();
 
             if (nodeScope.Node.Execute(this, nodeScope.Scope))
             {
+                // Zero based index addon for index
+                int indexAddon = 0;
                 foreach (var nextNode in tempNextNodes)
+                {
                     if (nextNode != null)
-                        nextNodes.PushBack(nextNode);
+                    {
+                        if (index.HasValue)
+                            nextNodes.Insert(index.Value + indexAddon, nextNode);
+                        else
+                            nextNodes.Add(nextNode);
+                    }
+
+                    /* Increase index for next item
+                       Item 1
+                         Item a
+                         Item b
+                         Item c <--- increased index = 2
+                       Item 2
+                       Item 3 
+                    */
+                    indexAddon++;
+                }
 
                 return true;
             }
@@ -111,5 +139,15 @@ namespace Simplic.Flow.Service
 
             return false;
         }
+
+        /// <summary>
+        /// Gets or sets the flow arguments
+        /// </summary>
+        public FlowEventArgs FlowEventArgs { get; private set; }
+
+        /// <summary>
+        /// Gets or sets flow instance
+        /// </summary>
+        public FlowInstance Instance { get { return instance; } }
     }
 }

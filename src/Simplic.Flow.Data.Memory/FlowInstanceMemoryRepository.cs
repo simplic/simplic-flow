@@ -2,33 +2,43 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Simplic.Flow;
 
 namespace Simplic.FlowInstance.Data.Memory
 {
     public class FlowInstanceMemoryRepository : IFlowInstanceRepository
     {
-        private readonly IList<FlowInstance> flowInstances;
+        private readonly IList<Flow.FlowInstance> flowInstances;
         public FlowInstanceMemoryRepository()
         {
-            flowInstances = new List<FlowInstance>();
+            flowInstances = new List<Flow.FlowInstance>();
         }
 
-        public IEnumerable<FlowInstance> GetAll()
+        public bool Delete(Flow.FlowInstance flowInstance)
+        {
+            var index = flowInstances.IndexOf(flowInstance);
+            if (index > -1)
+                flowInstances.Remove(flowInstance);
+
+            return true;
+        }
+
+        public IEnumerable<Flow.FlowInstance> GetAll()
         {
             return flowInstances;
         }
 
-        public IEnumerable<FlowInstance> GetAllAlive()
+        public IEnumerable<Flow.FlowInstance> GetAllAlive()
         {
             throw new NotImplementedException();
         }
 
-        public FlowInstance GetById(Guid instanceId)
+        public Flow.FlowInstance GetById(Guid instanceId)
         {
             return flowInstances.Where(x => x.Id == instanceId).FirstOrDefault();
         }
 
-        public bool Save(FlowInstance flowInstance)
+        public bool Save(Flow.FlowInstance flowInstance)
         {
             var index = flowInstances.IndexOf(flowInstance);            
             if (index > -1)                                    
@@ -44,7 +54,7 @@ namespace Simplic.FlowInstance.Data.Memory
                     PreserveReferencesHandling = PreserveReferencesHandling.Objects
                 });
 
-            var obj = JsonConvert.DeserializeObject<FlowInstance>(serializedConfiguration, new JsonSerializerSettings
+            var obj = JsonConvert.DeserializeObject<Flow.FlowInstance>(serializedConfiguration, new JsonSerializerSettings
                 {
                     TypeNameHandling = TypeNameHandling.All,
                     PreserveReferencesHandling = PreserveReferencesHandling.Objects

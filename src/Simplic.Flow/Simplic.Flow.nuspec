@@ -6,10 +6,10 @@
     <title>$title$</title>
     <authors>SIMPLIC GmbH</authors>
     <owners>SIMPLIC GmbH</owners>
-    <projectUrl>https://github.com/simplic/simplic-service</projectUrl>
+    <projectUrl>https://github.com/simplic/simplic-flow</projectUrl>
     <iconUrl><![CDATA[https://avatars0.githubusercontent.com/u/17578084?s=200&v=4]]></iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Implementation package.</description>
+    <description>Core package.</description>
     <copyright>Copyright Simplic GmbH 2018</copyright>
   </metadata>
 </package>

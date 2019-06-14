@@ -33,8 +33,8 @@
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Simplic.CoreLib, Version=6.1.118.621, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simplic.CoreLib.6.1.118.621\lib\net451\Simplic.CoreLib.dll</HintPath>
+    <Reference Include="Simplic.CoreLib, Version=6.14.418.1002, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.CoreLib.6.14.418.1002\lib\net451\Simplic.CoreLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -55,6 +55,7 @@
     <Compile Include="FlowService.cs" />
     <Compile Include="FlowRuntimeService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ThreadStateInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Simplic.ActiveFlow\Simplic.ActiveFlow.csproj">
@@ -70,7 +71,7 @@
       <Name>Simplic.Flow.EventQueue</Name>
     </ProjectReference>
     <ProjectReference Include="..\Simplic.Flow.Event\Simplic.Flow.Event.csproj">
-      <Project>{EFCC8359-4ED2-421F-B9BE-4E25CDD5CF40}</Project>
+      <Project>{efcc8359-4ed2-421f-b9be-4e25cdd5cf40}</Project>
       <Name>Simplic.Flow.Event</Name>
     </ProjectReference>
     <ProjectReference Include="..\Simplic.Flow.Log\Simplic.Flow.Log.csproj">
@@ -78,7 +79,7 @@
       <Name>Simplic.Flow.Log</Name>
     </ProjectReference>
     <ProjectReference Include="..\Simplic.Flow.Node\Simplic.Flow.Node.csproj">
-      <Project>{A88421D5-6B43-4B8D-8865-79A33F935112}</Project>
+      <Project>{a88421d5-6b43-4b8d-8865-79a33f935112}</Project>
       <Name>Simplic.Flow.Node</Name>
     </ProjectReference>
     <ProjectReference Include="..\Simplic.FlowInstance\Simplic.FlowInstance.csproj">
@@ -96,4 +97,7 @@
     <None Include="Simplic.Flow.Service.nuspec" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(TargetDir)$(TargetName).dll" "$(SolutionDir)..\..\simplic-framework\src\Simplic.Main\bin\Debug\" /F /Y</PostBuildEvent>
+  </PropertyGroup>
 </Project>

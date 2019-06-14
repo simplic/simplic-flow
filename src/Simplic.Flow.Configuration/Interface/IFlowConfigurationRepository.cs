@@ -7,6 +7,8 @@ namespace Simplic.Flow.Configuration
     {
         FlowConfiguration Get(Guid id);
         bool Save(FlowConfiguration flowConfiguration);
-        IEnumerable<FlowConfiguration> GetAll();
+        IEnumerable<FlowConfiguration> GetAll(bool getOnlyActive = true);
+        bool SetStatus(Guid id, bool isActive);
+        FlowConfiguration GetByExportId(Guid exportId);
     }
 }

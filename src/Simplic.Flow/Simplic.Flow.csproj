@@ -33,9 +33,8 @@
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Simplic.CoreLib, Version=6.1.118.621, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simplic.CoreLib.6.1.118.621\lib\net451\Simplic.CoreLib.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Simplic.CoreLib, Version=6.14.418.1002, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simplic.CoreLib.6.14.418.1002\lib\net451\Simplic.CoreLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -47,10 +46,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attribute\ActionNodeDefinitionAttribute.cs" />
+    <Compile Include="Attribute\DataPinDefinitionAttribute.cs" />
+    <Compile Include="Attribute\EventNodeDefinitionAttribute.cs" />
+    <Compile Include="Attribute\FlowPinDefinitionAttribute.cs" />
+    <Compile Include="Attribute\NodeDefinitionAttribute.cs" />
+    <Compile Include="GenericNodeResolver.cs" />
     <Compile Include="Interface\IFlowRuntimeService.cs" />
     <Compile Include="Interface\INodeResolver.cs" />
     <Compile Include="Model\Event\EventCall.cs" />
     <Compile Include="Model\Event\EventDelegate.cs" />
+    <Compile Include="Model\Flow\FlowVariable.cs" />
+    <Compile Include="Model\Flow\FlowInstance.cs" />
     <Compile Include="Model\Node\NodeScope.cs" />
     <Compile Include="Model\Node\Base\ActionNode.cs" />
     <Compile Include="Model\Node\Base\ConditionNode.cs" />
@@ -58,7 +65,7 @@
     <Compile Include="Model\Pin\DataPinContainerType.cs" />
     <Compile Include="Model\Node\Base\EventNode.cs" />
     <Compile Include="Model\Flow\Flow.cs" />
-    <Compile Include="Interface\IFlowEngineService.cs" />
+    <Compile Include="Interface\IFlowService.cs" />
     <Compile Include="Model\Node\Base\BaseNode.cs" />
     <Compile Include="Interface\IPin.cs" />
     <Compile Include="Model\Pin\PinDirection.cs" />
@@ -70,6 +77,10 @@
       <Project>{A2F33950-81AF-4D02-856F-5B2C69E78CAC}</Project>
       <Name>Simplic.Flow.Configuration</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Simplic.Flow.Editor.Definition\Simplic.Flow.Editor.Definition.csproj">
+      <Project>{75ef378a-23dd-4b14-b9f8-30747a8347ff}</Project>
+      <Name>Simplic.Flow.Editor.Definition</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Simplic.Flow.Event\Simplic.Flow.Event.csproj">
       <Project>{EFCC8359-4ED2-421F-B9BE-4E25CDD5CF40}</Project>
       <Name>Simplic.Flow.Event</Name>
@@ -77,8 +88,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="package.bat" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Simplic.Flow.nuspec" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(TargetDir)$(TargetName).dll" "$(SolutionDir)..\..\simplic-framework\src\Simplic.Main\bin\Debug\" /F /Y</PostBuildEvent>
+  </PropertyGroup>
 </Project>

@@ -40,10 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exception\FlowConfigurationServiceException.cs" />
     <Compile Include="Interface\IFlowConfigurationRepository.cs" />
     <Compile Include="Model\FlowConfiguration.cs" />
     <Compile Include="Interface\IFlowConfigurationService.cs" />
     <Compile Include="Model\FlowConfigurationModel.cs" />
+    <Compile Include="Model\FlowVariableConfiguration.cs" />
     <Compile Include="Model\LinkConfiguration.cs" />
     <Compile Include="Model\Link.cs" />
     <Compile Include="Model\NodeConfiguration.cs" />
@@ -56,4 +58,7 @@
     <None Include="Simplic.Flow.Configuration.nuspec" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(TargetDir)$(TargetName).dll" "$(SolutionDir)..\..\simplic-framework\src\Simplic.Main\bin\Debug\" /F /Y</PostBuildEvent>
+  </PropertyGroup>
 </Project>

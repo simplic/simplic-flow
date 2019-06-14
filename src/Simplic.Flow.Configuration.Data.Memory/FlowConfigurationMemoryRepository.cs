@@ -35,12 +35,27 @@ namespace Simplic.Flow.Configuration.Data.Memory
             return flowConfigurations;
         }
 
+        public IEnumerable<FlowConfiguration> GetAll(bool getOnlyActive = true)
+        {
+            throw new NotImplementedException();
+        }
+
+        public FlowConfiguration GetByExportId(Guid exportId)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool Save(FlowConfiguration flowConfiguration)
         {
             string serializedConfiguration = JsonConvert.SerializeObject(flowConfiguration, Formatting.Indented);
 
             flowConfigurations.Add(flowConfiguration);
             return true;
+        }
+
+        public bool SetStatus(Guid id, bool isActive)
+        {
+            throw new NotImplementedException();
         }
     }
 }

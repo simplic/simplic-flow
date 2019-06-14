@@ -45,7 +45,6 @@
   <ItemGroup>
     <Compile Include="Interface\IFlowInstanceRepository.cs" />
     <Compile Include="Interface\IFlowInstanceService.cs" />
-    <Compile Include="Model\FlowInstance.cs" />
     <Compile Include="Model\FlowInstanceModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
