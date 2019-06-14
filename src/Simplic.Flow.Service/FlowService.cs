@@ -417,62 +417,61 @@ namespace Simplic.Flow.Service
             //flowLogService.Info($"> Running at {DateTime.Now}");
             try
             {
-                // load event queue from db            
-                LoadEventQueue();
-
-                if (eventQueue.Count() == 0)
+                if (executions.Count == 0)
                 {
-                    //flowLogService.Info($"- Event queue is empty. Nothing to do.");
-                    return;
-                }
+                    // load event queue from db            
+                    LoadEventQueue();
 
-                //var newFlowInstances = new List<FlowInstance>();
-
-                while (eventQueue.Count > 0)
-                {
-                    // Create a processing limit to enable a save service shutdown:
-                    if (executions.Count > maxParallelTasks * 2)
-                        break;
-
-                    // pop event entries from queue first
-                    var queueEntry = eventQueue.PopFirst();
-
-                    //flowLogService.Info($"> Processing {queueEntry.Args.EventName}...");
-
-                    if (queueEntry.Delegate.IsStartEvent)
+                    if (eventQueue.Count() == 0)
                     {
-                        //flowLogService.Info($"- Create new flow instance {queueEntry.Args.EventName} : {queueEntry.Delegate.FlowId}");
-
-                        var newFlowInstance = new FlowInstance
-                        {
-                            Flow = Flows.FirstOrDefault(x => x.Id == queueEntry.Delegate.FlowId),
-                            Id = Guid.NewGuid()
-                        };
-
-                        executions.Add(new ThreadStateInfo
-                        {
-                            FlowInstance = newFlowInstance,
-                            EventCall = queueEntry
-                        });
+                        //flowLogService.Info($"- Event queue is empty. Nothing to do.");
+                        return;
                     }
-                    else
-                    {
-                        // Notify ALL instances, which MIGHT BE continued
-                        foreach (var activeFlow in ActiveFlows.Where(x => x.FlowId == queueEntry.Delegate.FlowId))
-                        {
-                            //flowLogService.Info($"Continuing flow instance: {activeFlow.FlowInstanceId}");
 
-                            // Get from database
-                            var flowInstance = flowInstanceService.GetById(activeFlow.FlowInstanceId);
-                            flowInstance.Flow = Flows.FirstOrDefault(x => x.Id == flowInstance.FlowId);
+                    //var newFlowInstances = new List<FlowInstance>();
+
+                    while (eventQueue.Count > 0)
+                    {
+                        // pop event entries from queue first
+                        var queueEntry = eventQueue.PopFirst();
+
+                        //flowLogService.Info($"> Processing {queueEntry.Args.EventName}...");
+
+                        if (queueEntry.Delegate.IsStartEvent)
+                        {
+                            //flowLogService.Info($"- Create new flow instance {queueEntry.Args.EventName} : {queueEntry.Delegate.FlowId}");
+
+                            var newFlowInstance = new FlowInstance
+                            {
+                                Flow = Flows.FirstOrDefault(x => x.Id == queueEntry.Delegate.FlowId),
+                                Id = Guid.NewGuid()
+                            };
 
                             executions.Add(new ThreadStateInfo
                             {
-                                IsStartEvent = false,
-                                FlowInstance = flowInstance,
-                                EventCall = queueEntry,
-                                ActiveFlow = activeFlow
+                                FlowInstance = newFlowInstance,
+                                EventCall = queueEntry
                             });
+                        }
+                        else
+                        {
+                            // Notify ALL instances, which MIGHT BE continued
+                            foreach (var activeFlow in ActiveFlows.Where(x => x.FlowId == queueEntry.Delegate.FlowId))
+                            {
+                                //flowLogService.Info($"Continuing flow instance: {activeFlow.FlowInstanceId}");
+
+                                // Get from database
+                                var flowInstance = flowInstanceService.GetById(activeFlow.FlowInstanceId);
+                                flowInstance.Flow = Flows.FirstOrDefault(x => x.Id == flowInstance.FlowId);
+
+                                executions.Add(new ThreadStateInfo
+                                {
+                                    IsStartEvent = false,
+                                    FlowInstance = flowInstance,
+                                    EventCall = queueEntry,
+                                    ActiveFlow = activeFlow
+                                });
+                            }
                         }
                     }
                 }
@@ -484,16 +483,27 @@ namespace Simplic.Flow.Service
                 var executedThreads = new List<Thread>();
                 var lastDebugText = "";
 
+                // Group by event delegate and take a given amount....
+                var tempJobs = new List<ThreadStateInfo>();
+                foreach (var eventGroup in executions.GroupBy(x => x.EventCall.QueueId))
+                {
+                    tempJobs.AddRange(eventGroup);
+
+                    // Limit the amount of parallel tasks
+                    if (tempJobs.Count > maxParallelTasks * 3)
+                        break;
+                }
+
                 var color = Console.ForegroundColor;
                 Console.ForegroundColor = ConsoleColor.Blue;
-                Console.WriteLine($"Flows to execute: {executions.Count}");
+                Console.WriteLine($"Flows in execution queue: {executions.Count}. Executed in the next loop: {tempJobs.Count}");
                 Console.ForegroundColor = color;
 
-                while (executions.Any())
+                while (tempJobs.Any() && executions.Any())
                 {
-                    var executedJobs = executions.Take(maxParallelTasks - runningTasks).ToList();
+                    var currentlyExecutedJobs = tempJobs.Take(maxParallelTasks - runningTasks).ToList();
 
-                    var nextDebugText = $"Flows to execute {executions.Count}. Max parallel flows {maxParallelTasks}. Currently running flows: {runningTasks}";
+                    var nextDebugText = $"Flows to execute/total {tempJobs.Count}/{executions.Count}. Max parallel flows {maxParallelTasks}. Currently running flows: {runningTasks}";
 
                     if (lastDebugText != nextDebugText)
                     {
@@ -501,15 +511,15 @@ namespace Simplic.Flow.Service
                         lastDebugText = nextDebugText;
                     }
 
-                    if (!executedJobs.Any())
+                    if (!currentlyExecutedJobs.Any())
                     {
-                        Thread.Sleep(500);
+                        Thread.Sleep(10);
                         continue;
                     }
 
-                    var tempTasks = new List<Thread>();
+                    var tempThreads = new List<Thread>();
 
-                    foreach (var job in executedJobs)
+                    foreach (var job in currentlyExecutedJobs)
                     {
                         // Make a task reservation
                         runningTasks++;
@@ -518,6 +528,7 @@ namespace Simplic.Flow.Service
                         var thread = new Thread(() =>
                         {
                             executions.Remove(job);
+                            tempJobs.Remove(job);
 
                             try
                             {
@@ -532,16 +543,18 @@ namespace Simplic.Flow.Service
                             runningTasks--;
                         });
 
-                        tempTasks.Add(thread);
+                        tempThreads.Add(thread);
                     }
 
                     // Execute
-                    foreach (var thread in tempTasks)
+                    foreach (var thread in tempThreads)
                     {
                         Console.WriteLine($" > [{DateTime.Now.ToLongTimeString()}] Start thread");
                         thread.Start();
                         executedThreads.Add(thread);
                     }
+
+                    Thread.Sleep(150);
                 }
 
                 foreach (var thread in executedThreads)
