@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using Unity;
 
 namespace Simplic.Flow.Service
@@ -63,6 +64,7 @@ namespace Simplic.Flow.Service
         #region Private Members                
         private IList<FlowConfiguration> flowConfigurations;
         private IList<ActiveFlow.ActiveFlow> finishedInstances = new List<ActiveFlow.ActiveFlow>();
+        private ConcurrentList<ThreadStateInfo> executions = new ConcurrentList<ThreadStateInfo>();
         private IDictionary<string, IList<EventDelegate>> eventDelegates;
         private Dequeue<EventCall> eventQueue;
 
@@ -106,6 +108,7 @@ namespace Simplic.Flow.Service
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<ReadAllTextNode>>(nameof(ReadAllTextNode));
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<ReadAllBytesNode>>(nameof(ReadAllBytesNode));
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<ClearPinNode>>(nameof(ClearPinNode));
+            unityContainer.RegisterType<INodeResolver, GenericNodeResolver<ThreadSleepNode>>(nameof(ThreadSleepNode));
 
             // Load active flow configurations
             flowConfigurations = flowConfigurationService.GetAll().Where(x => x.IsActive).ToList();
@@ -313,7 +316,7 @@ namespace Simplic.Flow.Service
         }
         #endregion
 
-        #region [SetEventQueueHandled]
+        #region [SetEventQueueHandled/SetEventQueueFailed]
         /// <summary>
         /// Sets an event queue to handled
         /// </summary>
@@ -321,7 +324,20 @@ namespace Simplic.Flow.Service
         private bool SetEventQueueHandled(Guid eventQueueId)
         {
             flowLogService.Info($"Running SetEventQueueHandled with {eventQueueId}");
-            return flowEventQueueService.SetHandled(eventQueueId, true);
+            var result = flowEventQueueService.SetHandled(eventQueueId, true);
+            flowEventQueueService.Remove(eventQueueId);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Sets an event queue to failed
+        /// </summary>
+        /// <param name="eventQueueId">Event queue to update</param>
+        private void SetEventQueueFailed(Guid eventQueueId)
+        {
+            flowLogService.Info($"Running SetEventQueueFAILED with {eventQueueId}");
+            flowEventQueueService.SetFailed(eventQueueId);
         }
         #endregion
 
@@ -396,68 +412,172 @@ namespace Simplic.Flow.Service
         {
             // Raise event before the process has begun.
             OnStarted?.Invoke(this, EventArgs.Empty);
+            int maxParallelTasks = 4;
 
             //flowLogService.Info($"> Running at {DateTime.Now}");
             try
             {
-                // load event queue from db            
-                LoadEventQueue();
-
-                if (eventQueue.Count() == 0)
+                if (executions.Count == 0)
                 {
-                    //flowLogService.Info($"- Event queue is empty. Nothing to do.");
-                    return;
-                }
+                    // load event queue from db            
+                    LoadEventQueue();
 
-                //var newFlowInstances = new List<FlowInstance>();
-
-                while (eventQueue.Count > 0)
-                {
-                    // pop event entries from queue first
-                    var queueEntry = eventQueue.PopFirst();
-
-                    //flowLogService.Info($"> Processing {queueEntry.Args.EventName}...");
-
-                    if (queueEntry.Delegate.IsStartEvent)
+                    if (eventQueue.Count() == 0)
                     {
-                        //flowLogService.Info($"- Create new flow instance {queueEntry.Args.EventName} : {queueEntry.Delegate.FlowId}");
-
-                        var newFlowInstance = new FlowInstance
-                        {
-                            Flow = Flows.FirstOrDefault(x => x.Id == queueEntry.Delegate.FlowId),
-                            Id = Guid.NewGuid()
-                        };
-
-                        ThreadPool.QueueUserWorkItem(new WaitCallback(ProcessEvent), new ThreadStateInfo
-                        {
-                            FlowInstance = newFlowInstance,
-                            EventCall = queueEntry
-                        });
+                        //flowLogService.Info($"- Event queue is empty. Nothing to do.");
+                        return;
                     }
-                    else
+
+                    //var newFlowInstances = new List<FlowInstance>();
+
+                    while (eventQueue.Count > 0)
                     {
-                        // Notify ALL instances, which MIGHT BE continued
-                        foreach (var activeFlow in ActiveFlows.Where(x => x.FlowId == queueEntry.Delegate.FlowId))
+                        // pop event entries from queue first
+                        var queueEntry = eventQueue.PopFirst();
+
+                        //flowLogService.Info($"> Processing {queueEntry.Args.EventName}...");
+
+                        if (queueEntry.Delegate.IsStartEvent)
                         {
-                            //flowLogService.Info($"Continuing flow instance: {activeFlow.FlowInstanceId}");
+                            //flowLogService.Info($"- Create new flow instance {queueEntry.Args.EventName} : {queueEntry.Delegate.FlowId}");
 
-                            // Get from database
-                            var flowInstance = flowInstanceService.GetById(activeFlow.FlowInstanceId);
-                            flowInstance.Flow = Flows.FirstOrDefault(x => x.Id == flowInstance.FlowId);
-
-                            ThreadPool.QueueUserWorkItem(new WaitCallback(ProcessEvent), new ThreadStateInfo
+                            var newFlowInstance = new FlowInstance
                             {
-                                IsStartEvent = false,
-                                FlowInstance = flowInstance,
-                                EventCall = queueEntry,
-                                ActiveFlow = activeFlow
+                                Flow = Flows.FirstOrDefault(x => x.Id == queueEntry.Delegate.FlowId),
+                                Id = Guid.NewGuid()
+                            };
+
+                            executions.Add(new ThreadStateInfo
+                            {
+                                FlowInstance = newFlowInstance,
+                                EventCall = queueEntry
                             });
                         }
+                        else
+                        {
+                            // Notify ALL instances, which MIGHT BE continued
+                            foreach (var activeFlow in ActiveFlows.Where(x => x.FlowId == queueEntry.Delegate.FlowId))
+                            {
+                                //flowLogService.Info($"Continuing flow instance: {activeFlow.FlowInstanceId}");
+
+                                // Get from database
+                                var flowInstance = flowInstanceService.GetById(activeFlow.FlowInstanceId);
+                                flowInstance.Flow = Flows.FirstOrDefault(x => x.Id == flowInstance.FlowId);
+
+                                executions.Add(new ThreadStateInfo
+                                {
+                                    IsStartEvent = false,
+                                    FlowInstance = flowInstance,
+                                    EventCall = queueEntry,
+                                    ActiveFlow = activeFlow
+                                });
+                            }
+                        }
+                    }
+                }
+
+                var failed = new ConcurrentList<Guid>();
+                var success = new ConcurrentList<Guid>();
+
+                int runningTasks = 0;
+                var executedThreads = new List<Thread>();
+                var lastDebugText = "";
+
+                // Group by event delegate and take a given amount....
+                var tempJobs = new List<ThreadStateInfo>();
+                foreach (var eventGroup in executions.GroupBy(x => x.EventCall.QueueId))
+                {
+                    tempJobs.AddRange(eventGroup);
+
+                    // Limit the amount of parallel tasks
+                    if (tempJobs.Count > maxParallelTasks * 3)
+                        break;
+                }
+
+                var color = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine($"Flows in execution queue: {executions.Count}. Executed in the next loop: {tempJobs.Count}");
+                Console.ForegroundColor = color;
+
+                while (tempJobs.Any() && executions.Any())
+                {
+                    var currentlyExecutedJobs = tempJobs.Take(maxParallelTasks - runningTasks).ToList();
+
+                    var nextDebugText = $"Flows to execute/total {tempJobs.Count}/{executions.Count}. Max parallel flows {maxParallelTasks}. Currently running flows: {runningTasks}";
+
+                    if (lastDebugText != nextDebugText)
+                    {
+                        Console.WriteLine(nextDebugText);
+                        lastDebugText = nextDebugText;
                     }
 
-                    // change the event status to handled and save to the database
-                    SetEventQueueHandled(queueEntry.QueueId);
+                    if (!currentlyExecutedJobs.Any())
+                    {
+                        Thread.Sleep(10);
+                        continue;
+                    }
+
+                    var tempThreads = new List<Thread>();
+
+                    foreach (var job in currentlyExecutedJobs)
+                    {
+                        // Make a task reservation
+                        runningTasks++;
+
+                        Console.WriteLine($"   [{DateTime.Now.ToLongTimeString()}] Create threads: {job.EventCall?.Delegate.EventName}");
+                        var thread = new Thread(() =>
+                        {
+                            executions.Remove(job);
+                            tempJobs.Remove(job);
+
+                            try
+                            {
+                                ProcessEvent(job);
+                                success.Add(job.EventCall.QueueId);
+                            }
+                            catch
+                            {
+                                failed.Add(job.EventCall.QueueId);
+                            }
+
+                            runningTasks--;
+                        });
+
+                        tempThreads.Add(thread);
+                    }
+
+                    // Execute
+                    foreach (var thread in tempThreads)
+                    {
+                        Console.WriteLine($" > [{DateTime.Now.ToLongTimeString()}] Start thread");
+                        thread.Start();
+                        executedThreads.Add(thread);
+                    }
+
+                    Thread.Sleep(150);
                 }
+
+                foreach (var thread in executedThreads)
+                {
+                    thread.Join();
+                    Console.WriteLine($" < [{DateTime.Now.ToLongTimeString()}] Thread joined");
+                }
+
+                // Remove failed from success
+                foreach (var failedJob in failed.Distinct())
+                {
+                    SetEventQueueFailed(failedJob);
+                    success.Remove(failedJob);
+                }
+
+                // Set handled jobs and remove them
+                foreach (var successJob in success.Distinct())
+                    SetEventQueueHandled(successJob);
+
+                color = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"Flow execution complete. Flows: {executedThreads.Count}");
+                Console.ForegroundColor = color;
             }
             catch (Exception ex)
             {
@@ -500,7 +620,9 @@ namespace Simplic.Flow.Service
             if (!isEnqueued)
             {
                 flowLogService.Info($"- No delegate was found for {args.EventName}, changing status to handled.");
-                flowEventQueueService.SetHandled(args.QueueId, true);
+
+                // Remove events that can't be handled
+                flowEventQueueService.Remove(args.QueueId);
             }
         }
         #endregion

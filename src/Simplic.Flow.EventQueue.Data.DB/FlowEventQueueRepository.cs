@@ -25,6 +25,15 @@ namespace Simplic.Flow.EventQueue.Data.DB
             });
         }
 
+        public void Remove(Guid id)
+        {
+            sqlService.OpenConnection((conn) =>
+            {
+                conn.Query<EventQueueModel>($"DELETE FROM {FlowEventQueueTableName} WHERE Id = :id",
+                    new { id }).FirstOrDefault();
+            });
+        }
+
         public IEnumerable<EventQueueModel> GetAll()
         {
             return sqlService.OpenConnection((conn) =>
@@ -64,6 +73,17 @@ namespace Simplic.Flow.EventQueue.Data.DB
             {
                 var affectedRows = conn.Execute($"UPDATE {FlowEventQueueTableName} " +
                     $" SET Handled = :{nameof(isHandled)} WHERE Id = :{nameof(id)}", new { id, isHandled });
+
+                return affectedRows > 0;
+            });
+        }
+
+        public bool SetFailed(Guid id)
+        {
+            return sqlService.OpenConnection((conn) =>
+            {
+                var affectedRows = conn.Execute($"UPDATE {FlowEventQueueTableName} " +
+                    $" SET Handled = 2 WHERE Id = :{nameof(id)}", new { id });
 
                 return affectedRows > 0;
             });
