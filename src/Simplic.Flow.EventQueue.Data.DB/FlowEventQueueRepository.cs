@@ -78,6 +78,17 @@ namespace Simplic.Flow.EventQueue.Data.DB
             });
         }
 
+        public bool SetFailed(Guid id)
+        {
+            return sqlService.OpenConnection((conn) =>
+            {
+                var affectedRows = conn.Execute($"UPDATE {FlowEventQueueTableName} " +
+                    $" SET Handled = 2 WHERE Id = :{nameof(id)}", new { id });
+
+                return affectedRows > 0;
+            });
+        }
+
         public void ClearEventQueue()
         {
             sqlService.OpenConnection((conn) =>

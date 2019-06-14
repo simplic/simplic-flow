@@ -64,6 +64,7 @@ namespace Simplic.Flow.Service
         #region Private Members                
         private IList<FlowConfiguration> flowConfigurations;
         private IList<ActiveFlow.ActiveFlow> finishedInstances = new List<ActiveFlow.ActiveFlow>();
+        private ConcurrentList<ThreadStateInfo> executions = new ConcurrentList<ThreadStateInfo>();
         private IDictionary<string, IList<EventDelegate>> eventDelegates;
         private Dequeue<EventCall> eventQueue;
 
@@ -107,6 +108,7 @@ namespace Simplic.Flow.Service
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<ReadAllTextNode>>(nameof(ReadAllTextNode));
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<ReadAllBytesNode>>(nameof(ReadAllBytesNode));
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<ClearPinNode>>(nameof(ClearPinNode));
+            unityContainer.RegisterType<INodeResolver, GenericNodeResolver<ThreadSleepNode>>(nameof(ThreadSleepNode));
 
             // Load active flow configurations
             flowConfigurations = flowConfigurationService.GetAll().Where(x => x.IsActive).ToList();
@@ -314,7 +316,7 @@ namespace Simplic.Flow.Service
         }
         #endregion
 
-        #region [SetEventQueueHandled]
+        #region [SetEventQueueHandled/SetEventQueueFailed]
         /// <summary>
         /// Sets an event queue to handled
         /// </summary>
@@ -326,6 +328,16 @@ namespace Simplic.Flow.Service
             flowEventQueueService.Remove(eventQueueId);
 
             return result;
+        }
+
+        /// <summary>
+        /// Sets an event queue to failed
+        /// </summary>
+        /// <param name="eventQueueId">Event queue to update</param>
+        private void SetEventQueueFailed(Guid eventQueueId)
+        {
+            flowLogService.Info($"Running SetEventQueueFAILED with {eventQueueId}");
+            flowEventQueueService.SetFailed(eventQueueId);
         }
         #endregion
 
@@ -391,7 +403,7 @@ namespace Simplic.Flow.Service
         #endregion
 
         #region Public Methods
-        private IList<ThreadStateInfo> flowJob = new List<ThreadStateInfo>();
+
         #region [Run]
         /// <summary>
         /// Run a single cycle
@@ -400,6 +412,7 @@ namespace Simplic.Flow.Service
         {
             // Raise event before the process has begun.
             OnStarted?.Invoke(this, EventArgs.Empty);
+            int maxParallelTasks = 4;
 
             //flowLogService.Info($"> Running at {DateTime.Now}");
             try
@@ -417,6 +430,10 @@ namespace Simplic.Flow.Service
 
                 while (eventQueue.Count > 0)
                 {
+                    // Create a processing limit to enable a save service shutdown:
+                    if (executions.Count > maxParallelTasks * 2)
+                        break;
+
                     // pop event entries from queue first
                     var queueEntry = eventQueue.PopFirst();
 
@@ -432,7 +449,7 @@ namespace Simplic.Flow.Service
                             Id = Guid.NewGuid()
                         };
 
-                        flowJob.Add(new ThreadStateInfo
+                        executions.Add(new ThreadStateInfo
                         {
                             FlowInstance = newFlowInstance,
                             EventCall = queueEntry
@@ -449,7 +466,7 @@ namespace Simplic.Flow.Service
                             var flowInstance = flowInstanceService.GetById(activeFlow.FlowInstanceId);
                             flowInstance.Flow = Flows.FirstOrDefault(x => x.Id == flowInstance.FlowId);
 
-                            flowJob.Add(new ThreadStateInfo
+                            executions.Add(new ThreadStateInfo
                             {
                                 IsStartEvent = false,
                                 FlowInstance = flowInstance,
@@ -463,14 +480,45 @@ namespace Simplic.Flow.Service
                 var failed = new ConcurrentList<Guid>();
                 var success = new ConcurrentList<Guid>();
 
-                while (flowJob.Any())
+                int runningTasks = 0;
+                var executedThreads = new List<Thread>();
+                var lastDebugText = "";
+
+                var color = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine($"Flows to execute: {executions.Count}");
+                Console.ForegroundColor = color;
+
+                while (executions.Any())
                 {
-                    var executedJobs = flowJob.Take(2);
-                    var tempTasks = new List<Task>();
+                    var executedJobs = executions.Take(maxParallelTasks - runningTasks).ToList();
+
+                    var nextDebugText = $"Flows to execute {executions.Count}. Max parallel flows {maxParallelTasks}. Currently running flows: {runningTasks}";
+
+                    if (lastDebugText != nextDebugText)
+                    {
+                        Console.WriteLine(nextDebugText);
+                        lastDebugText = nextDebugText;
+                    }
+
+                    if (!executedJobs.Any())
+                    {
+                        Thread.Sleep(500);
+                        continue;
+                    }
+
+                    var tempTasks = new List<Thread>();
 
                     foreach (var job in executedJobs)
-                        tempTasks.Add(Task.Run(() => 
+                    {
+                        // Make a task reservation
+                        runningTasks++;
+
+                        Console.WriteLine($"   [{DateTime.Now.ToLongTimeString()}] Create threads: {job.EventCall?.Delegate.EventName}");
+                        var thread = new Thread(() =>
                         {
+                            executions.Remove(job);
+
                             try
                             {
                                 ProcessEvent(job);
@@ -480,24 +528,43 @@ namespace Simplic.Flow.Service
                             {
                                 failed.Add(job.EventCall.QueueId);
                             }
-                        }));
 
-                    Task.WaitAll(tempTasks.ToArray());
+                            runningTasks--;
+                        });
 
-                    foreach (var toRemove in executedJobs)
-                        flowJob.Remove(toRemove);
+                        tempTasks.Add(thread);
+                    }
+
+                    // Execute
+                    foreach (var thread in tempTasks)
+                    {
+                        Console.WriteLine($" > [{DateTime.Now.ToLongTimeString()}] Start thread");
+                        thread.Start();
+                        executedThreads.Add(thread);
+                    }
+                }
+
+                foreach (var thread in executedThreads)
+                {
+                    thread.Join();
+                    Console.WriteLine($" < [{DateTime.Now.ToLongTimeString()}] Thread joined");
                 }
 
                 // Remove failed from success
-                foreach (var failedJob in failed)
+                foreach (var failedJob in failed.Distinct())
                 {
-                    SetEventQueueFailed(failed);
+                    SetEventQueueFailed(failedJob);
                     success.Remove(failedJob);
                 }
 
                 // Set handled jobs and remove them
-                foreach (var successJob in success)
+                foreach (var successJob in success.Distinct())
                     SetEventQueueHandled(successJob);
+
+                color = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"Flow execution complete. Flows: {executedThreads.Count}");
+                Console.ForegroundColor = color;
             }
             catch (Exception ex)
             {
@@ -510,11 +577,6 @@ namespace Simplic.Flow.Service
 
             // Raise event after the process has begun.
             OnCompleted?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void SetEventQueueFailed(ConcurrentList<Guid> failed)
-        {
-            throw new NotImplementedException();
         }
         #endregion
 
