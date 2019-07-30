@@ -46,8 +46,8 @@ namespace Simplic.Flow.EventQueue.Data.DB
         {
             return sqlService.OpenConnection((conn) =>
             {
-                return conn.Query<EventQueueModel>($"SELECT * FROM {FlowEventQueueTableName} " +
-                    $" WHERE Handled = :Handled", new { Handled = false });
+                return conn.Query<EventQueueModel>($"SELECT top 150 * FROM {FlowEventQueueTableName} " +
+                    $" WHERE Handled = :Handled ORDER BY CreateDateTime", new { Handled = false });
             });
         }
 
