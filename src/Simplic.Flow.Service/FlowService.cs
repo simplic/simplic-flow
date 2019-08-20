@@ -110,6 +110,10 @@ namespace Simplic.Flow.Service
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<ClearPinNode>>(nameof(ClearPinNode));
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<ThreadSleepNode>>(nameof(ThreadSleepNode));
 
+            unityContainer.RegisterType<INodeResolver, GenericNodeResolver<ToStringNode>>(nameof(ToStringNode));
+            unityContainer.RegisterType<INodeResolver, GenericNodeResolver<DateTimeNowNode>>(nameof(DateTimeNowNode));
+            unityContainer.RegisterType<INodeResolver, GenericNodeResolver<ConcatStringNode>>(nameof(ConcatStringNode));
+
             // Load active flow configurations
             flowConfigurations = flowConfigurationService.GetAll().Where(x => x.IsActive).ToList();
 

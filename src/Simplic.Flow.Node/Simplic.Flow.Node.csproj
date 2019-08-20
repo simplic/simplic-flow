@@ -46,6 +46,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActionNode\Base\DateTimeNowNode.cs" />
+    <Compile Include="ActionNode\Base\ConcatStringNode.cs" />
+    <Compile Include="ActionNode\Base\ToStringNode.cs" />
     <Compile Include="ActionNode\Base\ConsoleWriteLineNode.cs" />
     <Compile Include="ActionNode\Base\ClearPinNode.cs" />
     <Compile Include="ActionNode\Base\ForeachNode.cs" />
@@ -76,6 +79,10 @@
     <ProjectReference Include="..\Simplic.Flow.Event\Simplic.Flow.Event.csproj">
       <Project>{EFCC8359-4ED2-421F-B9BE-4E25CDD5CF40}</Project>
       <Name>Simplic.Flow.Event</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.Flow.Log\Simplic.Flow.Log.csproj">
+      <Project>{EEDF5DE9-3E21-427C-8788-799D4D8E35B7}</Project>
+      <Name>Simplic.Flow.Log</Name>
     </ProjectReference>
     <ProjectReference Include="..\Simplic.Flow\Simplic.Flow.csproj">
       <Project>{1F540A26-62FB-45CB-ABC6-B4B2D8F7005E}</Project>
