@@ -6,7 +6,7 @@ namespace Simplic.Flow.EventQueue
     public interface IFlowEventQueueRepository
     {
         IEnumerable<EventQueueModel> GetAll();
-        IEnumerable<EventQueueModel> GetAllUnhandled(string serviceName, string machineName);
+        IEnumerable<EventQueueModel> GetAllUnhandled(string machineName, string serviceName);
         EventQueueModel Get(Guid id);
         bool Save(EventQueueModel model);
         bool SetHandled(Guid id, bool isHandled);

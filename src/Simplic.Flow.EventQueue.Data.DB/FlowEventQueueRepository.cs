@@ -56,15 +56,15 @@ namespace Simplic.Flow.EventQueue.Data.DB
             });
         }
 
-        public IEnumerable<EventQueueModel> GetAllUnhandled(string serviceName, string machineName)
+        public IEnumerable<EventQueueModel> GetAllUnhandled(string machineName, string serviceName)
         {
             return sqlService.OpenConnection((conn) =>
             {
-                serviceName = serviceName ?? "";
                 machineName = machineName ?? "";
+                serviceName = serviceName ?? "";
 
                 return conn.Query<EventQueueModel>($"SELECT top 150 * FROM {FlowEventQueueTableName} " +
-                    $" WHERE Handled = :Handled AND ServiceName = :serviceName AND machineName = :machineName ORDER BY CreateDateTime", new
+                    $" WHERE Handled = :Handled AND MachineName = :machineName AND ServiceName = :serviceName ORDER BY CreateDateTime", new
                     {
                         Handled = false,
                         machineName,

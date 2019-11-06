@@ -24,9 +24,9 @@ namespace Simplic.Flow.EventQueue.Service
 
         public IList<EventServiceTarget> GetEventTargets() => flowEventQueueRepository.GetEventTargets();
 
-        public IEnumerable<EventQueueModel> GetAllUnhandled(string serviceName, string machineName)
+        public IEnumerable<EventQueueModel> GetAllUnhandled(string machineName, string serviceName)
         {
-            return flowEventQueueRepository.GetAllUnhandled(serviceName, machineName);
+            return flowEventQueueRepository.GetAllUnhandled(machineName, serviceName);
         }
 
         public bool Save(EventQueueModel model)
