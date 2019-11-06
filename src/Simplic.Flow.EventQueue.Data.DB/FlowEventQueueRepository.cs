@@ -90,7 +90,7 @@ namespace Simplic.Flow.EventQueue.Data.DB
                         CreateUserId = model.CreateUserId,
                         EventName = model.EventName,
                         Handled = model.Handled,
-                        Id = model.Id,
+                        Id = Guid.NewGuid(),
                         MachineName = target.MachineName,
                         ServiceName = target.ServiceName
                     };
