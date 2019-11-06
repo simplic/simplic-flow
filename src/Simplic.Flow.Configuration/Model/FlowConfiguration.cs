@@ -19,6 +19,16 @@ namespace Simplic.Flow.Configuration
         public string Name { get; set; }
 
         /// <summary>
+        /// Gets or sets the current machine name
+        /// </summary>
+        public string MachineName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the service name
+        /// </summary>
+        public string ServiceName { get; set; }
+
+        /// <summary>
         /// Gets or sets the list of nodes inside this configuration
         /// </summary>
         public List<NodeConfiguration> Nodes { get; set; } = new List<NodeConfiguration>();

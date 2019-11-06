@@ -74,6 +74,9 @@ namespace Simplic.Flow.Service
         private readonly IFlowEventQueueService flowEventQueueService;
         private readonly IFlowEventService flowEventService;
         private readonly IFlowLogService flowLogService;
+
+        private string machineName;
+        private string serviceName;
         #endregion
 
         #region Constructor
@@ -96,6 +99,7 @@ namespace Simplic.Flow.Service
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<ForeachNode>>("ForeachNode");
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<SequenceNode>>("SequenceNode");
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<StartWithConditionNode>>("StartWithConditionNode");
+            unityContainer.RegisterType<INodeResolver, GenericNodeResolver<EndWithConditionNode>>("EndWithConditionNode");
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<DeleteFileNode>>("DeleteFileNode");
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<GetDirectoryContentNode>>("GetDirectoryContentNode");
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<OnCheckDirectoryContentNode>>("OnCheckDirectoryContentNode");
@@ -113,22 +117,6 @@ namespace Simplic.Flow.Service
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<ToStringNode>>(nameof(ToStringNode));
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<DateTimeNowNode>>(nameof(DateTimeNowNode));
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<ConcatStringNode>>(nameof(ConcatStringNode));
-
-            // Load active flow configurations
-            flowConfigurations = flowConfigurationService.GetAll().Where(x => x.IsActive).ToList();
-
-            if (flowConfigurations.Count > 0)
-                flowLogService.Info($"# {flowConfigurations.Count} Active flow configurations were found: {string.Join(", ", flowConfigurations.Select(x => $"\"{x.Name}\""))}");
-            else
-            {
-                flowLogService.Info("No active flow configurations were found!");
-                return;
-            }
-
-            Flows = CreateFlowsFromConfiguration();
-            CreateActiveFlowsFrom(flowInstanceService.GetAllAlive().ToList());
-
-            RefreshEventDelegates();
         }
         #endregion
 
@@ -288,7 +276,7 @@ namespace Simplic.Flow.Service
         /// </summary>
         private void LoadEventQueue()
         {
-            var unhandledEvents = flowEventQueueService.GetAllUnhandled();
+            var unhandledEvents = flowEventQueueService.GetAllUnhandled(machineName, serviceName);
 
             if (unhandledEvents.Count() > 0)
                 flowLogService.Info($"> {unhandledEvents.Count()} unhandled events were found.");
@@ -407,6 +395,38 @@ namespace Simplic.Flow.Service
         #endregion
 
         #region Public Methods
+
+
+        /// <summary>
+        /// Initialize service
+        /// </summary>
+        /// <param name="machineName">Machine name</param>
+        /// <param name="serviceName">Service name</param>
+        public void Initialize(string machineName, string serviceName)
+        {
+            this.machineName = machineName;
+            this.serviceName = serviceName;
+
+            // Load active flow configurations
+            flowConfigurations = flowConfigurationService.GetAll()
+                .Where(x => x.IsActive
+                       && (string.IsNullOrWhiteSpace(x.MachineName) || x.MachineName?.ToLower() == machineName?.ToLower())
+                       && (string.IsNullOrWhiteSpace(x.ServiceName) || x.MachineName?.ToLower() == serviceName?.ToLower()))
+                .ToList();
+
+            if (flowConfigurations.Count > 0)
+                flowLogService.Info($"# {flowConfigurations.Count} Active flow configurations were found: {string.Join(", ", flowConfigurations.Select(x => $"\"{x.Name}\""))}");
+            else
+            {
+                flowLogService.Info("No active flow configurations were found!");
+                return;
+            }
+
+            Flows = CreateFlowsFromConfiguration();
+            CreateActiveFlowsFrom(flowInstanceService.GetAllAlive().ToList());
+
+            RefreshEventDelegates();
+        }
 
         #region [Run]
         /// <summary>

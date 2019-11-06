@@ -22,9 +22,11 @@ namespace Simplic.Flow.EventQueue.Service
             return flowEventQueueRepository.GetAll();
         }
 
-        public IEnumerable<EventQueueModel> GetAllUnhandled()
+        public IList<EventServiceTarget> GetEventTargets() => flowEventQueueRepository.GetEventTargets();
+
+        public IEnumerable<EventQueueModel> GetAllUnhandled(string serviceName, string machineName)
         {
-            return flowEventQueueRepository.GetAllUnhandled();
+            return flowEventQueueRepository.GetAllUnhandled(serviceName, machineName);
         }
 
         public bool Save(EventQueueModel model)

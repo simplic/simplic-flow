@@ -70,6 +70,8 @@ namespace Simplic.Flow.Configuration.Data.DB
                 var config = ConvertToJson(flowConfigurationModel.Configuration);
                 config.Id = flowConfigurationModel.Id;
                 config.Name = flowConfigurationModel.Name;
+                config.MachineName = flowConfigurationModel.MachineName;
+                config.ServiceName = flowConfigurationModel.ServiceName;
 
                 return config;
             }
@@ -94,6 +96,8 @@ namespace Simplic.Flow.Configuration.Data.DB
                 var config = ConvertToJson(flowConfigurationModel.Configuration);
                 config.Id = flowConfigurationModel.Id;
                 config.Name = flowConfigurationModel.Name;
+                config.MachineName = flowConfigurationModel.MachineName;
+                config.ServiceName = flowConfigurationModel.ServiceName;
 
                 return config;
             }
@@ -108,13 +112,15 @@ namespace Simplic.Flow.Configuration.Data.DB
             return sqlService.OpenConnection((conn) =>
             {
                 var affectedRows = conn.Execute($"Insert Into {FlowConfigurationTableName} " +
-                   $" (Id, Configuration, Name, IsActive) On Existing Update Values " +
-                   $" (:id, :configuration, :name, :isActive);", new
+                   $" (Id, Configuration, Name, IsActive, MachineName, ServiceName) On Existing Update Values " +
+                   $" (:id, :configuration, :name, :isActive, :machineName, :serviceName);", new
                    {
                        id = flowConfiguration.Id,
                        name = flowConfiguration.Name,
                        configuration = ConvertFromJson(flowConfiguration),
-                       isActive = flowConfiguration.IsActive
+                       isActive = flowConfiguration.IsActive,
+                       machineName = flowConfiguration.MachineName,
+                       serviceName = flowConfiguration.ServiceName
                    });
 
                 return affectedRows > 0;

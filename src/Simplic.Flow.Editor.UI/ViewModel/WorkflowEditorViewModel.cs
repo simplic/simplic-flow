@@ -516,6 +516,34 @@ namespace Simplic.Flow.Editor.UI
                 RaisePropertyChanged(nameof(WorkflowName));
             }
         }
+
+        /// <summary>
+        /// Gets or sets the machine name
+        /// </summary>
+        public string MachineName
+        {
+            get { return flowConfiguration.MachineName; }
+            set
+            {
+                flowConfiguration.MachineName = value;
+                IsDirty = true;
+                RaisePropertyChanged(nameof(MachineName));
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the service name
+        /// </summary>
+        public string ServiceName
+        {
+            get { return flowConfiguration.ServiceName; }
+            set
+            {
+                flowConfiguration.ServiceName = value;
+                IsDirty = true;
+                RaisePropertyChanged(nameof(ServiceName));
+            }
+        }
         #endregion
 
         #region [Variables]
