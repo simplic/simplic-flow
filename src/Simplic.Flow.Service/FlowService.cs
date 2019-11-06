@@ -366,6 +366,8 @@ namespace Simplic.Flow.Service
             }
             catch (Exception ex)
             {
+                flowLogService.Error("Error during executing flow node.", ex);
+
                 threadInfo.FlowInstance.IsFailed = true;
 
                 // Save or remove active flow
@@ -411,9 +413,9 @@ namespace Simplic.Flow.Service
             flowConfigurations = flowConfigurationService.GetAll()
                 .Where(x => x.IsActive
                        && (string.IsNullOrWhiteSpace(x.MachineName) || x.MachineName?.ToLower() == machineName?.ToLower())
-                       && (string.IsNullOrWhiteSpace(x.ServiceName) || x.MachineName?.ToLower() == serviceName?.ToLower()))
+                       && (string.IsNullOrWhiteSpace(x.ServiceName) || x.ServiceName?.ToLower() == serviceName?.ToLower()))
                 .ToList();
-
+             
             if (flowConfigurations.Count > 0)
                 flowLogService.Info($"# {flowConfigurations.Count} Active flow configurations were found: {string.Join(", ", flowConfigurations.Select(x => $"\"{x.Name}\""))}");
             else
