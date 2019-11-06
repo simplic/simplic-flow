@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="ActionNode\Base\DateTimeNowNode.cs" />
     <Compile Include="ActionNode\Base\ConcatStringNode.cs" />
+    <Compile Include="ActionNode\Base\EndWithConditionNode.cs" />
     <Compile Include="ActionNode\Base\ToStringNode.cs" />
     <Compile Include="ActionNode\Base\ConsoleWriteLineNode.cs" />
     <Compile Include="ActionNode\Base\ClearPinNode.cs" />

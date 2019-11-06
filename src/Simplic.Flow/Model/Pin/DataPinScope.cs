@@ -50,7 +50,7 @@ namespace Simplic.Flow
             {
                 return Parent.GetValue<T>(inPin);
             }
-            else
+            else if(PinValues.Any(x => x.Key == pinKey))
             {
                 var rawValue = PinValues.FirstOrDefault(x => x.Key == pinKey);
 
@@ -62,6 +62,10 @@ namespace Simplic.Flow
                 {
                     if (rawValue.Value != null)
                         value = (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromInvariantString(rawValue.Value?.ToString());
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception($"Could not cast pin {inPin.Name} value: {rawValue.Key ?? "<unset>"}/{rawValue.Value ?? "<unset>"}", ex);
                 }
             }
 

@@ -43,6 +43,7 @@
     <Compile Include="Interface\IFlowEventQueueRepository.cs" />
     <Compile Include="Interface\IFlowEventQueueService.cs" />
     <Compile Include="Model\EventQueueModel.cs" />
+    <Compile Include="Model\EventServiceTarget.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
