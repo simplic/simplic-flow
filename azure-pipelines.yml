@@ -39,7 +39,7 @@ steps:
 - task: NuGetCommand@2
   inputs:
     command: 'pack'
-    packagesToPack: 'src/Simplic.Flow**/*.csproj!src/Simplic.Flow.Console**/*.csproj'
+    packagesToPack: 'src/Simplic.Flow**/*.csproj'
     configuration: '$(buildConfiguration)'
     versioningScheme: 'off'
 
