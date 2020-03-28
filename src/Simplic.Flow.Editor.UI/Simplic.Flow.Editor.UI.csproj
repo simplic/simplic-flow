@@ -142,6 +142,9 @@
     <PackageReference Include="Simplic.Localization.UI">
       <Version>1.0.0.2</Version>
     </PackageReference>
+    <PackageReference Include="Simplic.UI">
+      <Version>7.2.20.321</Version>
+    </PackageReference>
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe">
       <Version>4.7.1</Version>
     </PackageReference>
