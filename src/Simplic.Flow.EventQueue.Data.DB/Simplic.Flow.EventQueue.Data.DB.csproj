@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="FlowEventQueueRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TargetEventQueueModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Simplic.Flow.EventQueue\Simplic.Flow.EventQueue.csproj">

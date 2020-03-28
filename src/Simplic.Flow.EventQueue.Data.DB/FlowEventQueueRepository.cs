@@ -10,10 +10,24 @@ namespace Simplic.Flow.EventQueue.Data.DB
     {
         private const string FlowEventQueueTableName = "Flow_Event_Queue";
         private readonly ISqlService sqlService;
+        private static IList<EventServiceTarget> targets = null;
 
         public FlowEventQueueRepository(ISqlService sqlService)
         {
             this.sqlService = sqlService;
+        }
+
+        public IList<EventServiceTarget> GetEventTargets()
+        {
+            if (targets == null)
+            {
+                targets = sqlService.OpenConnection((conn) =>
+                {
+                    return conn.Query<EventServiceTarget>("SELECT DISTINCT ServiceName, MachineName FROM \"admin\".\"Flow_Configuration\"").ToList();
+                });
+            }
+
+            return targets;
         }
 
         public EventQueueModel Get(Guid id)
@@ -42,12 +56,20 @@ namespace Simplic.Flow.EventQueue.Data.DB
             });
         }
 
-        public IEnumerable<EventQueueModel> GetAllUnhandled()
+        public IEnumerable<EventQueueModel> GetAllUnhandled(string machineName, string serviceName)
         {
             return sqlService.OpenConnection((conn) =>
             {
-                return conn.Query<EventQueueModel>($"SELECT * FROM {FlowEventQueueTableName} " +
-                    $" WHERE Handled = :Handled", new { Handled = false });
+                machineName = machineName ?? "";
+                serviceName = serviceName ?? "";
+
+                return conn.Query<EventQueueModel>($"SELECT top 150 * FROM {FlowEventQueueTableName} " +
+                    $" WHERE Handled = :Handled AND MachineName = :machineName AND ServiceName = :serviceName ORDER BY CreateDateTime", new
+                    {
+                        Handled = false,
+                        machineName,
+                        serviceName
+                    });
             });
         }
 
@@ -58,10 +80,26 @@ namespace Simplic.Flow.EventQueue.Data.DB
                 if (model.Id == Guid.Empty)
                     model.Id = Guid.NewGuid();
 
-                var affectedRows = conn.Execute($"INSERT INTO {FlowEventQueueTableName} " +
-                   $" (Id, EventName, Args, CreateDateTime, CreateUserId, Handled) " +
-                   $" ON EXISTING UPDATE VALUES (:Id, :EventName, :Args, :CreateDateTime, " +
-                   $" :CreateUserId, :Handled)", model);
+                int affectedRows = 0;
+                foreach (var target in GetEventTargets())
+                {
+                    var dbModel = new TargetEventQueueModel
+                    {
+                        Args = model.Args,
+                        CreateDateTime = model.CreateDateTime,
+                        CreateUserId = model.CreateUserId,
+                        EventName = model.EventName,
+                        Handled = model.Handled,
+                        Id = Guid.NewGuid(),
+                        MachineName = target.MachineName,
+                        ServiceName = target.ServiceName
+                    };
+
+                    affectedRows += conn.Execute($"INSERT INTO {FlowEventQueueTableName} " +
+                       $" (Id, EventName, Args, CreateDateTime, CreateUserId, Handled, MachineName, ServiceName) " +
+                       $" ON EXISTING UPDATE VALUES (:Id, :EventName, :Args, :CreateDateTime, " +
+                       $" :CreateUserId, :Handled, :MachineName, :ServiceName)", dbModel);
+                }
 
                 return affectedRows > 0;
             });

@@ -26,5 +26,15 @@ namespace Simplic.Flow.Configuration
         /// Gets or sets if the configuration is active. If not, it will not be processed.
         /// </summary>
         public bool IsActive { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets the current machine name
+        /// </summary>
+        public string MachineName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the service name
+        /// </summary>
+        public string ServiceName { get; set; }
     }
 }

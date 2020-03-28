@@ -57,6 +57,8 @@
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
@@ -68,11 +70,17 @@
                     <Label Grid.Row="0" Content="Name" FontWeight="Bold"/>
                     <simplic:TextBox Grid.Row="0" Grid.Column="1" Text="{Binding WorkflowName, UpdateSourceTrigger=PropertyChanged}" />
 
-                    <simplic:CheckBox Content="{simplic:Localization Key=flow_is_active}" Grid.Row="1" Grid.ColumnSpan="2" IsChecked="{Binding IsActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <Label Grid.Row="1" Content="Server" FontWeight="Bold"/>
+                    <simplic:TextBox Grid.Row="1" Grid.Column="1" Text="{Binding MachineName, UpdateSourceTrigger=PropertyChanged}" />
 
-                    <Button Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="0, 5" Width="150" Content="{simplic:Localization Key=flow_new_variable}" Command="{Binding AddVariableCommand}" />
+                    <Label Grid.Row="2" Content="Service Name" FontWeight="Bold"/>
+                    <simplic:TextBox Grid.Row="2" Grid.Column="1" Text="{Binding ServiceName, UpdateSourceTrigger=PropertyChanged}" />
 
-                    <TabControl Grid.Row="3" Grid.ColumnSpan="2">
+                    <simplic:CheckBox Content="{simplic:Localization Key=flow_is_active}" Grid.Row="3" Grid.ColumnSpan="2" IsChecked="{Binding IsActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <Button Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="0, 5" Width="150" Content="{simplic:Localization Key=flow_new_variable}" Command="{Binding AddVariableCommand}" />
+
+                    <TabControl Grid.Row="5" Grid.ColumnSpan="2">
                         <TabItem Header="{simplic:Localization Key=flow_variables}">
                             <Grid>
                                 <Grid.RowDefinitions>
