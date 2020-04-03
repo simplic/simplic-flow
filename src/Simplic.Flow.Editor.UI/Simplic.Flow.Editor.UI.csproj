@@ -9,9 +9,11 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Simplic.Flow.Editor.UI</RootNamespace>
     <AssemblyName>Simplic.Flow.Editor.UI</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,26 +33,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommonServiceLocator.2.0.2\lib\net45\CommonServiceLocator.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="Simplic.CoreLib, Version=6.16.18.1125, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simplic.CoreLib.6.16.18.1125\lib\net451\Simplic.CoreLib.dll</HintPath>
-    </Reference>
-    <Reference Include="Simplic.Framework.Base">
-      <HintPath>..\..\..\simplic-framework\src\Simplic.Main\bin\Debug\Simplic.Framework.Base.dll</HintPath>
-    </Reference>
-    <Reference Include="Simplic.Localization, Version=6.0.118.913, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simplic.Localization.6.0.118.913\lib\net451\Simplic.Localization.dll</HintPath>
-    </Reference>
-    <Reference Include="Simplic.Localization.UI, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simplic.Localization.UI.1.0.0.2\lib\net451\Simplic.Localization.UI.dll</HintPath>
-    </Reference>
     <Reference Include="Simplic.UI">
       <HintPath>..\..\..\simplic-framework\src\Simplic.Main\bin\Debug\Simplic.UI.dll</HintPath>
     </Reference>
@@ -63,35 +47,6 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="Telerik.Windows.Controls">
-      <HintPath>..\..\..\simplic-framework\src\Simplic.Main\bin\Debug\Assemblies\Telerik.Windows.Controls.dll</HintPath>
-    </Reference>
-    <Reference Include="Telerik.Windows.Controls.Diagrams">
-      <HintPath>..\..\..\simplic-framework\src\Simplic.Main\bin\Debug\Assemblies\Telerik.Windows.Controls.Diagrams.dll</HintPath>
-    </Reference>
-    <Reference Include="Telerik.Windows.Controls.Diagrams.Extensions">
-      <HintPath>..\..\..\simplic-framework\src\Simplic.Main\bin\Debug\Assemblies\Telerik.Windows.Controls.Diagrams.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="Telerik.Windows.Controls.GridView">
-      <HintPath>..\..\..\simplic-framework\src\Simplic.Main\bin\Debug\Assemblies\Telerik.Windows.Controls.GridView.dll</HintPath>
-    </Reference>
-    <Reference Include="Telerik.Windows.Controls.Navigation, Version=2018.1.122.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\simplic-framework\src\Simplic.Main\bin\Debug\Assemblies\Telerik.Windows.Controls.Navigation.dll</HintPath>
-    </Reference>
-    <Reference Include="Telerik.Windows.Data, Version=2018.1.122.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\simplic-framework\src\Simplic.Main\bin\Debug\Assemblies\Telerik.Windows.Data.dll</HintPath>
-    </Reference>
-    <Reference Include="Telerik.Windows.Diagrams.Core">
-      <HintPath>..\..\..\simplic-framework\src\Simplic.Main\bin\Debug\Assemblies\Telerik.Windows.Diagrams.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Abstractions, Version=3.3.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.Abstractions.3.3.0\lib\net45\Unity.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.ServiceLocation, Version=2.1.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.ServiceLocation.2.1.1\lib\net45\Unity.ServiceLocation.dll</HintPath>
-    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -133,11 +88,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="package.bat" />
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Simplic.Flow.Editor.UI.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Simplic.Flow.Configuration\Simplic.Flow.Configuration.csproj">
@@ -173,8 +123,65 @@
       <Name>Simplic.Flow</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="CommonServiceLocator">
+      <Version>2.0.5</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>12.0.3</Version>
+    </PackageReference>
+    <PackageReference Include="Simplic.CoreLib">
+      <Version>6.17.20.322</Version>
+    </PackageReference>
+    <PackageReference Include="Simplic.Framework.Base">
+      <Version>7.2.20.321</Version>
+    </PackageReference>
+    <PackageReference Include="Simplic.Localization">
+      <Version>6.0.118.913</Version>
+    </PackageReference>
+    <PackageReference Include="Simplic.Localization.UI">
+      <Version>1.0.0.2</Version>
+    </PackageReference>
+    <PackageReference Include="Simplic.UI">
+      <Version>7.2.20.321</Version>
+    </PackageReference>
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe">
+      <Version>4.7.1</Version>
+    </PackageReference>
+    <PackageReference Include="System.Threading.Tasks.Extensions">
+      <Version>4.5.4</Version>
+    </PackageReference>
+    <PackageReference Include="Telerik.Windows.Controls.Diagrams.Extensions.for.Wpf.Xaml">
+      <Version>2020.1.218</Version>
+    </PackageReference>
+    <PackageReference Include="Telerik.Windows.Controls.Diagrams.for.Wpf.Xaml">
+      <Version>2020.1.218</Version>
+    </PackageReference>
+    <PackageReference Include="Telerik.Windows.Controls.Diagrams.Ribbon.for.Wpf.Xaml">
+      <Version>2020.1.218</Version>
+    </PackageReference>
+    <PackageReference Include="Telerik.Windows.Controls.GridView.for.Wpf.Xaml">
+      <Version>2020.1.218</Version>
+    </PackageReference>
+    <PackageReference Include="Telerik.Windows.Controls.Input.for.Wpf.Xaml">
+      <Version>2020.1.218</Version>
+    </PackageReference>
+    <PackageReference Include="Telerik.Windows.Controls.RibbonView.for.Wpf.Xaml">
+      <Version>2020.1.218</Version>
+    </PackageReference>
+    <PackageReference Include="Telerik.Windows.Diagrams.Core.for.Wpf.Xaml">
+      <Version>2020.1.218</Version>
+    </PackageReference>
+    <PackageReference Include="Unity.Abstractions">
+      <Version>5.11.4</Version>
+    </PackageReference>
+    <PackageReference Include="Unity.ServiceLocation">
+      <Version>5.11.1</Version>
+    </PackageReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(TargetDir)$(TargetName).dll" "$(SolutionDir)..\..\simplic-framework\src\Simplic.Main\bin\Debug\" /F /Y</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>
