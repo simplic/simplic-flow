@@ -1,2 +1,5 @@
 <ReleaseNotes>
+  <ChangeSet>
+    <Change type="feature">Adds a new flow node for getting a file extension.</Change>
+  </ChangeSet>
 </ReleaseNotes>
