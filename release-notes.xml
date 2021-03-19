@@ -1,5 +1,5 @@
 <ReleaseNotes>
-  <ChangeSet>
+  <ChangeSet guid="213a87e2-4632-4958-a7dc-6eb905887d91">
     <Change type="feature">Adds a new flow node for getting a file extension.</Change>
   </ChangeSet>
 </ReleaseNotes>
