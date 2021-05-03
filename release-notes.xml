@@ -1,2 +1,5 @@
 <ReleaseNotes>
+  <ChangeSet>
+    <Change type="enhancement">Events will only be triggered for active-flows.</Change>
+  </ChangeSet>
 </ReleaseNotes>
