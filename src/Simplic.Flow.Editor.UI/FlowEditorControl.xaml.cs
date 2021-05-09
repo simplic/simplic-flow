@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Controls;
 using Telerik.Windows.Controls.Diagrams;
+using Telerik.Windows.Controls.SyntaxEditor.Taggers;
 using Telerik.Windows.Diagrams.Core;
 
 namespace Simplic.Flow.Editor.UI
@@ -25,6 +26,12 @@ namespace Simplic.Flow.Editor.UI
         {
             InitializeComponent();
             this.Loaded += EditorControl_Loaded;
+
+            var foldingTagger = new BracketFoldingTagger(this.syntaxEditor);
+            this.syntaxEditor.TaggersRegistry.RegisterTagger(foldingTagger);
+
+            var tagger = new JavaScriptTagger(syntaxEditor);
+            this.syntaxEditor.TaggersRegistry.RegisterTagger(tagger);
         } 
         #endregion
 
@@ -143,6 +150,7 @@ namespace Simplic.Flow.Editor.UI
             isInitialized = true;
 
             toolbox.DataContext = new ToolboxViewModel(nodeDefinitions);
+
             diagramViewModel = new WorkflowEditorViewModel(nodeDefinitions, flowConfiguration);
             this.DataContext = diagramViewModel;
 
