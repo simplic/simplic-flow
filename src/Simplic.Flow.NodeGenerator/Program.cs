@@ -208,6 +208,61 @@ namespace Simplic.Flow.NodeGenerator
                     else
                         actionNodes.Add(node);
                 }
+
+                foreach (var staticProperty in type.GetProperties(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public))
+                {
+                    var node = new ActionNodeDefinition();
+
+                    node.OutFlowPins.Add(new FlowPinDefinition
+                    {
+                        AllowMultiple = false,
+                        DisplayName = "Success",
+                        Id = Guid.NewGuid(),
+                        Name = "OutNodeSuccess",
+                        PinDirection = PinDirectionDefinition.Out
+                    });
+
+                    node.OutFlowPins.Add(new FlowPinDefinition
+                    {
+                        AllowMultiple = false,
+                        DisplayName = "Failed",
+                        Id = Guid.NewGuid(),
+                        Name = "OutNodeFailed",
+                        PinDirection = PinDirectionDefinition.Out
+                    });
+
+                    node.OutDataPins.Add(new DataPinDefinition
+                    {
+                        Id = Guid.NewGuid(),
+                        DisplayName = "Value",
+                        Name = "OutPinValue",
+                        Type = staticProperty.PropertyType,
+                        IsGeneric = false,
+                        PinDirection = PinDirectionDefinition.Out
+                    });
+
+                    foreach (var subProperty in staticProperty.PropertyType.GetProperties(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public))
+                    {
+                        node.OutDataPins.Add(new DataPinDefinition
+                        {
+                            Id = Guid.NewGuid(),
+                            DisplayName = subProperty.Name,
+                            Name = $"OutPinSub{subProperty.Name}",
+                            Type = subProperty.PropertyType,
+                            IsGeneric = false,
+                            PinDirection = PinDirectionDefinition.Out
+                        });
+                    }
+
+                    node.Name = $"{CleanName(type.Namespace)}{type.Name}{staticProperty.Name}";
+                    node.Tooltip = $"{type.Namespace}{type.Name}{staticProperty.Name}";
+                    node.DisplayName = $"{type.Name}.{staticProperty.Name}";
+
+                    node.Category = $"System/{type.Name}";
+
+
+                    actionNodes.Add(node);
+                }
             }
 
             var nodeJson = JsonConvert.SerializeObject(actionNodes);

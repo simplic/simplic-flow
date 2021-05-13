@@ -118,6 +118,7 @@
                                Header="{Binding SelectedItem.Header, RelativeSource={RelativeSource Self}}"
                                ItemTemplate="{StaticResource ToolboxTemplate}"                                           
                                SelectiveScrollingGrid.SelectiveScrollingOrientation="Both"
+                               Template="{StaticResource CustomDiagramToolBoxTemplate}"
                                IsTextSearchEnabled="True">
                         </telerik:RadDiagramToolbox>
                     </TabItem>

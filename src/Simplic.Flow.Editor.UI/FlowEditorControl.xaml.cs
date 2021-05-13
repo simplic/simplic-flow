@@ -55,7 +55,7 @@ namespace Simplic.Flow.Editor.UI
         #endregion
 
         #region [HasImplicitConversion]
-        public static bool HasImplicitConversion(Type baseType, Type targetType)
+        public static bool HasImplicitConversion(Type baseType, Type targetType) 
         {
             return baseType.GetMethods(BindingFlags.Public | BindingFlags.Static)
                 .Where(mi => mi.Name == "op_Implicit" && mi.ReturnType == targetType)
