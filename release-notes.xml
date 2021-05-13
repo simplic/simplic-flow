@@ -2,4 +2,8 @@
   <ChangeSet guid="d4bcc37e-ec37-47a2-b9c0-1dbdaebbf9fb">
     <Change type="enhancement">Events will only be triggered for active-flows.</Change>
   </ChangeSet>
+  <ChangeSet>
+    <Change type="enhancement">Make toolbox scrollable.</Change>
+    <Change type="enhancement">Add base playground system.</Change>
+  </ChangeSet>
 </ReleaseNotes>

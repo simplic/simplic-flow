@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Data;
 using Telerik.Windows.Diagrams.Core;
 
 namespace Simplic.Flow.Editor.UI
@@ -13,7 +14,7 @@ namespace Simplic.Flow.Editor.UI
     /// </summary>
     public class WorkflowEditorViewModel : Simplic.UI.MVC.ViewModelBase, IObservableGraphSource
     {
-        #region Private Members
+        #region Fields
         private Guid id;
         private ObservableCollection<NodeConnectionViewModel> connections;
         private Configuration.FlowConfiguration flowConfiguration;

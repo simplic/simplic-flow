@@ -4,17 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{31F8BAE6-18F3-4060-87BB-E2404D043A74}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Simplic.FlowInstance.Data.DB</RootNamespace>
-    <AssemblyName>Simplic.FlowInstance.Data.DB</AssemblyName>
+    <ProjectGuid>{2BE1EF3A-E341-4C37-9B5F-85F5DEA848D8}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Simplic.Flow.NodeGenerator</RootNamespace>
+    <AssemblyName>Simplic.Flow.NodeGenerator</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -42,35 +43,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FlowInstanceRepository.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Simplic.FlowInstance\Simplic.FlowInstance.csproj">
-      <Project>{7206af52-60cb-46b1-9fe7-cf172752b0e9}</Project>
-      <Name>Simplic.FlowInstance</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Simplic.Flow\Simplic.Flow.csproj">
-      <Project>{1F540A26-62FB-45CB-ABC6-B4B2D8F7005E}</Project>
-      <Name>Simplic.Flow</Name>
-    </ProjectReference>
+    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Dapper">
-      <Version>2.0.30</Version>
-    </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>
     </PackageReference>
-    <PackageReference Include="Simplic.CoreLib">
-      <Version>7.3.121.426</Version>
-    </PackageReference>
-    <PackageReference Include="Simplic.Sql">
-      <Version>6.3.20.322</Version>
-    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Simplic.Flow.Editor.Definition\Simplic.Flow.Editor.Definition.csproj">
+      <Project>{75EF378A-23DD-4B14-B9F8-30747A8347FF}</Project>
+      <Name>Simplic.Flow.Editor.Definition</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simplic.Flow\Simplic.Flow.csproj">
+      <Project>{1f540a26-62fb-45cb-abc6-b4b2d8f7005e}</Project>
+      <Name>Simplic.Flow</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

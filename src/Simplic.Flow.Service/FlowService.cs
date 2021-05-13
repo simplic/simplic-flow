@@ -102,8 +102,8 @@ namespace Simplic.Flow.Service
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<EndWithConditionNode>>("EndWithConditionNode");
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<DeleteFileNode>>("DeleteFileNode");
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<GetDirectoryContentNode>>(nameof(GetDirectoryContentNode));
-            unityContainer.RegisterType<INodeResolver, GenericNodeResolver<GetFileExtensionNode>>("GetFileExtensionNode"); 
-            unityContainer.RegisterType<INodeResolver, GenericNodeResolver<OnCheckDirectoryContentNode>>("OnCheckDirectoryContentNode");
+            unityContainer.RegisterType<INodeResolver, GenericNodeResolver<OnCheckDirectoryContentNode>>(nameof(OnCheckDirectoryContentNode));
+            unityContainer.RegisterType<INodeResolver, GenericNodeResolver<GetFileExtensionNode>>("GetFileExtensionNode");
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<GetVariableNode>>(nameof(GetVariableNode));
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<SetVariableNode>>(nameof(SetVariableNode));
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<AddNode>>(nameof(AddNode));

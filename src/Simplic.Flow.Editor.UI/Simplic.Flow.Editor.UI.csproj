@@ -131,19 +131,19 @@
       <Version>12.0.3</Version>
     </PackageReference>
     <PackageReference Include="Simplic.CoreLib">
-      <Version>6.17.20.322</Version>
+      <Version>7.3.121.426</Version>
     </PackageReference>
     <PackageReference Include="Simplic.Framework.Base">
-      <Version>7.2.20.321</Version>
+      <Version>7.5.921.503</Version>
     </PackageReference>
     <PackageReference Include="Simplic.Localization">
-      <Version>6.0.118.913</Version>
+      <Version>6.1.20.322</Version>
     </PackageReference>
     <PackageReference Include="Simplic.Localization.UI">
-      <Version>1.0.0.2</Version>
+      <Version>1.1.20.1208</Version>
     </PackageReference>
     <PackageReference Include="Simplic.UI">
-      <Version>7.2.20.321</Version>
+      <Version>7.2.821.426</Version>
     </PackageReference>
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe">
       <Version>4.7.1</Version>
@@ -152,25 +152,28 @@
       <Version>4.5.4</Version>
     </PackageReference>
     <PackageReference Include="Telerik.Windows.Controls.Diagrams.Extensions.for.Wpf.Xaml">
-      <Version>2020.1.218</Version>
+      <Version>2021.1.223</Version>
     </PackageReference>
     <PackageReference Include="Telerik.Windows.Controls.Diagrams.for.Wpf.Xaml">
-      <Version>2020.1.218</Version>
+      <Version>2021.1.223</Version>
     </PackageReference>
     <PackageReference Include="Telerik.Windows.Controls.Diagrams.Ribbon.for.Wpf.Xaml">
-      <Version>2020.1.218</Version>
+      <Version>2021.1.223</Version>
     </PackageReference>
     <PackageReference Include="Telerik.Windows.Controls.GridView.for.Wpf.Xaml">
-      <Version>2020.1.218</Version>
+      <Version>2021.1.223</Version>
     </PackageReference>
     <PackageReference Include="Telerik.Windows.Controls.Input.for.Wpf.Xaml">
-      <Version>2020.1.218</Version>
+      <Version>2021.1.223</Version>
     </PackageReference>
     <PackageReference Include="Telerik.Windows.Controls.RibbonView.for.Wpf.Xaml">
-      <Version>2020.1.218</Version>
+      <Version>2021.1.223</Version>
+    </PackageReference>
+    <PackageReference Include="Telerik.Windows.Controls.SyntaxEditor.for.Wpf.Xaml">
+      <Version>2021.1.223</Version>
     </PackageReference>
     <PackageReference Include="Telerik.Windows.Diagrams.Core.for.Wpf.Xaml">
-      <Version>2020.1.218</Version>
+      <Version>2021.1.223</Version>
     </PackageReference>
     <PackageReference Include="Unity.Abstractions">
       <Version>5.11.4</Version>
