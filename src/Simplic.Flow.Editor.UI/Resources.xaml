@@ -15,7 +15,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <telerik:RadWatermarkTextBox VerticalAlignment="Center" HorizontalAlignment="Stretch" WatermarkContent="Suche..." />
+            <telerik:RadWatermarkTextBox Visibility="Collapsed" VerticalAlignment="Center" HorizontalAlignment="Stretch" WatermarkContent="Suche..." />
 
             <Grid x:Name="RootGrid" Grid.Row="1">
                 <Grid.ColumnDefinitions>
