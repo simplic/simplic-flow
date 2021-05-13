@@ -125,7 +125,7 @@
                 </TabControl>
             </Grid>
         </telerik:RadTabItem>
-        <telerik:RadTabItem Header="Playground">
+        <telerik:RadTabItem Header="Playground" IsEnabled="False">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
