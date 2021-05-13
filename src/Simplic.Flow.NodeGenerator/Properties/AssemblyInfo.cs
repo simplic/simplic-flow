@@ -1,15 +1,16 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Simplic.Flow")]
+[assembly: AssemblyTitle("Simplic.Flow.NodeGenerator")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("SIMPLIC GmbH")]
-[assembly: AssemblyProduct("Simplic.Flow")]
-[assembly: AssemblyCopyright("Copyright © SIMPLIC GmbH 2018")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("Simplic.Flow.NodeGenerator")]
+[assembly: AssemblyCopyright("Copyright ©  2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -19,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("1f540a26-62fb-45cb-abc6-b4b2d8f7005e")]
+[assembly: Guid("2be1ef3a-e341-4c37-9b5f-85f5dea848d8")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -31,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("7.0.121.513")]
-[assembly: AssemblyFileVersion("7.0.121.513")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]

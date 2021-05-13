@@ -63,7 +63,7 @@
       <Version>12.0.3</Version>
     </PackageReference>
     <PackageReference Include="Simplic.CoreLib">
-      <Version>6.17.20.322</Version>
+      <Version>7.3.121.426</Version>
     </PackageReference>
     <PackageReference Include="Simplic.Sql">
       <Version>6.3.20.322</Version>
