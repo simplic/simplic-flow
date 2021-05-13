@@ -9,22 +9,30 @@
     <SolidColorBrush x:Key="SettingsPaneBorderBrush" Color="#FFD6D4D4" />
 
     <ControlTemplate x:Key="CustomDiagramToolBoxTemplate" TargetType="telerik:RadDiagramToolbox">
-        <Grid x:Name="RootGrid">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <Grid x:Name="hideablePart">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" MinHeight="28"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <Grid.RenderTransform>
-                    <TranslateTransform/>
-                </Grid.RenderTransform>
-                <Border Grid.RowSpan="3" Background="{telerik:VisualStudio2019Resource ResourceKey=AlternativeBrush}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1 1 0 1"/>
-                <ContentControl
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <telerik:RadWatermarkTextBox VerticalAlignment="Center" HorizontalAlignment="Stretch" WatermarkContent="Suche..." />
+
+            <Grid x:Name="RootGrid" Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid x:Name="hideablePart">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" MinHeight="28"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.RenderTransform>
+                        <TranslateTransform/>
+                    </Grid.RenderTransform>
+                    <Border Grid.RowSpan="3" Background="{telerik:VisualStudio2019Resource ResourceKey=AlternativeBrush}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1 1 0 1"/>
+                    <ContentControl
                                     Margin="{TemplateBinding Padding}"
                                     Foreground="{TemplateBinding Foreground}"
                                     ContentTemplate="{TemplateBinding TitleTemplate}"
@@ -34,20 +42,20 @@
                                     FontSize="{telerik:VisualStudio2019Resource ResourceKey=FontSizeL}"
                                     FontWeight="SemiBold"
                                     Content="{TemplateBinding Title}"/>
-                <ScrollViewer Margin="2,3" Grid.Row="1">
-                    <ItemsPresenter/>
-                </ScrollViewer>
-                <telerik:RadButton x:Name="CloseButton" Grid.Row="2" Style="{TemplateBinding CloseButtonStyle}"/>
-            </Grid>
-            <Border Grid.Column="1" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" MinHeight="28"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <Border Background="{TemplateBinding HeaderBackground}">
-                        <ContentControl
+                    <ScrollViewer Margin="2,3" Grid.Row="1">
+                        <ItemsPresenter/>
+                    </ScrollViewer>
+                    <telerik:RadButton x:Name="CloseButton" Grid.Row="2" Style="{TemplateBinding CloseButtonStyle}"/>
+                </Grid>
+                <Border Grid.Column="1" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" MinHeight="28"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Border Background="{TemplateBinding HeaderBackground}">
+                            <ContentControl
                                             Margin="{TemplateBinding Padding}"
                                             FontFamily="{telerik:VisualStudio2019Resource ResourceKey=FontFamily}"
                                             FontSize="{telerik:VisualStudio2019Resource ResourceKey=FontSizeL}"
@@ -57,30 +65,31 @@
                                             ContentTemplate="{TemplateBinding HeaderTemplate}"
                                             VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                             HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
-                    </Border>
-                    <Grid Margin="10 0 0 0" Grid.Row="1">
-                        <ContentPresenter x:Name="SelectedTabContent"/>
-                    </Grid>
-                    <Grid Grid.Row="2">
-                        <Border Background="{telerik:VisualStudio2019Resource ResourceKey=MainBrush}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0 1 0 0">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <telerik:RadButton x:Name="OpenCloseButton" Style="{TemplateBinding OpenCloseButtonStyle}">
-                                    <ToolTipService.ToolTip>
-                                        <ToolTip Content="{telerik:LocalizableResource Key=Open_Close}"/>
-                                    </ToolTipService.ToolTip>
-                                </telerik:RadButton>
-                                <TextBlock
+                        </Border>
+                        <Grid Margin="10 0 0 0" Grid.Row="1">
+                            <ContentPresenter x:Name="SelectedTabContent"/>
+                        </Grid>
+                        <Grid Grid.Row="2">
+                            <Border Background="{telerik:VisualStudio2019Resource ResourceKey=MainBrush}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0 1 0 0">
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <telerik:RadButton x:Name="OpenCloseButton" Style="{TemplateBinding OpenCloseButtonStyle}">
+                                        <ToolTipService.ToolTip>
+                                            <ToolTip Content="{telerik:LocalizableResource Key=Open_Close}"/>
+                                        </ToolTipService.ToolTip>
+                                    </telerik:RadButton>
+                                    <TextBlock
                                                     Margin="5 0"
                                                     FontFamily="{TemplateBinding FontFamily}"
                                                     FontSize="{TemplateBinding FontSize}"
                                                     Text="{telerik:LocalizableResource Key=Toolbox_ViewGalleries}"
                                                     Foreground="{TemplateBinding Foreground}"
                                                     VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Border>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
                     </Grid>
-                </Grid>
-            </Border>
+                </Border>
+            </Grid>
         </Grid>
     </ControlTemplate>
 
@@ -276,7 +285,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
     <DataTemplate x:Key="ToolboxItemTemplate">
         <Grid Margin="0 1 1 0" Width="72" Height="auto" HorizontalAlignment="Stretch">
             <Grid.RowDefinitions>

@@ -14,8 +14,8 @@
         <ResourceDictionary Source="Resources.xaml" />
     </UserControl.Resources>
 
-    <TabControl Grid.Row="0" Grid.Column="0">
-        <TabItem Header="Flow">
+    <telerik:RadTabControl Grid.Row="0" Grid.Column="0">
+        <telerik:RadTabItem Header="Flow">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -124,8 +124,8 @@
                     </TabItem>
                 </TabControl>
             </Grid>
-        </TabItem>
-        <TabItem Header="Playground">
+        </telerik:RadTabItem>
+        <telerik:RadTabItem Header="Playground">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
@@ -143,6 +143,6 @@
                 <Label Grid.Row="0" Grid.Column="1" Content="Debug-Tree" />
                 <telerik:RadTreeView Grid.Row="1" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
             </Grid>
-        </TabItem>
-    </TabControl>
+        </telerik:RadTabItem>
+    </telerik:RadTabControl>
 </UserControl>
