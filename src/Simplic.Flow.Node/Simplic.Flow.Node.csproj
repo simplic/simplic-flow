@@ -45,6 +45,7 @@
     <Compile Include="ActionNode\Base\DateTimeNowNode.cs" />
     <Compile Include="ActionNode\Base\ConcatStringNode.cs" />
     <Compile Include="ActionNode\Base\EndWithConditionNode.cs" />
+    <Compile Include="ActionNode\Base\ExecuteFlowNode.cs" />
     <Compile Include="ActionNode\Base\ToStringNode.cs" />
     <Compile Include="ActionNode\Base\ConsoleWriteLineNode.cs" />
     <Compile Include="ActionNode\Base\ClearPinNode.cs" />
@@ -62,6 +63,8 @@
     <Compile Include="ActionNode\Math\SubtractNode.cs" />
     <Compile Include="ActionNode\Process\ProcessStartNode.cs" />
     <Compile Include="ActionNode\Thread\ThreadSleepNode.cs" />
+    <Compile Include="EventNode\Base\OnExecuteFlowEventArgs.cs" />
+    <Compile Include="EventNode\Base\OnExecuteFlowEvent.cs" />
     <Compile Include="EventNode\IO\OnCheckDirectoryContentEventArgs.cs" />
     <Compile Include="EventNode\IO\OnCheckDirectoryContentNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -83,6 +86,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="CommonServiceLocator">
+      <Version>2.0.5</Version>
+    </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>
     </PackageReference>
