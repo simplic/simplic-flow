@@ -118,6 +118,9 @@ namespace Simplic.Flow.Service
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<ToStringNode>>(nameof(ToStringNode));
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<DateTimeNowNode>>(nameof(DateTimeNowNode));
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<ConcatStringNode>>(nameof(ConcatStringNode));
+
+            unityContainer.RegisterType<INodeResolver, GenericNodeResolver<ExecuteFlowNode>>(nameof(ExecuteFlowNode));
+            unityContainer.RegisterType<INodeResolver, GenericNodeResolver<OnExecuteFlowEvent>>(nameof(OnExecuteFlowEvent));
         }
         #endregion
 

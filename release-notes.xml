@@ -6,4 +6,7 @@
     <Change type="enhancement">Make toolbox scrollable.</Change>
     <Change type="enhancement">Add base playground system.</Change>
   </ChangeSet>
+  <ChangeSet guid="fd02a8b4-1652-4cd0-a65b-179b01e5892f">
+    <Change type="feature">Adds the possibility to execute sub-flows.</Change>
+  </ChangeSet>
 </ReleaseNotes>
