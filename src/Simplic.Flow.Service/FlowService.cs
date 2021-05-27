@@ -173,10 +173,15 @@ namespace Simplic.Flow.Service
         #endregion
 
         #region [CreateFlowsFromConfiguration]
+        /// <summary>
+        /// Copy a flow instance before using it.
+        /// </summary>
+        /// <param name="flow"></param>
+        /// <returns></returns>
         private Flow CopyFlow(Flow flow)
         {
-            // TODO: !! Only for testing purpose
-            return CreateFlowsFromConfiguration().FirstOrDefault(x => x.Id == flow.Id);
+            // TODO: Make this optional, so that the user can decide whether to use a copy (slower but better memory management).
+            return flow;
         }
 
         /// <summary>
@@ -452,7 +457,7 @@ namespace Simplic.Flow.Service
         {
             // Raise event before the process has begun.
             OnStarted?.Invoke(this, EventArgs.Empty);
-            int maxParallelTasks = 1;
+            int maxParallelTasks = 4;
 
             //flowLogService.Info($"> Running at {DateTime.Now}");
             try
@@ -628,12 +633,6 @@ namespace Simplic.Flow.Service
                 // Raise event after the process has begun.
                 OnCompleted?.Invoke(this, EventArgs.Empty);
                 throw;
-            }
-            finally
-            {
-                // TODO: Make this optional
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
             }
 
             // Raise event after the process has begun.
