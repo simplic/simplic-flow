@@ -121,6 +121,8 @@ namespace Simplic.Flow.Service
 
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<ExecuteFlowNode>>(nameof(ExecuteFlowNode));
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<OnExecuteFlowEvent>>(nameof(OnExecuteFlowEvent));
+
+            unityContainer.RegisterType<INodeResolver, GenericNodeResolver<ProcessStartNode>>(nameof(ProcessStartNode));
         }
         #endregion
 
@@ -172,6 +174,17 @@ namespace Simplic.Flow.Service
 
         #region [CreateFlowsFromConfiguration]
         /// <summary>
+        /// Copy a flow instance before using it.
+        /// </summary>
+        /// <param name="flow"></param>
+        /// <returns></returns>
+        private Flow CopyFlow(Flow flow)
+        {
+            // TODO: Make this optional, so that the user can decide whether to use a copy (slower but better memory management).
+            return flow;
+        }
+
+        /// <summary>
         /// Creates a list <see cref="Flow"/> objects from <see cref="FlowConfiguration"/> objects
         /// </summary>
         /// <returns>A list <see cref="Flow"/> objects</returns>
@@ -211,7 +224,6 @@ namespace Simplic.Flow.Service
                             }
                         }
                     }
-
                 }
 
                 foreach (var pin in flowConfiguration.Pins)
@@ -370,9 +382,14 @@ namespace Simplic.Flow.Service
             }
             catch (Exception ex)
             {
-                flowLogService.Error("Error during executing flow node.", ex);
+                // TODO: When implementing a profiler, report the failed nodes
+                var lastActiveFlowNodes = threadInfo.FlowInstance.CurrentNodes.Select(x => x.Node?.Name ?? "").ToList();
+                flowLogService.Error($"Error during executing flow node. Current nodes: {string.Join(", ", lastActiveFlowNodes)}", ex);
 
                 threadInfo.FlowInstance.IsFailed = true;
+
+                // We don't have any current nodes when the flow failes
+                threadInfo.FlowInstance.CurrentNodes.Clear();
 
                 // Save or remove active flow
                 SaveOrDeleteFlowInstance(threadInfo.FlowInstance);
@@ -401,8 +418,6 @@ namespace Simplic.Flow.Service
         #endregion
 
         #region Public Methods
-
-
         /// <summary>
         /// Initialize service
         /// </summary>
@@ -458,8 +473,6 @@ namespace Simplic.Flow.Service
                         return;
                     }
 
-                    //var newFlowInstances = new List<FlowInstance>();
-
                     while (eventQueue.Count > 0)
                     {
                         // pop event entries from queue first
@@ -473,7 +486,7 @@ namespace Simplic.Flow.Service
 
                             var newFlowInstance = new FlowInstance
                             {
-                                Flow = Flows.FirstOrDefault(x => x.Id == queueEntry.Delegate.FlowId),
+                                Flow = CopyFlow(Flows.FirstOrDefault(x => x.Id == queueEntry.Delegate.FlowId)),
                                 Id = Guid.NewGuid()
                             };
 
@@ -492,7 +505,7 @@ namespace Simplic.Flow.Service
 
                                 // Get from database
                                 var flowInstance = flowInstanceService.GetById(activeFlow.FlowInstanceId);
-                                flowInstance.Flow = Flows.FirstOrDefault(x => x.Id == flowInstance.FlowId);
+                                flowInstance.Flow = CopyFlow(Flows.FirstOrDefault(x => x.Id == flowInstance.FlowId));
 
                                 executions.Add(new ThreadStateInfo
                                 {
@@ -579,18 +592,20 @@ namespace Simplic.Flow.Service
                     // Execute
                     foreach (var thread in tempThreads)
                     {
-                        Console.WriteLine($" > [{DateTime.Now.ToLongTimeString()}] Start thread");
+                        Console.WriteLine($" > [{DateTime.Now.ToLongTimeString()}] Start thread {thread.ManagedThreadId}");
                         thread.Start();
                         executedThreads.Add(thread);
                     }
 
-                    Thread.Sleep(150);
+                    Thread.Sleep(30);
                 }
 
                 foreach (var thread in executedThreads)
                 {
+                    var id = thread.ManagedThreadId;
                     thread.Join();
-                    Console.WriteLine($" < [{DateTime.Now.ToLongTimeString()}] Thread joined");
+
+                    Console.WriteLine($" < [{DateTime.Now.ToLongTimeString()}] Thread joined {id}");
                 }
 
                 // Remove failed from success
@@ -608,6 +623,8 @@ namespace Simplic.Flow.Service
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine($"Flow execution complete. Flows: {executedThreads.Count}");
                 Console.ForegroundColor = color;
+
+                executedThreads.Clear();
             }
             catch (Exception ex)
             {
