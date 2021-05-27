@@ -9,4 +9,7 @@
   <ChangeSet>
     <Change type="feature">Adds the possibility to execute sub-flows.</Change>
   </ChangeSet>
+  <ChangeSet>
+    <Change type="bug">Fixes a bug, that crashs the simplic application server when using StartProcessNode.</Change>
+  </ChangeSet>
 </ReleaseNotes>
