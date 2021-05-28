@@ -6,16 +6,16 @@ using System.Linq;
 namespace Simplic.Flow.Editor.UI
 {
     /// <summary>
-    /// ActionNodeViewModel
-    /// </ActionNodeViewModel>
-    public class ActionNodeViewModel : NodeViewModel
+    /// ConditionNodeViewModel
+    /// </summary>
+    public class ConditionNodeViewModel : NodeViewModel
     {
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="nodeDefinition">NodeDefinition</param>
         /// <param name="nodeConfiguration">NodeConfiguration</param>
-        public ActionNodeViewModel(NodeDefinition nodeDefinition, NodeConfiguration nodeConfiguration) 
+        public ConditionNodeViewModel(NodeDefinition nodeDefinition, NodeConfiguration nodeConfiguration) 
             : base(nodeDefinition, nodeConfiguration)
         {
             // add flow in pin manually if it is not an event            

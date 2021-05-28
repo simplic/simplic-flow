@@ -42,8 +42,6 @@ namespace Simplic.Flow.Editor.UI
         }
         #endregion
 
-        
-
         #region Protected Methods
 
         #region [OnIsSelectedChanged]
