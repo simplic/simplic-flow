@@ -16,12 +16,8 @@ namespace Simplic.Flow.Editor.UI
         public FlowConnector(string name, string text, ConnectorDirection connectorDirection)
             : base(name, text, connectorDirection)
         {
-
             this.Style = TryFindResource("FlowConnectorTemplate") as Style;            
-            ToolTip = Text;
-            
-        }               
-
-                
+            ToolTip = Text;            
+        }                
     }
 }

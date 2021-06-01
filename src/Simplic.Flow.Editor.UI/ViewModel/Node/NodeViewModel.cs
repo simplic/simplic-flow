@@ -244,9 +244,18 @@ namespace Simplic.Flow.Editor.UI
         {
             get { return defaultValues; }
             set { defaultValues = value; RaisePropertyChanged(nameof(DefaultValues)); }
-        } 
+        }
         #endregion
 
+        /// <summary>
+        /// Gets the node definition
+        /// </summary>
+        internal NodeDefinition NodeDefinition => nodeDefinition;
+
+        /// <summary>
+        /// Gets the node configuration
+        /// </summary>
+        internal NodeConfiguration NodeConfiguration => nodeConfiguration;
         #endregion
     }
 }

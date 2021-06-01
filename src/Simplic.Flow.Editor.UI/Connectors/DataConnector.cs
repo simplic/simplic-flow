@@ -25,7 +25,7 @@ namespace Simplic.Flow.Editor.UI
             this.ToolTip = $"{Text} ({connectorDataType?.Name})";
             this.IsGeneric = isGeneric;
             this.AllowedTypes = allowedTypes;
-
+            
             FillDataTemplate();
         }
 

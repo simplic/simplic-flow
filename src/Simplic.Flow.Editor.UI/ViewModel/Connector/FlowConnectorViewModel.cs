@@ -1,6 +1,7 @@
 ﻿using Simplic.Flow.Editor.Definition;
 using System;
 using System.Linq;
+using System.Windows;
 
 namespace Simplic.Flow.Editor.UI
 {
@@ -8,6 +9,7 @@ namespace Simplic.Flow.Editor.UI
     {
         private FlowPinDefinition pinDefinition;
         private bool isConnected;
+        private Visibility visibility = Visibility.Visible;
 
         public FlowConnectorViewModel(FlowPinDefinition pinDefinition)
         {
@@ -17,7 +19,16 @@ namespace Simplic.Flow.Editor.UI
         public Guid Id => pinDefinition.Id;
 
         public override string Name => pinDefinition.Name;
-        public override string DisplayName => pinDefinition.DisplayName;
+        public override string DisplayName
+        {
+            get
+            {
+                if (visibility == Visibility.Collapsed)
+                    return "";
+
+                return pinDefinition.DisplayName;
+            }
+        }
 
         public bool IsList { get { return pinDefinition.AllowMultiple; } }
 
@@ -35,7 +46,7 @@ namespace Simplic.Flow.Editor.UI
                 isConnected = value;
                 RaisePropertyChanged(nameof(IsConnected));
                 RaisePropertyChanged(nameof(StrokeColor));
-                RaisePropertyChanged(nameof(FillColor));                
+                RaisePropertyChanged(nameof(FillColor));
             }
         }
 
@@ -87,8 +98,14 @@ namespace Simplic.Flow.Editor.UI
         }
 
         public override bool CanConnectTo(ConnectorViewModel otherConnectorViewModel)
-        {            
+        {
             var otherFlowConnectorViewModel = otherConnectorViewModel as FlowConnectorViewModel;
+
+            if (otherFlowConnectorViewModel.Visibility != Visibility.Visible)
+                return false;
+
+            if (Visibility != Visibility.Visible)
+                return false;
 
             // if the target is null or has the same parent as me
             if (otherFlowConnectorViewModel == null || otherFlowConnectorViewModel.Parent == this.Parent)
@@ -102,10 +119,20 @@ namespace Simplic.Flow.Editor.UI
             if (connectionExists && !IsList)
                 return false;
 
-            if (this.PinDirection == PinDirectionDefinition.In)            
-                return otherFlowConnectorViewModel.PinDirection == PinDirectionDefinition.Out;            
+            if (this.PinDirection == PinDirectionDefinition.In)
+                return otherFlowConnectorViewModel.PinDirection == PinDirectionDefinition.Out;
             else
-                return otherFlowConnectorViewModel.PinDirection == PinDirectionDefinition.In;            
+                return otherFlowConnectorViewModel.PinDirection == PinDirectionDefinition.In;
+        }
+
+        public Visibility Visibility
+        {
+            get => visibility;
+            set
+            {
+                PropertySetter(value, v => visibility = v);
+                RaisePropertyChanged(nameof(DisplayName));
+            }
         }
     }
 }
