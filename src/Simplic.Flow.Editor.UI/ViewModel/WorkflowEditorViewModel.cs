@@ -260,9 +260,26 @@ namespace Simplic.Flow.Editor.UI
                     baseNodeShape.DataContext = nodeViewModel;
                 }
 
+                nodeViewModel.FlowPins.CollectionChanged += (s, e) =>
+                {
+                    // Refresh connector
+                    baseNodeShape.CreateConnectors();
+                    baseNodeShape.Height = nodeViewModel.Height;
+                    baseNodeShape.Width = nodeViewModel.Width;
+                };
+
+                nodeViewModel.DataPins.CollectionChanged += (s, e) =>
+                {
+                    // Refresh connector
+                    baseNodeShape.CreateConnectors();
+                    baseNodeShape.Height = nodeViewModel.Height;
+                    baseNodeShape.Width = nodeViewModel.Width;
+                };
+
                 baseNodeShape.CreateConnectors();
                 baseNodeShape.Height = nodeViewModel.Height;
                 baseNodeShape.Width = nodeViewModel.Width;
+
                 return nodeViewModel;
             }
 

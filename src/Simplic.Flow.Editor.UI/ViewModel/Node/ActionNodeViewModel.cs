@@ -8,7 +8,7 @@ namespace Simplic.Flow.Editor.UI
     /// <summary>
     /// ActionNodeViewModel
     /// </ActionNodeViewModel>
-    public class ActionNodeViewModel : NodeViewModel
+    public class ActionNodeViewModel : DynamicNodeViewModel
     {
         /// <summary>
         /// Constructor

@@ -72,6 +72,7 @@
     <Compile Include="ViewModel\DataPinDefaultValueViewModel.cs" />
     <Compile Include="ViewModel\NodeConnectionViewModel.cs" />
     <Compile Include="ViewModel\Node\ConditionNodeViewModel.cs" />
+    <Compile Include="ViewModel\Node\DynamicNodeViewModel.cs" />
     <Compile Include="ViewModel\Node\ActionNodeViewModel.cs" />
     <Compile Include="ViewModel\Node\EventNodeViewModel.cs" />
     <Compile Include="ViewModel\Node\NodeViewModel.cs" />

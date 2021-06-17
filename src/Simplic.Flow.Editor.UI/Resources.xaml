@@ -108,7 +108,6 @@
             <Setter.Value>
                 <ControlTemplate TargetType="extensions:SettingsPaneView">
                     <Border Background="{TemplateBinding Background}" BorderThickness="1" BorderBrush="{StaticResource SettingsPaneBorderBrush}">
-
                         <telerik:RadTabControl>
                             <telerik:RadTabItem Header="Defaultwerte">
                                 <Grid>
@@ -124,6 +123,20 @@
                                         </simplic:AutomaticSelectionGridView.Columns>
                                     </simplic:AutomaticSelectionGridView>
                                 </Grid>
+                            </telerik:RadTabItem>
+                            <telerik:RadTabItem Header="In-Pins">
+                                <GroupBox>
+                                    <GroupBox.Header>
+                                        <Button Content="+" Command="{Binding SelectedNode.AddDynamicInPin}" />
+                                    </GroupBox.Header>
+                                </GroupBox>
+                            </telerik:RadTabItem>
+                            <telerik:RadTabItem Header="Bedingungen">
+                                <GroupBox>
+                                    <GroupBox.Header>
+                                        <Button Content="+" Command="{Binding SelectedNode.AddDynamicFlowOutPin}" />
+                                    </GroupBox.Header>
+                                </GroupBox>
                             </telerik:RadTabItem>
                         </telerik:RadTabControl>
 

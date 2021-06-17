@@ -20,7 +20,6 @@ namespace Simplic.Flow.Editor.UI
             SelectionMode = SelectionMode.Single;
 
             Loaded += FlowRadDiagram_Loaded;
-            
         }
 
         #endregion

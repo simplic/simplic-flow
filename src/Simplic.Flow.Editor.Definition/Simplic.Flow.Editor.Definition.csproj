@@ -49,6 +49,7 @@
     <Compile Include="Model\EventNodeDefinition.cs" />
     <Compile Include="Model\FlowPinDefinition.cs" />
     <Compile Include="Model\NodeDefinition.cs" />
+    <Compile Include="Model\PinDefinition.cs" />
     <Compile Include="Model\PinDirectionDefinition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
