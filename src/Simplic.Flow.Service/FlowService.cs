@@ -437,15 +437,15 @@ namespace Simplic.Flow.Service
             var plugIn = "Flow";
             var configurationName = $"ThreadCount_{machineName}_{serviceName}";
 
-            var _threadCount = configurationService.GetValue<int>(configurationName, plugIn, "");
-
-            if (_threadCount == 0)
+            if (configurationService.Exists(plugIn, configurationName))
             {
-                configurationService.SetValue<int>(configurationName, plugIn, "", defaultThreadCount);
+                threadCount = defaultThreadCount;
+
+                configurationService.Create<int>(configurationName, plugIn, 1, true, defaultThreadCount);
                 Console.WriteLine($"Create new flow-thread-count setting {plugIn}/{configurationName}");
             }
             else
-                threadCount = _threadCount;
+                threadCount = configurationService.GetValue<int>(configurationName, plugIn, ""); ;
 
             Console.WriteLine($"Flow thread count: {threadCount}");
 
