@@ -12,23 +12,29 @@ namespace Simplic.Flow.Node
         {
             try
             {
-                var startInfo = new ProcessStartInfo();
-                startInfo.CreateNoWindow = true;
-                startInfo.FileName = scope.GetValue<string>(InPinPath);
-                startInfo.Arguments = scope.GetValue<string>(InPinArguments);
+                var startInfo = new ProcessStartInfo
+                {
+                    CreateNoWindow = true,
+                    FileName = scope.GetValue<string>(InPinPath)
+                };
+
+                var arguments = scope.GetValue<string>(InPinArguments);
+                if (!string.IsNullOrWhiteSpace(arguments))
+                    startInfo.Arguments = arguments;
 
                 var workingDirectory = scope.GetValue<string>(InPinWorkingDir);
                 if (!string.IsNullOrWhiteSpace(workingDirectory))
                     startInfo.WorkingDirectory = workingDirectory;
 
-                var process = new Process();
+                var process = new Process
+                {
+                    StartInfo = startInfo
+                };
 
-                process.StartInfo = startInfo;
+                process.Start();
 
                 if (scope.GetValue<bool>(InPinWaitForExit))
                     process.WaitForExit();
-
-                process.Start();
 
                 if (OutSuccessNode != null)
                     runtime.EnqueueNode(OutSuccessNode, scope);
