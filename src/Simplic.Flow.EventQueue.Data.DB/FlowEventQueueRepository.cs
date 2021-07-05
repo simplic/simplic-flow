@@ -23,7 +23,7 @@ namespace Simplic.Flow.EventQueue.Data.DB
             {
                 targets = sqlService.OpenConnection((conn) =>
                 {
-                    return conn.Query<EventServiceTarget>("SELECT DISTINCT ServiceName, MachineName FROM \"admin\".\"Flow_Configuration\"").ToList();
+                    return conn.Query<EventServiceTarget>("SELECT DISTINCT ServiceName, MachineName FROM \"admin\".\"Flow_Configuration\" WHERE IsActive = 1").ToList();
                 });
             }
 

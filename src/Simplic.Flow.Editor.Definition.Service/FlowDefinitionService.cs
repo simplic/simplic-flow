@@ -33,7 +33,7 @@ namespace Simplic.Flow.Editor.Definition.Service
                             DisplayName = nodeAttribute.DisplayName,
                             Name = nodeAttribute.Name,
                             Category = nodeAttribute.Category
-                        };                                                
+                        };
                     }
                     else if (nodeAttribute is EventNodeDefinitionAttribute)
                     {

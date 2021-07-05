@@ -1,5 +1,15 @@
 <ReleaseNotes>
-  <ChangeSet guid="213a87e2-4632-4958-a7dc-6eb905887d91">
-    <Change type="feature">Adds a new flow node for getting a file extension.</Change>
+  <ChangeSet guid="d4bcc37e-ec37-47a2-b9c0-1dbdaebbf9fb">
+    <Change type="enhancement">Events will only be triggered for active-flows.</Change>
+  </ChangeSet>
+  <ChangeSet guid="addfd74c-d852-4685-8b96-daa19e85d985">
+    <Change type="enhancement">Make toolbox scrollable.</Change>
+    <Change type="enhancement">Add base playground system.</Change>
+  </ChangeSet>
+  <ChangeSet guid="fd02a8b4-1652-4cd0-a65b-179b01e5892f">
+    <Change type="feature">Adds the possibility to execute sub-flows.</Change>
+  </ChangeSet>
+  <ChangeSet guid="6c03cb37-25ee-4887-b1de-192bef97ae13">
+    <Change type="bug">Fixes a bug, that crashs the simplic application server when using StartProcessNode.</Change>
   </ChangeSet>
 </ReleaseNotes>

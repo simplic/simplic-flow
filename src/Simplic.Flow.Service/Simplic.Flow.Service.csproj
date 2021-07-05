@@ -92,7 +92,7 @@
       <Version>7.0.20.1006</Version>
     </PackageReference>
     <PackageReference Include="Simplic.CoreLib">
-      <Version>6.17.20.322</Version>
+      <Version>7.3.121.426</Version>
     </PackageReference>
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe">
       <Version>4.7.1</Version>
