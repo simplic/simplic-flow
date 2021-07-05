@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Simplic.Collections.Generic;
+using Simplic.Configuration;
 using Simplic.Flow.Configuration;
 using Simplic.Flow.Event;
 using Simplic.Flow.EventQueue;
@@ -74,9 +75,12 @@ namespace Simplic.Flow.Service
         private readonly IFlowEventQueueService flowEventQueueService;
         private readonly IFlowEventService flowEventService;
         private readonly IFlowLogService flowLogService;
+        private readonly IConfigurationService configurationService;
 
         private string machineName;
         private string serviceName;
+        private const int defaultThreadCount = 4;
+        private int threadCount = defaultThreadCount;
         #endregion
 
         #region Constructor
@@ -94,6 +98,7 @@ namespace Simplic.Flow.Service
             this.flowEventQueueService = unityContainer.Resolve<IFlowEventQueueService>();
             this.flowEventService = unityContainer.Resolve<IFlowEventService>();
             this.flowLogService = unityContainer.Resolve<IFlowLogService>();
+            this.configurationService = unityContainer.Resolve<IConfigurationService>();
 
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<ConsoleWriteLineNode>>("ConsoleWriteLineNode");
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<ForeachNode>>("ForeachNode");
@@ -101,7 +106,7 @@ namespace Simplic.Flow.Service
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<StartWithConditionNode>>("StartWithConditionNode");
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<EndWithConditionNode>>("EndWithConditionNode");
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<DeleteFileNode>>("DeleteFileNode");
-            unityContainer.RegisterType<INodeResolver, GenericNodeResolver<GetFileExtensionNode>>("GetFileExtensionNode"); 
+            unityContainer.RegisterType<INodeResolver, GenericNodeResolver<GetFileExtensionNode>>("GetFileExtensionNode");
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<GetDirectoryContentNode>>("GetDirectoryContentNode");
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<OnCheckDirectoryContentNode>>("OnCheckDirectoryContentNode");
             unityContainer.RegisterType<INodeResolver, GenericNodeResolver<GetVariableNode>>(nameof(GetVariableNode));
@@ -410,13 +415,29 @@ namespace Simplic.Flow.Service
             this.machineName = machineName;
             this.serviceName = serviceName;
 
+            // Load thread count
+            var plugIn = "Flow";
+            var configurationName = $"ThreadCount_{machineName}_{serviceName}";
+
+            var _threadCount = configurationService.GetValue<int>(configurationName, plugIn, "");
+
+            if (_threadCount == 0)
+            {
+                configurationService.SetValue<int>(configurationName, plugIn, "", defaultThreadCount);
+                Console.WriteLine($"Create new flow-thread-count setting {plugIn}/{configurationName}");
+            }
+            else
+                threadCount = _threadCount;
+
+            Console.WriteLine($"Flow thread count: {threadCount}");
+
             // Load active flow configurations
             flowConfigurations = flowConfigurationService.GetAll()
                 .Where(x => x.IsActive
                        && (string.IsNullOrWhiteSpace(x.MachineName) || x.MachineName?.ToLower() == machineName?.ToLower())
                        && (string.IsNullOrWhiteSpace(x.ServiceName) || x.ServiceName?.ToLower() == serviceName?.ToLower()))
                 .ToList();
-             
+
             if (flowConfigurations.Count > 0)
                 flowLogService.Info($"# {flowConfigurations.Count} Active flow configurations were found: {string.Join(", ", flowConfigurations.Select(x => $"\"{x.Name}\""))}");
             else
@@ -439,7 +460,7 @@ namespace Simplic.Flow.Service
         {
             // Raise event before the process has begun.
             OnStarted?.Invoke(this, EventArgs.Empty);
-            int maxParallelTasks = 4;
+            int maxParallelTasks = threadCount;
 
             //flowLogService.Info($"> Running at {DateTime.Now}");
             try
