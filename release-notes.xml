@@ -12,4 +12,10 @@
   <ChangeSet guid="6c03cb37-25ee-4887-b1de-192bef97ae13">
     <Change type="bug">Fixes a bug, that crashs the simplic application server when using StartProcessNode.</Change>
   </ChangeSet>
+  <ChangeSet>
+    <Change type="enhancement">
+      Adds the option for setting the flow-thread-count in the gloval settings. The settings-entry will be created
+      with the first start of an application server.
+    </Change>
+  </ChangeSet>
 </ReleaseNotes>
