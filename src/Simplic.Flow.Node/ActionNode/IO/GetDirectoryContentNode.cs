@@ -18,9 +18,13 @@ namespace Simplic.Flow.Node.IO
                 {
                     var childScope = scope.CreateChild();
 
+                    var test5 = Path.GetDirectoryName(path) + Path.GetFileName(path);
+                    var test2 = file.Substring(0, file.LastIndexOf(@"\"));
+                    var test3 = test5 == test2;
+
                     childScope.SetValue(OutPinFilePath, file);
                     childScope.SetValue(OutPinFileNameExtension, Path.GetExtension(file));
-                    childScope.SetValue(OutPinFilePathWithoutFileName, file.Substring(0, file.LastIndexOf(@"\")));
+                    childScope.SetValue(OutPinFilePathWithoutFileName, Path.GetDirectoryName(path) + Path.GetFileName(path));
                     childScope.SetValue(OutPinFileName, Path.GetFileName(file));
 
                     if (OutNodeEachFile != null)
