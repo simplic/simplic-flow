@@ -10,7 +10,6 @@ namespace Simplic.Flow.Node.IO
         public override bool Execute(IFlowRuntimeService runtime, DataPinScope scope)
         {
             var path = scope.GetValue<string>(InPinDirectoryPath);
-            var extensionPath = scope.GetValue<string>(InPinSearchPattern);
 
             if (Directory.Exists(path))
             {
