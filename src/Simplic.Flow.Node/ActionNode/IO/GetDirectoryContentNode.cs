@@ -10,10 +10,19 @@ namespace Simplic.Flow.Node.IO
         public override bool Execute(IFlowRuntimeService runtime, DataPinScope scope)
         {
             var path = scope.GetValue<string>(InPinDirectoryPath);
+            var extensionPath = scope.GetValue<string>(InPinSearchPattern);
+            var subDirectories = scope.GetValue<bool>(InPinIncludeSubDirectories);
+
+            SearchOption searchOption = subDirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
+
+            if (string.IsNullOrWhiteSpace(extensionPath))
+            {
+                extensionPath = "*.*";
+            }
 
             if (Directory.Exists(path))
             {
-                foreach (var file in Directory.GetFiles(path))
+                foreach (var file in Directory.GetFiles(path, extensionPath, searchOption))
                 {
                     var childScope = scope.CreateChild();
 
