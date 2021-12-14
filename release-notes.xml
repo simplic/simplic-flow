@@ -18,4 +18,7 @@
       with the first start of an application server.
     </Change>
   </ChangeSet>
+  <ChangeSet>
+    <Change type="enhancement">Adds jsonNodeGeneration and generated nodes from static methods</Change>
+  </ChangeSet>
 </ReleaseNotes>
