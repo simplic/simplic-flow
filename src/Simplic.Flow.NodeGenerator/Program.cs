@@ -429,7 +429,7 @@ namespace Simplic.Flow.Node
                 scope.SetValue({dataOutPinDefinition.Name}, {dataOutPinDefinition.DisplayName}var);");
                         }
                 }
-                if (definition.OutFlowPins.Any(p => p.Name == "OutNodeEachItem") && definition.OutFlowPins.Any(p => p.Name == "OutNodeCurrent"))
+                if (definition.OutFlowPins.Any(p => p.Name == "OutNodeEachItem") && definition.OutDataPins.Any(p => p.Name == "OutPinCurrent"))
                 {
                     code.Append($@"
                 foreach (var item in returnValue)
@@ -443,14 +443,14 @@ namespace Simplic.Flow.Node
                     ");
                 }
 
-                if (definition.OutFlowPins != null && definition.OutFlowPins.Any(p => p.Name == "True") && definition.OutFlowPins.Any(p => p.Name == "False"))
+                if (definition.OutFlowPins != null && definition.OutFlowPins.Any(p => p.Name == "OutNodeTrue") && definition.OutFlowPins.Any(p => p.Name == "OutNodeFalse"))
                 {
                     code.Append($@"
-                if (OutNodeTrue != null)
+                if (OutNodeTrue != null && returnValue)
                 {{
                     runtime.EnqueueNode(OutNodeTrue, scope);
                 }} 
-                else if (OutNodeFalse != null)
+                else if (OutNodeFalse != null && !returnValue)
                 {{
                     runtime.EnqueueNode(OutNodeFalse, scope);
                 }}

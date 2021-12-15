@@ -18,6 +18,15 @@ namespace Simplic.Flow.Node
                 scope.SetValue(OutPinReturn, returnValue);
 
                 scope.SetValue(OutParameterPinResult, Resultvar);
+                if (OutNodeTrue != null && returnValue)
+                {
+                    runtime.EnqueueNode(OutNodeTrue, scope);
+                } 
+                else if (OutNodeFalse != null && !returnValue)
+                {
+                    runtime.EnqueueNode(OutNodeFalse, scope);
+                }
+                    
                 if (OutNodeSuccess != null) 
                 {
                     runtime.EnqueueNode(OutNodeSuccess, scope);
@@ -64,7 +73,7 @@ namespace Simplic.Flow.Node
         public ActionNode OutNodeFalse { get; set; } 
 
         [DataPinDefinition(
-        Id = "60d4a7fe-9b8e-49de-9265-9cec3857aa20",
+        Id = "dbc06f70-ddfb-41e4-ae4b-6863843c3ee2",
         ContainerType = DataPinContainerType.Single,
         DataType = typeof(System.String),
         Direction = PinDirection.In,
@@ -75,7 +84,7 @@ namespace Simplic.Flow.Node
         public DataPin InPinInput { get; set; } 
 
         [DataPinDefinition(
-        Id = "a3514a32-ef68-4b26-957f-c80fbb89516c",
+        Id = "043022ff-23dc-47d1-9fdf-926cc64c553c",
         ContainerType = DataPinContainerType.Single,
         DataType = typeof(System.String),
         Direction = PinDirection.In,
@@ -86,7 +95,7 @@ namespace Simplic.Flow.Node
         public DataPin InPinFormat { get; set; } 
 
         [DataPinDefinition(
-        Id = "0865fcfc-d61f-49cc-898d-ee234ecf3330",
+        Id = "4521df8f-0280-4040-b819-0d7050d7fb22",
         ContainerType = DataPinContainerType.Single,
         DataType = typeof(System.Boolean),
         Direction = PinDirection.Out,
@@ -97,7 +106,7 @@ namespace Simplic.Flow.Node
         public DataPin OutPinReturn { get; set; } 
 
         [DataPinDefinition(
-        Id = "706724d5-2da1-4182-8e1a-948b5da9a2a1",
+        Id = "f9b751cb-47d8-4fc6-a99e-bfc6c45eea29",
         ContainerType = DataPinContainerType.Single,
         DataType = typeof(System.Guid),
         Direction = PinDirection.Out,

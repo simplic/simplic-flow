@@ -51,7 +51,7 @@ namespace Simplic.Flow.Node
         public ActionNode OutNodeFailed { get; set; } 
 
         [DataPinDefinition(
-        Id = "85684fe5-9c26-4e03-af2f-e231e11f4a22",
+        Id = "325eac1c-4118-4406-9dcd-f9b20827d34c",
         ContainerType = DataPinContainerType.Single,
         DataType = typeof(System.String),
         Direction = PinDirection.In,
@@ -62,7 +62,7 @@ namespace Simplic.Flow.Node
         public DataPin InPinInput { get; set; } 
 
         [DataPinDefinition(
-        Id = "59cfeee9-5d10-4ac0-b14c-d3a087b45267",
+        Id = "0255a39c-52b7-4a56-9ba9-147c9918bf3c",
         ContainerType = DataPinContainerType.Single,
         DataType = typeof(System.String),
         Direction = PinDirection.In,
@@ -73,7 +73,7 @@ namespace Simplic.Flow.Node
         public DataPin InPinPattern { get; set; } 
 
         [DataPinDefinition(
-        Id = "b3dee14a-1199-42fa-925b-80c25c30c4ce",
+        Id = "75c17684-0d40-46b2-868d-f99d91e45fa4",
         ContainerType = DataPinContainerType.Single,
         DataType = typeof(System.Text.RegularExpressions.MatchEvaluator),
         Direction = PinDirection.In,
@@ -84,7 +84,7 @@ namespace Simplic.Flow.Node
         public DataPin InPinEvaluator { get; set; } 
 
         [DataPinDefinition(
-        Id = "d29092ca-c655-41c2-90f4-f2099d0d645a",
+        Id = "973c3cfc-4f32-412d-a684-f395af48d506",
         ContainerType = DataPinContainerType.Single,
         DataType = typeof(System.Text.RegularExpressions.RegexOptions),
         Direction = PinDirection.In,
@@ -95,7 +95,7 @@ namespace Simplic.Flow.Node
         public DataPin InPinOptions { get; set; } 
 
         [DataPinDefinition(
-        Id = "b811dc90-6107-4b2d-a7f3-363d17bb004d",
+        Id = "49a17d61-2a57-43eb-a0e6-cc3af88dcc01",
         ContainerType = DataPinContainerType.Single,
         DataType = typeof(System.TimeSpan),
         Direction = PinDirection.In,
@@ -106,7 +106,7 @@ namespace Simplic.Flow.Node
         public DataPin InPinMatchTimeout { get; set; } 
 
         [DataPinDefinition(
-        Id = "54e39ca5-d0cb-48f0-8a9a-9067d5e6119c",
+        Id = "7d778100-cfc3-4c6e-81e4-5c7b55b983b1",
         ContainerType = DataPinContainerType.Single,
         DataType = typeof(System.String),
         Direction = PinDirection.Out,

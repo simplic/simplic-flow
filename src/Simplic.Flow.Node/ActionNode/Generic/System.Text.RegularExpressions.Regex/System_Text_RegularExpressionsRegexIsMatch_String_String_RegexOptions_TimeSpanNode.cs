@@ -18,6 +18,15 @@ namespace Simplic.Flow.Node
                 scope.GetValue<System.TimeSpan>(InPinMatchTimeout));
                 scope.SetValue(OutPinReturn, returnValue);
 
+                if (OutNodeTrue != null && returnValue)
+                {
+                    runtime.EnqueueNode(OutNodeTrue, scope);
+                } 
+                else if (OutNodeFalse != null && !returnValue)
+                {
+                    runtime.EnqueueNode(OutNodeFalse, scope);
+                }
+                    
                 if (OutNodeSuccess != null) 
                 {
                     runtime.EnqueueNode(OutNodeSuccess, scope);
@@ -64,7 +73,7 @@ namespace Simplic.Flow.Node
         public ActionNode OutNodeFalse { get; set; } 
 
         [DataPinDefinition(
-        Id = "aa5a4f7c-d082-4684-bce0-6e2c031ae379",
+        Id = "73d32881-3c0c-49ed-998d-fee045a6fdc5",
         ContainerType = DataPinContainerType.Single,
         DataType = typeof(System.String),
         Direction = PinDirection.In,
@@ -75,7 +84,7 @@ namespace Simplic.Flow.Node
         public DataPin InPinInput { get; set; } 
 
         [DataPinDefinition(
-        Id = "1b4f54fb-048f-4064-b3d3-7cd0ef43c638",
+        Id = "b5e51acc-a089-40ff-9517-f45d66b126fb",
         ContainerType = DataPinContainerType.Single,
         DataType = typeof(System.String),
         Direction = PinDirection.In,
@@ -86,7 +95,7 @@ namespace Simplic.Flow.Node
         public DataPin InPinPattern { get; set; } 
 
         [DataPinDefinition(
-        Id = "8464e767-2427-490f-a7f4-f8157826c9f7",
+        Id = "9610320e-25c0-407f-ae75-54df5c3cccc4",
         ContainerType = DataPinContainerType.Single,
         DataType = typeof(System.Text.RegularExpressions.RegexOptions),
         Direction = PinDirection.In,
@@ -97,7 +106,7 @@ namespace Simplic.Flow.Node
         public DataPin InPinOptions { get; set; } 
 
         [DataPinDefinition(
-        Id = "a469faae-741a-42eb-a85e-5847d8350bc1",
+        Id = "6831d225-f1e3-41fd-b93a-45e19729e869",
         ContainerType = DataPinContainerType.Single,
         DataType = typeof(System.TimeSpan),
         Direction = PinDirection.In,
@@ -108,7 +117,7 @@ namespace Simplic.Flow.Node
         public DataPin InPinMatchTimeout { get; set; } 
 
         [DataPinDefinition(
-        Id = "333d59e9-cded-436d-82e1-ff8039837c0c",
+        Id = "483f6e4e-69e4-484c-a2d3-4d491c019f6e",
         ContainerType = DataPinContainerType.Single,
         DataType = typeof(System.Boolean),
         Direction = PinDirection.Out,

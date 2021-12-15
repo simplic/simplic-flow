@@ -14,6 +14,15 @@ namespace Simplic.Flow.Node
                 var returnValue = System.IO.Directory.GetLogicalDrives();
                 scope.SetValue(OutPinReturn, returnValue);
 
+                foreach (var item in returnValue)
+                {
+                    var childScope = scope.CreateChild();
+                    childScope.SetValue(OutPinCurrent, item);
+
+                    if (OutNodeEachItem != null)
+                        runtime.EnqueueNode(OutNodeEachItem, childScope);
+                }
+                    
                 if (OutNodeSuccess != null) 
                 {
                     runtime.EnqueueNode(OutNodeSuccess, scope);
@@ -53,7 +62,7 @@ namespace Simplic.Flow.Node
         public ActionNode OutNodeEachItem { get; set; } 
 
         [DataPinDefinition(
-        Id = "a354033b-8bd1-40ec-ba09-0418cabad636",
+        Id = "e45ffad3-8f45-4bc1-816b-77ec757331f7",
         ContainerType = DataPinContainerType.Single,
         DataType = typeof(System.String[]),
         Direction = PinDirection.Out,
@@ -64,7 +73,7 @@ namespace Simplic.Flow.Node
         public DataPin OutPinReturn { get; set; } 
 
         [DataPinDefinition(
-        Id = "f0bf81e0-a5d0-4b98-8a4f-f9055b204874",
+        Id = "9c69c883-c14e-4b23-b44d-79eea6b7e1b2",
         ContainerType = DataPinContainerType.Single,
         DataType = typeof(System.String),
         Direction = PinDirection.Out,

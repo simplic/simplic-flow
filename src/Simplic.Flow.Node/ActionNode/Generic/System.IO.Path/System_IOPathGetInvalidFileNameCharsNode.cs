@@ -14,6 +14,15 @@ namespace Simplic.Flow.Node
                 var returnValue = System.IO.Path.GetInvalidFileNameChars();
                 scope.SetValue(OutPinReturn, returnValue);
 
+                foreach (var item in returnValue)
+                {
+                    var childScope = scope.CreateChild();
+                    childScope.SetValue(OutPinCurrent, item);
+
+                    if (OutNodeEachItem != null)
+                        runtime.EnqueueNode(OutNodeEachItem, childScope);
+                }
+                    
                 if (OutNodeSuccess != null) 
                 {
                     runtime.EnqueueNode(OutNodeSuccess, scope);
@@ -53,7 +62,7 @@ namespace Simplic.Flow.Node
         public ActionNode OutNodeEachItem { get; set; } 
 
         [DataPinDefinition(
-        Id = "88ae2a27-35a9-4cd8-9365-8343558aa3d8",
+        Id = "c71751b4-89b9-454f-9ef0-90fafa4a9566",
         ContainerType = DataPinContainerType.Single,
         DataType = typeof(System.Char[]),
         Direction = PinDirection.Out,
@@ -64,7 +73,7 @@ namespace Simplic.Flow.Node
         public DataPin OutPinReturn { get; set; } 
 
         [DataPinDefinition(
-        Id = "2f97d50d-585a-4d2d-9e19-fb8913b5c372",
+        Id = "6ed39d2e-a72a-4275-893f-867aa971e3d1",
         ContainerType = DataPinContainerType.Single,
         DataType = typeof(System.Char),
         Direction = PinDirection.Out,

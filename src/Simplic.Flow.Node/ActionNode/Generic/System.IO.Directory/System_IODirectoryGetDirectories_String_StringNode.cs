@@ -16,6 +16,15 @@ namespace Simplic.Flow.Node
                 scope.GetValue<System.String>(InPinSearchPattern));
                 scope.SetValue(OutPinReturn, returnValue);
 
+                foreach (var item in returnValue)
+                {
+                    var childScope = scope.CreateChild();
+                    childScope.SetValue(OutPinCurrent, item);
+
+                    if (OutNodeEachItem != null)
+                        runtime.EnqueueNode(OutNodeEachItem, childScope);
+                }
+                    
                 if (OutNodeSuccess != null) 
                 {
                     runtime.EnqueueNode(OutNodeSuccess, scope);
@@ -55,7 +64,7 @@ namespace Simplic.Flow.Node
         public ActionNode OutNodeEachItem { get; set; } 
 
         [DataPinDefinition(
-        Id = "d5e49641-165a-431a-b896-c676328432ef",
+        Id = "fea82d49-54b9-4bdb-8f8e-a308a502caf4",
         ContainerType = DataPinContainerType.Single,
         DataType = typeof(System.String),
         Direction = PinDirection.In,
@@ -66,7 +75,7 @@ namespace Simplic.Flow.Node
         public DataPin InPinPath { get; set; } 
 
         [DataPinDefinition(
-        Id = "8fc0313a-c652-4563-a74f-371a919c8c5f",
+        Id = "5e93e5ee-6ef2-4c6c-b51b-d1fc4e1cf6de",
         ContainerType = DataPinContainerType.Single,
         DataType = typeof(System.String),
         Direction = PinDirection.In,
@@ -77,7 +86,7 @@ namespace Simplic.Flow.Node
         public DataPin InPinSearchPattern { get; set; } 
 
         [DataPinDefinition(
-        Id = "ce302215-0e9e-41ed-9fe5-b07bd6a61cc6",
+        Id = "c4bde294-05b1-4410-bd72-104fa867c74f",
         ContainerType = DataPinContainerType.Single,
         DataType = typeof(System.String[]),
         Direction = PinDirection.Out,
@@ -88,7 +97,7 @@ namespace Simplic.Flow.Node
         public DataPin OutPinReturn { get; set; } 
 
         [DataPinDefinition(
-        Id = "41f6b035-cafd-407f-9cac-5c680755cd59",
+        Id = "4d57c827-4b35-436b-9b57-b8357466dad5",
         ContainerType = DataPinContainerType.Single,
         DataType = typeof(System.String),
         Direction = PinDirection.Out,

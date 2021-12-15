@@ -16,6 +16,15 @@ namespace Simplic.Flow.Node
                 scope.GetValue<System.Object>(InPinValue));
                 scope.SetValue(OutPinReturn, returnValue);
 
+                if (OutNodeTrue != null && returnValue)
+                {
+                    runtime.EnqueueNode(OutNodeTrue, scope);
+                } 
+                else if (OutNodeFalse != null && !returnValue)
+                {
+                    runtime.EnqueueNode(OutNodeFalse, scope);
+                }
+                    
                 if (OutNodeSuccess != null) 
                 {
                     runtime.EnqueueNode(OutNodeSuccess, scope);
@@ -62,7 +71,7 @@ namespace Simplic.Flow.Node
         public ActionNode OutNodeFalse { get; set; } 
 
         [DataPinDefinition(
-        Id = "17981125-fec3-4f27-bb24-25293e6a5e15",
+        Id = "e7fc72f2-9042-4d08-906e-315e0b29312c",
         ContainerType = DataPinContainerType.Single,
         DataType = typeof(System.Type),
         Direction = PinDirection.In,
@@ -73,7 +82,7 @@ namespace Simplic.Flow.Node
         public DataPin InPinEnumType { get; set; } 
 
         [DataPinDefinition(
-        Id = "44be0200-0467-447b-ba8d-33fff17e57e4",
+        Id = "06166d4f-ed6d-4fa9-b56d-af8462f384b9",
         ContainerType = DataPinContainerType.Single,
         DataType = typeof(System.Object),
         Direction = PinDirection.In,
@@ -84,7 +93,7 @@ namespace Simplic.Flow.Node
         public DataPin InPinValue { get; set; } 
 
         [DataPinDefinition(
-        Id = "fbc319f6-10e4-4bee-9b5a-659804c1b671",
+        Id = "4c8c11ac-a85c-40b0-89e6-f4eb8ff6e437",
         ContainerType = DataPinContainerType.Single,
         DataType = typeof(System.Boolean),
         Direction = PinDirection.Out,
