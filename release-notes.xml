@@ -18,7 +18,7 @@
       with the first start of an application server.
     </Change>
   </ChangeSet>
-  <ChangeSet>
+  <ChangeSet guid="f45b390a-7b2a-446e-b2fc-48a66623935e">
     <Change type="enhancement">Adds a node-generator for public static methods and properties.</Change>
     <Change type="enhancement">Adds a set of generated nodes for System.Convert, System.DateTime, etc.</Change>
   </ChangeSet>
