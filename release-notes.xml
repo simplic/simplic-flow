@@ -19,6 +19,7 @@
     </Change>
   </ChangeSet>
   <ChangeSet>
-    <Change type="enhancement">Adds jsonNodeGeneration and generated nodes from static methods</Change>
+    <Change type="enhancement">Adds a node-generator for public static methods and properties.</Change>
+    <Change type="enhancement">Adds a set of generated nodes for System.Convert, System.DateTime, etc.</Change>
   </ChangeSet>
 </ReleaseNotes>
