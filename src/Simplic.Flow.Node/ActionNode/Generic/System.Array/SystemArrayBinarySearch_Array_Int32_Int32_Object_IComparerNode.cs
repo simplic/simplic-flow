@@ -51,7 +51,7 @@ namespace Simplic.Flow.Node
         public ActionNode OutNodeFailed { get; set; } 
 
         [DataPinDefinition(
-        Id = "1d41e21e-5250-42a5-8236-7e299594e3bf",
+        Id = "f4ebaa34-c1cc-4e5b-978a-9430a68d88de",
         ContainerType = DataPinContainerType.Single,
         DataType = typeof(System.Array),
         Direction = PinDirection.In,
@@ -62,7 +62,7 @@ namespace Simplic.Flow.Node
         public DataPin InPinArray { get; set; } 
 
         [DataPinDefinition(
-        Id = "7770f719-763e-4254-8629-f76529372b4e",
+        Id = "0347ea3c-2148-458e-9340-babafa6b64da",
         ContainerType = DataPinContainerType.Single,
         DataType = typeof(System.Int32),
         Direction = PinDirection.In,
@@ -73,7 +73,7 @@ namespace Simplic.Flow.Node
         public DataPin InPinIndex { get; set; } 
 
         [DataPinDefinition(
-        Id = "dee4e27b-6c1b-437d-910f-62a519187c7b",
+        Id = "4ec242bc-99d0-4495-b53f-570f6e1203e5",
         ContainerType = DataPinContainerType.Single,
         DataType = typeof(System.Int32),
         Direction = PinDirection.In,
@@ -84,7 +84,7 @@ namespace Simplic.Flow.Node
         public DataPin InPinLength { get; set; } 
 
         [DataPinDefinition(
-        Id = "0afd7acb-6001-4277-b3c1-649c5c5cb1cc",
+        Id = "ae1c2e94-9641-48e3-afa0-8ba9031c82f3",
         ContainerType = DataPinContainerType.Single,
         DataType = typeof(System.Object),
         Direction = PinDirection.In,
@@ -95,7 +95,7 @@ namespace Simplic.Flow.Node
         public DataPin InPinValue { get; set; } 
 
         [DataPinDefinition(
-        Id = "07d60fe0-88cb-4f79-a5d8-ea280bde6ee1",
+        Id = "ec24429a-b790-46e0-b61d-136c0e244fa6",
         ContainerType = DataPinContainerType.Single,
         DataType = typeof(System.Collections.IComparer),
         Direction = PinDirection.In,
@@ -106,7 +106,7 @@ namespace Simplic.Flow.Node
         public DataPin InPinComparer { get; set; } 
 
         [DataPinDefinition(
-        Id = "76fe0de0-ae2d-42ca-a463-75bf8f04e688",
+        Id = "7601da50-3d77-4997-8638-35d5d2cc3887",
         ContainerType = DataPinContainerType.Single,
         DataType = typeof(System.Int32),
         Direction = PinDirection.Out,

@@ -47,7 +47,7 @@ namespace Simplic.Flow.Node
         public ActionNode OutNodeFailed { get; set; } 
 
         [DataPinDefinition(
-        Id = "dabf069c-5ceb-4162-afb1-f4c01e93f742",
+        Id = "3322d3d1-b391-4f7d-91e4-d22c72bbe09d",
         ContainerType = DataPinContainerType.Single,
         DataType = typeof(System.SByte),
         Direction = PinDirection.In,
@@ -58,7 +58,7 @@ namespace Simplic.Flow.Node
         public DataPin InPinValue { get; set; } 
 
         [DataPinDefinition(
-        Id = "22209851-ba1d-4b52-8eb7-bedf6f3d9be8",
+        Id = "42374319-3cf3-4d0f-a6e8-9f32bbfcd203",
         ContainerType = DataPinContainerType.Single,
         DataType = typeof(System.String),
         Direction = PinDirection.Out,

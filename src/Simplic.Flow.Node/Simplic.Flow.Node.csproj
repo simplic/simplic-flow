@@ -704,7 +704,21 @@
       <Version>7.2.421.426</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="ActionNode\Generic\System.Array\System.Array.actionNodes.json" />
+    <None Include="ActionNode\Generic\System.Convert\System.Convert.actionNodes.json" />
+    <None Include="ActionNode\Generic\System.DateTime\System.DateTime.actionNodes.json" />
+    <None Include="ActionNode\Generic\System.Double\System.Double.actionNodes.json" />
+    <None Include="ActionNode\Generic\System.Enum\System.Enum.actionNodes.json" />
+    <None Include="ActionNode\Generic\System.Guid\System.Guid.actionNodes.json" />
+    <None Include="ActionNode\Generic\System.Int32\System.Int32.actionNodes.json" />
+    <None Include="ActionNode\Generic\System.IO.Directory\System.IO.Directory.actionNodes.json" />
+    <None Include="ActionNode\Generic\System.IO.File\System.IO.File.actionNodes.json" />
+    <None Include="ActionNode\Generic\System.IO.Path\System.IO.Path.actionNodes.json" />
+    <None Include="ActionNode\Generic\System.String\System.String.actionNodes.json" />
+    <None Include="ActionNode\Generic\System.Text.RegularExpressions.Regex\System.Text.RegularExpressions.Regex.actionNodes.json" />
+    <None Include="ActionNode\Generic\System.TimeSpan\System.TimeSpan.actionNodes.json" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(TargetDir)$(TargetName).dll" "$(SolutionDir)..\..\simplic-framework\src\Simplic.Main\bin\Debug\" /F /Y</PostBuildEvent>

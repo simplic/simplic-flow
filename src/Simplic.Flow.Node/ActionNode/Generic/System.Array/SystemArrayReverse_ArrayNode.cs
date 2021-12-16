@@ -45,7 +45,7 @@ namespace Simplic.Flow.Node
         public ActionNode OutNodeFailed { get; set; } 
 
         [DataPinDefinition(
-        Id = "f4875d94-1ac3-437c-9634-b9890e9dc6c2",
+        Id = "3d3963d4-8f32-4b5a-a70b-a1719a381d8f",
         ContainerType = DataPinContainerType.Single,
         DataType = typeof(System.Array),
         Direction = PinDirection.In,

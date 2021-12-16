@@ -75,7 +75,7 @@ namespace Simplic.Flow.Node
         public ActionNode OutNodeFalse { get; set; } 
 
         [DataPinDefinition(
-        Id = "84a277a4-07eb-422c-9a24-f0091f2fbdf2",
+        Id = "533ef32d-1ffd-4fa7-aca0-916f91d70a0a",
         ContainerType = DataPinContainerType.Single,
         DataType = typeof(System.String),
         Direction = PinDirection.In,
@@ -86,7 +86,7 @@ namespace Simplic.Flow.Node
         public DataPin InPinInput { get; set; } 
 
         [DataPinDefinition(
-        Id = "b1074469-b56a-4c51-8db6-eaf78560bbac",
+        Id = "3b54aa32-7212-4264-8ff1-a5871f04532e",
         ContainerType = DataPinContainerType.Single,
         DataType = typeof(System.String[]),
         Direction = PinDirection.In,
@@ -97,7 +97,7 @@ namespace Simplic.Flow.Node
         public DataPin InPinFormats { get; set; } 
 
         [DataPinDefinition(
-        Id = "b6218834-097b-491e-8c57-90de2c32cbe2",
+        Id = "94da5e88-0584-42cc-a794-88c7be45800e",
         ContainerType = DataPinContainerType.Single,
         DataType = typeof(System.IFormatProvider),
         Direction = PinDirection.In,
@@ -108,7 +108,7 @@ namespace Simplic.Flow.Node
         public DataPin InPinFormatProvider { get; set; } 
 
         [DataPinDefinition(
-        Id = "6c9d2c06-0708-4fa0-ab48-a25e1d690dfe",
+        Id = "c6307408-0bdf-4167-aaee-a40d786bab70",
         ContainerType = DataPinContainerType.Single,
         DataType = typeof(System.Globalization.TimeSpanStyles),
         Direction = PinDirection.In,
@@ -119,7 +119,7 @@ namespace Simplic.Flow.Node
         public DataPin InPinStyles { get; set; } 
 
         [DataPinDefinition(
-        Id = "afd7d867-6894-4cd8-84e7-c6a5bbc584a3",
+        Id = "fb250199-fd34-4f4d-9e4b-dbcd7cbcb2dc",
         ContainerType = DataPinContainerType.Single,
         DataType = typeof(System.Boolean),
         Direction = PinDirection.Out,
@@ -130,7 +130,7 @@ namespace Simplic.Flow.Node
         public DataPin OutPinReturn { get; set; } 
 
         [DataPinDefinition(
-        Id = "236c50e1-a733-43a9-a0d5-f413da8a2021",
+        Id = "be2ebc97-3a76-4596-aa8e-5886a7ffe4e9",
         ContainerType = DataPinContainerType.Single,
         DataType = typeof(System.TimeSpan),
         Direction = PinDirection.Out,
