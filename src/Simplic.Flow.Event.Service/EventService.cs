@@ -21,9 +21,13 @@ namespace Simplic.Flow.Event.Service
                 PreserveReferencesHandling = PreserveReferencesHandling.Objects
             }));
 
+            var id = args.Id;
+            if (string.IsNullOrWhiteSpace(id))
+                id = $"{args.EventName}_{args.ObjectId ?? "<unset>"}";
+
             flowEventQueueService.Save(new EventQueueModel
             {
-                Id = args.Id,
+                Id = id,
                 EventName = args.EventName,
                 Handled = false,
                 CreateUserId = args.UserId,
@@ -35,7 +39,7 @@ namespace Simplic.Flow.Event.Service
         {
             InvokeEvent(new FlowEventArgs
             {
-                Id = $"{eventName}_{objectId}",
+                Id = $"{eventName}_{objectId ?? "<unset>"}",
                 EventName = eventName,
                 ObjectId = objectId,
                 UserId = userId,

@@ -22,4 +22,7 @@
     <Change type="enhancement">Adds a node-generator for public static methods and properties.</Change>
     <Change type="enhancement">Adds a set of generated nodes for System.Convert, System.DateTime, etc.</Change>
   </ChangeSet>
+  <ChangeSet>
+    <Change type="enhancement">Change the id/primary-key of flow events. Scheduler events are not not triggered multiple times.</Change>
+  </ChangeSet>
 </ReleaseNotes>
