@@ -5,7 +5,7 @@ namespace Simplic.Flow
 {
     public class EventCall
     {
-        public Guid QueueId { get; set; }
+        public string Id { get; set; }
         public EventDelegate Delegate { get; set; }
         public FlowEventArgs Args { get; set; }
     }

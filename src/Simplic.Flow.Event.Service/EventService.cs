@@ -23,7 +23,7 @@ namespace Simplic.Flow.Event.Service
 
             flowEventQueueService.Save(new EventQueueModel
             {
-                Id = args.QueueId,
+                Id = args.Id,
                 EventName = args.EventName,
                 Handled = false,
                 CreateUserId = args.UserId,
@@ -35,6 +35,7 @@ namespace Simplic.Flow.Event.Service
         {
             InvokeEvent(new FlowEventArgs
             {
+                Id = $"{eventName}_{objectId}",
                 EventName = eventName,
                 ObjectId = objectId,
                 UserId = userId,

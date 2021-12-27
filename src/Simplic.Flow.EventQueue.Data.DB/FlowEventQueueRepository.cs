@@ -30,7 +30,7 @@ namespace Simplic.Flow.EventQueue.Data.DB
             return targets;
         }
 
-        public EventQueueModel Get(Guid id)
+        public EventQueueModel Get(string id)
         {
             return sqlService.OpenConnection((conn) =>
             {
@@ -39,7 +39,7 @@ namespace Simplic.Flow.EventQueue.Data.DB
             });
         }
 
-        public void Remove(Guid id)
+        public void Remove(string id)
         {
             sqlService.OpenConnection((conn) =>
             {
@@ -77,8 +77,8 @@ namespace Simplic.Flow.EventQueue.Data.DB
         {
             return sqlService.OpenConnection((conn) =>
             {
-                if (model.Id == Guid.Empty)
-                    model.Id = Guid.NewGuid();
+                if (string.IsNullOrWhiteSpace(model.Id))
+                    model.Id = Guid.NewGuid().ToString();
 
                 int affectedRows = 0;
                 foreach (var target in GetEventTargets())
@@ -90,7 +90,7 @@ namespace Simplic.Flow.EventQueue.Data.DB
                         CreateUserId = model.CreateUserId,
                         EventName = model.EventName,
                         Handled = model.Handled,
-                        Id = Guid.NewGuid(),
+                        Id = $"{target.MachineName}_{target.ServiceName}_{model.Id}",
                         MachineName = target.MachineName,
                         ServiceName = target.ServiceName
                     };
@@ -105,7 +105,7 @@ namespace Simplic.Flow.EventQueue.Data.DB
             });
         }
 
-        public bool SetHandled(Guid id, bool isHandled)
+        public bool SetHandled(string id, bool isHandled)
         {
             return sqlService.OpenConnection((conn) =>
             {
@@ -116,7 +116,7 @@ namespace Simplic.Flow.EventQueue.Data.DB
             });
         }
 
-        public bool SetFailed(Guid id)
+        public bool SetFailed(string id)
         {
             return sqlService.OpenConnection((conn) =>
             {

@@ -922,7 +922,7 @@ namespace Simplic.Flow.Service
 
 
                 eventArgs.EventName = flowEventQueue.EventName;
-                eventArgs.QueueId = flowEventQueue.Id;
+                eventArgs.Id = flowEventQueue.Id;
                 eventArgs.UserId = flowEventQueue.CreateUserId;
 
                 EnqueueEvent(eventArgs);
@@ -938,7 +938,7 @@ namespace Simplic.Flow.Service
         /// Sets an event queue to handled
         /// </summary>
         /// <param name="eventQueueId">Event queue to update</param>
-        private bool SetEventQueueHandled(Guid eventQueueId)
+        private bool SetEventQueueHandled(string eventQueueId)
         {
             flowLogService.Info($"Running SetEventQueueHandled with {eventQueueId}");
             var result = flowEventQueueService.SetHandled(eventQueueId, true);
@@ -951,7 +951,7 @@ namespace Simplic.Flow.Service
         /// Sets an event queue to failed
         /// </summary>
         /// <param name="eventQueueId">Event queue to update</param>
-        private void SetEventQueueFailed(Guid eventQueueId)
+        private void SetEventQueueFailed(string eventQueueId)
         {
             flowLogService.Info($"Running SetEventQueueFAILED with {eventQueueId}");
             flowEventQueueService.SetFailed(eventQueueId);
@@ -1144,8 +1144,8 @@ namespace Simplic.Flow.Service
                     }
                 }
 
-                var failed = new ConcurrentList<Guid>();
-                var success = new ConcurrentList<Guid>();
+                var failed = new ConcurrentList<string>();
+                var success = new ConcurrentList<string>();
 
                 int runningTasks = 0;
                 var executedThreads = new List<Thread>();
@@ -1153,7 +1153,7 @@ namespace Simplic.Flow.Service
 
                 // Group by event delegate and take a given amount....
                 var tempJobs = new List<ThreadStateInfo>();
-                foreach (var eventGroup in executions.GroupBy(x => x.EventCall.QueueId))
+                foreach (var eventGroup in executions.GroupBy(x => x.EventCall.Id))
                 {
                     tempJobs.AddRange(eventGroup);
 
@@ -1201,11 +1201,11 @@ namespace Simplic.Flow.Service
                             try
                             {
                                 ProcessEvent(job);
-                                success.Add(job.EventCall.QueueId);
+                                success.Add(job.EventCall.Id);
                             }
                             catch
                             {
-                                failed.Add(job.EventCall.QueueId);
+                                failed.Add(job.EventCall.Id);
                             }
 
                             runningTasks--;
@@ -1284,7 +1284,7 @@ namespace Simplic.Flow.Service
                 {
                     flowLogService.Info($"- Create event call: {args.EventName} / Flow: {del.FlowId} / Is start event {del.IsStartEvent}");
 
-                    eventQueue.PushBack(new EventCall { QueueId = args.QueueId, Args = args, Delegate = del });
+                    eventQueue.PushBack(new EventCall { Id = args.Id, Args = args, Delegate = del });
                     isEnqueued = true;
                 }
             }
@@ -1294,7 +1294,7 @@ namespace Simplic.Flow.Service
                 flowLogService.Info($"- No delegate was found for {args.EventName}, changing status to handled.");
 
                 // Remove events that can't be handled
-                flowEventQueueService.Remove(args.QueueId);
+                flowEventQueueService.Remove(args.Id);
             }
         }
         #endregion
