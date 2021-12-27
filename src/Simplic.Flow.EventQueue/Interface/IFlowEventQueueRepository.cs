@@ -7,12 +7,12 @@ namespace Simplic.Flow.EventQueue
     {
         IEnumerable<EventQueueModel> GetAll();
         IEnumerable<EventQueueModel> GetAllUnhandled(string machineName, string serviceName);
-        EventQueueModel Get(Guid id);
+        EventQueueModel Get(string id);
         bool Save(EventQueueModel model);
-        bool SetHandled(Guid id, bool isHandled);
-        bool SetFailed(Guid eventQueueId);
+        bool SetHandled(string id, bool isHandled);
+        bool SetFailed(string id);
         void ClearEventQueue();
-        void Remove(Guid queueId);
+        void Remove(string id);
         IList<EventServiceTarget> GetEventTargets();
     }
 }

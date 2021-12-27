@@ -12,7 +12,7 @@ namespace Simplic.Flow.EventQueue.Service
             this.flowEventQueueRepository = flowEventQueueRepository;
         }
 
-        public EventQueueModel Get(Guid id)
+        public EventQueueModel Get(string id)
         {
             return flowEventQueueRepository.Get(id);
         }
@@ -37,7 +37,7 @@ namespace Simplic.Flow.EventQueue.Service
             return flowEventQueueRepository.Save(model);
         }
 
-        public bool SetHandled(Guid id, bool isHandled)
+        public bool SetHandled(string id, bool isHandled)
         {
             return flowEventQueueRepository.SetHandled(id, isHandled);
         }
@@ -47,8 +47,8 @@ namespace Simplic.Flow.EventQueue.Service
             flowEventQueueRepository.ClearEventQueue();
         }
 
-        public void Remove(Guid id) => flowEventQueueRepository.Remove(id);
+        public void Remove(string id) => flowEventQueueRepository.Remove(id);
 
-        public bool SetFailed(Guid id) => flowEventQueueRepository.SetFailed(id);
+        public bool SetFailed(string id) => flowEventQueueRepository.SetFailed(id);
     }
 }
