@@ -38,7 +38,7 @@ namespace Simplic.Flow.Node
                 var data02 = scope.GetValue<string>(InPinData02);
                 var data03 = scope.GetValue<string>(InPinData03);
 
-                var id = $"{target}EFE{data01 ?? ""}{data02 ?? ""}{data02 ?? ""}";
+                var id = $"{target ?? "OnExecuteFlowEvent"}EFE{data01 ?? ""}{data02 ?? ""}{data03 ?? ""}";
 
                 if (id.Length > 255)
                     id = id.Substring(0, 255);
