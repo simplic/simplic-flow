@@ -5,8 +5,7 @@ namespace Simplic.Flow.EventQueue
     public class EventQueueModel
     {
         /// <summary>
-        /// Gets or sets the id of the event. For repeating events this should be "equal" to prevent
-        /// from unnecessary events.
+        /// Gets or sets the id of the event. In general this will be the event finger print (event name and object id)
         /// </summary>
         public string Id { get; set; }
 
