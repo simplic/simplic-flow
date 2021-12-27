@@ -33,13 +33,24 @@ namespace Simplic.Flow.Node
                 }
 
                 var eventService = ServiceLocator.Current.GetInstance<IFlowEventService>();
+
+                var data01 = scope.GetValue<string>(InPinData01);
+                var data02 = scope.GetValue<string>(InPinData02);
+                var data03 = scope.GetValue<string>(InPinData03);
+
+                var id = $"{target ?? "OnExecuteFlowEvent"}EFE{data01 ?? ""}{data02 ?? ""}{data03 ?? ""}";
+
+                if (id.Length > 255)
+                    id = id.Substring(0, 255);
+
                 eventService.InvokeEvent(new OnExecuteFlowEventArgs
                 {
+                    Id = id,
                     Target = target,
                     EventName = "OnExecuteFlowEvent",
-                    Data01 = scope.GetValue<string>(InPinData01),
-                    Data02 = scope.GetValue<string>(InPinData02),
-                    Data03 = scope.GetValue<string>(InPinData03),
+                    Data01 = data01,
+                    Data02 = data02,
+                    Data03 = data03,
                     ObjectId = target,
                     UserId = 0
                 });
