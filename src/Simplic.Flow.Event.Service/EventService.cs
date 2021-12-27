@@ -23,7 +23,7 @@ namespace Simplic.Flow.Event.Service
 
             var id = args.Id;
             if (string.IsNullOrWhiteSpace(id))
-                id = $"{args.EventName}_{args.ObjectId ?? "<unset>"}";
+                id = $"{args.EventName}_{args.ObjectId ?? "<unset>"}"; 
 
             flowEventQueueService.Save(new EventQueueModel
             {

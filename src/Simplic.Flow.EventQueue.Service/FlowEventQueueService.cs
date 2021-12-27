@@ -9,7 +9,7 @@ namespace Simplic.Flow.EventQueue.Service
 
         public FlowEventQueueService(IFlowEventQueueRepository flowEventQueueRepository)
         {
-            this.flowEventQueueRepository = flowEventQueueRepository;
+            this.flowEventQueueRepository = flowEventQueueRepository; 
         }
 
         public EventQueueModel Get(string id)

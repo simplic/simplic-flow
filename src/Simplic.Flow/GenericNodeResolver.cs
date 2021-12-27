@@ -10,7 +10,7 @@ namespace Simplic.Flow
             node.Id = id;
 
             if (node is EventNode)
-                (node as EventNode).IsStartEvent = isStartNode;
+                (node as EventNode).IsStartEvent = isStartNode; 
 
             return node;
         }
