@@ -10,6 +10,11 @@ namespace Simplic.Flow.Node
             var val1 = scope.GetValue<string>(InPinConditionA);
             var val2 = scope.GetValue<string>(InPinConditionB);
 
+            if(string.IsNullOrWhiteSpace(val1) || string.IsNullOrWhiteSpace(val2))
+            {
+                return false;
+            }
+
             return val1.EndsWith(val2);
         }
 
