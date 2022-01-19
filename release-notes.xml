@@ -25,4 +25,7 @@
   <ChangeSet guid="df33d985-02bc-4cc5-b09a-e567f065c30f">
     <Change type="enhancement">The id of a flow-event is now the finger-print of the flow-event name and object-id. This prevents some events from being triggered multiple times.</Change>
   </ChangeSet>
+  <ChangeSet>
+    <Change type="bug">Fixes a bug, that causes a null reference exception in the endsWithConditonNode.</Change>
+  </ChangeSet>
 </ReleaseNotes>
