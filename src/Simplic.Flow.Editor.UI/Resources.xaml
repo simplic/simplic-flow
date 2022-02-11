@@ -307,4 +307,16 @@
 			ItemTemplate="{StaticResource ToolboxItemTemplate}">
         <TextBlock Text="{Binding Header}" MinWidth="55" />
     </local:HierarchicalDataTemplate>
+
+    <Style TargetType="{x:Type local:SearchControl}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:SearchControl}">
+                    <telerik:RadWatermarkTextBox WatermarkContent="Search for a specific node"
+                                                 Width="500" Height="40" Text="{Binding SearchTerm}"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
 </ResourceDictionary>

@@ -55,6 +55,7 @@
     <Compile Include="Connectors\DataConnector.cs" />
     <Compile Include="Connectors\FlowConnector.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Controls\SearchControl.cs" />
     <Compile Include="FlowEditorControl.xaml.cs">
       <DependentUpon>FlowEditorControl.xaml</DependentUpon>
     </Compile>
@@ -182,6 +183,7 @@
       <Version>5.11.1</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

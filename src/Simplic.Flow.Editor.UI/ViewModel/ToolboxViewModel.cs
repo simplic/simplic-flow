@@ -6,18 +6,26 @@ using Telerik.Windows.Controls.Diagrams.Extensions;
 namespace Simplic.Flow.Editor.UI
 {
     /// <summary>
-    /// ToolboxViewModel
+    /// ToolboxViewModel.
     /// </summary>
     public class ToolboxViewModel : Simplic.UI.MVC.ViewModelBase
     {
         #region Private Members
         private Gallery selectedGallery;
+        private string searchTerm;
+        private ObservableCollection<Gallery> galleryItems;
+        private ObservableCollection<Gallery> galleryItemsFiltered;
         #endregion
 
         #region Constructor
+        /// <summary>
+        /// Instantiates the ToolboxViewModel.
+        /// </summary>
+        /// <param name="nodeDefinitions">List of node definitions</param>
         public ToolboxViewModel(IList<Definition.NodeDefinition> nodeDefinitions)
         {
-            GalleryItems = new ObservableCollection<Gallery>();
+            galleryItems = new ObservableCollection<Gallery>();
+            galleryItemsFiltered = new ObservableCollection<Gallery>();
             NodeDefinitions = nodeDefinitions;
 
             LoadGalleryItems();
@@ -49,7 +57,7 @@ namespace Simplic.Flow.Editor.UI
                     {
                         Header = item.DisplayName
                     };
-                    
+
                     if (item is Definition.ActionNodeDefinition)
                     {
                         galleryItem.Shape = new ActionNodeShape
@@ -62,27 +70,40 @@ namespace Simplic.Flow.Editor.UI
                     {
                         galleryItem.Shape = new EventNodeShape
                         {
-                            Name = item.Name,                            
+                            Name = item.Name,
                             DataContext = item,
                         };
                     }
 
-                    gallery.Items.Add(galleryItem);                    
+                    gallery.Items.Add(galleryItem);
                 }
 
                 GalleryItems.Add(gallery);
-            }            
-            
+            }
+
             SelectedGallery = GalleryItems.FirstOrDefault();
         }
         #endregion
 
         #endregion
-        
+
         #region Public Properties
 
         #region [GalleryItems]
-        public ObservableCollection<Gallery> GalleryItems { get; set; }
+        public ObservableCollection<Gallery> GalleryItems
+        {
+            get
+            {
+                if (searchTerm != string.Empty)
+                    return galleryItemsFiltered;
+                return galleryItems;
+            }
+            set
+            {
+                if (value != null)
+                    galleryItems = value;
+            }
+        }
         #endregion
 
         #region [NodeDefinitions]
@@ -96,6 +117,41 @@ namespace Simplic.Flow.Editor.UI
             set { selectedGallery = value; RaisePropertyChanged(nameof(SelectedGallery)); }
         }
         #endregion
+
+        public string SearchTerm
+        {
+            get => searchTerm;
+            set
+            {
+                if (value != null)
+                {
+                    // current problem:
+                    // does not update binding or at least GalleryItems
+                    searchTerm = value;
+                    applyFilter(value);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Select relevant items from the gallery and load them into the filtered gallery.
+        /// </summary>
+        /// <param name="term">Term by which is filtered</param>
+        private void applyFilter(string term)
+        {
+            galleryItemsFiltered = new ObservableCollection<Gallery>();
+            // TODO filter by proper relevance measures
+            foreach (var (category, node) in GalleryItems.SelectMany(
+                category => category.Items
+                    .Where(node => node.Header.Contains(term))
+                    .Select(node => (category, node))))
+            {
+                if (!galleryItemsFiltered.Contains(category))
+                    galleryItemsFiltered.Add(category);
+                category.Items.Add(node);
+            }
+            RaisePropertyChanged(nameof(GalleryItems));
+        }
 
         #endregion
     }
