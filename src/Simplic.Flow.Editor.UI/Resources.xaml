@@ -313,10 +313,11 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:SearchControl}">
                     <telerik:RadWatermarkTextBox WatermarkContent="Search for a specific node"
-                                                 Width="500" Height="40" Text="{Binding SearchTerm}"/>
+                                                 Width="500" Height="40"
+                                                 Text="{Binding SearchTerm, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-    
+
 </ResourceDictionary>

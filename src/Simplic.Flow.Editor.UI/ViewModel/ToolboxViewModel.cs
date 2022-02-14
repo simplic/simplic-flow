@@ -1,6 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Windows.Data;
+using System.Windows.Threading;
 using Telerik.Windows.Controls.Diagrams.Extensions;
 
 namespace Simplic.Flow.Editor.UI
@@ -10,53 +16,51 @@ namespace Simplic.Flow.Editor.UI
     /// </summary>
     public class ToolboxViewModel : Simplic.UI.MVC.ViewModelBase
     {
-        #region Private Members
         private Gallery selectedGallery;
         private string searchTerm;
         private ObservableCollection<Gallery> galleryItems;
-        private ObservableCollection<Gallery> galleryItemsFiltered;
-        #endregion
+        private DispatcherTimer timer;
+        private int keyCounter;
 
-        #region Constructor
         /// <summary>
         /// Instantiates the ToolboxViewModel.
         /// </summary>
         /// <param name="nodeDefinitions">List of node definitions</param>
         public ToolboxViewModel(IList<Definition.NodeDefinition> nodeDefinitions)
         {
-            galleryItems = new ObservableCollection<Gallery>();
-            galleryItemsFiltered = new ObservableCollection<Gallery>();
             NodeDefinitions = nodeDefinitions;
-
+            Initialize();
             LoadGalleryItems();
         }
-        #endregion
 
-        #region Private Methods
+        private void Initialize()
+        {
+            GalleryItems = new ObservableCollection<Gallery>();
+            SearchTerm = string.Empty;
+            GalleryItemsViewSource = CollectionViewSource.GetDefaultView(GalleryItems);
+            GalleryItemsViewSource.Filter = galleryFilter;
+            GalleryViewSources = new Dictionary<Gallery, ICollectionView>();
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(0.2);
+            timer.Tick += TimerTick;
+            keyCounter = 0;
+            MatchWholeWord = false;
+        }
 
-        #region [LoadGalleryItems]
         private void LoadGalleryItems()
         {
             var categories = NodeDefinitions.OrderBy(x => x.Category).GroupBy(x => x.Category);
 
             foreach (var category in categories)
             {
-                var gallery = new Gallery
-                {
-                    Header = category.Key
-                };
+                var gallery = new Gallery() { Header = category.Key };
 
                 if (string.IsNullOrEmpty(gallery.Header))
-                {
                     gallery.Header = "General";
-                }
 
                 foreach (var item in category.OrderBy(x => x.DisplayName))
                 {
-                    var galleryItem = new GalleryItem
-                    {
-                        Header = item.DisplayName
-                    };
+                    var galleryItem = new GalleryItem { Header = item.DisplayName };
 
                     if (item is Definition.ActionNodeDefinition)
                     {
@@ -77,82 +81,120 @@ namespace Simplic.Flow.Editor.UI
 
                     gallery.Items.Add(galleryItem);
                 }
-
                 GalleryItems.Add(gallery);
+                GalleryViewSources[gallery] = CollectionViewSource.GetDefaultView(gallery.Items);
+                GalleryViewSources[gallery].Filter = nodeFilter;
             }
 
             SelectedGallery = GalleryItems.FirstOrDefault();
         }
-        #endregion
 
-        #endregion
-
-        #region Public Properties
-
-        #region [GalleryItems]
-        public ObservableCollection<Gallery> GalleryItems
+        /// <summary>
+        /// Filters for relevant galleries.
+        /// </summary>
+        /// <param name="term">Term by which is filtered</param>
+        private bool galleryFilter(object obj)
         {
-            get
+            if (obj is Gallery category)
             {
-                if (searchTerm != string.Empty)
-                    return galleryItemsFiltered;
-                return galleryItems;
+                bool hasRelevantNode = false;
+                foreach (var node in category.Items)
+                    if (nodeFilter(node))
+                        hasRelevantNode = true;
+                return hasRelevantNode;
             }
-            set
-            {
-                if (value != null)
-                    galleryItems = value;
-            }
+            return true;
         }
-        #endregion
 
-        #region [NodeDefinitions]
-        public IList<Definition.NodeDefinition> NodeDefinitions { get; }
-        #endregion
-
-        #region [SelectedGallery]
-        public Gallery SelectedGallery
+        /// <summary>
+        /// Filters for relevant nodes.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        private bool nodeFilter(object obj)
         {
-            get { return selectedGallery; }
-            set { selectedGallery = value; RaisePropertyChanged(nameof(SelectedGallery)); }
-        }
-        #endregion
-
-        public string SearchTerm
-        {
-            get => searchTerm;
-            set
+            if (obj is GalleryItem node)
             {
-                if (value != null)
+                if (MatchWholeWord)
                 {
-                    // current problem:
-                    // does not update binding or at least GalleryItems
-                    searchTerm = value;
-                    applyFilter(value);
+                    if (MatchCase)
+                        return node.Header.Split(' ').Contains(SearchTerm);
+                    else
+                        return node.Header.Split(' ').Contains(SearchTerm);
                 }
+                else
+                {
+                    if (MatchCase)
+                        return node.Header.Contains(SearchTerm);
+                    else
+                        return node.Header.ToLower().Contains(SearchTerm.ToLower());
+                }
+            }
+            return true;
+        }
+
+        private Task UpdateToolBox()
+        {
+            if (GalleryItemsViewSource != null)
+                GalleryItemsViewSource.Refresh();
+
+            if (GalleryViewSources != null)
+                foreach (var galleryViewSource in GalleryViewSources.Values)
+                    galleryViewSource.Refresh();
+
+            return Task.CompletedTask;
+        }
+
+        private async void TimerTick(object sender, EventArgs e)
+        {
+            keyCounter++;
+
+            if (keyCounter >= 2)
+            {
+                await UpdateToolBox();
+                keyCounter = 0;
+                timer.Stop();
             }
         }
 
         /// <summary>
-        /// Select relevant items from the gallery and load them into the filtered gallery.
+        /// Gets or sets the collection of galleries.
         /// </summary>
-        /// <param name="term">Term by which is filtered</param>
-        private void applyFilter(string term)
-        {
-            galleryItemsFiltered = new ObservableCollection<Gallery>();
-            // TODO filter by proper relevance measures
-            foreach (var (category, node) in GalleryItems.SelectMany(
-                category => category.Items
-                    .Where(node => node.Header.Contains(term))
-                    .Select(node => (category, node))))
-            {
-                if (!galleryItemsFiltered.Contains(category))
-                    galleryItemsFiltered.Add(category);
-                category.Items.Add(node);
-            }
-            RaisePropertyChanged(nameof(GalleryItems));
-        }
+        public ObservableCollection<Gallery> GalleryItems { get => galleryItems; set => galleryItems = value; }
 
-        #endregion
+        /// <summary>
+        /// Gets or sets the ViewSource for the collection of galleries.
+        /// </summary>
+        public ICollectionView GalleryItemsViewSource { get; set; }
+
+        /// <summary>
+        /// Gets or sets the ViewSources for every gallery.
+        /// </summary>
+        public IDictionary<Gallery, ICollectionView> GalleryViewSources { get; set; }
+
+        /// <summary>
+        /// Gets the list of node definitions.
+        /// </summary>
+        public IList<Definition.NodeDefinition> NodeDefinitions { get; }
+
+        /// <summary>
+        /// Gets or sets the currently selected gallery.
+        /// </summary>
+        public Gallery SelectedGallery { get => selectedGallery; set { selectedGallery = value; RaisePropertyChanged(nameof(SelectedGallery)); } }
+
+        /// <summary>
+        /// Gets or sets the search term.
+        /// </summary>
+        public string SearchTerm { get => searchTerm; set { searchTerm = value; if (timer != null) timer.Start(); } }
+
+        /// <summary>
+        /// Gets or sets whether the search term should be matched to a whole word.
+        /// </summary>
+        public bool MatchWholeWord { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether the search term should match the exact case.
+        /// </summary>
+        public bool MatchCase { get; set; }
     }
 }

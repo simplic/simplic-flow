@@ -11,11 +11,8 @@ namespace Simplic.Flow.Editor.UI
                                                                                      typeof(SearchControl),
                                                                                      new PropertyMetadata(null));
 
-        public string SearchTerm
-        {
-            get { return (string)GetValue(SearchTermProperty); }
-            set { SetValue(SearchTermProperty, value); }
-        }
+
+        public string SearchTerm { get; set; }
 
         static SearchControl()
         {

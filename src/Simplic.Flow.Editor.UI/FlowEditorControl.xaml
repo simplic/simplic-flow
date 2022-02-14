@@ -126,20 +126,28 @@
                     </TabItem>
 
                     <TabItem Header="{simplic:Localization Key=flow_available_nodes}" Padding="5">
-                        <StackPanel>
-                            <local:SearchControl SearchTerm="{Binding SearchTerm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                            <telerik:RadDiagramToolbox x:Name="toolbox"
-                                                   HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
-                                                   Title="{simplic:Localization Key=flow_available_nodes}"                               
-                                                   ItemsSource="{Binding GalleryItems}"
-                                                   SelectedItem="{Binding SelectedGallery}"
-                                                   Header="{Binding SelectedItem.Header, RelativeSource={RelativeSource Self}}"
-                                                   ItemTemplate="{StaticResource ToolboxTemplate}"                                           
-                                                   SelectiveScrollingGrid.SelectiveScrollingOrientation="Both"
-                                                   Template="{StaticResource CustomDiagramToolBoxTemplate}"
-                                                   IsTextSearchEnabled="True" />
+                        <StackPanel x:Name="toolbox">
+                            <StackPanel Orientation="Horizontal" >
+                                <local:SearchControl SearchTerm="{Binding SearchTerm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <telerik:RadToggleButton Width="20" Height="20"
+                                                         HorizontalAlignment="Right"
+                                                         Content="[Aa]"
+                                                         IsChecked="{Binding MatchCase}"/>
+                                <telerik:RadToggleButton Width="20" Height="20"
+                                                         HorizontalAlignment="Right"
+                                                         Content="[W]"
+                                                         IsChecked="{Binding MatchWholeWord}"/>
+                            </StackPanel>
+                            <telerik:RadDiagramToolbox HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                                                       Title="{simplic:Localization Key=flow_available_nodes}"                               
+                                                       ItemsSource="{Binding GalleryItems}"
+                                                       SelectedItem="{Binding SelectedGallery}"
+                                                       Header="{Binding SelectedItem.Header, RelativeSource={RelativeSource Self}}"
+                                                       ItemTemplate="{StaticResource ToolboxTemplate}"                                           
+                                                       SelectiveScrollingGrid.SelectiveScrollingOrientation="Both"
+                                                       Template="{StaticResource CustomDiagramToolBoxTemplate}"
+                                                       IsTextSearchEnabled="True" />
                         </StackPanel>
-
                     </TabItem>
                 </TabControl>
             </Grid>
