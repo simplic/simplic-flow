@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Threading;
@@ -124,19 +125,29 @@ namespace Simplic.Flow.Editor.UI
                 if (MatchWholeWord)
                 {
                     if (MatchCase)
-                        return node.Header.Split(' ').Contains(SearchTerm);
+                        return node.Header.Split(' ').Contains(normalizeString(SearchTerm));
                     else
-                        return node.Header.ToLower().Split(' ').Contains(SearchTerm.ToLower());
+                        return node.Header.ToLower().Split(' ').Contains(normalizeString(SearchTerm).ToLower());
                 }
                 else
                 {
                     if (MatchCase)
-                        return node.Header.Contains(SearchTerm);
+                        return node.Header.Contains(normalizeString(SearchTerm));
                     else
-                        return node.Header.ToLower().Contains(SearchTerm.ToLower());
+                        return node.Header.ToLower().Contains(normalizeString(SearchTerm).ToLower());
                 }
             }
             return true;
+        }
+
+        /// <summary>
+        /// Removes whitespaces from given string.
+        /// </summary>
+        /// <param name="str">string</param>
+        /// <returns>normalized string</returns>
+        private string normalizeString(string str)
+        {
+            return Regex.Replace(str, @"\s+", "");
         }
 
         /// <summary>
