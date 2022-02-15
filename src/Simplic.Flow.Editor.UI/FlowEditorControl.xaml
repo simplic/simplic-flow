@@ -127,23 +127,17 @@
 
                     <TabItem Header="{simplic:Localization Key=flow_available_nodes}" Padding="5">
                         <StackPanel x:Name="toolbox">
-                            <StackPanel Orientation="Horizontal" >
-                                <local:SearchControl SearchTerm="{Binding SearchTerm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                <telerik:RadToggleButton Width="20" Height="20"
-                                                         HorizontalAlignment="Right"
-                                                         Content="[Aa]"
-                                                         IsChecked="{Binding MatchCase}"/>
-                                <telerik:RadToggleButton Width="20" Height="20"
-                                                         HorizontalAlignment="Right"
-                                                         Content="[W]"
-                                                         IsChecked="{Binding MatchWholeWord}"/>
-                            </StackPanel>
+                            <local:SearchControl Width="auto"
+                                                 SearchTerm="{Binding SearchTerm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 Watermark="{simplic:Localization Key=search}"
+                                                 MatchCase="{Binding MatchCase}"
+                                                 MatchWholeWord="{Binding MatchWholeWord}"/>
                             <telerik:RadDiagramToolbox HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
-                                                       Title="{simplic:Localization Key=flow_available_nodes}"                               
+                                                       Title="{simplic:Localization Key=flow_available_nodes}"
                                                        ItemsSource="{Binding GalleryItems}"
                                                        SelectedItem="{Binding SelectedGallery}"
                                                        Header="{Binding SelectedItem.Header, RelativeSource={RelativeSource Self}}"
-                                                       ItemTemplate="{StaticResource ToolboxTemplate}"                                           
+                                                       ItemTemplate="{StaticResource ToolboxTemplate}"
                                                        SelectiveScrollingGrid.SelectiveScrollingOrientation="Both"
                                                        Template="{StaticResource CustomDiagramToolBoxTemplate}"
                                                        IsTextSearchEnabled="True" />

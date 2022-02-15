@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Threading;
@@ -33,6 +32,9 @@ namespace Simplic.Flow.Editor.UI
             LoadGalleryItems();
         }
 
+        /// <summary>
+        /// Initializes variables.
+        /// </summary>
         private void Initialize()
         {
             GalleryItems = new ObservableCollection<Gallery>();
@@ -41,12 +43,16 @@ namespace Simplic.Flow.Editor.UI
             GalleryItemsViewSource.Filter = galleryFilter;
             GalleryViewSources = new Dictionary<Gallery, ICollectionView>();
             timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(0.2);
-            timer.Tick += TimerTick;
+            timer.Interval = TimeSpan.FromSeconds(0.3);
+            timer.Tick += Timer_Tick;
             keyCounter = 0;
             MatchWholeWord = false;
+            MatchCase = false;
         }
 
+        /// <summary>
+        /// Extracts all nodes from node definitions and loads them into galleries.
+        /// </summary>
         private void LoadGalleryItems()
         {
             var categories = NodeDefinitions.OrderBy(x => x.Category).GroupBy(x => x.Category);
@@ -120,7 +126,7 @@ namespace Simplic.Flow.Editor.UI
                     if (MatchCase)
                         return node.Header.Split(' ').Contains(SearchTerm);
                     else
-                        return node.Header.Split(' ').Contains(SearchTerm);
+                        return node.Header.ToLower().Split(' ').Contains(SearchTerm.ToLower());
                 }
                 else
                 {
@@ -133,6 +139,10 @@ namespace Simplic.Flow.Editor.UI
             return true;
         }
 
+        /// <summary>
+        /// Refreshes all collection view sources.
+        /// </summary>
+        /// <returns></returns>
         private Task UpdateToolBox()
         {
             if (GalleryItemsViewSource != null)
@@ -145,7 +155,12 @@ namespace Simplic.Flow.Editor.UI
             return Task.CompletedTask;
         }
 
-        private async void TimerTick(object sender, EventArgs e)
+        /// <summary>
+        /// Event handler for timer tick event.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void Timer_Tick(object sender, EventArgs e)
         {
             keyCounter++;
 

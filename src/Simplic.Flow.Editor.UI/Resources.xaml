@@ -312,9 +312,25 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:SearchControl}">
-                    <telerik:RadWatermarkTextBox WatermarkContent="Search for a specific node"
-                                                 Width="500" Height="40"
-                                                 Text="{Binding SearchTerm, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition Width="40"/>
+                        </Grid.ColumnDefinitions>
+
+                        <telerik:RadWatermarkTextBox WatermarkContent="{Binding Watermark, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                     Width="auto" Height="40"
+                                                     Text="{Binding SearchTerm, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                        <telerik:RadToggleButton Grid.Column="1" Width="40" Height="40"
+                                                 HorizontalAlignment="Right"
+                                                 Content="Aa"
+                                                 IsChecked="{Binding MatchCase}"/>
+                        <telerik:RadToggleButton Grid.Column="2" Width="40" Height="40"
+                                                 HorizontalAlignment="Right"
+                                                 Content="W"
+                                                 IsChecked="{Binding MatchWholeWord}"/>
+                    </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
