@@ -18,7 +18,6 @@ namespace Simplic.Flow.Editor.UI
     {
         private Gallery selectedGallery;
         private string searchTerm;
-        private ObservableCollection<Gallery> galleryItems;
         private DispatcherTimer timer;
         private int keyCounter;
 
@@ -120,24 +119,26 @@ namespace Simplic.Flow.Editor.UI
         /// <returns></returns>
         private bool nodeFilter(object obj)
         {
-            if (obj is GalleryItem node)
+            if (!(obj is GalleryItem))
+                return true;
+
+            if (normalizeString(searchTerm) == string.Empty)
+                return true;
+
+            var node = obj as GalleryItem;
+
+            if (MatchWholeWord)
             {
-                if (MatchWholeWord)
-                {
-                    if (MatchCase)
-                        return node.Header.Split(' ').Contains(normalizeString(SearchTerm));
-                    else
-                        return node.Header.ToLower().Split(' ').Contains(normalizeString(SearchTerm).ToLower());
-                }
-                else
-                {
-                    if (MatchCase)
-                        return node.Header.Contains(normalizeString(SearchTerm));
-                    else
-                        return node.Header.ToLower().Contains(normalizeString(SearchTerm).ToLower());
-                }
+                if (MatchCase)
+                    return node.Header.Split(' ').Contains(normalizeString(SearchTerm));
+
+                return node.Header.ToLower().Split(' ').Contains(normalizeString(SearchTerm).ToLower());
             }
-            return true;
+
+            if (MatchCase)
+                return node.Header.Contains(normalizeString(SearchTerm));
+
+            return node.Header.ToLower().Contains(normalizeString(SearchTerm).ToLower());
         }
 
         /// <summary>
@@ -186,7 +187,7 @@ namespace Simplic.Flow.Editor.UI
         /// <summary>
         /// Gets or sets the collection of galleries.
         /// </summary>
-        public ObservableCollection<Gallery> GalleryItems { get => galleryItems; set => galleryItems = value; }
+        public ObservableCollection<Gallery> GalleryItems { get; set; }
 
         /// <summary>
         /// Gets or sets the ViewSource for the collection of galleries.

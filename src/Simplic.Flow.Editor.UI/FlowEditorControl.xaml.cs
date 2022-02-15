@@ -133,9 +133,9 @@ namespace Simplic.Flow.Editor.UI
         /// <summary>
         /// Check for implicit conversion.
         /// </summary>
-        /// <param name="baseType">base type</param>
-        /// <param name="targetType">target type</param>
-        /// <returns>true if it has an implicit conversion</returns>
+        /// <param name="baseType">Base type</param>
+        /// <param name="targetType">Target type</param>
+        /// <returns>True if it has an implicit conversion</returns>
         public static bool HasImplicitConversion(Type baseType, Type targetType)
         {
             return baseType.GetMethods(BindingFlags.Public | BindingFlags.Static)
@@ -150,7 +150,7 @@ namespace Simplic.Flow.Editor.UI
         /// <summary>
         /// Gets the flow configuration of the diagram.
         /// </summary>
-        /// <returns>flow configuration</returns>
+        /// <returns>Flow configuration</returns>
         public Configuration.FlowConfiguration GetFlowConfiguration()
         {
             return diagramViewModel.GetFlowConfiguration();
