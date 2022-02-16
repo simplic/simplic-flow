@@ -1,5 +1,4 @@
-﻿using Simplic.Data;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -11,17 +10,17 @@ using Telerik.Windows.Diagrams.Core;
 namespace Simplic.Flow.Editor.UI
 {
     /// <summary>
-    /// Interaction logic for FlowEditorControl.xaml
+    /// Interaction logic for FlowEditorControl.xaml.
     /// </summary>
     public partial class FlowEditorControl : UserControl
     {
-        #region Private Members
         private BaseConnector sourceConnector;
         private WorkflowEditorViewModel diagramViewModel;
-        private bool isInitialized = false; 
-        #endregion
+        private bool isInitialized = false;
 
-        #region Constructor
+        /// <summary>
+        /// Instantiates the flow editor control.
+        /// </summary>
         public FlowEditorControl()
         {
             InitializeComponent();
@@ -32,14 +31,10 @@ namespace Simplic.Flow.Editor.UI
 
             var tagger = new JavaScriptTagger(syntaxEditor);
             this.syntaxEditor.TaggersRegistry.RegisterTagger(tagger);
-        } 
-        #endregion
+        }
 
-        #region Private Methods
-
-        #region [EditorControl_Loaded]
         /// <summary>
-        /// EditorControl_Loaded
+        /// Checks if editor is initialized. Throws exception if editor is not initialized.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -52,31 +47,16 @@ namespace Simplic.Flow.Editor.UI
 
             this.Loaded -= EditorControl_Loaded;
         }
-        #endregion
 
-        #region [HasImplicitConversion]
-        public static bool HasImplicitConversion(Type baseType, Type targetType) 
-        {
-            return baseType.GetMethods(BindingFlags.Public | BindingFlags.Static)
-                .Where(mi => mi.Name == "op_Implicit" && mi.ReturnType == targetType)
-                .Any(mi => {
-                    ParameterInfo pi = mi.GetParameters().FirstOrDefault();
-                    return pi != null && pi.ParameterType == baseType;
-                });
-        }
-        #endregion
-
-        #region [MyDiagram_ConnectionManipulationStarted]
+        /// <summary>
+        /// When linking nodes, adds source connector to the diagram's view model for information access.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MyDiagram_ConnectionManipulationStarted(object sender, ManipulationRoutedEventArgs e)
         {
-            // only accept connections from out nodes
             if (e.ManipulationStatus == ManipulationStatus.Attaching)
             {
-                /* 
-                 *  add source connector to the diagram's view model, so it can use the connector information
-                    when linking the connectors we need this information.
-                */
-
                 var connector = e.Connector as BaseConnector;
                 if (connector != null && connector.DataContext is ConnectorViewModel)
                 {
@@ -91,21 +71,19 @@ namespace Simplic.Flow.Editor.UI
                     }
                     else
                         viewModel.IsConnected = false;
-                }                                   
+                }
             }
 
-            // skip            
             sourceConnector = null;
             diagramViewModel.SourceConnector = null;
             diagramViewModel.TargetConnector = null;
 
             e.Handled = true;
         }
-        #endregion
-        
-        #region [MyDiagram_ConnectionManipulationCompleted]
+
         /// <summary>
-        /// MyDiagram_ConnectionManipulationCompleted
+        /// When linking nodes, updates source's and target's data contexts.
+        /// If linking is possible, updates target connector of diagram view model with target's view model.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -131,17 +109,11 @@ namespace Simplic.Flow.Editor.UI
             sourceConnector = null;
             diagramViewModel.SourceConnector = null;
             diagramViewModel.TargetConnector = null;
-            e.Handled = true;                                   
+            e.Handled = true;
         }
-        #endregion
 
-        #endregion
-
-        #region Public Methods
-
-        #region [Initialize]
         /// <summary>
-        /// Initializes the editor
+        /// Initializes the editor.
         /// </summary>
         /// <param name="nodeDefinitions">Node definitions</param>
         /// <param name="flowConfiguration">Flow configuration</param>
@@ -157,15 +129,31 @@ namespace Simplic.Flow.Editor.UI
             this.MyDiagram.ConnectionManipulationStarted += MyDiagram_ConnectionManipulationStarted;
             this.MyDiagram.ConnectionManipulationCompleted += MyDiagram_ConnectionManipulationCompleted;
         }
-        #endregion
 
-        #region [GetFlowConfiguration]
+        /// <summary>
+        /// Check for implicit conversion.
+        /// </summary>
+        /// <param name="baseType">Base type</param>
+        /// <param name="targetType">Target type</param>
+        /// <returns>True if it has an implicit conversion</returns>
+        public static bool HasImplicitConversion(Type baseType, Type targetType)
+        {
+            return baseType.GetMethods(BindingFlags.Public | BindingFlags.Static)
+                .Where(mi => mi.Name == "op_Implicit" && mi.ReturnType == targetType)
+                .Any(mi =>
+                {
+                    ParameterInfo pi = mi.GetParameters().FirstOrDefault();
+                    return pi != null && pi.ParameterType == baseType;
+                });
+        }
+
+        /// <summary>
+        /// Gets the flow configuration of the diagram.
+        /// </summary>
+        /// <returns>Flow configuration</returns>
         public Configuration.FlowConfiguration GetFlowConfiguration()
         {
             return diagramViewModel.GetFlowConfiguration();
         }
-        #endregion
-
-        #endregion
     }
 }

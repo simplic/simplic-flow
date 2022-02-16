@@ -5,6 +5,7 @@
                     xmlns:simplic="http://schemas.simplic-systems.com/2016/xaml/presentation"
                     xmlns:extensions="clr-namespace:Telerik.Windows.Controls.Diagrams.Extensions;assembly=Telerik.Windows.Controls.Diagrams.Extensions">
     <telerik:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    <telerik:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
     <SolidColorBrush x:Key="SettingsPaneViewBackground" Color="White" />
     <SolidColorBrush x:Key="SettingsPaneBorderBrush" Color="#FFD6D4D4" />
 
@@ -32,8 +33,7 @@
                         <TranslateTransform/>
                     </Grid.RenderTransform>
                     <Border Grid.RowSpan="3" Background="{telerik:VisualStudio2019Resource ResourceKey=AlternativeBrush}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1 1 0 1"/>
-                    <ContentControl
-                                    Margin="{TemplateBinding Padding}"
+                    <ContentControl Margin="{TemplateBinding Padding}"
                                     Foreground="{TemplateBinding Foreground}"
                                     ContentTemplate="{TemplateBinding TitleTemplate}"
                                     VerticalAlignment="Center"
@@ -77,13 +77,12 @@
                                             <ToolTip Content="{telerik:LocalizableResource Key=Open_Close}"/>
                                         </ToolTipService.ToolTip>
                                     </telerik:RadButton>
-                                    <TextBlock
-                                                    Margin="5 0"
-                                                    FontFamily="{TemplateBinding FontFamily}"
-                                                    FontSize="{TemplateBinding FontSize}"
-                                                    Text="{telerik:LocalizableResource Key=Toolbox_ViewGalleries}"
-                                                    Foreground="{TemplateBinding Foreground}"
-                                                    VerticalAlignment="Center"/>
+                                    <TextBlock Margin="5 0"
+                                               FontFamily="{TemplateBinding FontFamily}"
+                                               FontSize="{TemplateBinding FontSize}"
+                                               Text="{telerik:LocalizableResource Key=Toolbox_ViewGalleries}"
+                                               Foreground="{TemplateBinding Foreground}"
+                                               VerticalAlignment="Center"/>
                                 </StackPanel>
                             </Border>
                         </Grid>
@@ -116,8 +115,12 @@
                                         <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
 
-                                    <simplic:AutomaticSelectionGridView Grid.Row="0" ItemsSource="{Binding SelectedNode.DefaultValues}" AutoGenerateColumns="False"
-                                                                            CanUserInsertRows="False" CanUserDeleteRows="False" ShowGroupPanel="False">
+                                    <simplic:AutomaticSelectionGridView Grid.Row="0"
+                                                                        ItemsSource="{Binding SelectedNode.DefaultValues}"
+                                                                        AutoGenerateColumns="False"
+                                                                        CanUserInsertRows="False"
+                                                                        CanUserDeleteRows="False"
+                                                                        ShowGroupPanel="False">
                                         <simplic:AutomaticSelectionGridView.Columns>
                                             <telerik:GridViewDataColumn IsReadOnly="True" DataMemberBinding="{Binding DisplayName}" Header="Pin" />
                                             <telerik:GridViewDataColumn IsReadOnly="False" DataMemberBinding="{Binding DefaultValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Wert" Width="*" />
@@ -307,4 +310,43 @@
 			ItemTemplate="{StaticResource ToolboxItemTemplate}">
         <TextBlock Text="{Binding Header}" MinWidth="55" />
     </local:HierarchicalDataTemplate>
+
+    <Style TargetType="{x:Type local:SearchControl}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:SearchControl}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition Width="40"/>
+                        </Grid.ColumnDefinitions>
+
+                        <telerik:RadWatermarkTextBox x:Name="searchBox" WatermarkContent="{Binding Watermark, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                     Width="auto" Height="40"
+                                                     Text="{Binding SearchTerm, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                            <telerik:RadWatermarkTextBox.AdditionalContent>
+                                <telerik:RadButton Focusable="False" IsBackgroundVisible="False"
+                                                   Command="telerik:RadWatermarkTextBoxCommands.Clear"
+                                                   CommandTarget="{Binding ElementName=searchBox}"
+                                                   Visibility="{Binding ElementName=searchBox, Path=Text, Converter={StaticResource NullToVisibilityConverter}}">
+                                    <telerik:RadGlyph Glyph="&#xe11b;"/>
+                                </telerik:RadButton>
+                            </telerik:RadWatermarkTextBox.AdditionalContent>
+                        </telerik:RadWatermarkTextBox>
+                        
+                        <telerik:RadToggleButton Grid.Column="1" Width="40" Height="40"
+                                                 HorizontalAlignment="Right"
+                                                 Content="Aa"
+                                                 IsChecked="{Binding MatchCase}"/>
+                        <telerik:RadToggleButton Grid.Column="2" Width="40" Height="40"
+                                                 HorizontalAlignment="Right"
+                                                 Content="W"
+                                                 IsChecked="{Binding MatchWholeWord}"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

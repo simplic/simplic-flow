@@ -206,8 +206,8 @@ namespace Simplic.Flow.Editor.UI
             if (ViewModel.Width < 50)
                 ViewModel.Width = 50;
 
-            const double heightPerDataPin = 15;
-            const double heightPerFlowPin = 20;
+            const double heightPerDataPin = 20;
+            const double heightPerFlowPin = 25;
             const double baseHeight = 35;
 
             var flowInPinCount = FlowConnectors.Count(x => x.ConnectorDirection == ConnectorDirection.In);
