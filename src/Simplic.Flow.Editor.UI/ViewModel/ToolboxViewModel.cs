@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Data;
@@ -121,8 +122,10 @@ namespace Simplic.Flow.Editor.UI
         {
             if (!(obj is GalleryItem))
                 return true;
+            
+            var searchTermNormalized = normalizeString(SearchTerm);
 
-            if (normalizeString(searchTerm) == string.Empty)
+            if (string.IsNullOrWhiteSpace(searchTermNormalized))
                 return true;
 
             var node = obj as GalleryItem;
@@ -130,25 +133,40 @@ namespace Simplic.Flow.Editor.UI
             if (MatchWholeWord)
             {
                 if (MatchCase)
-                    return node.Header.Split(' ').Contains(normalizeString(SearchTerm));
+                    return node.Header.Split(' ').Contains(searchTermNormalized);
 
-                return node.Header.ToLower().Split(' ').Contains(normalizeString(SearchTerm).ToLower());
+                return node.Header.ToLower().Split(' ').Contains(searchTermNormalized.ToLower());
             }
 
             if (MatchCase)
-                return node.Header.Contains(normalizeString(SearchTerm));
+                return node.Header.Contains(searchTermNormalized);
 
-            return node.Header.ToLower().Contains(normalizeString(SearchTerm).ToLower());
+            return node.Header.ToLower().Contains(searchTermNormalized.ToLower());
         }
 
         /// <summary>
-        /// Removes whitespaces from given string.
+        /// Removes whitespaces at the beginning and at the end from given string.
+        /// Uses '~' as placeholder to do so.
         /// </summary>
         /// <param name="str">string</param>
         /// <returns>normalized string</returns>
         private string normalizeString(string str)
         {
-            return Regex.Replace(str, @"\s+", "");
+            var stringBuilder = new StringBuilder(str);
+            for (int i = 0; i < stringBuilder.Length; i++)
+            {
+                if (stringBuilder[i] != ' ')
+                    break;
+                stringBuilder[i] = '~';
+            }
+            for (int i = stringBuilder.Length - 1; i >= 0; i--)
+            {
+                if (stringBuilder[i] != ' ')
+                    break;
+                stringBuilder[i] = '~';
+            }
+
+            return Regex.Replace(str, "~+", "");
         }
 
         /// <summary>
