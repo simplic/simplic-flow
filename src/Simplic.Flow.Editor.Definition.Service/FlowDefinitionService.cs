@@ -42,7 +42,8 @@ namespace Simplic.Flow.Editor.Definition.Service
                         {
                             DisplayName = nodeAttribute.DisplayName,
                             Name = nodeAttribute.Name,
-                            Category = nodeAttribute.Category
+                            Category = nodeAttribute.Category,
+                            DocumentationUrl = nodeAttribute.DocumentationUrl
                         };
                     }
 
