@@ -177,6 +177,13 @@
                 </DataTemplate>
             </Setter.Value>
         </Setter>
+        <Setter Property="ContextMenu">
+            <Setter.Value>
+                <ContextMenu>
+                    <MenuItem Header="Show documentation" Command="{Binding ShowDocumentationCommand}"/>
+                </ContextMenu>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <Style x:Key="EventNodeStyle" TargetType="telerik:RadDiagramShape">
@@ -191,6 +198,7 @@
         <Setter Property="ContextMenu">
             <Setter.Value>
                 <ContextMenu>
+                    <MenuItem Header="Show documentation" Command="{Binding ShowDocumentationCommand}"/>
                     <MenuItem Header="Defaultwerte" Command="{Binding OpenDefaultValueEditor}" CommandParameter="{Binding}" />
                 </ContextMenu>
             </Setter.Value>

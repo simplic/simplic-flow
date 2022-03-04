@@ -3,8 +3,10 @@ using Simplic.Flow.Editor.Definition;
 using Simplic.UI.MVC;
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 
 namespace Simplic.Flow.Editor.UI
 {
@@ -13,13 +15,15 @@ namespace Simplic.Flow.Editor.UI
     /// </summary>
     public abstract class NodeViewModel : ViewModelBase
     {
-        #region Private Members                
+        #region Private Members
         private NodeDefinition nodeDefinition;
         private NodeConfiguration nodeConfiguration;
 
         private const double DefaultWidth = 200;
         private const double DefaultHeight = 150;
         private ObservableCollection<DataPinDefaultValueViewModel> defaultValues;
+
+        private ICommand showDocumentationCommand;
         #endregion
 
         #region Constructor
@@ -32,6 +36,8 @@ namespace Simplic.Flow.Editor.UI
         {
             this.nodeDefinition = nodeDefinition;
             this.nodeConfiguration = nodeConfiguration;
+
+            this.showDocumentationCommand = new RelayCommand(ShowDocumentation);
 
             FlowPins = new ObservableCollection<FlowConnectorViewModel>();
             DataPins = new ObservableCollection<DataConnectorViewModel>();
@@ -102,6 +108,11 @@ namespace Simplic.Flow.Editor.UI
             }
         }
         #endregion
+
+        private void ShowDocumentation(object o)
+        {
+            Process.Start(nodeDefinition.DocumentationUrl);
+        }
 
         #endregion
 
@@ -238,6 +249,11 @@ namespace Simplic.Flow.Editor.UI
             }
         }
         #endregion
+
+        /// <summary>
+        /// Gets or sets the command to show the documentation for this node in the default system browser.
+        /// </summary>
+        public ICommand ShowDocumentationCommand => showDocumentationCommand;
 
         #region [DefaultValues]
         public ObservableCollection<DataPinDefaultValueViewModel> DefaultValues
