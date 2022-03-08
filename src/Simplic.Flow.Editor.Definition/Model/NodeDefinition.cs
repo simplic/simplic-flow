@@ -12,6 +12,7 @@ namespace Simplic.Flow.Editor.Definition
         /// Gets or sets the node documentation URL.
         /// </summary>
         public string DocumentationUrl { get; set; }
+
         /// <summary>
         /// Gets or sets the full type name of the node.
         /// <para>The full type name is used to try to dynamically create the node documentation URL if not explicitly given as an attribute.</para>
