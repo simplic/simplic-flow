@@ -115,6 +115,10 @@ namespace Simplic.Flow.Editor.UI
         }
         #endregion
 
+        /// <summary>
+        /// Shows the node documentation.
+        /// </summary>
+        /// <param name="o"></param>
         private void ShowDocumentation(object o)
         {
             if (!string.IsNullOrWhiteSpace(nodeDefinition.DocumentationUrl))
@@ -143,9 +147,15 @@ namespace Simplic.Flow.Editor.UI
             if (CheckURLValid(url))
                 return;
 
-            MessageBox.Show(localizationService.Translate("flow_documentation_not_found"));
+            MessageBox.Show(localizationService.Translate("flow_documentation_not_found"), localizationService.Translate("flow_documentation_not_found_title"), MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
+        /// <summary>
+        /// Checks if a given URL is valid.
+        /// <para>Returns false if the HTTP request yields an error.</para>
+        /// </summary>
+        /// <param name="url">URL to check</param>
+        /// <returns></returns>
         private bool CheckURLValid(string url)
         {
             try
