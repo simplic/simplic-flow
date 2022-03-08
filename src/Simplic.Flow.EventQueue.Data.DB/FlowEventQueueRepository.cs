@@ -86,7 +86,7 @@ namespace Simplic.Flow.EventQueue.Data.DB
                     var dbModel = new TargetEventQueueModel
                     {
                         Args = model.Args,
-                        CreateDateTime = model.CreateDateTime,
+                        CreateDateTime = model.CreateDateTime, 
                         CreateUserId = model.CreateUserId,
                         EventName = model.EventName,
                         Handled = model.Handled,

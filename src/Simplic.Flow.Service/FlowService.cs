@@ -1308,7 +1308,7 @@ namespace Simplic.Flow.Service
             flowLogService.Info("> Creating event delegates...");
 
             eventDelegates = new Dictionary<string, IList<EventDelegate>>();
-            foreach (var flow in Flows)
+            foreach (var flow in Flows) 
             {
                 foreach (var eventNode in flow.Nodes.OfType<EventNode>())
                 {
