@@ -27,13 +27,15 @@ namespace Simplic.Flow.Editor.Definition.Service
 
                     // Create node definition here...
                     var nodeAttribute = nodeType.GetCustomAttributes().OfType<NodeDefinitionAttribute>().FirstOrDefault();
+                    var fullTypeName = nodeType.FullName;
                     if (nodeAttribute is ActionNodeDefinitionAttribute)
                     {
                         nodeDefinition = new ActionNodeDefinition {
                             DisplayName = nodeAttribute.DisplayName,
                             Name = nodeAttribute.Name,
                             Category = nodeAttribute.Category,
-                            DocumentationUrl = nodeAttribute.DocumentationUrl
+                            DocumentationUrl = nodeAttribute.DocumentationUrl,
+                            FullTypeName = fullTypeName
                         };
                     }
                     else if (nodeAttribute is EventNodeDefinitionAttribute)
@@ -43,7 +45,8 @@ namespace Simplic.Flow.Editor.Definition.Service
                             DisplayName = nodeAttribute.DisplayName,
                             Name = nodeAttribute.Name,
                             Category = nodeAttribute.Category,
-                            DocumentationUrl = nodeAttribute.DocumentationUrl
+                            DocumentationUrl = nodeAttribute.DocumentationUrl,
+                            FullTypeName = fullTypeName
                         };
                     }
 
