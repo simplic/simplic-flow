@@ -28,4 +28,7 @@
   <ChangeSet guid="4d40ab3b-3465-4840-baaa-b42bec80dfb4">
     <Change type="bug">Fixes a bug, that causes a null reference exception in the endsWithConditonNode.</Change>
   </ChangeSet>
+  <ChangeSet>
+    <Change type="feature">Adds the ability to view a node documentation via a node context menu entry.</Change>
+  </ChangeSet>
 </ReleaseNotes>

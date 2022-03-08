@@ -2,7 +2,13 @@
 
 namespace Simplic.Flow.Node
 {
-    [ActionNodeDefinition(DisplayName = "Console out", Name = "ConsoleWriteLineNode", Category = "Common")]
+    /// <remarks>
+    /// This node takes an object, converts it to a string if necessary and writes it to the console as a new line.
+    /// 
+    /// InPinToPrint:
+    /// Accepts an object to be written to the console.
+    /// </remarks>
+    [ActionNodeDefinition(DisplayName = "Console out", Name = "ConsoleWriteLineNode", Category = "Common", DocumentationUrl = "https://simplic.github.io/dev/api_core/api/Simplic.Flow.Node.ConsoleWriteLineNode")]
     public class ConsoleWriteLineNode : ActionNode
     {
         public override bool Execute(IFlowRuntimeService runtime, DataPinScope scope)

@@ -1,10 +1,14 @@
 ﻿using Simplic.Flow.Configuration;
 using Simplic.Flow.Editor.Definition;
+using Simplic.Localization;
 using Simplic.UI.MVC;
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Windows;
+using System.Windows.Input;
 
 namespace Simplic.Flow.Editor.UI
 {
@@ -13,13 +17,17 @@ namespace Simplic.Flow.Editor.UI
     /// </summary>
     public abstract class NodeViewModel : ViewModelBase
     {
-        #region Private Members                
+        #region Private Members
         private NodeDefinition nodeDefinition;
         private NodeConfiguration nodeConfiguration;
 
         private const double DefaultWidth = 200;
         private const double DefaultHeight = 150;
         private ObservableCollection<DataPinDefaultValueViewModel> defaultValues;
+
+        private ICommand showDocumentationCommand;
+
+        private readonly ILocalizationService localizationService;
         #endregion
 
         #region Constructor
@@ -32,6 +40,10 @@ namespace Simplic.Flow.Editor.UI
         {
             this.nodeDefinition = nodeDefinition;
             this.nodeConfiguration = nodeConfiguration;
+
+            this.showDocumentationCommand = new RelayCommand(ShowDocumentation);
+
+            this.localizationService = CommonServiceLocator.ServiceLocator.Current.GetInstance<ILocalizationService>();
 
             FlowPins = new ObservableCollection<FlowConnectorViewModel>();
             DataPins = new ObservableCollection<DataConnectorViewModel>();
@@ -102,6 +114,68 @@ namespace Simplic.Flow.Editor.UI
             }
         }
         #endregion
+
+        /// <summary>
+        /// Shows the node documentation.
+        /// </summary>
+        /// <param name="o"></param>
+        private void ShowDocumentation(object o)
+        {
+            if (!string.IsNullOrWhiteSpace(nodeDefinition.DocumentationUrl))
+            {
+                Process.Start(nodeDefinition.DocumentationUrl);
+                return;
+            }
+
+            // Build URL for core node.
+            var fullTypeName = nodeDefinition.FullTypeName;
+            var url = $"https://simplic.github.io/dev/api_core/api/{fullTypeName}";
+
+            if (CheckURLValid(url))
+                return;
+
+            // Try to build URL in case of a plugin type node.
+            var repoName = fullTypeName.Split('.')[1];
+            url = $"https://simplic.github.io/dev/api_plugins/Simplic%20{repoName}/api/{fullTypeName}";
+
+            if (CheckURLValid(url))
+                return;
+
+            // Try using all upper case for repo name.
+            url = $"https://simplic.github.io/dev/api_plugins/Simplic%20{repoName.ToUpper()}/api/{fullTypeName}";
+
+            if (CheckURLValid(url))
+                return;
+
+            MessageBox.Show(localizationService.Translate("flow_documentation_not_found"), localizationService.Translate("flow_documentation_not_found_title"), MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
+        /// <summary>
+        /// Checks if a given URL is valid.
+        /// <para>Returns false if the HTTP request yields an error.</para>
+        /// </summary>
+        /// <param name="url">URL to check</param>
+        /// <returns></returns>
+        private bool CheckURLValid(string url)
+        {
+            try
+            {
+                // Try to reach URL.
+                HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
+                request.Method = "HEAD";
+                HttpWebResponse response = request.GetResponse() as HttpWebResponse;
+                response.Close();
+
+                // Open URL in browser.
+                Process.Start(url);
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
         #endregion
 
@@ -238,6 +312,11 @@ namespace Simplic.Flow.Editor.UI
             }
         }
         #endregion
+
+        /// <summary>
+        /// Gets or sets the command to show the documentation for this node in the default system browser.
+        /// </summary>
+        public ICommand ShowDocumentationCommand => showDocumentationCommand;
 
         #region [DefaultValues]
         public ObservableCollection<DataPinDefaultValueViewModel> DefaultValues
