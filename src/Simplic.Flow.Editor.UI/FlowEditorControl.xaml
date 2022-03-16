@@ -172,7 +172,13 @@
                         </Grid.RowDefinitions>
                         
                         <Label Content="{simplic:Localization Key=flow_notes}" Grid.Row="0"/>
-                        <simplic:TextBox Text="{Binding SelectedNode.UserNotes, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextWrapping="Wrap" AcceptsReturn="True" VerticalAlignment="Top" Height="auto" Grid.Row="1" Margin="5"/>
+                        <simplic:TextBox Text="{Binding SelectedNode.UserNotes, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                         TextWrapping="Wrap"
+                                         AcceptsReturn="True"
+                                         VerticalAlignment="Top"
+                                         Height="auto"
+                                         Grid.Row="1"
+                                         Margin="5"/>
                     </Grid>
                 </Grid>
             </Grid>
