@@ -27,7 +27,6 @@ namespace Simplic.Flow.Editor.UI
         private ObservableCollection<DataPinDefaultValueViewModel> defaultValues;
 
         private ICommand showDocumentationCommand;
-        private ICommand editUserNotesCommand;
 
         private readonly ILocalizationService localizationService;
         #endregion
@@ -44,7 +43,6 @@ namespace Simplic.Flow.Editor.UI
             this.nodeConfiguration = nodeConfiguration;
 
             this.showDocumentationCommand = new RelayCommand(ShowDocumentation);
-            this.editUserNotesCommand = new RelayCommand(EditUserNotes);
 
             this.localizationService = CommonServiceLocator.ServiceLocator.Current.GetInstance<ILocalizationService>();
 
@@ -151,18 +149,6 @@ namespace Simplic.Flow.Editor.UI
                 return;
 
             MessageBox.Show(localizationService.Translate("flow_documentation_not_found"), localizationService.Translate("flow_documentation_not_found_title"), MessageBoxButton.OK, MessageBoxImage.Error);
-        }
-
-        /// <summary>
-        /// Shows the user notes in an edit window.
-        /// </summary>
-        /// <param name="o"></param>
-        private void EditUserNotes(object o)
-        {
-            var input = Window_InputDialog.Show("Edit user notes", "User notes", nodeConfiguration.UserNotes);
-
-            if (!string.IsNullOrWhiteSpace(input))
-                nodeConfiguration.UserNotes = input;
         }
 
         /// <summary>
@@ -332,11 +318,6 @@ namespace Simplic.Flow.Editor.UI
         /// Gets or sets the command to show the documentation for this node in the default system browser.
         /// </summary>
         public ICommand ShowDocumentationCommand => showDocumentationCommand;
-
-        /// <summary>
-        /// Gets or sets the command to show or edit the user notes.
-        /// </summary>
-        public ICommand EditUserNotesCommand => editUserNotesCommand;
 
         #region [DefaultValues]
         public ObservableCollection<DataPinDefaultValueViewModel> DefaultValues
