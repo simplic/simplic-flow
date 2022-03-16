@@ -14,5 +14,10 @@ namespace Simplic.Flow.Configuration
         public double PositionY { get; set; }
         public double Width { get; set; }
         public double Height { get; set; }
+
+        /// <summary>
+        /// Gets or sets the user notes.
+        /// </summary>
+        public string UserNotes { get; set; }
     }
 }
