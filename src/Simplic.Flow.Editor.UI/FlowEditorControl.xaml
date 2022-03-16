@@ -54,90 +54,99 @@
                                                   HorizontalAlignment="Right"
                                                   IsExpanded="True"/>
 
-                <TabControl Grid.Column="2" Grid.Row="0" Padding="5">
+                <Grid Grid.Column="2" Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    
+                    
+                    <TabControl Grid.Row="0" Padding="5">
 
-                    <TabItem Header="{simplic:Localization Key=flow_tab_header}">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
+                        <TabItem Header="{simplic:Localization Key=flow_tab_header}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
 
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
 
-                            <Label Grid.Row="0" Content="Name" FontWeight="Bold"/>
-                            <simplic:TextBox Grid.Row="0" Grid.Column="1"
+                                <Label Grid.Row="0" Content="Name" FontWeight="Bold"/>
+                                <simplic:TextBox Grid.Row="0" Grid.Column="1"
                                              Text="{Binding WorkflowName, UpdateSourceTrigger=PropertyChanged}" />
 
-                            <Label Grid.Row="1" Content="Server" FontWeight="Bold"/>
-                            <simplic:TextBox Grid.Row="1" Grid.Column="1"
+                                <Label Grid.Row="1" Content="Server" FontWeight="Bold"/>
+                                <simplic:TextBox Grid.Row="1" Grid.Column="1"
                                              Text="{Binding MachineName, UpdateSourceTrigger=PropertyChanged}" />
 
-                            <Label Grid.Row="2" Content="Service Name" FontWeight="Bold"/>
-                            <simplic:TextBox Grid.Row="2" Grid.Column="1"
+                                <Label Grid.Row="2" Content="Service Name" FontWeight="Bold"/>
+                                <simplic:TextBox Grid.Row="2" Grid.Column="1"
                                              Text="{Binding ServiceName, UpdateSourceTrigger=PropertyChanged}" />
 
-                            <simplic:CheckBox Content="{simplic:Localization Key=flow_is_active}"
+                                <simplic:CheckBox Content="{simplic:Localization Key=flow_is_active}"
                                               Grid.Row="3" Grid.ColumnSpan="2"
                                               IsChecked="{Binding IsActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                            <Button Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Left"
+                                <Button Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Left"
                                     Margin="0, 5" Width="150"
                                     Content="{simplic:Localization Key=flow_new_variable}"
                                     Command="{Binding AddVariableCommand}" />
 
-                            <TabControl Grid.Row="5" Grid.ColumnSpan="2">
-                                <TabItem Header="{simplic:Localization Key=flow_variables}">
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="*"/>
-                                        </Grid.RowDefinitions>
+                                <TabControl Grid.Row="5" Grid.ColumnSpan="2">
+                                    <TabItem Header="{simplic:Localization Key=flow_variables}">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
 
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
 
-                                        <simplic:AutomaticSelectionGridView Grid.Row="0" Grid.Column="0"
+                                            <simplic:AutomaticSelectionGridView Grid.Row="0" Grid.Column="0"
                                                                             ItemsSource="{Binding Variables}"
                                                                             AutoGenerateColumns="False" 
                                                                             CanUserInsertRows="True"
                                                                             CanUserDeleteRows="True"
                                                                             ShowGroupPanel="True">
-                                            <simplic:AutomaticSelectionGridView.Columns>
-                                                <telerik:GridViewDataColumn DataMemberBinding="{Binding Name}"
+                                                <simplic:AutomaticSelectionGridView.Columns>
+                                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding Name}"
                                                                             Header="{simplic:Localization Key=flow_variable_name}" />
-                                                <telerik:GridViewComboBoxColumn ItemsSource="{Binding AvailableVariableTypes}"
+                                                    <telerik:GridViewComboBoxColumn ItemsSource="{Binding AvailableVariableTypes}"
                                                                                 DataMemberBinding="{Binding Type}"
                                                                                 Header="{simplic:Localization Key=flow_variable_name}" />
-                                            </simplic:AutomaticSelectionGridView.Columns>
-                                        </simplic:AutomaticSelectionGridView>
-                                    </Grid>
-                                </TabItem>
-                            </TabControl>
+                                                </simplic:AutomaticSelectionGridView.Columns>
+                                            </simplic:AutomaticSelectionGridView>
+                                        </Grid>
+                                    </TabItem>
+                                </TabControl>
 
-                        </Grid>
-                    </TabItem>
+                            </Grid>
+                        </TabItem>
 
-                    <TabItem Header="{simplic:Localization Key=flow_available_nodes}" Padding="5">
-                        <Grid x:Name="toolbox">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="40"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
+                        <TabItem Header="{simplic:Localization Key=flow_available_nodes}" Padding="5">
+                            <Grid x:Name="toolbox">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="40"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
 
-                            <local:SearchControl Width="auto"
+                                <local:SearchControl Width="auto"
                                                  SearchTerm="{Binding SearchTerm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  Watermark="{simplic:Localization Key=search}"
                                                  MatchCase="{Binding MatchCase}"
                                                  MatchWholeWord="{Binding MatchWholeWord}"/>
-                            <telerik:RadDiagramToolbox Grid.Row="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                                <telerik:RadDiagramToolbox Grid.Row="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
                                                        Title="{simplic:Localization Key=flow_available_nodes}"
                                                        ItemsSource="{Binding GalleryItems}"
                                                        SelectedItem="{Binding SelectedGallery}"
@@ -146,9 +155,27 @@
                                                        SelectiveScrollingGrid.SelectiveScrollingOrientation="Both"
                                                        Template="{StaticResource CustomDiagramToolBoxTemplate}"
                                                        IsTextSearchEnabled="True" />
-                        </Grid>
-                    </TabItem>
-                </TabControl>
+                            </Grid>
+                        </TabItem>
+                    </TabControl>
+
+                    <GridSplitter Grid.Row="1"
+                                  HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Center"
+                                  Background="Black"
+                                  ShowsPreview="True"
+                                  Height="5"/>
+
+                    <Grid Grid.Row="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        
+                        <Label Content="{simplic:Localization Key=flow_notes}" Grid.Row="0"/>
+                        <simplic:TextBox Text="{Binding SelectedNode.UserNotes, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextWrapping="Wrap" AcceptsReturn="True" VerticalAlignment="Top" Height="auto" Grid.Row="1" Margin="5"/>
+                    </Grid>
+                </Grid>
             </Grid>
         </telerik:RadTabItem>
         <telerik:RadTabItem Header="Playground" IsEnabled="False">

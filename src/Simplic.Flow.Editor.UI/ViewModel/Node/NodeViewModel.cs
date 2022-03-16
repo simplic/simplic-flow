@@ -349,7 +349,20 @@ namespace Simplic.Flow.Editor.UI
         /// <summary>
         /// Gets or sets the user notes.
         /// </summary>
-        public string UserNotes => nodeConfiguration.UserNotes;
+        public string UserNotes
+        {
+            get
+            {
+                return nodeConfiguration.UserNotes;
+            }
+
+            set
+            {
+                nodeConfiguration.UserNotes = value;
+                IsDirty = true;
+                RaisePropertyChanged(nameof(UserNotes));
+            }
+        }
 
         #endregion
     }

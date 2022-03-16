@@ -31,4 +31,7 @@
   <ChangeSet guid="acc0a9a0-e864-4d9a-97e5-f31a287781a1">
     <Change type="feature">Adds the ability to view a node documentation via a node context menu entry.</Change>
   </ChangeSet>
+  <ChangeSet>
+    <Change type="feature">Adds the ability to write custom notes for individual flow nodes.</Change>
+  </ChangeSet>
 </ReleaseNotes>
