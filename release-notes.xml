@@ -33,6 +33,6 @@
   </ChangeSet>
   <ChangeSet>
     <Change type="feature">Adds the ability to write custom notes for individual flow nodes.</Change>
-    <Change type="feature">The notes textbox resizes automatically depending on the number of lines but the containing control can also be resized manually using a grid divider.</Change>
+    <Change type="feature">The notes textbox resizes automatically depending on the number of lines but the containing control can also be resized manually using a grid splitter.</Change>
   </ChangeSet>
 </ReleaseNotes>
