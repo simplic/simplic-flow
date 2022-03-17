@@ -22,8 +22,6 @@ namespace Simplic.Flow.Editor.UI
         private DispatcherTimer timer;
         private int keyCounter;
         private bool loaded;
-        private int maxLoadedItems;
-        private DispatcherTimer timer2;
 
         /// <summary>
         /// Instantiates the ToolboxViewModel.
@@ -42,12 +40,10 @@ namespace Simplic.Flow.Editor.UI
                 return;
 
             loaded = true;
-            GalleryItemsViewSource.Filter = LazyLoadingGalleryFilter;
 
-            timer2 = new DispatcherTimer();
-            timer2.Interval = TimeSpan.FromSeconds(0.5);
-            timer2.Tick += Timer2_Tick;
-            timer2.Start();
+            foreach (var gallery in GalleryViewSources)
+                if (gallery.Key != selectedGallery)
+                    gallery.Value.Filter = LazyLoadingGalleryItemFilter;
         }
 
         /// <summary>
@@ -219,22 +215,9 @@ namespace Simplic.Flow.Editor.UI
             }
         }
 
-        private bool LazyLoadingGalleryFilter(object obj)
+        private bool LazyLoadingGalleryItemFilter(object obj)
         {
-            var gallery = obj as Gallery;
-
-            if (GalleryItems.IndexOf(gallery) + 1 > maxLoadedItems)
-                return false;
-
-            return true;
-        }
-        private async void Timer2_Tick(object sender, EventArgs e)
-        {
-            if (maxLoadedItems > GalleryItems.Count)
-                timer2.Stop();
-
-            maxLoadedItems += 5;
-            await UpdateToolBox();
+            return false;
         }
 
         /// <summary>
@@ -260,7 +243,7 @@ namespace Simplic.Flow.Editor.UI
         /// <summary>
         /// Gets or sets the currently selected gallery.
         /// </summary>
-        public Gallery SelectedGallery { get => selectedGallery; set { selectedGallery = value; RaisePropertyChanged(nameof(SelectedGallery)); } }
+        public Gallery SelectedGallery { get => selectedGallery; set { selectedGallery = value; GalleryViewSources.Where(x => x.Key == value).First().Value.Filter = nodeFilter; RaisePropertyChanged(nameof(SelectedGallery)); } }
 
         /// <summary>
         /// Gets or sets the search term.
