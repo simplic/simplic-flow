@@ -323,8 +323,26 @@ namespace Simplic.Flow.Editor.UI
         {
             get { return defaultValues; }
             set { defaultValues = value; RaisePropertyChanged(nameof(DefaultValues)); }
-        } 
+        }
         #endregion
+
+        /// <summary>
+        /// Gets or sets the user notes.
+        /// </summary>
+        public string UserNotes
+        {
+            get
+            {
+                return nodeConfiguration.UserNotes;
+            }
+
+            set
+            {
+                nodeConfiguration.UserNotes = value;
+                IsDirty = true;
+                RaisePropertyChanged(nameof(UserNotes));
+            }
+        }
 
         #endregion
     }
