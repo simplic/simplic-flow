@@ -54,7 +54,7 @@
                                                   HorizontalAlignment="Right"
                                                   IsExpanded="True"/>
 
-                <TabControl Grid.Column="2" Grid.Row="0" Padding="5">
+                <TabControl Grid.Column="2" Grid.Row="0" Padding="5" SelectionChanged="TabControl_SelectionChanged">
 
                     <TabItem Header="{simplic:Localization Key=flow_tab_header}">
                         <Grid>

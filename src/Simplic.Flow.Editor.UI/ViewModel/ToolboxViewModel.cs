@@ -21,6 +21,9 @@ namespace Simplic.Flow.Editor.UI
         private string searchTerm;
         private DispatcherTimer timer;
         private int keyCounter;
+        private bool loaded;
+        private int maxLoadedItems;
+        private DispatcherTimer timer2;
 
         /// <summary>
         /// Instantiates the ToolboxViewModel.
@@ -31,6 +34,20 @@ namespace Simplic.Flow.Editor.UI
             NodeDefinitions = nodeDefinitions;
             Initialize();
             LoadGalleryItems();
+        }
+
+        public void CheckAvailableNodesLoaded()
+        {
+            if (loaded)
+                return;
+
+            loaded = true;
+            GalleryItemsViewSource.Filter = LazyLoadingGalleryFilter;
+
+            timer2 = new DispatcherTimer();
+            timer2.Interval = TimeSpan.FromSeconds(0.3);
+            timer2.Tick += Timer2_Tick;
+            timer2.Start();
         }
 
         /// <summary>
@@ -200,6 +217,24 @@ namespace Simplic.Flow.Editor.UI
                 keyCounter = 0;
                 timer.Stop();
             }
+        }
+
+        private bool LazyLoadingGalleryFilter(object obj)
+        {
+            var gallery = obj as Gallery;
+
+            if (GalleryItems.IndexOf(gallery) + 1 > maxLoadedItems)
+                return false;
+
+            return true;
+        }
+        private async void Timer2_Tick(object sender, EventArgs e)
+        {
+            if (maxLoadedItems == GalleryItems.Count)
+                timer2.Stop();
+
+            maxLoadedItems++;
+            await UpdateToolBox();
         }
 
         /// <summary>
