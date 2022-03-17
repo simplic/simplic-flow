@@ -45,7 +45,7 @@ namespace Simplic.Flow.Editor.UI
             GalleryItemsViewSource.Filter = LazyLoadingGalleryFilter;
 
             timer2 = new DispatcherTimer();
-            timer2.Interval = TimeSpan.FromSeconds(0.3);
+            timer2.Interval = TimeSpan.FromSeconds(0.5);
             timer2.Tick += Timer2_Tick;
             timer2.Start();
         }
@@ -230,10 +230,10 @@ namespace Simplic.Flow.Editor.UI
         }
         private async void Timer2_Tick(object sender, EventArgs e)
         {
-            if (maxLoadedItems == GalleryItems.Count)
+            if (maxLoadedItems > GalleryItems.Count)
                 timer2.Stop();
 
-            maxLoadedItems++;
+            maxLoadedItems += 5;
             await UpdateToolBox();
         }
 
