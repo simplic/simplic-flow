@@ -34,16 +34,16 @@ namespace Simplic.Flow.Editor.UI
             LoadGalleryItems();
         }
 
-        public void CheckAvailableNodesLoaded()
+        /// <summary>
+        /// Ensures only nodes of selected category are loaded when opening the available nodes tab for the first time.
+        /// </summary>
+        public void LazyLoadAvailableNodes()
         {
             if (loaded)
                 return;
-
             loaded = true;
 
-            foreach (var gallery in GalleryViewSources)
-                if (gallery.Key != selectedGallery)
-                    gallery.Value.Filter = LazyLoadingGalleryItemFilter;
+            GalleryViewSources.Where(x => x.Key == selectedGallery).First().Value.Filter = nodeFilter;
         }
 
         /// <summary>
@@ -103,7 +103,9 @@ namespace Simplic.Flow.Editor.UI
                 }
                 GalleryItems.Add(gallery);
                 GalleryViewSources[gallery] = CollectionViewSource.GetDefaultView(gallery.Items);
-                GalleryViewSources[gallery].Filter = nodeFilter;
+
+                // Initialize gallery to not load nodes to enable lazy loading.
+                GalleryViewSources[gallery].Filter = (x => false);
             }
 
             SelectedGallery = GalleryItems.FirstOrDefault();
@@ -215,11 +217,6 @@ namespace Simplic.Flow.Editor.UI
             }
         }
 
-        private bool LazyLoadingGalleryItemFilter(object obj)
-        {
-            return false;
-        }
-
         /// <summary>
         /// Gets or sets the collection of galleries.
         /// </summary>
@@ -243,7 +240,17 @@ namespace Simplic.Flow.Editor.UI
         /// <summary>
         /// Gets or sets the currently selected gallery.
         /// </summary>
-        public Gallery SelectedGallery { get => selectedGallery; set { selectedGallery = value; GalleryViewSources.Where(x => x.Key == value).First().Value.Filter = nodeFilter; RaisePropertyChanged(nameof(SelectedGallery)); } }
+        public Gallery SelectedGallery
+        {
+            get => selectedGallery;
+            
+            set
+            {
+                selectedGallery = value;
+                GalleryViewSources.Where(x => x.Key == value).First().Value.Filter = nodeFilter;
+                RaisePropertyChanged(nameof(SelectedGallery));
+            }
+        }
 
         /// <summary>
         /// Gets or sets the search term.
