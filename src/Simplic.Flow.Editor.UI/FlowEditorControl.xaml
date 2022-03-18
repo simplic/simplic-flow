@@ -145,7 +145,7 @@
                                                        ItemTemplate="{StaticResource ToolboxTemplate}"
                                                        SelectiveScrollingGrid.SelectiveScrollingOrientation="Both"
                                                        Template="{StaticResource CustomDiagramToolBoxTemplate}"
-                                                       IsTextSearchEnabled="True"/>
+                                                       IsTextSearchEnabled="True" />
                         </Grid>
                     </TabItem>
                 </TabControl>
