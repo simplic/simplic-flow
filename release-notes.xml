@@ -31,4 +31,7 @@
   <ChangeSet guid="acc0a9a0-e864-4d9a-97e5-f31a287781a1">
     <Change type="feature">Adds the ability to view a node documentation via a node context menu entry.</Change>
   </ChangeSet>
+  <ChangeSet>
+    <Change type="feature">Applies lazy loading to available nodes in order to prevent the UI from freezing when opening the available nodes tab for the first time.</Change>
+  </ChangeSet>
 </ReleaseNotes>
