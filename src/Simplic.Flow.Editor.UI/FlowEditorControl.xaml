@@ -62,7 +62,7 @@
                     </Grid.RowDefinitions>
                     
                     
-                    <TabControl Grid.Row="0" Padding="5">
+                    <TabControl Grid.Row="0" Padding="5" SelectionChanged="TabControl_SelectionChanged">
 
                         <TabItem Header="{simplic:Localization Key=flow_tab_header}">
                             <Grid>
