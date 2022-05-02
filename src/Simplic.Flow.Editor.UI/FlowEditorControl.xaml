@@ -62,7 +62,7 @@
                     </Grid.RowDefinitions>
                     
                     
-                    <TabControl Grid.Row="0" Padding="5">
+                    <TabControl Grid.Row="0" Padding="5" SelectionChanged="TabControl_SelectionChanged">
 
                         <TabItem Header="{simplic:Localization Key=flow_tab_header}">
                             <Grid>
@@ -172,11 +172,11 @@
                         </Grid.RowDefinitions>
                         
                         <Label Content="{simplic:Localization Key=flow_notes}" Grid.Row="0"/>
-                        <simplic:TextBox Text="{Binding SelectedNode.UserNotes, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                        <TextBox Text="{Binding SelectedNode.UserNotes, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                          TextWrapping="Wrap"
                                          AcceptsReturn="True"
-                                         VerticalAlignment="Top"
-                                         Height="auto"
+                                         VerticalAlignment="Stretch"
+                                         VerticalScrollBarVisibility="Auto"
                                          Grid.Row="1"
                                          Margin="5"/>
                     </Grid>

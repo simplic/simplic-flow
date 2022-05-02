@@ -18,6 +18,8 @@ namespace Simplic.Flow.Editor.UI
         private WorkflowEditorViewModel diagramViewModel;
         private bool isInitialized = false;
 
+        private ToolboxViewModel toolboxViewModel;
+
         /// <summary>
         /// Instantiates the flow editor control.
         /// </summary>
@@ -121,7 +123,8 @@ namespace Simplic.Flow.Editor.UI
         {
             isInitialized = true;
 
-            toolbox.DataContext = new ToolboxViewModel(nodeDefinitions);
+            toolboxViewModel = new ToolboxViewModel(nodeDefinitions);
+            toolbox.DataContext = toolboxViewModel;
 
             diagramViewModel = new WorkflowEditorViewModel(nodeDefinitions, flowConfiguration);
             this.DataContext = diagramViewModel;
@@ -154,6 +157,11 @@ namespace Simplic.Flow.Editor.UI
         public Configuration.FlowConfiguration GetFlowConfiguration()
         {
             return diagramViewModel.GetFlowConfiguration();
+        }
+
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            toolboxViewModel.LazyLoadAvailableNodes();
         }
     }
 }
