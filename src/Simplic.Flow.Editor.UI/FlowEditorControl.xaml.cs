@@ -163,5 +163,14 @@ namespace Simplic.Flow.Editor.UI
         {
             toolboxViewModel.LazyLoadAvailableNodes();
         }
+
+        /// <summary>
+        /// Gets or sets the machine name or service name changed flag.
+        /// </summary>
+        public bool MachineNameOrServiceNameChanged
+        {
+            get => diagramViewModel.MachineNameOrServiceNameChanged;
+            set => diagramViewModel.MachineNameOrServiceNameChanged = value;
+        }
     }
 }
