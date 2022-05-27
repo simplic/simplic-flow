@@ -38,7 +38,7 @@
   <ChangeSet guid="60c4fd7d-7fdb-4207-916c-74a8c494bd90">
     <Change type="feature">Applies lazy loading to available nodes in order to prevent the UI from freezing when opening the available nodes tab for the first time.</Change>
   </ChangeSet>
-  <ChangeSet>
+  <ChangeSet guid="8655b36c-0481-4aea-8fb1-474d67a959a8">
     <Change type="feature">Informs the user that all app servers and clients need to be restarted in order for events to be received when saving a flow configuration and the service or server name has been changed.</Change>
   </ChangeSet>
 </ReleaseNotes>
