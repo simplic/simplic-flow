@@ -528,6 +528,7 @@ namespace Simplic.Flow.Editor.UI
             {
                 flowConfiguration.MachineName = value;
                 IsDirty = true;
+                MachineNameOrServiceNameChanged = true;
                 RaisePropertyChanged(nameof(MachineName));
             }
         }
@@ -542,6 +543,7 @@ namespace Simplic.Flow.Editor.UI
             {
                 flowConfiguration.ServiceName = value;
                 IsDirty = true;
+                MachineNameOrServiceNameChanged = true;
                 RaisePropertyChanged(nameof(ServiceName));
             }
         }
@@ -587,5 +589,10 @@ namespace Simplic.Flow.Editor.UI
             }
         }
         #endregion
+
+        /// <summary>
+        /// Gets or sets the machine name or service name changed flag.
+        /// </summary>
+        public bool MachineNameOrServiceNameChanged { get; set; }
     }
 }
