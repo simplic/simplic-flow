@@ -2,9 +2,18 @@
 
 namespace Simplic.Flow.Node
 {
+    /// <summary>
+    /// Fires whenever a instancedataconnection is deleted. Inpins can define which instancedata should be observed.
+    /// </summary>
     [EventNodeDefinition(DisplayName = "On Instance data connection deleted", Name = "OnInstanceDataConectionDeleted", EventName = "OnInstanceDataConectionDeleted", Category = "Common")]
     public class OnInstanceDataConectionDeleted : EventNode
     {
+        /// <summary>
+        /// Returns the related guids of the deleted connection.
+        /// </summary>
+        /// <param name="runtime"></param>
+        /// <param name="scope"></param>
+        /// <returns></returns>
         public override bool Execute(IFlowRuntimeService runtime, DataPinScope scope)
         {
             var args = runtime.FlowEventArgs as OnInstanceDataChangedEventArgs;
@@ -24,6 +33,12 @@ namespace Simplic.Flow.Node
             return true;
         }
 
+        /// <summary>
+        /// Determines if the node should be triggered. 
+        /// </summary>
+        /// <param name="runtime"></param>
+        /// <param name="scope"></param>
+        /// <returns></returns>
         public override bool ShouldExecute(IFlowRuntimeService runtime, DataPinScope scope)
         {
             var args = runtime.FlowEventArgs as OnInstanceDataChangedEventArgs;
@@ -109,8 +124,11 @@ namespace Simplic.Flow.Node
             Direction = PinDirection.In,
             Name = nameof(InPinSourceStackGuid),
             DisplayName = "Stack Source Guid")]
-        public DataPin InPinSourceStackGuid { get; set; } 
+        public DataPin InPinSourceStackGuid { get; set; }
 
+        /// <summary>
+        /// Gets or sets the pin node
+        /// </summary>
         [DataPinDefinition(
             Id = "CE9417D5-F74C-4AAA-8DB9-611726C83EB5",
             ContainerType = DataPinContainerType.Single,
@@ -118,8 +136,11 @@ namespace Simplic.Flow.Node
             Direction = PinDirection.In,
             Name = nameof(InPinSourceGuid),
             DisplayName = "Source Guid")]
-        public DataPin InPinSourceGuid { get; set; } 
+        public DataPin InPinSourceGuid { get; set; }
 
+        /// <summary>
+        /// Gets or sets the pin node
+        /// </summary>
         [DataPinDefinition(
             Id = "0BDD055E-69BF-4893-8592-011C5DF3AA57",
             ContainerType = DataPinContainerType.Single,
@@ -129,6 +150,9 @@ namespace Simplic.Flow.Node
             DisplayName = "Destination Stack Guid")]
         public DataPin InPinDestinationStackGuid { get; set; }
 
+        /// <summary>
+        /// Gets or sets the pin node
+        /// </summary>
         [DataPinDefinition(
            Id = "D6C83468-7090-4938-A471-06650F2CCDB9",
             ContainerType = DataPinContainerType.Single,

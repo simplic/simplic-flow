@@ -2,9 +2,18 @@
 
 namespace Simplic.Flow.Node
 {
+    /// <summary>
+    /// Fires whenever a instancedataconnection is created. Inpins can define which instancedata should be observed.
+    /// </summary>
     [EventNodeDefinition(DisplayName = "On Instance data connection created", Name = "OnInstanceDataConectionCreated", EventName = "OnInstanceDataConectionCreated", Category = "Common")]
     public class OnInstanceDataConectionCreated : EventNode
     {
+        /// <summary>
+        /// Returns the related guids of the new connection.
+        /// </summary>
+        /// <param name="runtime"></param>
+        /// <param name="scope"></param>
+        /// <returns></returns>
         public override bool Execute(IFlowRuntimeService runtime, DataPinScope scope)
         {
             var args = runtime.FlowEventArgs as OnInstanceDataChangedEventArgs;
@@ -24,6 +33,12 @@ namespace Simplic.Flow.Node
             return true;
         }
 
+        /// <summary>
+        /// Determines if the node should be triggered. 
+        /// </summary>
+        /// <param name="runtime"></param>
+        /// <param name="scope"></param>
+        /// <returns></returns>
         public override bool ShouldExecute(IFlowRuntimeService runtime, DataPinScope scope)
         {
             var args = runtime.FlowEventArgs as OnInstanceDataChangedEventArgs;
