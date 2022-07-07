@@ -17,11 +17,12 @@ namespace Simplic.Flow.Node
         public override bool Execute(IFlowRuntimeService runtime, DataPinScope scope)
         {
             var args = runtime.FlowEventArgs as OnInstanceDataChangedEventArgs;
-            if (args != null)
+            if (args == null)
             {
                 Console.WriteLine($"Arguments not found in {nameof(OnInstanceDataChangedEventArgs)}");
                 return false;
             }
+
             scope.SetValue(OutPinSourceStackGuid, args.SourceStackGuid);
             scope.SetValue(OutPinSourceGuid, args.SourceGuid);
             scope.SetValue(OutPinDestinationGuid, args.DestinationGuid);
@@ -67,7 +68,7 @@ namespace Simplic.Flow.Node
         public ActionNode OutNode { get; set; }
 
         /// <summary>
-        /// Gets or sets the pin node
+        /// Gets or sets the source stack guid out pin. 
         /// </summary>
         [DataPinDefinition(
             Id = "55597BC2-DFC3-4531-8638-74FE05736652",
@@ -77,9 +78,9 @@ namespace Simplic.Flow.Node
             Name = nameof(OutPinSourceStackGuid),
             DisplayName = "Source Stack Guid")]
         public DataPin OutPinSourceStackGuid { get; set; }
-        
+
         /// <summary>
-        /// Gets or sets the pin node
+        /// Gets or sets the source guid out pin. 
         /// </summary>
         [DataPinDefinition(
             Id = "73E300DE-3502-445B-A7A1-023D77E1178F",
@@ -89,9 +90,9 @@ namespace Simplic.Flow.Node
             Name = nameof(OutPinSourceGuid),
             DisplayName = "Source Guid")]
         public DataPin OutPinSourceGuid { get; set; }
-        
+
         /// <summary>
-        /// Gets or sets the pin node
+        /// Gets or sets the destination stack guid out pin. 
         /// </summary>
         [DataPinDefinition(
             Id = "F6E65F87-37C6-4287-A2F3-E63E238B4DF5",
@@ -101,9 +102,9 @@ namespace Simplic.Flow.Node
             Name = nameof(OutPinDestinationStackGuid),
             DisplayName = "Destination Stack Guid")]
         public DataPin OutPinDestinationStackGuid { get; set; }
-        
+
         /// <summary>
-        /// Gets or sets the pin node
+        /// Gets or sets the destination guid out pin. 
         /// </summary>
         [DataPinDefinition(
             Id = "64F460B0-AF23-432D-BC42-9B4AE8C5C4FE",
@@ -115,7 +116,7 @@ namespace Simplic.Flow.Node
         public DataPin OutPinDestinationGuid { get; set; }
 
         /// <summary>
-        /// Gets or sets the pin node
+        /// Gets or sets the source stack guid in pin. 
         /// </summary>
         [DataPinDefinition(
             Id = "F9CED866-178D-4DE5-9178-173DCBA14416",
@@ -127,7 +128,7 @@ namespace Simplic.Flow.Node
         public DataPin InPinSourceStackGuid { get; set; }
 
         /// <summary>
-        /// Gets or sets the pin node
+        /// Gets or sets the source guid in pin. 
         /// </summary>
         [DataPinDefinition(
             Id = "CE9417D5-F74C-4AAA-8DB9-611726C83EB5",
@@ -139,7 +140,7 @@ namespace Simplic.Flow.Node
         public DataPin InPinSourceGuid { get; set; }
 
         /// <summary>
-        /// Gets or sets the pin node
+        /// Gets or sets the destination stack guid in pin.
         /// </summary>
         [DataPinDefinition(
             Id = "0BDD055E-69BF-4893-8592-011C5DF3AA57",
@@ -151,7 +152,7 @@ namespace Simplic.Flow.Node
         public DataPin InPinDestinationStackGuid { get; set; }
 
         /// <summary>
-        /// Gets or sets the pin node
+        /// Gets or sets the destination guid in pin.
         /// </summary>
         [DataPinDefinition(
            Id = "D6C83468-7090-4938-A471-06650F2CCDB9",
@@ -160,13 +161,15 @@ namespace Simplic.Flow.Node
             Direction = PinDirection.In,
             Name = nameof(InPinDestinationGuid),
             DisplayName = "Destination Guid")]
-
         public DataPin InPinDestinationGuid { get; set; }
 
+        ///<inheritdoc/>
         public override string EventName => nameof(OnInstanceDataConectionDeleted);
 
+        ///<inheritdoc/>
         public override string Name => nameof(OnInstanceDataConectionDeleted);
 
+        ///<inheritdoc/>
         public override string FriendlyName => nameof(OnInstanceDataConectionDeleted);
     }
 }

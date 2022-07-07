@@ -17,11 +17,12 @@ namespace Simplic.Flow.Node
         public override bool Execute(IFlowRuntimeService runtime, DataPinScope scope)
         {
             var args = runtime.FlowEventArgs as OnInstanceDataChangedEventArgs;
-            if (args != null)
+            if (args == null)
             {
                 Console.WriteLine($"Arguments not found in {nameof(OnInstanceDataChangedEventArgs)}");
                 return false;
             }
+
             scope.SetValue(OutPinSourceStackGuid, args.SourceStackGuid);
             scope.SetValue(OutPinSourceGuid, args.SourceGuid);
             scope.SetValue(OutPinDestinationGuid, args.DestinationGuid);
@@ -67,7 +68,7 @@ namespace Simplic.Flow.Node
         public ActionNode OutNode { get; set; }
 
         /// <summary>
-        /// Gets or sets the pin node
+        /// Gets or sets the source stack guid out pin. 
         /// </summary>
         [DataPinDefinition(
             Id = "1BC98254-9C61-495E-ADAD-9A087831319C",
@@ -77,9 +78,9 @@ namespace Simplic.Flow.Node
             Name = nameof(OutPinSourceStackGuid),
             DisplayName = "Source Stack Guid")]
         public DataPin OutPinSourceStackGuid { get; set; }
-        
+
         /// <summary>
-        /// Gets or sets the pin node
+        /// Gets or sets the source guid out pin. 
         /// </summary>
         [DataPinDefinition(
             Id = "F994F9A5-9F18-455A-BB8D-51FD577538B4",
@@ -89,9 +90,9 @@ namespace Simplic.Flow.Node
             Name = nameof(OutPinSourceGuid),
             DisplayName = "Source Guid")]
         public DataPin OutPinSourceGuid { get; set; }
-        
+
         /// <summary>
-        /// Gets or sets the pin node
+        /// Gets or sets the destination stack guid out pin. 
         /// </summary>
         [DataPinDefinition(
             Id = "044B67DE-85B5-4EF3-AD83-CAC019EEF58D",
@@ -101,9 +102,9 @@ namespace Simplic.Flow.Node
             Name = nameof(OutPinDestinationStackGuid),
             DisplayName = "Destination Stack Guid")]
         public DataPin OutPinDestinationStackGuid { get; set; }
-        
+
         /// <summary>
-        /// Gets or sets the pin node
+        /// Gets or sets the destination guid out pin. 
         /// </summary>
         [DataPinDefinition(
             Id = "F12920E9-12EE-4852-9671-0E7831DF7F3A",
@@ -115,7 +116,7 @@ namespace Simplic.Flow.Node
         public DataPin OutPinDestinationGuid { get; set; }
 
         /// <summary>
-        /// Gets or sets the pin node
+        /// Gets or sets the source stack guid in pin. 
         /// </summary>
         [DataPinDefinition(
             Id = "7D4E3101-7DD9-4513-B131-8BE1C7F13E22",
@@ -124,10 +125,10 @@ namespace Simplic.Flow.Node
             Direction = PinDirection.In,
             Name = nameof(InPinSourceStackGuid),
             DisplayName = "Source´Stack Guid")]
-        public DataPin InPinSourceStackGuid { get; set; } 
-        
+        public DataPin InPinSourceStackGuid { get; set; }
+
         /// <summary>
-        /// Gets or sets the pin node
+        /// Gets or sets the source guid in pin. 
         /// </summary>
         [DataPinDefinition(
             Id = "7AEA3A8F-3E95-488C-B273-3ADD95B9E8B0",
@@ -136,10 +137,10 @@ namespace Simplic.Flow.Node
             Direction = PinDirection.In,
             Name = nameof(InPinSourceGuid),
             DisplayName = "Source Guid")]
-        public DataPin InPinSourceGuid { get; set; } 
-        
+        public DataPin InPinSourceGuid { get; set; }
+
         /// <summary>
-        /// Gets or sets the pin node
+        /// Gets or sets the destination stack guid out pin. 
         /// </summary>
         [DataPinDefinition(
             Id = "896B38B6-574B-4BDD-AC1E-EDB39E3E9759",
@@ -148,10 +149,10 @@ namespace Simplic.Flow.Node
             Direction = PinDirection.In,
             Name = nameof(InPinDestinationStackGuid),
             DisplayName = "Destination Source Guid")]
-        public DataPin InPinDestinationStackGuid { get; set; } 
-        
+        public DataPin InPinDestinationStackGuid { get; set; }
+
         /// <summary>
-        /// Gets or sets the pin node
+        /// Gets or sets the destination guid out pin. 
         /// </summary>
         [DataPinDefinition(
             Id = "E2BC6056-6F34-4CDF-AFFB-0A63E1D575AA",
@@ -162,10 +163,13 @@ namespace Simplic.Flow.Node
             DisplayName = "Destination Guid")]
         public DataPin InPinDestinationGuid { get; set; }
 
+        ///<inheritdoc/>
         public override string EventName => nameof(OnInstanceDataConectionCreated);
 
+        ///<inheritdoc/>
         public override string Name => nameof(OnInstanceDataConectionCreated);
 
+        ///<inheritdoc/>
         public override string FriendlyName => nameof(OnInstanceDataConectionCreated);
     }
 }
