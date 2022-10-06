@@ -53,6 +53,11 @@ namespace Simplic.Flow.Configuration.Data.Memory
             return true;
         }
 
+        public bool SetDeleted(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool SetStatus(Guid id, bool isActive)
         {
             throw new NotImplementedException();

@@ -3,7 +3,7 @@
 namespace Simplic.Flow.Configuration
 {
     /// <summary>
-    /// Flow configuration operations
+    /// Interface for flow configuration operations service.
     /// </summary>
     public interface IFlowConfigurationService : IFlowConfigurationRepository
     {
