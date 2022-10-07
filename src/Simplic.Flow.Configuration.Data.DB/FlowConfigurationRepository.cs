@@ -8,11 +8,17 @@ using System.Text;
 
 namespace Simplic.Flow.Configuration.Data.DB
 {
+    /// <summary>
+    /// Repository for flow configuration.
+    /// </summary>
     public class FlowConfigurationRepository : IFlowConfigurationRepository
     {
         private readonly ISqlService sqlService;
         private const string FlowConfigurationTableName = "Flow_Configuration";
 
+        /// <summary>
+        /// Constructor for FlowConfigurationRepository.
+        /// </summary>
         public FlowConfigurationRepository(ISqlService sqlService)
         {
             this.sqlService = sqlService;
@@ -39,12 +45,15 @@ namespace Simplic.Flow.Configuration.Data.DB
         #region Public Methods
 
         #region [GetAll]
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public IEnumerable<FlowConfiguration> GetAll(bool getOnlyActive = true)
         {
             var flowConfigurationModels = sqlService.OpenConnection((conn) =>
             {
                 var condition = getOnlyActive ? " WHERE IsActive = 1 " : "";
-                var sql = $"SELECT * from {FlowConfigurationTableName} {condition}";
+                var sql = $"SELECT * from {FlowConfigurationTableName} {condition} AND IsDeleted = 0";
                 return conn.Query<FlowConfigurationModel>(sql);
             });
 
@@ -57,6 +66,9 @@ namespace Simplic.Flow.Configuration.Data.DB
         #endregion
 
         #region [GetById]
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public FlowConfiguration Get(Guid id)
         {
             var flowConfigurationModel = sqlService.OpenConnection((conn) =>
@@ -82,6 +94,9 @@ namespace Simplic.Flow.Configuration.Data.DB
         #endregion
 
         #region [GetByExportId]
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public FlowConfiguration GetByExportId(Guid exportId)
         {
             var flowConfigurationModel = sqlService.OpenConnection((conn) =>
@@ -129,6 +144,9 @@ namespace Simplic.Flow.Configuration.Data.DB
         #endregion
 
         #region [SetStatus]
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public bool SetStatus(Guid id, bool isActive)
         {
             return sqlService.OpenConnection((conn) =>
@@ -137,6 +155,24 @@ namespace Simplic.Flow.Configuration.Data.DB
                 {
                     id,
                     isActive
+                });
+
+                return affectedRows > 0;
+            });
+        }
+        #endregion
+
+        #region [SetDeleted]
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public bool SetDeleted(Guid id)
+        {
+            return sqlService.OpenConnection((conn) =>
+            {
+                var affectedRows = conn.Execute($"UPDATE {FlowConfigurationTableName} Set IsDeleted = 1, IsActive = 0 WHERE Id = :id", new
+                {
+                    id
                 });
 
                 return affectedRows > 0;

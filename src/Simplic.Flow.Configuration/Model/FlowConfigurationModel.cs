@@ -28,6 +28,11 @@ namespace Simplic.Flow.Configuration
         public bool IsActive { get; set; } = true;
 
         /// <summary>
+        /// Gets or sets whether the flow configuration is deleted.
+        /// </summary>
+        public bool IsDeleted { get; set; } = false;
+
+        /// <summary>
         /// Gets or sets the current machine name
         /// </summary>
         public string MachineName { get; set; }
