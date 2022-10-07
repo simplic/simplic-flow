@@ -52,5 +52,10 @@ namespace Simplic.Flow.Configuration
         /// Gets or sets whether the flow configuration is active
         /// </summary>
         public bool IsActive { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets whether the flow configuration is deleted.
+        /// </summary>
+        public bool IsDeleted { get; set; } = false;
     }
 }

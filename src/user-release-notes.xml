@@ -1,0 +1,5 @@
+<ReleaseNotes>
+  <ChangeSet>
+    <Change type="feature">Flows können jetzt gelöscht werden.</Change>
+  </ChangeSet>
+</ReleaseNotes>
