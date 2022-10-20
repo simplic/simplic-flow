@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 
 namespace Simplic.Flow.Configuration.Data.Memory
-{
+{ 
     public class FlowConfigurationMemoryRepository : IFlowConfigurationRepository
     {
         private readonly IList<FlowConfiguration> flowConfigurations;

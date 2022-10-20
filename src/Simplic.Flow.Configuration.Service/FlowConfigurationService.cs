@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Simplic.Flow.Configuration.Service
 {
     /// <summary>
-    /// Service for flow configuration operations.
+    /// Service for FlowConfiguration operations.
     /// </summary>
     public class FlowConfigurationService : IFlowConfigurationService
     {

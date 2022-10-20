@@ -41,7 +41,7 @@
   <ChangeSet guid="8655b36c-0481-4aea-8fb1-474d67a959a8">
     <Change type="feature">Informs the user that all app servers and clients need to be restarted in order for events to be received when saving a flow configuration and the service or server name has been changed.</Change>
   </ChangeSet>
-  <ChangeSet>
+  <ChangeSet guid="914ed083-cead-4887-8e85-d18c73b17c21">
     <Change type="feature">Added delete flag to flows.</Change>
   </ChangeSet>
 </ReleaseNotes>
