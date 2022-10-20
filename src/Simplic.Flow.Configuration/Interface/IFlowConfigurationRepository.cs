@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace Simplic.Flow.Configuration
 {
+    /// <summary>
+    /// Interface for FlowConfigurationRepository.
+    /// </summary>
     public interface IFlowConfigurationRepository
     {
         /// <summary>

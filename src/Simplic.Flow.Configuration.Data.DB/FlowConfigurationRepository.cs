@@ -9,7 +9,7 @@ using System.Text;
 namespace Simplic.Flow.Configuration.Data.DB
 {
     /// <summary>
-    /// Repository for flow configuration.
+    /// Repository for FlowConfiguration.
     /// </summary>
     public class FlowConfigurationRepository : IFlowConfigurationRepository
     {
