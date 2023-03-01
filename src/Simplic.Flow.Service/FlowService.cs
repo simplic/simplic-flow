@@ -908,18 +908,22 @@ namespace Simplic.Flow.Service
 
             foreach (var flowEventQueue in unhandledEvents)
             {
-                var eventArgs = JsonConvert.DeserializeObject<FlowEventArgs>(
-                    Encoding.UTF8.GetString(flowEventQueue.Args),
-                    new JsonSerializerSettings
-                    {
-                        TypeNameHandling = TypeNameHandling.All,
-                        PreserveReferencesHandling = PreserveReferencesHandling.Objects
-                    });
-
-                // if there are no event args create an empty object
-                if (eventArgs == null)
-                    eventArgs = new FlowEventArgs();
-
+                FlowEventArgs eventArgs;
+                try
+                {
+                    eventArgs = JsonConvert.DeserializeObject<FlowEventArgs>(
+                        Encoding.UTF8.GetString(flowEventQueue.Args),
+                        new JsonSerializerSettings
+                        {
+                            TypeNameHandling = TypeNameHandling.All,
+                            PreserveReferencesHandling = PreserveReferencesHandling.Objects
+                        }) ?? new FlowEventArgs();
+                }
+                catch
+                {
+                    SetEventQueueFailed(flowEventQueue.Id);
+                    continue;
+                }
 
                 eventArgs.EventName = flowEventQueue.EventName;
                 eventArgs.Id = flowEventQueue.Id;
@@ -1308,7 +1312,7 @@ namespace Simplic.Flow.Service
             flowLogService.Info("> Creating event delegates...");
 
             eventDelegates = new Dictionary<string, IList<EventDelegate>>();
-            foreach (var flow in Flows) 
+            foreach (var flow in Flows)
             {
                 foreach (var eventNode in flow.Nodes.OfType<EventNode>())
                 {
