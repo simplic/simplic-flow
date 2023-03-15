@@ -44,4 +44,7 @@
   <ChangeSet guid="914ed083-cead-4887-8e85-d18c73b17c21">
     <Change type="feature">Added delete flag to flows.</Change>
   </ChangeSet>
+  <ChangeSet>
+    <Change type="bug">Fixed repeated crashes when unparseable event args are in the event queue.</Change>
+  </ChangeSet>
 </ReleaseNotes>
