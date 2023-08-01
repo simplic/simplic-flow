@@ -2,4 +2,7 @@
   <ChangeSet>
     <Change type="feature">Flows können jetzt gelöscht werden.</Change>
   </ChangeSet>
+  <ChangeSet>
+    <Change type="feature">Der neue "Sql Node ermöglicht es, dass Informationen aus einer Datenbank entnommen werden können.</Change>
+  </ChangeSet>
 </ReleaseNotes>

@@ -38,6 +38,12 @@
         "NodeType": "ActionNode",
         "ClassName": "ConsoleWriteLineNode",
         "IsStartEvent": false
+      },
+      {
+        "Id": "e64d2e59-b266-491e-adb3-074ec25a3c1e",
+        "NodeType": "ActionNode",
+        "ClassName": "SqlNode",
+        "IsStartEvent": false
       }
     ],
     "Links": [

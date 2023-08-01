@@ -47,4 +47,7 @@
   <ChangeSet>
     <Change type="bug">Fixed repeated crashes when unparseable event args are in the event queue.</Change>
   </ChangeSet>
+  <ChangeSet>
+    <Change type="feature">A new node has been added to use a SELECT statement for a database.</Change>
+  </ChangeSet>
 </ReleaseNotes>
