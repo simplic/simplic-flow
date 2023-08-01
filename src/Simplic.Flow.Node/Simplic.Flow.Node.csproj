@@ -45,6 +45,7 @@
     <Compile Include="ActionNode\Base\DateTimeNowNode.cs" />
     <Compile Include="ActionNode\Base\ConcatStringNode.cs" />
     <Compile Include="ActionNode\Base\EndWithConditionNode.cs" />
+    <Compile Include="ActionNode\Base\SqlNode.cs" />
     <Compile Include="ActionNode\Base\ExecuteFlowNode.cs" />
     <Compile Include="ActionNode\Base\ToStringNode.cs" />
     <Compile Include="ActionNode\Base\ConsoleWriteLineNode.cs" />
@@ -691,6 +692,9 @@
     <PackageReference Include="CommonServiceLocator">
       <Version>2.0.5</Version>
     </PackageReference>
+    <PackageReference Include="Dapper">
+      <Version>2.0.143</Version>
+    </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.1</Version>
     </PackageReference>
@@ -702,6 +706,9 @@
     </PackageReference>
     <PackageReference Include="Simplic.Log">
       <Version>7.2.421.426</Version>
+    </PackageReference>
+    <PackageReference Include="Simplic.Sql">
+      <Version>6.3.121.1212</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
