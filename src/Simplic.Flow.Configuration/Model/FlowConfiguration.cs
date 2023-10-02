@@ -29,6 +29,11 @@ namespace Simplic.Flow.Configuration
         public string ServiceName { get; set; }
 
         /// <summary>
+        /// Gets or sets the description of this configuration.
+        /// </summary>
+        public string Description { get; set; }
+
+        /// <summary>
         /// Gets or sets the list of nodes inside this configuration
         /// </summary>
         public List<NodeConfiguration> Nodes { get; set; } = new List<NodeConfiguration>();

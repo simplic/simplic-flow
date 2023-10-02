@@ -127,15 +127,16 @@ namespace Simplic.Flow.Configuration.Data.DB
             return sqlService.OpenConnection((conn) =>
             {
                 var affectedRows = conn.Execute($"Insert Into {FlowConfigurationTableName} " +
-                   $" (Id, Configuration, Name, IsActive, MachineName, ServiceName) On Existing Update Values " +
-                   $" (:id, :configuration, :name, :isActive, :machineName, :serviceName);", new
+                   $" (Id, Configuration, Name, IsActive, MachineName, ServiceName, Description) On Existing Update Values " +
+                   $" (:id, :configuration, :name, :isActive, :machineName, :serviceName, :description);", new
                    {
                        id = flowConfiguration.Id,
                        name = flowConfiguration.Name,
                        configuration = ConvertFromJson(flowConfiguration),
                        isActive = flowConfiguration.IsActive,
                        machineName = flowConfiguration.MachineName,
-                       serviceName = flowConfiguration.ServiceName
+                       serviceName = flowConfiguration.ServiceName,
+                       description = flowConfiguration.Description
                    });
 
                 return affectedRows > 0;
