@@ -548,9 +548,15 @@ namespace Simplic.Flow.Editor.UI
             }
         }
 
+        /// <summary>
+        /// Gets or sets the description of the workflow.
+        /// </summary>
         public string Description 
         {
-            get { return flowConfiguration.Description; }
+            get 
+            { 
+                return flowConfiguration.Description; 
+            }
             set 
             { 
                 flowConfiguration.Description = value;
