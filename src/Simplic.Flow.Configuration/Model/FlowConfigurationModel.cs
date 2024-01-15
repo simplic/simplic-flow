@@ -41,5 +41,10 @@ namespace Simplic.Flow.Configuration
         /// Gets or sets the service name
         /// </summary>
         public string ServiceName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the decription of this configuration.
+        /// </summary>
+        public string Description { get; set; }
     }
 }

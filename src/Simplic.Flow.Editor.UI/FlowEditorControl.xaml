@@ -72,6 +72,7 @@
                                     <RowDefinition Height="auto" />
                                     <RowDefinition Height="auto" />
                                     <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
 
@@ -96,39 +97,10 @@
                                               Grid.Row="3" Grid.ColumnSpan="2"
                                               IsChecked="{Binding IsActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                                <Button Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Left"
-                                    Margin="0, 5" Width="150"
-                                    Content="{simplic:Localization Key=flow_new_variable}"
-                                    Command="{Binding AddVariableCommand}" />
-
-                                <TabControl Grid.Row="5" Grid.ColumnSpan="2">
-                                    <TabItem Header="{simplic:Localization Key=flow_variables}">
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="*"/>
-                                            </Grid.RowDefinitions>
-
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-
-                                            <simplic:AutomaticSelectionGridView Grid.Row="0" Grid.Column="0"
-                                                                            ItemsSource="{Binding Variables}"
-                                                                            AutoGenerateColumns="False" 
-                                                                            CanUserInsertRows="True"
-                                                                            CanUserDeleteRows="True"
-                                                                            ShowGroupPanel="True">
-                                                <simplic:AutomaticSelectionGridView.Columns>
-                                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding Name}"
-                                                                            Header="{simplic:Localization Key=flow_variable_name}" />
-                                                    <telerik:GridViewComboBoxColumn ItemsSource="{Binding AvailableVariableTypes}"
-                                                                                DataMemberBinding="{Binding Type}"
-                                                                                Header="{simplic:Localization Key=flow_variable_name}" />
-                                                </simplic:AutomaticSelectionGridView.Columns>
-                                            </simplic:AutomaticSelectionGridView>
-                                        </Grid>
-                                    </TabItem>
-                                </TabControl>
+                                <Label Grid.Row="4" Content="Description" FontWeight="Bold"/>
+                                <simplic:TextBox Grid.Row="5" Grid.Column="0"  TextWrapping="Wrap" Height="250" MinLines="10"
+                                    AcceptsReturn="True" VerticalScrollBarVisibility="Visible" Grid.ColumnSpan="2" VerticalContentAlignment="Top"
+                                    Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" />
 
                             </Grid>
                         </TabItem>
@@ -154,6 +126,39 @@
                                                        SelectiveScrollingGrid.SelectiveScrollingOrientation="Both"
                                                        Template="{StaticResource CustomDiagramToolBoxTemplate}"
                                                        IsTextSearchEnabled="True" />
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="{simplic:Localization Key=flow_variables}">
+                            
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Button Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"
+                                    Margin="0, 5" Width="150"
+                                    Content="{simplic:Localization Key=flow_new_variable}"
+                                    Command="{Binding AddVariableCommand}" />
+
+                                <simplic:AutomaticSelectionGridView Grid.Row="1" Grid.Column="0"
+                                                                            ItemsSource="{Binding Variables}"
+                                                                            AutoGenerateColumns="False" 
+                                                                            CanUserInsertRows="True"
+                                                                            CanUserDeleteRows="True"
+                                                                            ShowGroupPanel="True">
+                                    <simplic:AutomaticSelectionGridView.Columns>
+                                        <telerik:GridViewDataColumn DataMemberBinding="{Binding Name}"
+                                                                            Header="{simplic:Localization Key=flow_variable_name}" />
+                                        <telerik:GridViewComboBoxColumn ItemsSource="{Binding AvailableVariableTypes}"
+                                                                                DataMemberBinding="{Binding Type}"
+                                                                                Header="{simplic:Localization Key=flow_variable_name}" />
+                                    </simplic:AutomaticSelectionGridView.Columns>
+                                </simplic:AutomaticSelectionGridView>
                             </Grid>
                         </TabItem>
                     </TabControl>
