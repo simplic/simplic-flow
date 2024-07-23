@@ -14,7 +14,7 @@ namespace Simplic.Flow.Node.IO
                 string filePath = scope.GetValue<string>(InPinFilePath);
                 var attributes = System.IO.File.GetAttributes(filePath);
 
-                if (attributes == FileAttributes.ReadOnly)
+                if (attributes.HasFlag( FileAttributes.ReadOnly))
                 {
                     // File is read-only
                     Console.WriteLine("File is readonly.");
