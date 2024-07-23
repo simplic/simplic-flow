@@ -547,6 +547,23 @@ namespace Simplic.Flow.Editor.UI
                 RaisePropertyChanged(nameof(ServiceName));
             }
         }
+
+        /// <summary>
+        /// Gets or sets the description of the workflow.
+        /// </summary>
+        public string Description 
+        {
+            get 
+            { 
+                return flowConfiguration.Description; 
+            }
+            set 
+            { 
+                flowConfiguration.Description = value;
+                IsDirty = true;
+                RaisePropertyChanged(nameof(Description));
+            }
+        }
         #endregion
 
         #region [Variables]

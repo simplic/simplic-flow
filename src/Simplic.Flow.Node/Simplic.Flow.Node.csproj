@@ -654,6 +654,7 @@
     <Compile Include="ActionNode\Generic\System.TimeSpan\SystemTimeSpanTryParse_String_IFormatProvider_TimeSpan_Node.cs" />
     <Compile Include="ActionNode\Generic\System.TimeSpan\SystemTimeSpanTryParse_String_TimeSpan_Node.cs" />
     <Compile Include="ActionNode\IO\GetFileExtensionNode.cs" />
+    <Compile Include="ActionNode\IO\HasReadWriteRightsNode.cs" />
     <Compile Include="ActionNode\IO\ReadAllBytesNode.cs" />
     <Compile Include="ActionNode\IO\ReadAllTextNode.cs" />
     <Compile Include="ActionNode\Math\AddNode.cs" />

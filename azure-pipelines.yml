@@ -31,6 +31,10 @@ resources:
       endpoint: simplic-bot
 
 steps:
+  - checkout: self 
+    persistCredentials: true
+    fetchDepth: 1000
+        
   - task: NuGetToolInstaller@1
     inputs:
       versionSpec: "5.x"
